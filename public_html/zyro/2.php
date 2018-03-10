@@ -38,6 +38,28 @@
 <div class="vbox wb_container" id="wb_main">
 	
 <div class="wb_cont_inner"><div id="wb_element_instance14" class="wb_element wb_element_shape"><div class="wb_shp"></div></div><div id="wb_element_instance15" class="wb_element" style=" line-height: normal;"><h1 class="wb-stl-heading1"><span style="color:#ffffff;"><span class="wb_tr_ok">Teams</span></span></h1>
+<?php
+	include_once('dbconnect.php');
+	if(isset($_POST['search'])){
+		$q = $_POST['q'];
+		$query = mysqli_query($conn,"SELECT * FROM `Nation` WHERE `name` LIKE '%$q%'"); 
+		//Replace table_name with your table name and `thing_to_search` with the column you want to search
+		$count = mysqli_num_rows($query);
+		if($count == "0"){
+			$output = '<h2>No result found!</h2>';
+		}else{
+			while($row = mysqli_fetch_array($query)){
+			$s = $row['uuid']; // Replace column_to_display with the column you want the results from
+					$output .= '<h2>'.$s.'</h2><br>';
+			}
+		}
+	}
+?>
+<form method="POST" action="2.php">
+	<input type="text" name="q" placeholder="query">
+	<input type="submit" name="search" value="Search">
+</form>
+<?php echo $output; ?>
 <p class="wb-stl-normal"> </p>
 <p class="wb-stl-normal"><span style="color:#ffffff;">You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form on our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us...</span><a href="Teams/"><span style="color:#ffffff;">Please fill the contact form on...</span></a><span style="color:#ffffff;">Our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to...</span></p>
 <p class="wb-stl-normal"> </p>
