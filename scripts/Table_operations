@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS Nation (
+	uuid CHAR(36) NOT NULL PRIMARY KEY,
+	name VARCHAR(255) NOT NULL UNIQUE
+)
+
+CREATE TRIGGER before_insert_Nation
+  	BEFORE INSERT ON Nation
+  	FOR EACH ROW
+  	SET new.uuid = uuid()
+
+INSERT INTO Nation (name)
+VALUES ('Brazil') 	
+
+DROP TABLE IF EXISTS Nation
