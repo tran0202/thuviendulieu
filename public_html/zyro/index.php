@@ -3,7 +3,11 @@
 	$pages = array(
 		'0'	=> array('id' => '1', 'alias' => '', 'file' => '1.php','controllers' => array()),
 		'1'	=> array('id' => '2', 'alias' => 'Teams', 'file' => '2.php','controllers' => array()),
-		'2'	=> array('id' => '3', 'alias' => 'Events', 'file' => '3.php','controllers' => array())
+		'2'	=> array('id' => '3', 'alias' => 'Events', 'file' => '3.php','controllers' => array()),
+		'3'	=> array('id' => '4', 'alias' => 'New-Content', 'file' => '4.php','controllers' => array()),
+		'4'	=> array('id' => '4', 'alias' => 'New-Link', 'file' => '4.php','controllers' => array()),
+		'5'	=> array('id' => '2', 'alias' => 'Teams-Other', 'file' => '2.php','controllers' => array()),
+		'6'	=> array('id' => '5', 'alias' => 'New-Events', 'file' => '5.php','controllers' => array())
 	);
 	$forms = array(
 
@@ -11,7 +15,7 @@
 	$langs = null;
 	$def_lang = null;
 	$base_lang = 'en';
-	$site_id = "a69cae17";
+	$site_id = "214907e2";
 	$base_dir = dirname(__FILE__);
 	$base_url = '/';
 	$user_domain = 'thuviendulieu.000webhostapp.com';

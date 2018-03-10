@@ -21,9 +21,9 @@
 	<script src="js/main.js?v=20180222164022" type="text/javascript"></script>
 
 	<link href="css/font-awesome/font-awesome.min.css?v=4.7.0" rel="stylesheet" type="text/css" />
-	<link href="css/site.css?v=20180215152128" rel="stylesheet" type="text/css" />
-	<link href="css/common.css?ts=1520194049" rel="stylesheet" type="text/css" />
-	<link href="css/1.css?ts=1520194049" rel="stylesheet" type="text/css" />
+	<link href="css/site.css?v=20180308163726" rel="stylesheet" type="text/css" />
+	<link href="css/common.css?ts=1520719764" rel="stylesheet" type="text/css" />
+	<link href="css/1.css?ts=1520719764" rel="stylesheet" type="text/css" />
 	{{ga_code}}
 	<script type="text/javascript">var currLang = '';</script>	
 	<!--[if lt IE 9]>
@@ -34,10 +34,10 @@
 
 <body><div class="root"><div class="vbox wb_container" id="wb_header">
 	
-<div class="wb_cont_inner"><div id="wb_element_instance0" class="wb_element wb-menu"><ul class="hmenu"><li class="active"><a href="" target="_self">Home</a></li><li><a href="Teams/" target="_self">Teams</a></li><li><a href="Events/" target="_self">Events</a></li></ul><div class="clearfix"></div></div><div id="wb_element_instance1" class="wb_element" style=" line-height: normal;"><h4 class="wb-stl-pagetitle"><span class="wb_tr_ok">Play Soccer</span></h4></div><div id="wb_element_instance2" class="wb_element wb_element_picture"><a href=""><img alt="gallery/football" src="gallery_gen/8cd979f289c541d79d7ea74cf4b31f3e.png"></a></div><div id="wb_element_instance4" class="wb_element wb_element_picture"><img alt="gallery/ball_1" src="gallery_gen/740438132c8336073d625b0136159e8e_300x310.png"></div></div><div class="wb_cont_outer"></div><div class="wb_cont_bg"></div></div>
+<div class="wb_cont_inner"><div id="wb_element_instance0" class="wb_element wb-menu"><ul class="hmenu"><li class="active"><a href="" target="_self">Home</a></li><li><a href="Teams/" target="_self">Teams</a><ul><li><a href="Teams-Other/" target="_self">Teams-Other</a></li></ul></li><li><a href="Events/" target="_self">Events</a></li><li><a href="New-Content/" target="_self">New Content</a><ul><li><a href="New-Link/" target="_self">New Link</a></li></ul></li><li><a href="New-Events/" target="_self">New Events</a></li></ul><div class="clearfix"></div></div><div id="wb_element_instance1" class="wb_element" style=" line-height: normal;"><h4 class="wb-stl-pagetitle"><span class="wb_tr_ok">Play Football</span></h4></div><div id="wb_element_instance2" class="wb_element wb_element_picture"><a href=""><img alt="gallery/football" src="gallery_gen/8cd979f289c541d79d7ea74cf4b31f3e.png"></a></div><div id="wb_element_instance4" class="wb_element wb_element_picture"><img alt="gallery/ball_1" src="gallery_gen/740438132c8336073d625b0136159e8e_300x310.png"></div></div><div class="wb_cont_outer"></div><div class="wb_cont_bg"></div></div>
 <div class="vbox wb_container" id="wb_main">
 	
-<div class="wb_cont_inner"><div id="wb_element_instance5" class="wb_element" style=" line-height: normal;"><h5 class="wb-stl-subtitle" style="text-align: center;"><span class="wb_tr_ok">More than a game</span></h5></div><div id="wb_element_instance6" class="wb_element" style=" line-height: normal;"><p class="wb-stl-normal" style="text-align: center;"><span class="wb-stl-highlight"><span class="wb_tr_ok">Soccer</span></span></p>
+<div class="wb_cont_inner"><div id="wb_element_instance5" class="wb_element" style=" line-height: normal;"><h5 class="wb-stl-subtitle" style="text-align: center;"><span class="wb_tr_ok">More than a game</span></h5></div><div id="wb_element_instance6" class="wb_element" style=" line-height: normal;"><p class="wb-stl-normal" style="text-align: center;"><span class="wb-stl-highlight"><span class="wb_tr_ok">Football</span></span></p>
 <p class="wb-stl-normal"> </p></div><div id="wb_element_instance7" class="wb_element"><a class="wb_button" href="Teams/"><span>Just try!</span></a></div><div id="wb_element_instance8" class="wb_element" style="width: 100%;">
 			<?php
 				global $show_comments;

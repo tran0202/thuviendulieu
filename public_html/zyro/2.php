@@ -21,9 +21,9 @@
 	<script src="js/main.js?v=20180222164022" type="text/javascript"></script>
 
 	<link href="css/font-awesome/font-awesome.min.css?v=4.7.0" rel="stylesheet" type="text/css" />
-	<link href="css/site.css?v=20180215152128" rel="stylesheet" type="text/css" />
-	<link href="css/common.css?ts=1520194049" rel="stylesheet" type="text/css" />
-	<link href="css/2.css?ts=1520194049" rel="stylesheet" type="text/css" />
+	<link href="css/site.css?v=20180308163726" rel="stylesheet" type="text/css" />
+	<link href="css/common.css?ts=1520719764" rel="stylesheet" type="text/css" />
+	<link href="css/2.css?ts=1520719764" rel="stylesheet" type="text/css" />
 	{{ga_code}}
 	<script type="text/javascript">var currLang = '';</script>	
 	<!--[if lt IE 9]>
@@ -34,7 +34,7 @@
 
 <body><div class="root"><div class="vbox wb_container" id="wb_header">
 	
-<div class="wb_cont_inner"><div id="wb_element_instance10" class="wb_element wb-menu"><ul class="hmenu"><li><a href="" target="_self">Home</a></li><li class="active"><a href="Teams/" target="_self">Teams</a></li><li><a href="Events/" target="_self">Events</a></li></ul><div class="clearfix"></div></div><div id="wb_element_instance11" class="wb_element" style=" line-height: normal;"><h4 class="wb-stl-pagetitle"><span class="wb_tr_ok">Play Football</span></h4></div><div id="wb_element_instance12" class="wb_element wb_element_picture"><a href=""><img alt="gallery/football" src="gallery_gen/8cd979f289c541d79d7ea74cf4b31f3e.png"></a></div></div><div class="wb_cont_outer"></div><div class="wb_cont_bg"></div></div>
+<div class="wb_cont_inner"><div id="wb_element_instance10" class="wb_element wb-menu"><ul class="hmenu"><li><a href="" target="_self">Home</a></li><li class="active"><a href="Teams/" target="_self">Teams</a><ul><li><a href="Teams-Other/" target="_self">Teams-Other</a></li></ul></li><li><a href="Events/" target="_self">Events</a></li><li><a href="New-Content/" target="_self">New Content</a><ul><li><a href="New-Link/" target="_self">New Link</a></li></ul></li><li><a href="New-Events/" target="_self">New Events</a></li></ul><div class="clearfix"></div></div><div id="wb_element_instance11" class="wb_element" style=" line-height: normal;"><h4 class="wb-stl-pagetitle"><span class="wb_tr_ok">Play Football</span></h4></div><div id="wb_element_instance12" class="wb_element wb_element_picture"><a href=""><img alt="gallery/football" src="gallery_gen/8cd979f289c541d79d7ea74cf4b31f3e.png"></a></div></div><div class="wb_cont_outer"></div><div class="wb_cont_bg"></div></div>
 <div class="vbox wb_container" id="wb_main">
 	
 <div class="wb_cont_inner"><div id="wb_element_instance14" class="wb_element wb_element_shape"><div class="wb_shp"></div></div><div id="wb_element_instance15" class="wb_element" style=" line-height: normal;"><h1 class="wb-stl-heading1"><span style="color:#ffffff;"><span class="wb_tr_ok">Teams</span></span></h1>
@@ -55,7 +55,7 @@
 		}
 	}
 ?>
-<form method="POST" action="2.php">
+<form method="POST" action="Teams/">
 	<input type="text" name="q" placeholder="query">
 	<input type="submit" name="search" value="Search">
 </form>
