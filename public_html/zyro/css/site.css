@@ -92,6 +92,7 @@ a img		{ border: none; }
 #wb_bgs_cont { position: absolute; width: 100%; left: 0; z-index: 1; }
 
 .wb_container .wb_page { position: relative; box-sizing: content-box; }
+.wb_container .wb_page:after { content: ""; display: block; float: none; clear: both; }
 .wb_container .wb_page .wb_page_anchor { position: relative; top: 0; left: 0; display: block; }
 
 .wb_container > .wb-cs-row > .wb-cs-col {
@@ -915,8 +916,14 @@ i.ico-lang-ru	{ width: 18px; height: 12px }
 	position: relative;
 	display: inline-block;
 	vertical-align: middle;
-	/* width: 100%; */
 	margin-left: 15px;
+	padding-left: 15px;
+	border-left: 1px solid #cccccc;
+}
+.wb-store .wb-store-pay-btns > div:first-child {
+	margin-left: 0px;
+	padding-left: 0px;
+	border-left: none;
 }
 .wb-store .wb-store-pay-btns .wb-store-pay-btn-overlay {
 	position: absolute;
@@ -1018,12 +1025,8 @@ i.ico-lang-ru	{ width: 18px; height: 12px }
 	width: 1%;
 }
 .wb-store-cart-table-remove > span {
-	visibility: hidden;
 	color: #f00;
 	cursor: pointer;
-}
-.wb-store-cart-table tr:hover > .wb-store-cart-table-remove > span {
-	visibility: visible;
 }
 .wb-store-cart-table-totals {
 	text-align: right;
@@ -1032,9 +1035,22 @@ i.ico-lang-ru	{ width: 18px; height: 12px }
 	width: 1%;
 	text-align: center !important;
 }
+.wb-store-pay-wrp {
+	clear: both;
+	text-align: center;
+	padding-top: 20px;
+	overflow-y: hidden;
+}	
+.wb-store-pay-sep {
+	border-top: 1px solid #cccccc;
+	font-size: 1px;
+	line-height: 1px;
+	height: 1px;
+	display: block;
+}
 .wb-store-pay-btns {
-	text-align: right;
-	margin-top: 20px;
+	text-align: center;
+	padding-top: 20px;
 }
 .wb-store-pay-btns > div {
 	display: inline-block;

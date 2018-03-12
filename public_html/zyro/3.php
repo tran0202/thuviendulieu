@@ -22,9 +22,9 @@
 
 	<link href="css/font-awesome/font-awesome.min.css?v=4.7.0" rel="stylesheet" type="text/css" />
 	<link href="css/site.css?v=20180308163726" rel="stylesheet" type="text/css" />
-	<link href="css/common.css?ts=1520719764" rel="stylesheet" type="text/css" />
-	<link href="css/3.css?ts=1520719764" rel="stylesheet" type="text/css" />
-	{{ga_code}}
+	<link href="css/common.css?ts=1520881198" rel="stylesheet" type="text/css" />
+	<link href="css/1.css?ts=1520881198" rel="stylesheet" type="text/css" />
+	{{ga_code}}<link rel="shortcut icon" href="/gallery/tvdl_favicon-ts1520881176.png" type="image/png" />
 	<script type="text/javascript">var currLang = '';</script>	
 	<!--[if lt IE 9]>
 	<script src="js/html5shiv.min.js"></script>
