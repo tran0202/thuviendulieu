@@ -34,10 +34,10 @@
 
 <body><div class="root"><div class="vbox wb_container" id="wb_header">
 	
-<div class="wb_cont_inner"><div id="wb_element_instance10" class="wb_element wb-menu"><ul class="hmenu"><li><a href="" target="_self">Home</a></li><li class="active"><a href="Teams/" target="_self">Teams</a></li><li><a href="Events/" target="_self">Events</a></li><li><a href="New-Content/" target="_self">New Content</a><ul><li><a href="New-Link/" target="_self">New Link</a></li></ul></li></ul><div class="clearfix"></div></div><div id="wb_element_instance11" class="wb_element" style=" line-height: normal;"><h4 class="wb-stl-pagetitle"><span class="wb_tr_ok">Play Football</span></h4></div><div id="wb_element_instance12" class="wb_element wb_element_picture"><a href=""><img alt="gallery/football" src="gallery_gen/8cd979f289c541d79d7ea74cf4b31f3e.png"></a></div></div><div class="wb_cont_outer"></div><div class="wb_cont_bg"></div></div>
+<div class="wb_cont_inner"><div id="wb_element_instance10" class="wb_element wb-menu"><ul class="hmenu"><li><a href="" target="_self">Home</a></li><li class="active"><a href="Russia2018/" target="_self">Russia 2018</a></li><li><a href="Events/" target="_self">Events</a></li><li><a href="New-Content/" target="_self">New Content</a><ul><li><a href="New-Link/" target="_self">New Link</a></li></ul></li></ul><div class="clearfix"></div></div><div id="wb_element_instance11" class="wb_element" style=" line-height: normal;"><h4 class="wb-stl-pagetitle"><span class="wb_tr_ok">We Call It Soccer</span></h4></div><div id="wb_element_instance12" class="wb_element wb_element_picture"><a href=""><img alt="gallery/football" src="gallery_gen/8cd979f289c541d79d7ea74cf4b31f3e.png"></a></div></div><div class="wb_cont_outer"></div><div class="wb_cont_bg"></div></div>
 <div class="vbox wb_container" id="wb_main">
 	
-<div class="wb_cont_inner"><div id="wb_element_instance14" class="wb_element wb_element_shape"><div class="wb_shp"></div></div><div id="wb_element_instance15" class="wb_element" style=" line-height: normal;"><h1 class="wb-stl-heading1"><span style="color:#ffffff;"><span class="wb_tr_ok">World Cup 2018</span></span></h1>
+<div class="wb_cont_inner"><div id="wb_element_instance14" class="wb_element wb_element_shape"><div class="wb_shp"></div></div><div id="wb_element_instance15" class="wb_element" style=" line-height: normal;"><h1 class="wb-stl-heading1"><span style="color:#ffffff;"><span class="wb_tr_ok">FIFA World Cup Russia 2018</span></span></h1>
 <?php
 	include_once('config.php');
 	$output = '';
