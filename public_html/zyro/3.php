@@ -38,6 +38,24 @@
 <div class="vbox wb_container" id="wb_main">
 	
 <div class="wb_cont_inner"><div id="wb_element_instance24" class="wb_element" style=" line-height: normal;"><h1 class="wb-stl-heading1"><span style="color:#ffffff;"><span class="wb_tr_ok">Events</span></span></h1>
+<?php
+	include_once('config.php');
+	$output = '';
+	$sql = 'SELECT * FROM `team` WHERE id = :uid';
+    $query = $connection -> prepare($sql);
+	$query -> bindValue(':uid', 1, PDO::PARAM_INT);
+	$query -> execute();
+	$count = $query -> rowCount();
+	if ($count != 0) {
+		while ($row = $query -> fetch(PDO::FETCH_ASSOC)) {
+			$output .= '<h2>'.$row['id'].' '.$row['name'].'</h2><br>';
+		}
+	} 
+	else {
+		$output = '<h2>No result found!</h2>';
+	}
+?>
+<?php echo $output; ?>
 <p> </p>
 <p class="wb-stl-normal"><span style="color:#ffffff;">You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form on our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form on our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us...</span><a href="Teams/"><span style="color:#ffffff;">Please fill the contact form on our...</span></a><span style="color:#ffffff;">Website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the...</span></p></div><div id="wb_element_instance25" class="wb_element wb_element_picture"><img alt="gallery/rush-1335365_1280" src="gallery_gen/deaceea944c1e5c8faa97dbc938638a2_330x230.jpg"></div><div id="wb_element_instance26" class="wb_element wb_element_picture"><img alt="gallery/soccer-933037_1280" src="gallery_gen/9f1f8dd4b573022ccb5f58534e63c223_340x230.jpg"></div><div id="wb_element_instance27" class="wb_element wb_element_picture"><img alt="gallery/football-452569_640" src="gallery_gen/02aca76cc69c5b3f26f749b67d453d64_340x230.jpg"></div><div id="wb_element_instance28" class="wb_element" style=" line-height: normal;"><p class="wb-stl-normal"><span style="color:#ffffff;">You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form on our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form...</span></p></div><div id="wb_element_instance29" class="wb_element" style=" line-height: normal;"><p class="wb-stl-normal"><span style="color:#ffffff;">You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form on our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form on our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form on our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best...</span></p></div><div id="wb_element_instance30" class="wb_element wb_element_shape"><div class="wb_shp"></div></div><div id="wb_element_instance31" class="wb_element" style="width: 100%;">
 			<?php

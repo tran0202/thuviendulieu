@@ -39,18 +39,20 @@
 	
 <div class="wb_cont_inner"><div id="wb_element_instance14" class="wb_element wb_element_shape"><div class="wb_shp"></div></div><div id="wb_element_instance15" class="wb_element" style=" line-height: normal;"><h1 class="wb-stl-heading1"><span style="color:#ffffff;"><span class="wb_tr_ok">Teams</span></span></h1>
 <?php
-	include_once('dbconnect.php');
-	$query = mysqli_query($conn,"SELECT * FROM `team`"); 
-		$count = mysqli_num_rows($query);
-		if($count == "0"){
-			$output = '<h2>No result found!</h2>';
-		}else{
-			while($row = mysqli_fetch_array($query)){
-			$s = $row['id']; 
-			$s2 = $row['name']; 
-					$output .= '<h2>'.$s.' '.$s2.'</h2><br>';
-			}
+	include_once('config.php');
+	$output = '';
+	$sql = 'SELECT * FROM `team`';
+    $query = $connection -> prepare($sql);
+	$query -> execute();
+	$count = $query -> rowCount();
+	if ($count != 0) {
+		while ($row = $query -> fetch(PDO::FETCH_ASSOC)) {
+			$output .= '<h2>'.$row['id'].' '.$row['name'].'</h2><br>';
 		}
+	} 
+	else {
+		$output = '<h2>No result found!</h2>';
+	}
 ?>
 <?php echo $output; ?>
 <p class="wb-stl-normal"> </p>

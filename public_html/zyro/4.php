@@ -42,7 +42,7 @@
 	include_once('dbconnect.php');
 	if(isset($_POST['search'])){
 		$q = $_POST['q'];
-		$query = mysqli_query($conn,"SELECT * FROM `team` WHERE `name` LIKE '%$q%'"); 
+		$query = mysqli_query($connection,"SELECT * FROM `team` WHERE `name` LIKE '%$q%'"); 
 		//Replace table_name with your table name and `thing_to_search` with the column you want to search
 		$count = mysqli_num_rows($query);
 		if($count == "0"){
