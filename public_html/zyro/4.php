@@ -22,8 +22,8 @@
 
 	<link href="css/font-awesome/font-awesome.min.css?v=4.7.0" rel="stylesheet" type="text/css" />
 	<link href="css/site.css?v=20180308163726" rel="stylesheet" type="text/css" />
-	<link href="css/common.css?ts=1520881198" rel="stylesheet" type="text/css" />
-	<link href="css/1.css?ts=1520881198" rel="stylesheet" type="text/css" />
+	<link href="css/common.css?ts=1520882525" rel="stylesheet" type="text/css" />
+	<link href="css/4.css?ts=1520882525" rel="stylesheet" type="text/css" />
 	{{ga_code}}<link rel="shortcut icon" href="/gallery/tvdl_favicon-ts1520881176.png" type="image/png" />
 	<script type="text/javascript">var currLang = '';</script>	
 	<!--[if lt IE 9]>
@@ -34,7 +34,7 @@
 
 <body><div class="root"><div class="vbox wb_container" id="wb_header">
 	
-<div class="wb_cont_inner"><div id="wb_element_instance33" class="wb_element wb-menu"><ul class="hmenu"><li><a href="" target="_self">Home</a></li><li><a href="Teams/" target="_self">Teams</a><ul><li><a href="Teams-Other/" target="_self">Teams-Other</a></li></ul></li><li><a href="Events/" target="_self">Events</a></li><li class="active"><a href="New-Content/" target="_self">New Content</a><ul><li class="active"><a href="New-Link/" target="_self">New Link</a></li></ul></li><li><a href="New-Events/" target="_self">New Events</a></li></ul><div class="clearfix"></div></div><div id="wb_element_instance34" class="wb_element" style=" line-height: normal;"><h4 class="wb-stl-pagetitle"><span class="wb_tr_ok">Play Football</span></h4></div><div id="wb_element_instance35" class="wb_element wb_element_picture"><a href=""><img alt="gallery/football" src="gallery_gen/8cd979f289c541d79d7ea74cf4b31f3e.png"></a></div></div><div class="wb_cont_outer"></div><div class="wb_cont_bg"></div></div>
+<div class="wb_cont_inner"><div id="wb_element_instance33" class="wb_element wb-menu"><ul class="hmenu"><li><a href="" target="_self">Home</a></li><li><a href="Teams/" target="_self">Teams</a></li><li><a href="Events/" target="_self">Events</a></li><li class="active"><a href="New-Content/" target="_self">New Content</a><ul><li class="active"><a href="New-Link/" target="_self">New Link</a></li></ul></li></ul><div class="clearfix"></div></div><div id="wb_element_instance34" class="wb_element" style=" line-height: normal;"><h4 class="wb-stl-pagetitle"><span class="wb_tr_ok">Play Football</span></h4></div><div id="wb_element_instance35" class="wb_element wb_element_picture"><a href=""><img alt="gallery/football" src="gallery_gen/8cd979f289c541d79d7ea74cf4b31f3e.png"></a></div></div><div class="wb_cont_outer"></div><div class="wb_cont_bg"></div></div>
 <div class="vbox wb_container" id="wb_main">
 	
 <div class="wb_cont_inner"><div id="wb_element_instance37" class="wb_element" style=" line-height: normal;"><h1 class="wb-stl-heading1"><span style="color:#ffffff;"><span class="wb_tr_ok">New Content</span></span></h1>
@@ -55,10 +55,10 @@
 		}
 	}
 ?>
-<form method="POST" action="New-Content/">
-	<input type="text" name="q" placeholder="query">
-	<input type="submit" name="search" value="Search">
-</form>
+<form method="POST" action="New-Content\">
+			<input type="text" name="q" placeholder="query">
+			<input type="submit" name="search" value="Search">
+		</form>
 <?php echo $output; ?>
 <p> </p>
 
