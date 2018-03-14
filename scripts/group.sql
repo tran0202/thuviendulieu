@@ -14,3 +14,6 @@ VALUES ('Group A', 1),
 		('Group F', 1),
 		('Group G', 1),
 		('Group H', 1);
+
+UPDATE `group`
+SET name = SUBSTRING(name, 7, 1);

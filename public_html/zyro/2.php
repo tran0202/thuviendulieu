@@ -41,13 +41,20 @@
 <?php
 	include_once('config.php');
 	$output = '';
-	$sql = 'SELECT * FROM `team`';
+	$sql = 'SELECT UCASE(t.name) AS name, team_id, ' .
+	 	'group_id, UCASE(g.name) AS group_name, ' .
+	 	'group_order, tt.tournament_id ' . 
+		'FROM team_tournament tt ' .
+		'LEFT JOIN team t ON t.id = tt.team_id ' .
+		'LEFT JOIN `group` g ON g.id = tt.group_id ' .
+		'WHERE tt.tournament_id = 1 ' .
+		'ORDER BY group_id, group_order';
     $query = $connection -> prepare($sql);
 	$query -> execute();
 	$count = $query -> rowCount();
 	if ($count != 0) {
 		while ($row = $query -> fetch(PDO::FETCH_ASSOC)) {
-			$output .= '<h2>'.$row['id'].' '.$row['name'].'</h2><br>';
+			$output .= ''.$row['group_name'].' '.$row['group_order'].' '.$row['name'].'<br>';
 		}
 	} 
 	else {
@@ -56,9 +63,9 @@
 ?>
 <?php echo $output; ?>
 <p class="wb-stl-normal"> </p>
-<p class="wb-stl-normal"><span style="color:#ffffff;">You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form on our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us...</span><a href="Teams/"><span style="color:#ffffff;">Please fill the contact form on...</span></a><span style="color:#ffffff;">Our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to...</span></p>
+<!--<p class="wb-stl-normal"><span style="color:#ffffff;">You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form on our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us...</span><a href="Teams/"><span style="color:#ffffff;">Please fill the contact form on...</span></a><span style="color:#ffffff;">Our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to...</span></p>-->
 <p class="wb-stl-normal"> </p>
-<p class="wb-stl-normal"><span style="color:#ffffff;">Contact us, please fill the contact form on our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form on our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form on our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best...</span></p></div><div id="wb_element_instance16" class="wb_element wb_element_picture"><img alt="gallery/football-1331838_1280" src="gallery_gen/6ed42b3cb0b0176b0c634015141cc98d_450x250.jpg"></div><div id="wb_element_instance17" class="wb_element wb_element_picture"><img alt="gallery/football-1276327_1280" src="gallery_gen/843428bf7f3e0f675942187cea07bff3_440x300.jpg"></div><div id="wb_element_instance18" class="wb_element" style="width: 100%;">
+<!--<p class="wb-stl-normal"><span style="color:#ffffff;">Contact us, please fill the contact form on our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form on our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form on our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best...</span></p>--></div><div id="wb_element_instance16" class="wb_element wb_element_picture"><!--<img alt="gallery/football-1331838_1280" src="gallery_gen/6ed42b3cb0b0176b0c634015141cc98d_450x250.jpg">--></div><div id="wb_element_instance17" class="wb_element wb_element_picture"><!--<img alt="gallery/football-1276327_1280" src="gallery_gen/843428bf7f3e0f675942187cea07bff3_440x300.jpg">--></div><div id="wb_element_instance18" class="wb_element" style="width: 100%;">
 			<?php
 				global $show_comments;
 				if (isset($show_comments) && $show_comments) {

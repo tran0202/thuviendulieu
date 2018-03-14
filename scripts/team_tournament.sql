@@ -42,3 +42,12 @@ VALUES (3, 1, 4, 1),
 		(11, 1, 8, 2),
 		(30, 1, 8, 3),
 		(15, 1, 8, 4);
+
+SELECT UCASE(t.name) AS name, team_id,
+ 	group_id, UCASE(g.name) AS group_name,
+ 	group_order, tt.tournament_id
+FROM team_tournament tt 
+LEFT JOIN team t ON t.id = tt.team_id
+LEFT JOIN `group` g ON g.id = tt.group_id
+WHERE tt.tournament_id = 1
+ORDER BY group_id, group_order		
