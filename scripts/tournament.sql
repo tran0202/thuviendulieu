@@ -3,9 +3,18 @@ CREATE TABLE IF NOT EXISTS tournament (
 	name VARCHAR(255) NOT NULL UNIQUE,
 	start_date DATE,
 	end_date DATE,
-	team_type_id INT,
-	FOREIGN KEY (team_type_id) REFERENCES team_type(id)
+	tournament_type_id INT,
+	FOREIGN KEY (tournament_type_id) REFERENCES tournament_type(id)
 );
 
 INSERT INTO tournament (name, start_date, end_date, team_type_id)
 VALUES ('FIFA World Cup Russia 2018', '2018-06-14', '2018-07-15', 1);
+
+ALTER TABLE tournament DROP FOREIGN KEY tournament_ibfk_1;
+
+ALTER TABLE tournament
+CHANGE team_type_id tournament_type_id INT
+
+ALTER TABLE tournament
+ADD CONSTRAINT `tournament_ibfk_1`
+FOREIGN KEY (tournament_type_id) REFERENCES tournament_type(id)

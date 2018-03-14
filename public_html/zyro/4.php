@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title>New Content</title>
+	<title>TVDL - New Content</title>
 	<base href="{{base_url}}" />
 			<meta name="viewport" content="width=1200" />
 		<meta name="description" content="" />

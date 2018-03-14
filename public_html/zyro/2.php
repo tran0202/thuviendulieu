@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title>Teams</title>
+	<title>TVDL - Russia 2018</title>
 	<base href="{{base_url}}" />
 			<meta name="viewport" content="width=1200" />
 		<meta name="description" content="" />
