@@ -3,7 +3,7 @@
 	$pages = array(
 		'0'	=> array('id' => '1', 'alias' => '', 'file' => '1.php','controllers' => array()),
 		'1'	=> array('id' => '2', 'alias' => 'Russia2018', 'file' => '2.php','controllers' => array()),
-		'2'	=> array('id' => '3', 'alias' => 'Events', 'file' => '3.php','controllers' => array()),
+		'2'	=> array('id' => '3', 'alias' => 'NFL', 'file' => '3.php','controllers' => array()),
 		'3'	=> array('id' => '4', 'alias' => 'New-Content', 'file' => '4.php','controllers' => array()),
 		'4'	=> array('id' => '4', 'alias' => 'New-Link', 'file' => '4.php','controllers' => array())
 	);
