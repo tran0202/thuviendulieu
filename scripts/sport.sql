@@ -4,4 +4,5 @@ CREATE TABLE IF NOT EXISTS sport (
 );
 
 INSERT INTO sport (name)
-VALUES ('Soccer');
+VALUES ('Soccer'),
+		('Football');

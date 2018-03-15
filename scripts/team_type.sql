@@ -10,6 +10,7 @@ VALUES ('Men''s National'),
 		('Club'),
 		('Women''s National'),
 		('U-23 Men''s National'),
-		('U-23 Women''s National');
+		('U-23 Women''s National'),
+		('Football');
 
 DROP TRIGGER before_insert_team_type;

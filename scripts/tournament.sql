@@ -7,8 +7,9 @@ CREATE TABLE IF NOT EXISTS tournament (
 	FOREIGN KEY (tournament_type_id) REFERENCES tournament_type(id)
 );
 
-INSERT INTO tournament (name, start_date, end_date, team_type_id)
-VALUES ('FIFA World Cup Russia 2018', '2018-06-14', '2018-07-15', 1);
+INSERT INTO tournament (name, start_date, end_date, tournament_type_id)
+VALUES ('FIFA World Cup Russia 2018', '2018-06-14', '2018-07-15', 1),
+		('NFL Season 2018', '2018-08-03', '2019-02-04', 2);
 
 ALTER TABLE tournament DROP FOREIGN KEY tournament_ibfk_1;
 
