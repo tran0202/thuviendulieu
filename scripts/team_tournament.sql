@@ -90,11 +90,13 @@ VALUES 	(53, 2, 31, 1, 29, 1),
 		(33, 2, 34, 3, 30, 15),
 		(60, 2, 34, 4, 30, 16);
 
-SELECT UCASE(t.name) AS name, team_id,
- 	group_id, UCASE(g.name) AS group_name,
- 	group_order, tt.tournament_id
+SELECT t.name AS name, team_id,
+ 	group_id, g.name AS group_name,	group_order, 
+ 	parent_group_id, pg.name AS parent_group_name, parent_group_order,
+ 	tt.tournament_id
 FROM team_tournament tt 
 LEFT JOIN team t ON t.id = tt.team_id
 LEFT JOIN `group` g ON g.id = tt.group_id
-WHERE tt.tournament_id = 1
-ORDER BY group_id, group_order		
+LEFT JOIN `group` pg ON pg.id = tt.parent_group_id
+WHERE tt.tournament_id = 2
+ORDER BY parent_group_name, group_id, group_order		

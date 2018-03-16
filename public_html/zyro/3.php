@@ -41,14 +41,22 @@
 <?php
 	include_once('config.php');
 	$output = '';
-	$sql = 'SELECT * FROM `team` WHERE id = :uid';
+	$sql = 'SELECT t.name AS name, team_id, ' .
+	 	'group_id, g.name AS group_name, group_order, ' .
+	 	'parent_group_id, pg.name AS parent_group_name, parent_group_order, tt.tournament_id ' . 
+		'FROM team_tournament tt ' .
+		'LEFT JOIN team t ON t.id = tt.team_id ' .
+		'LEFT JOIN `group` g ON g.id = tt.group_id ' .
+		'LEFT JOIN `group` pg ON pg.id = tt.parent_group_id ' .
+		'WHERE tt.tournament_id = 2 ' .
+		'ORDER BY parent_group_name, group_id, group_order';
+
     $query = $connection -> prepare($sql);
-	$query -> bindValue(':uid', 1, PDO::PARAM_INT);
 	$query -> execute();
 	$count = $query -> rowCount();
 	if ($count != 0) {
 		while ($row = $query -> fetch(PDO::FETCH_ASSOC)) {
-			$output .= '<h2>'.$row['id'].' '.$row['name'].'</h2><br>';
+			$output .= $row['parent_group_name'].' '.$row['group_name'].' '.$row['group_order'].' '.$row['name'].'<br>';
 		}
 	} 
 	else {
