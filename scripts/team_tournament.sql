@@ -4,10 +4,23 @@ CREATE TABLE IF NOT EXISTS team_tournament (
 	tournament_id INT NOT NULL,
 	group_id INT,
 	group_order TINYINT UNSIGNED,
+	parent_group_id INT,
+	parent_group_order TINYINT UNSIGNED,
 	FOREIGN KEY (team_id) REFERENCES team(id),
 	FOREIGN KEY (tournament_id) REFERENCES tournament(id),
-	FOREIGN KEY (group_id) REFERENCES `group`(id)
+	FOREIGN KEY (group_id) REFERENCES `group`(id),
+	FOREIGN KEY (parent_group_id) REFERENCES `group`(id)
 );
+
+ALTER TABLE team_tournament
+ADD COLUMN parent_group_id INT;
+
+ALTER TABLE team_tournament
+ADD CONSTRAINT `team_tournament_ibfk_4`
+FOREIGN KEY (parent_group_id) REFERENCES `group`(id);
+
+ALTER TABLE team_tournament
+ADD COLUMN parent_group_order TINYINT UNSIGNED;
 
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
 VALUES (3, 1, 4, 1),
@@ -42,6 +55,40 @@ VALUES (3, 1, 4, 1),
 		(11, 1, 8, 2),
 		(30, 1, 8, 3),
 		(15, 1, 8, 4);
+
+INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order, parent_group_id, parent_group_order)
+VALUES 	(53, 2, 31, 1, 29, 1),
+		(36, 2, 31, 2, 29, 2),
+		(51, 2, 31, 3, 29, 3),
+		(56, 2, 31, 4, 29, 4),
+		(59, 2, 32, 1, 29, 5),
+		(35, 2, 32, 2, 29, 6),
+		(39, 2, 32, 3, 29, 7),
+		(40, 2, 32, 4, 29, 8),
+		(47, 2, 33, 1, 29, 9),
+		(63, 2, 33, 2, 29, 10),
+		(46, 2, 33, 3, 29, 11),
+		(45, 2, 33, 4, 29, 12),
+		(48, 2, 34, 1, 29, 13),
+		(49, 2, 34, 2, 29, 14),
+		(57, 2, 34, 3, 29, 15),
+		(42, 2, 34, 4, 29, 16),
+		(58, 2, 31, 1, 30, 1),
+		(41, 2, 31, 2, 30, 2),
+		(64, 2, 31, 3, 30, 3),
+		(55, 2, 31, 4, 30, 4),
+		(52, 2, 32, 1, 30, 5),
+		(43, 2, 32, 2, 30, 6),
+		(44, 2, 32, 3, 30, 7),
+		(38, 2, 32, 4, 30, 8),
+		(54, 2, 33, 1, 30, 9),
+		(37, 2, 33, 2, 30, 10),
+		(34, 2, 33, 3, 30, 11),
+		(62, 2, 33, 4, 30, 12),
+		(50, 2, 34, 1, 30, 13),
+		(61, 2, 34, 2, 30, 14),
+		(33, 2, 34, 3, 30, 15),
+		(60, 2, 34, 4, 30, 16);
 
 SELECT UCASE(t.name) AS name, team_id,
  	group_id, UCASE(g.name) AS group_name,
