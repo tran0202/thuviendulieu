@@ -11,6 +11,7 @@ VALUES ('Men''s National'),
 		('Women''s National'),
 		('U-23 Men''s National'),
 		('U-23 Women''s National'),
-		('Football');
+		('Football'),
+		('Tennis Men''s Single');
 
 DROP TRIGGER before_insert_team_type;

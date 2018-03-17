@@ -11,6 +11,9 @@ INSERT INTO tournament_type (name, team_type_id, sport_id)
 VALUES ('FIFA World Cup', 1, 1),
 		('Football Season', 6, 2);
 
+INSERT INTO tournament_type (name, team_type_id, sport_id)
+VALUES ('ATP Men''s Singles', 7, 3);
+
 ALTER TABLE tournament_type
 ADD COLUMN sport_id INT;
 
