@@ -132,5 +132,5 @@ FROM team_tournament tt
 LEFT JOIN team t ON t.id = tt.team_id
 LEFT JOIN `group` g ON g.id = tt.group_id
 LEFT JOIN `group` pg ON pg.id = tt.parent_group_id
-WHERE tt.tournament_id = 2
-ORDER BY parent_group_name, group_id, group_order		
+WHERE tt.tournament_id = 4
+ORDER BY parent_group_name, group_id, group_order;
