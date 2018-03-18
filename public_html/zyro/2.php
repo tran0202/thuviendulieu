@@ -30,32 +30,36 @@
 	<!--[if lt IE 9]>
 	<script src="js/html5shiv.min.js"></script>
 	<![endif]-->
+    <link href="css/tvdl.css" rel="stylesheet" type="text/css" />
+    <script src="js/sticky_header.js" type="text/javascript"></script>
 </head>
 
 
 <body>
-	<div class="root">
-		<div class="vbox wb_container" id="wb_header">
-			<div class="wb_cont_inner">
-				<div id="wb_element_instance10" class="wb_element wb-menu">
-					<ul class="hmenu">
-						<li><a href="" target="_self">Home</a></li>
-						<li class="active"><a href="Russia2018/" target="_self">Russia 2018</a></li>
-						<li><a href="NFL/" target="_self">NFL</a></li>
-						<li><a href="2017-US-Open-Mens-Singles/" target="_self">2017 US Open Men's Singles</a></li>
-					</ul>
-					<div class="clearfix"></div>
-				</div>
-				<div id="wb_element_instance11" class="wb_element" style=" line-height: normal;">
-					<h4 class="wb-stl-pagetitle"><span class="wb_tr_ok">We Call It Soccer</span></h4>
-				</div>
-				<div id="wb_element_instance12" class="wb_element wb_element_picture">
-					<a href=""><img alt="gallery/football" src="gallery_gen/8cd979f289c541d79d7ea74cf4b31f3e.png"></a>
-				</div>
-			</div>
-			<div class="wb_cont_outer"></div>
-			<div class="wb_cont_bg"></div>
-		</div>
+    <div class="header" id="myHeader">
+        <div class="vbox wb_container" id="wb_header">
+            <div class="wb_cont_inner">
+                <div id="wb_element_instance10" class="wb_element wb-menu">
+                    <ul class="hmenu">
+                        <li><a href="" target="_self">Home</a></li>
+                        <li class="active"><a href="Russia2018/" target="_self">Russia 2018</a></li>
+                        <li><a href="NFL/" target="_self">NFL</a></li>
+                        <li><a href="2017-US-Open-Mens-Singles/" target="_self">2017 US Open Men's Singles</a></li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div id="wb_element_instance11" class="wb_element" style=" line-height: normal;">
+                    <h4 class="wb-stl-pagetitle"><span class="wb_tr_ok">We Call It Soccer</span></h4>
+                </div>
+                <div id="wb_element_instance12" class="wb_element wb_element_picture">
+                    <a href=""><img alt="gallery/football" src="gallery_gen/8cd979f289c541d79d7ea74cf4b31f3e.png"></a>
+                </div>
+            </div>
+            <div class="wb_cont_outer"></div>
+            <div class="wb_cont_bg"></div>
+        </div>
+    </div>
+	<div class="root content">
 		<div class="vbox wb_container" id="wb_main">
 			<div class="wb_cont_inner">
 				<div id="wb_element_instance14" class="wb_element wb_element_shape">
@@ -79,7 +83,7 @@
 						$count = $query -> rowCount();
 						if ($count != 0) {
 							while ($row = $query -> fetch(PDO::FETCH_ASSOC)) {
-								$output .= ''.$row['group_name'].' '.$row['group_order'].' '.$row['name'].'<br>';
+								$output .= '<h2>'.$row['group_name'].' '.$row['group_order'].' '.$row['name'].'</h2><br>';
 							}
 						} 
 						else {
