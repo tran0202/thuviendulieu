@@ -1,8 +1,19 @@
+/* ========== Override ========== */
+
+body {
+    background-color: #f8f8f8;
+}
+
+.wb-stl-footer { font: normal normal 16px 'PT Sans',sans-serif; color: #333; text-decoration: none; text-align: left; margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; text-transform: capitalize; }
+.wb-stl-footer a { font: normal normal 16px 'PT Sans',sans-serif; color: #333; text-decoration: underline; text-align: left; font-weight: bold; font-style: normal; }
+
 /* ========== Sticky Header ========== */
 
 .header {
     padding: 10px 16px;
-    background: #555;
+    background-color: #0055a6;
+    border-bottom: 1px solid #08355e;
+    box-shadow: 0 3px 3px 0 rgba(16,24,37,0.25);
     color: #f1f1f1;
     z-index: 4;
 }

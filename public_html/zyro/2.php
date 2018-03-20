@@ -63,10 +63,10 @@
 		<div class="vbox wb_container" id="wb_main">
 			<div class="wb_cont_inner">
 				<div id="wb_element_instance14" class="wb_element wb_element_shape">
-					<div class="wb_shp"></div>
+<!--					<div class="wb_shp"></div>-->
 				</div>
 				<div id="wb_element_instance15" class="wb_element" style=" line-height: normal;height: unset;">
-					<h1 class="wb-stl-heading1"><span style="color:#ffffff;"><span class="wb_tr_ok">FIFA World Cup Russia 2018</span></span></h1>
+					<h1 class="wb-stl-heading1"><span style="color:#930c10;"><span class="wb_tr_ok">FIFA World Cup Russia 2018</span></span></h1>
 					<?php
 						include_once('config.php');
 						$output = '';

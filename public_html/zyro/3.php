@@ -63,7 +63,7 @@
 		<div class="vbox wb_container" id="wb_main">
 			<div class="wb_cont_inner">
 				<div id="wb_element_instance24" class="wb_element" style=" line-height: normal;height: unset;">
-					<h1 class="wb-stl-heading1"><span style="color:#ffffff;"><span class="wb_tr_ok">NFL</span></span></h1>
+					<h1 class="wb-stl-heading1"><span style="color:#cc0000;"><span class="wb_tr_ok">NFL</span></span></h1>
 					<?php
 						include_once('config.php');
 						$output = '';
@@ -98,7 +98,7 @@
 				<div id="wb_element_instance28" class="wb_element" style=" line-height: normal;"><!--<p class="wb-stl-normal"><span style="color:#ffffff;">You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form on our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form...</span></p>--></div>
 				<div id="wb_element_instance29" class="wb_element" style=" line-height: normal;"><!--<p class="wb-stl-normal"><span style="color:#ffffff;">You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form on our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form on our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form on our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best...</span></p>--></div>
 				<div id="wb_element_instance30" class="wb_element wb_element_shape">
-					<div class="wb_shp"></div>
+<!--					<div class="wb_shp"></div>-->
 				</div>
 				<div id="wb_element_instance31" class="wb_element" style="width: 100%;">
 					<?php
