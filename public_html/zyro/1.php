@@ -35,7 +35,7 @@
 
 <body>
 	<div class="root">
-		<div class="vbox wb_container" id="wb_header">
+		<div class="vbox wb_container" id="wb_header" style="padding: 10px 16px;">
 			<div class="wb_cont_inner">
                 <div id="wb_element_instance2" class="wb_element wb_element_picture">
                     <a href=""><img alt="gallery/football" src="gallery_gen/8cd979f289c541d79d7ea74cf4b31f3e.png"></a>

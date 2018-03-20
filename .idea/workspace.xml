@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fba8c1fa-dee6-4880-a876-656259f8206d" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/public_html/zyro/2.php" afterPath="$PROJECT_DIR$/public_html/zyro/2.php" />
-      <change beforePath="$PROJECT_DIR$/public_html/zyro/3.php" afterPath="$PROJECT_DIR$/public_html/zyro/3.php" />
-      <change beforePath="$PROJECT_DIR$/public_html/zyro/4.php" afterPath="$PROJECT_DIR$/public_html/zyro/4.php" />
-      <change beforePath="$PROJECT_DIR$/public_html/zyro/css/2.css" afterPath="$PROJECT_DIR$/public_html/zyro/css/2.css" />
-      <change beforePath="$PROJECT_DIR$/public_html/zyro/css/3.css" afterPath="$PROJECT_DIR$/public_html/zyro/css/3.css" />
-      <change beforePath="$PROJECT_DIR$/public_html/zyro/css/4.css" afterPath="$PROJECT_DIR$/public_html/zyro/css/4.css" />
-      <change beforePath="$PROJECT_DIR$/public_html/zyro/css/tvdl.css" afterPath="$PROJECT_DIR$/public_html/zyro/css/tvdl.css" />
+      <change beforePath="$PROJECT_DIR$/public_html/zyro/1.php" afterPath="$PROJECT_DIR$/public_html/zyro/1.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -20,12 +13,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="1.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="1.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public_html/zyro/1.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="68" column="22" lean-forward="false" selection-start-line="68" selection-start-column="22" selection-end-line="68" selection-end-column="22" />
-              <folding />
+            <state relative-caret-position="276">
+              <caret line="37" column="80" lean-forward="false" selection-start-line="37" selection-start-column="80" selection-end-line="37" selection-end-column="80" />
+              <folding>
+                <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -87,11 +82,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tvdl.css" pinned="false" current-in-tab="true">
+      <file leaf-file-name="tvdl.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public_html/zyro/css/tvdl.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="11" column="9" lean-forward="true" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="9" />
+            <state relative-caret-position="180">
+              <caret line="12" column="23" lean-forward="true" selection-start-line="12" selection-start-column="23" selection-end-line="12" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -111,7 +106,6 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/public_html/zyro/js/sticky_header.js" />
-        <option value="$PROJECT_DIR$/public_html/zyro/1.php" />
         <option value="$PROJECT_DIR$/public_html/zyro/css/2.css" />
         <option value="$PROJECT_DIR$/public_html/zyro/css/1.css" />
         <option value="$PROJECT_DIR$/public_html/zyro/css/3.css" />
@@ -121,6 +115,7 @@
         <option value="$PROJECT_DIR$/public_html/zyro/4.php" />
         <option value="$PROJECT_DIR$/public_html/zyro/css/common.css" />
         <option value="$PROJECT_DIR$/public_html/zyro/css/tvdl.css" />
+        <option value="$PROJECT_DIR$/public_html/zyro/1.php" />
       </list>
     </option>
   </component>
@@ -312,12 +307,12 @@
       <updated>1521323688742</updated>
       <workItem from="1521323690006" duration="550000" />
       <workItem from="1521324462592" duration="11060000" />
-      <workItem from="1521581287200" duration="3095000" />
+      <workItem from="1521581287200" duration="3325000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14705000" />
+    <option name="totallyTimeSpent" value="14935000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1160" y="23" width="1400" height="1000" extended-state="0" />
@@ -366,7 +361,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1020">
           <caret line="68" column="22" lean-forward="false" selection-start-line="68" selection-start-column="22" selection-end-line="68" selection-end-column="22" />
-          <folding />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -421,7 +418,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -531,14 +530,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public_html/zyro/1.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="68" column="22" lean-forward="false" selection-start-line="68" selection-start-column="22" selection-end-line="68" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public_html/zyro/css/3.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -612,9 +603,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public_html/zyro/css/tvdl.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="9" lean-forward="true" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="9" />
+        <state relative-caret-position="180">
+          <caret line="12" column="23" lean-forward="true" selection-start-line="12" selection-start-column="23" selection-end-line="12" selection-end-column="23" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public_html/zyro/1.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="37" column="80" lean-forward="false" selection-start-line="37" selection-start-column="80" selection-end-line="37" selection-end-column="80" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
