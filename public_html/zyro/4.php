@@ -39,6 +39,12 @@
     <div class="header" id="myHeader">
         <div class="vbox wb_container" id="wb_header">
             <div class="wb_cont_inner">
+                <div id="wb_element_instance35" class="wb_element wb_element_picture">
+                    <a href=""><img alt="gallery/football" src="gallery_gen/8cd979f289c541d79d7ea74cf4b31f3e.png"></a>
+                </div>
+                <div id="wb_element_instance34" class="wb_element" style=" line-height: normal;">
+                    <h4 class="wb-stl-pagetitle"><span class="wb_tr_ok">We Call It Soccer</span></h4>
+                </div>
                 <div id="wb_element_instance33" class="wb_element wb-menu">
                     <ul class="hmenu">
                         <li><a href="" target="_self">Home</a></li>
@@ -48,12 +54,6 @@
                     </ul>
                     <div class="clearfix"></div>
                 </div>
-                <div id="wb_element_instance34" class="wb_element" style=" line-height: normal;">
-                    <h4 class="wb-stl-pagetitle"><span class="wb_tr_ok">We Call It Soccer</span></h4>
-                </div>
-                <div id="wb_element_instance35" class="wb_element wb_element_picture">
-                    <a href=""><img alt="gallery/football" src="gallery_gen/8cd979f289c541d79d7ea74cf4b31f3e.png"></a>
-                </div>
             </div>
             <div class="wb_cont_outer"></div>
             <div class="wb_cont_bg"></div>
@@ -62,7 +62,7 @@
 	<div class="root content">
 		<div class="vbox wb_container" id="wb_main">
 			<div class="wb_cont_inner">
-				<div id="wb_element_instance37" class="wb_element" style=" line-height: normal;">
+				<div id="wb_element_instance37" class="wb_element" style=" line-height: normal;height: unset;">
 					<h1 class="wb-stl-heading1"><span style="color:#ffffff;"><span class="wb_tr_ok">2017 US Open Men's Singles</span></span></h1>
 					<?php
 						include_once('config.php');
