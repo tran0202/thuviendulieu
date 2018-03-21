@@ -68,6 +68,17 @@
 				<div id="wb_element_instance15" class="wb_element" style=" line-height: normal;height: unset;">
 					<h1 class="wb-stl-heading1"><span style="color:#930c10;"><span class="wb_tr_ok">FIFA World Cup Russia 2018</span></span></h1>
 					<?php
+                        class Team {
+                            public $name;
+                            public $group_name;
+                            public $group_order;
+                            function __construct($name, $group_name, $group_order) {
+                                $this -> name = $name;
+                                $this -> group_name = $group_name;
+                                $this -> group_order = $group_order;
+                            }
+                        }
+                        $teams = array(array());
 						include_once('config.php');
 						$output = '';
 						$sql = 'SELECT UCASE(t.name) AS name, team_id, ' .
@@ -83,12 +94,18 @@
 						$count = $query -> rowCount();
 						if ($count != 0) {
 							while ($row = $query -> fetch(PDO::FETCH_ASSOC)) {
-								$output .= '<h2>'.$row['group_name'].' '.$row['group_order'].' '.$row['name'].'</h2><br>';
+							    $team = new Team($row['name'], $row['group_name'], $row['group_order']);
+                                $teams[$row['group_name']][$row['group_order']] = $team;
 							}
 						} 
 						else {
 							$output = '<h2>No result found!</h2>';
 						}
+                        foreach ($teams as $group_name => $_teams) {
+                            foreach ($_teams as $group_order => $_team) {
+                                $output .= '<h2>'.$group_name.' '.$group_order.' '.$_team -> name.'</h2><br>';
+                            }
+                        }
 					?>
 					<?php echo $output; ?>
 					<p class="wb-stl-normal"> </p>

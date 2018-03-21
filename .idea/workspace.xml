@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fba8c1fa-dee6-4880-a876-656259f8206d" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/public_html/zyro/1.php" afterPath="$PROJECT_DIR$/public_html/zyro/1.php" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/mmtran2.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/mmtran2.xml" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/public_html/zyro/2.php" afterPath="$PROJECT_DIR$/public_html/zyro/2.php" />
+      <change beforePath="$PROJECT_DIR$/scripts/team_tournament.sql" afterPath="$PROJECT_DIR$/scripts/team_tournament.sql" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -13,11 +16,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="1.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="1.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public_html/zyro/1.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="276">
-              <caret line="37" column="80" lean-forward="false" selection-start-line="37" selection-start-column="80" selection-end-line="37" selection-end-column="80" />
+            <state relative-caret-position="381">
+              <caret line="44" column="11" lean-forward="false" selection-start-line="44" selection-start-column="11" selection-end-line="44" selection-end-column="11" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
@@ -25,15 +28,37 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="2.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="2.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public_html/zyro/2.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
-              <caret line="111" column="29" lean-forward="true" selection-start-line="111" selection-start-column="29" selection-end-line="111" selection-end-column="29" />
+            <state relative-caret-position="1275">
+              <caret line="85" column="63" lean-forward="true" selection-start-line="85" selection-start-column="63" selection-end-line="85" selection-end-column="63" />
               <folding>
                 <element signature="n#style#0;n#span#0;n#h1#0;n#div#1;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <marker date="1521597553000" expanded="true" signature="5683:6311" ph="..." />
+                <marker date="1521597553000" expanded="true" signature="5847:6113" ph="..." />
+                <marker date="1521597553000" expanded="true" signature="5868:6097" ph="{...}" />
+                <marker date="1521597553000" expanded="true" signature="6184:6273" ph="..." />
+                <marker date="1521597553000" expanded="true" signature="6205:6257" ph="{...}" />
+                <marker date="1521597553000" expanded="true" signature="6450:7304" ph="..." />
+                <marker date="1521597553000" expanded="true" signature="6504:7224" ph="..." />
+                <marker date="1521597553000" expanded="true" signature="6568:6589" ph="..." />
+                <marker date="1521597553000" expanded="true" signature="6590:6727" ph="..." />
+                <marker date="1521597553000" expanded="true" signature="6824:7214" ph="..." />
+                <marker date="1521597553000" expanded="true" signature="6896:7203" ph="..." />
+                <marker date="1521597553000" expanded="true" signature="6917:7187" ph="{...}" />
+                <marker date="1521597553000" expanded="true" signature="7040:7179" ph="{...}" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="team_tournament.sql" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scripts/team_tournament.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="783">
+              <caret line="152" column="31" lean-forward="true" selection-start-line="144" selection-start-column="0" selection-end-line="152" selection-end-column="31" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -110,12 +135,13 @@
         <option value="$PROJECT_DIR$/public_html/zyro/css/1.css" />
         <option value="$PROJECT_DIR$/public_html/zyro/css/3.css" />
         <option value="$PROJECT_DIR$/public_html/zyro/css/4.css" />
-        <option value="$PROJECT_DIR$/public_html/zyro/2.php" />
         <option value="$PROJECT_DIR$/public_html/zyro/3.php" />
         <option value="$PROJECT_DIR$/public_html/zyro/4.php" />
         <option value="$PROJECT_DIR$/public_html/zyro/css/common.css" />
         <option value="$PROJECT_DIR$/public_html/zyro/css/tvdl.css" />
         <option value="$PROJECT_DIR$/public_html/zyro/1.php" />
+        <option value="$PROJECT_DIR$/scripts/team_tournament.sql" />
+        <option value="$PROJECT_DIR$/public_html/zyro/2.php" />
       </list>
     </option>
   </component>
@@ -174,6 +200,11 @@
               <item name="public_html" type="462c0819:PsiDirectoryNode" />
               <item name="zyro" type="462c0819:PsiDirectoryNode" />
               <item name="css" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="thuviendulieu" type="b2602c69:ProjectViewProjectNode" />
+              <item name="thuviendulieu" type="462c0819:PsiDirectoryNode" />
+              <item name="scripts" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -307,12 +338,12 @@
       <updated>1521323688742</updated>
       <workItem from="1521323690006" duration="550000" />
       <workItem from="1521324462592" duration="11060000" />
-      <workItem from="1521581287200" duration="3325000" />
+      <workItem from="1521581287200" duration="7551000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14935000" />
+    <option name="totallyTimeSpent" value="19161000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1160" y="23" width="1400" height="1000" extended-state="0" />
@@ -373,7 +404,19 @@
           <caret line="25" column="69" lean-forward="false" selection-start-line="25" selection-start-column="69" selection-end-line="25" selection-end-column="69" />
           <folding>
             <element signature="n#style#0;n#span#0;n#h1#0;n#div#1;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <marker date="1521597553000" expanded="true" signature="5683:6311" ph="..." />
+            <marker date="1521597553000" expanded="true" signature="5847:6113" ph="..." />
+            <marker date="1521597553000" expanded="true" signature="5868:6097" ph="{...}" />
+            <marker date="1521597553000" expanded="true" signature="6184:6273" ph="..." />
+            <marker date="1521597553000" expanded="true" signature="6205:6257" ph="{...}" />
+            <marker date="1521597553000" expanded="true" signature="6450:7304" ph="..." />
+            <marker date="1521597553000" expanded="true" signature="6504:7224" ph="..." />
+            <marker date="1521597553000" expanded="true" signature="6568:6589" ph="..." />
+            <marker date="1521597553000" expanded="true" signature="6590:6727" ph="..." />
+            <marker date="1521597553000" expanded="true" signature="6824:7214" ph="..." />
+            <marker date="1521597553000" expanded="true" signature="6896:7203" ph="..." />
+            <marker date="1521597553000" expanded="true" signature="6917:7187" ph="{...}" />
+            <marker date="1521597553000" expanded="true" signature="7040:7179" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -582,17 +625,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public_html/zyro/2.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="111" column="29" lean-forward="true" selection-start-line="111" selection-start-column="29" selection-end-line="111" selection-end-column="29" />
-          <folding>
-            <element signature="n#style#0;n#span#0;n#h1#0;n#div#1;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public_html/zyro/css/common.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="525">
@@ -611,10 +643,41 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public_html/zyro/1.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="37" column="80" lean-forward="false" selection-start-line="37" selection-start-column="80" selection-end-line="37" selection-end-column="80" />
+        <state relative-caret-position="381">
+          <caret line="44" column="11" lean-forward="false" selection-start-line="44" selection-start-column="11" selection-end-line="44" selection-end-column="11" />
           <folding>
             <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/team_tournament.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="783">
+          <caret line="152" column="31" lean-forward="true" selection-start-line="144" selection-start-column="0" selection-end-line="152" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public_html/zyro/2.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1275">
+          <caret line="85" column="63" lean-forward="true" selection-start-line="85" selection-start-column="63" selection-end-line="85" selection-end-column="63" />
+          <folding>
+            <element signature="n#style#0;n#span#0;n#h1#0;n#div#1;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <marker date="1521597553000" expanded="true" signature="5683:6311" ph="..." />
+            <marker date="1521597553000" expanded="true" signature="5847:6113" ph="..." />
+            <marker date="1521597553000" expanded="true" signature="5868:6097" ph="{...}" />
+            <marker date="1521597553000" expanded="true" signature="6184:6273" ph="..." />
+            <marker date="1521597553000" expanded="true" signature="6205:6257" ph="{...}" />
+            <marker date="1521597553000" expanded="true" signature="6450:7304" ph="..." />
+            <marker date="1521597553000" expanded="true" signature="6504:7224" ph="..." />
+            <marker date="1521597553000" expanded="true" signature="6568:6589" ph="..." />
+            <marker date="1521597553000" expanded="true" signature="6590:6727" ph="..." />
+            <marker date="1521597553000" expanded="true" signature="6824:7214" ph="..." />
+            <marker date="1521597553000" expanded="true" signature="6896:7203" ph="..." />
+            <marker date="1521597553000" expanded="true" signature="6917:7187" ph="{...}" />
+            <marker date="1521597553000" expanded="true" signature="7040:7179" ph="{...}" />
           </folding>
         </state>
       </provider>

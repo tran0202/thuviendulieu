@@ -134,3 +134,20 @@ LEFT JOIN `group` g ON g.id = tt.group_id
 LEFT JOIN `group` pg ON pg.id = tt.parent_group_id
 WHERE tt.tournament_id = 4
 ORDER BY parent_group_name, group_id, group_order;
+
+SELECT
+ 	group_id, g.name AS group_name
+FROM team_tournament tt
+LEFT JOIN `group` g ON g.id = tt.group_id
+WHERE tt.tournament_id = 1
+GROUP BY group_id;
+
+SELECT t.name AS name, team_id,
+ 	group_id, g.name AS group_name,	group_order,
+ 	tt.tournament_id
+FROM team_tournament tt
+LEFT JOIN team t ON t.id = tt.team_id
+LEFT JOIN `group` g ON g.id = tt.group_id
+WHERE tt.tournament_id = 1
+    AND group_id = 1
+ORDER BY group_id, group_order;
