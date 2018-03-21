@@ -35,7 +35,6 @@
     <link href="css/tvdl_footer.css" rel="stylesheet" type="text/css" />
 </head>
 
-
 <body>
     <div class="header" id="myHeader">
         <div class="vbox wb_container" id="wb_header">
@@ -67,7 +66,7 @@
 <!--					<div class="wb_shp"></div>-->
 				</div>
 				<div id="wb_element_instance15" class="wb_element" style=" line-height: normal;height: unset;">
-					<h1 class="wb-stl-heading1"><span style="color:#930c10;"><span class="wb_tr_ok">FIFA World Cup Russia 2018</span></span></h1>
+					<h1 class="wb-stl-heading1"><span style="color:#930c10;font-family:'PT Sans',sans-serif;"><span class="wb_tr_ok">FIFA World Cup Russia 2018</span></span></h1>
 					<?php
                         class Team {
                             public $name;
@@ -79,7 +78,7 @@
                                 $this -> group_order = $group_order;
                             }
                         }
-                        $teams = array(array());
+                        $teams = array();
 						include_once('config.php');
 						$output = '';
 						$sql = 'SELECT UCASE(t.name) AS name, team_id, ' .
@@ -103,9 +102,12 @@
 							$output = '<h2>No result found!</h2>';
 						}
                         foreach ($teams as $group_name => $_teams) {
+                            $output .= '<h2>Group '.$group_name.'</h2><br>';
+                            $output .= '<div class="groupBox">';
                             foreach ($_teams as $group_order => $_team) {
-                                $output .= '<h2>'.$group_name.' '.$group_order.' '.$_team -> name.'</h2><br>';
+                                $output .= '<span class="groupRow">'.$_team -> name.'</span><br>';
                             }
+                            $output .= '</div>';
                         }
 					?>
 					<?php echo $output; ?>

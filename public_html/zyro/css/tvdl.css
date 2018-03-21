@@ -2,6 +2,7 @@
 
 body {
     background-color: #f8f8f8;
+    font-family: "PT Sans", sans-serif;
 }
 
 /* ========== Sticky Header ========== */
@@ -30,4 +31,18 @@ body {
 /* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
 .sticky + .content {
     padding-top: 306px;
+}
+
+/* ========== Boxes ========== */
+
+.groupBox {
+    transition: box-shadow .3s;
+    border-radius:10px;
+    border: 1px solid #e6e7e9;
+    background-color: #fff;
+    padding: 20px 50px;
+    box-shadow: 0 2px 0 0 rgba(230,230,230,0.5);
+}
+.groupBox:hover {
+    box-shadow: 0 0 11px rgba(33,33,33,.2);
 }
