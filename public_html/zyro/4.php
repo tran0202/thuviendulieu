@@ -32,6 +32,7 @@
 	<![endif]-->
     <link href="css/tvdl.css" rel="stylesheet" type="text/css" />
     <script src="js/sticky_header.js" type="text/javascript"></script>
+    <link href="css/tvdl_footer.css" rel="stylesheet" type="text/css" />
 </head>
 
 
