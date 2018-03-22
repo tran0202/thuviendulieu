@@ -35,6 +35,18 @@ body {
 
 /* ========== Boxes ========== */
 
+.pageTitle {
+    font-family: "Merriweather", serif;
+    font-size: 30px;
+}
+.stageTitle {
+    font-family: "Courgette", cursive;
+    font-size: 30px;
+}
+.groupTitle {
+     font-family: "Monoton", cursive;
+     font-size: 30px;
+ }
 .groupBox {
     transition: box-shadow .3s;
     border-radius:10px;
@@ -45,4 +57,12 @@ body {
 }
 .groupBox:hover {
     box-shadow: 0 0 11px rgba(33,33,33,.2);
+}
+.groupRow {
+    font-family: "Oswald", san-serif;
+    font-size: 30px;
+}
+.groupRow2 {
+    font-family: "Roboto", san-serif;
+    font-size: 30px;
 }
