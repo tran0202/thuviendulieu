@@ -64,13 +64,15 @@
 		<div class="vbox wb_container" id="wb_main">
 			<div class="wb_cont_inner">
 				<div id="wb_element_instance24" class="wb_element" style=" line-height: normal;height: unset;">
-					<h1 class="wb-stl-heading1"><span style="color:#cc0000;"><span class="wb_tr_ok">NFL</span></span></h1>
+					<h1 class="wb-stl-heading1"><span style="color:#cc0000;;font-family:'PT Sans',sans-serif;"><span class="wb_tr_ok">NFL</span></span></h1>
 					<?php
+                        include_once('tpl.team.php');
+                        $teams = array();
 						include_once('config.php');
 						$output = '';
 						$sql = 'SELECT t.name AS name, team_id, ' .
 						 	'group_id, g.name AS group_name, group_order, ' .
-						 	'parent_group_id, pg.name AS parent_group_name, parent_group_order, tt.tournament_id ' . 
+						 	'parent_group_id, pg.name AS parent_group_name, pg.long_name AS parent_group_long_name, parent_group_order, tt.tournament_id ' .
 							'FROM team_tournament tt ' .
 							'LEFT JOIN team t ON t.id = tt.team_id ' .
 							'LEFT JOIN `group` g ON g.id = tt.group_id ' .
@@ -83,12 +85,24 @@
 						$count = $query -> rowCount();
 						if ($count != 0) {
 							while ($row = $query -> fetch(PDO::FETCH_ASSOC)) {
-								$output .= '<h2>'.$row['parent_group_name'].' '.$row['group_name'].' '.$row['group_order'].' '.$row['name'].'</h2><br>';
+                                $team = new Team($row['name'], $row['group_name'], $row['group_order'], $row['parent_group_long_name'], $row['parent_group_order']);
+                                $teams[$row['parent_group_long_name']][$row['parent_group_name'].' '.$row['group_name']][$row['group_order']] = $team;
 							}
 						} 
 						else {
 							$output = '<h2>No result found!</h2>';
 						}
+                        foreach ($teams as $parent_group_long_name => $_conferences) {
+                            $output .= '<h1>'.$parent_group_long_name.'</h1><br>';
+                            foreach ($_conferences as $group_name => $_divisions) {
+                                $output .= '<h2>'.$group_name.'</h2><br>';
+                                $output .= '<div class="groupBox">';
+                                foreach ($_divisions as $group_order => $_team) {
+                                    $output .= '<span class="groupRow">' . $_team->name . '</span><br>';
+                                }
+                                $output .= '</div>';
+                            }
+                        }
 					?>
 					<?php echo $output; ?>
 					<p> </p>

@@ -68,16 +68,7 @@
 				<div id="wb_element_instance15" class="wb_element" style=" line-height: normal;height: unset;">
 					<h1 class="wb-stl-heading1"><span style="color:#930c10;font-family:'PT Sans',sans-serif;"><span class="wb_tr_ok">FIFA World Cup Russia 2018</span></span></h1>
 					<?php
-                        class Team {
-                            public $name;
-                            public $group_name;
-                            public $group_order;
-                            function __construct($name, $group_name, $group_order) {
-                                $this -> name = $name;
-                                $this -> group_name = $group_name;
-                                $this -> group_order = $group_order;
-                            }
-                        }
+                        include_once('tpl.team.php');
                         $teams = array();
 						include_once('config.php');
 						$output = '';
