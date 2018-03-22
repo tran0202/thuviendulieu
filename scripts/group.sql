@@ -3,7 +3,6 @@ CREATE TABLE IF NOT EXISTS `group` (
 	name VARCHAR(255) NOT NULL UNIQUE,
 	long_name VARCHAR(255),
 	group_type_id INT,
-	FOREIGN KEY (tournament_id) REFERENCES tournament(id),
 	FOREIGN KEY (group_type_id) REFERENCES group_type(id)
 );
 
@@ -28,6 +27,16 @@ VALUES ('AFC', 2, 2),
 		('North', 2, 3),
 		('South', 2, 3),
 		('West', 2, 3);
+
+INSERT INTO `group` (name, group_type_id)
+VALUES ('First Stage', 4),
+	('Second Stage', 4),
+	('Round Robin', 5),
+	('Round of 16', 5),
+	('Quarterfinals', 5),
+	('Semifinals', 5),
+	('Third place match', 5),
+	('Final', 5);
 
 UPDATE `group`
 SET name = SUBSTRING(name, 7, 1);

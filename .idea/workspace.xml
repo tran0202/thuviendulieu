@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fba8c1fa-dee6-4880-a876-656259f8206d" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/public_html/zyro/2.php" afterPath="$PROJECT_DIR$/public_html/zyro/2.php" />
-      <change beforePath="$PROJECT_DIR$/public_html/zyro/css/tvdl.css" afterPath="$PROJECT_DIR$/public_html/zyro/css/tvdl.css" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/scripts/group_tournament.sql" />
+      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/scripts/group.sql" afterPath="$PROJECT_DIR$/scripts/group.sql" />
+      <change beforePath="$PROJECT_DIR$/scripts/group_type.sql" afterPath="$PROJECT_DIR$/scripts/group_type.sql" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -18,7 +21,7 @@
         <entry file="file://$PROJECT_DIR$/public_html/zyro/1.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1335">
-              <caret line="89" column="8" lean-forward="true" selection-start-line="89" selection-start-column="8" selection-end-line="89" selection-end-column="8" />
+              <caret line="89" column="8" lean-forward="false" selection-start-line="89" selection-start-column="8" selection-end-line="89" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -28,13 +31,13 @@
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="15">
-              <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+              <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="2.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="2.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public_html/zyro/2.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="488">
@@ -59,11 +62,54 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="team_tournament.sql" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scripts/team_tournament.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1545">
+              <caret line="103" column="43" lean-forward="false" selection-start-line="103" selection-start-column="43" selection-end-line="103" selection-end-column="43" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="group_tournament.sql" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/scripts/group_tournament.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="270">
+              <caret line="18" column="22" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="18" selection-end-column="22" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="group.sql" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scripts/group.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="629">
+              <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+              <folding>
+                <marker date="1521686113000" expanded="true" signature="0:210" ph="CREATE TABLE... IF" />
+                <marker date="1521686113000" expanded="true" signature="213:453" ph="INSERT INTO `group`... " />
+                <marker date="1521686113000" expanded="true" signature="456:698" ph="INSERT INTO `group`... " />
+                <marker date="1521686113000" expanded="true" signature="920:967" ph="UPDATE `group`... " />
+                <marker date="1521686113000" expanded="true" signature="970:1006" ph="UPDATE `group`... " />
+                <marker date="1521686113000" expanded="true" signature="1073:1133" ph="ALTER TABLE `group`... " />
+                <marker date="1521686113000" expanded="true" signature="1136:1192" ph="ALTER TABLE `group`... " />
+                <marker date="1521686113000" expanded="true" signature="1195:1243" ph="ALTER TABLE `group`... " />
+                <marker date="1521686113000" expanded="true" signature="1246:1349" ph="ALTER TABLE `group`... " />
+                <marker date="1521686113000" expanded="true" signature="1352:1371" ph="ALTER TABLE `group`... " />
+                <marker date="1521686113000" expanded="true" signature="1404:1441" ph="ALTER TABLE `group`... " />
+                <marker date="1521686113000" expanded="true" signature="1444:1478" ph="DELETE FROM `group`... " />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="common.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public_html/zyro/css/common.css">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="555">
-              <caret line="37" column="36" lean-forward="true" selection-start-line="37" selection-start-column="36" selection-end-line="37" selection-end-column="36" />
+              <caret line="37" column="36" lean-forward="false" selection-start-line="37" selection-start-column="36" selection-end-line="37" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -85,7 +131,7 @@
         <entry file="file://$PROJECT_DIR$/public_html/zyro/css/tvdl.css">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="180">
-              <caret line="12" column="37" lean-forward="true" selection-start-line="12" selection-start-column="37" selection-end-line="12" selection-end-column="37" />
+              <caret line="12" column="37" lean-forward="false" selection-start-line="12" selection-start-column="37" selection-end-line="12" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -120,6 +166,10 @@
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/public_html/zyro/css/tvdl.css" />
         <option value="$PROJECT_DIR$/public_html/zyro/2.php" />
+        <option value="$PROJECT_DIR$/scripts/round.sql" />
+        <option value="$PROJECT_DIR$/scripts/group_type.sql" />
+        <option value="$PROJECT_DIR$/scripts/group.sql" />
+        <option value="$PROJECT_DIR$/scripts/group_tournament.sql" />
       </list>
     </option>
   </component>
@@ -179,6 +229,11 @@
               <item name="zyro" type="462c0819:PsiDirectoryNode" />
               <item name="css" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="thuviendulieu" type="b2602c69:ProjectViewProjectNode" />
+              <item name="thuviendulieu" type="462c0819:PsiDirectoryNode" />
+              <item name="scripts" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -201,6 +256,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/scripts" />
       <recent name="$PROJECT_DIR$/public_html" />
       <recent name="$PROJECT_DIR$/public_html/zyro/css" />
       <recent name="$PROJECT_DIR$/public_html/zyro/js" />
@@ -315,12 +371,12 @@
       <updated>1521323688742</updated>
       <workItem from="1521323690006" duration="550000" />
       <workItem from="1521324462592" duration="11060000" />
-      <workItem from="1521581287200" duration="13423000" />
+      <workItem from="1521581287200" duration="15391000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25033000" />
+    <option name="totallyTimeSpent" value="27001000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1160" y="23" width="1400" height="1000" extended-state="0" />
@@ -411,7 +467,7 @@
         <state relative-caret-position="2295">
           <caret line="153" column="42" lean-forward="true" selection-start-line="153" selection-start-column="42" selection-end-line="153" selection-end-column="42" />
           <folding>
-            <element signature="n#style#0;n#span#0;n#h1#0;n#div#0;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#h1#0;n#div#0;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -444,13 +500,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/group.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1521686113000" expanded="true" signature="0:210" ph="CREATE TABLE... IF" />
+            <marker date="1521686113000" expanded="true" signature="213:453" ph="INSERT INTO `group`... " />
+            <marker date="1521686113000" expanded="true" signature="456:698" ph="INSERT INTO `group`... " />
+            <marker date="1521686113000" expanded="true" signature="920:967" ph="UPDATE `group`... " />
+            <marker date="1521686113000" expanded="true" signature="970:1006" ph="UPDATE `group`... " />
+            <marker date="1521686113000" expanded="true" signature="1073:1133" ph="ALTER TABLE `group`... " />
+            <marker date="1521686113000" expanded="true" signature="1136:1192" ph="ALTER TABLE `group`... " />
+            <marker date="1521686113000" expanded="true" signature="1195:1243" ph="ALTER TABLE `group`... " />
+            <marker date="1521686113000" expanded="true" signature="1246:1349" ph="ALTER TABLE `group`... " />
+            <marker date="1521686113000" expanded="true" signature="1352:1371" ph="ALTER TABLE `group`... " />
+            <marker date="1521686113000" expanded="true" signature="1404:1441" ph="ALTER TABLE `group`... " />
+            <marker date="1521686113000" expanded="true" signature="1444:1478" ph="DELETE FROM `group`... " />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -521,6 +584,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -535,14 +599,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/team_tournament.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="48">
-          <caret line="103" column="43" lean-forward="true" selection-start-line="103" selection-start-column="43" selection-end-line="103" selection-end-column="43" />
           <folding />
         </state>
       </provider>
@@ -568,7 +624,7 @@
         <state relative-caret-position="510">
           <caret line="34" column="72" lean-forward="false" selection-start-line="34" selection-start-column="72" selection-end-line="34" selection-end-column="72" />
           <folding>
-            <element signature="n#style#0;n#span#0;n#h1#0;n#div#0;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#h1#0;n#div#0;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -626,7 +682,7 @@
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
-          <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -634,7 +690,7 @@
     <entry file="file://$PROJECT_DIR$/public_html/zyro/1.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1335">
-          <caret line="89" column="8" lean-forward="true" selection-start-line="89" selection-start-column="8" selection-end-line="89" selection-end-column="8" />
+          <caret line="89" column="8" lean-forward="false" selection-start-line="89" selection-start-column="8" selection-end-line="89" selection-end-column="8" />
           <folding />
         </state>
       </provider>
@@ -642,7 +698,7 @@
     <entry file="file://$PROJECT_DIR$/public_html/zyro/css/tvdl.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
-          <caret line="12" column="37" lean-forward="true" selection-start-line="12" selection-start-column="37" selection-end-line="12" selection-end-column="37" />
+          <caret line="12" column="37" lean-forward="false" selection-start-line="12" selection-start-column="37" selection-end-line="12" selection-end-column="37" />
           <folding />
         </state>
       </provider>
@@ -650,7 +706,23 @@
     <entry file="file://$PROJECT_DIR$/public_html/zyro/css/common.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="555">
-          <caret line="37" column="36" lean-forward="true" selection-start-line="37" selection-start-column="36" selection-end-line="37" selection-end-column="36" />
+          <caret line="37" column="36" lean-forward="false" selection-start-line="37" selection-start-column="36" selection-end-line="37" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/sport.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/round.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -675,6 +747,51 @@
             <marker date="1521672791000" expanded="true" signature="7194:7464" ph="{...}" />
             <marker date="1521672791000" expanded="true" signature="7317:7456" ph="{...}" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/group_type.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="4" lean-forward="false" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/team_tournament.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1545">
+          <caret line="103" column="43" lean-forward="false" selection-start-line="103" selection-start-column="43" selection-end-line="103" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/group.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="629">
+          <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+          <folding>
+            <marker date="1521686113000" expanded="true" signature="0:210" ph="CREATE TABLE... IF" />
+            <marker date="1521686113000" expanded="true" signature="213:453" ph="INSERT INTO `group`... " />
+            <marker date="1521686113000" expanded="true" signature="456:698" ph="INSERT INTO `group`... " />
+            <marker date="1521686113000" expanded="true" signature="920:967" ph="UPDATE `group`... " />
+            <marker date="1521686113000" expanded="true" signature="970:1006" ph="UPDATE `group`... " />
+            <marker date="1521686113000" expanded="true" signature="1073:1133" ph="ALTER TABLE `group`... " />
+            <marker date="1521686113000" expanded="true" signature="1136:1192" ph="ALTER TABLE `group`... " />
+            <marker date="1521686113000" expanded="true" signature="1195:1243" ph="ALTER TABLE `group`... " />
+            <marker date="1521686113000" expanded="true" signature="1246:1349" ph="ALTER TABLE `group`... " />
+            <marker date="1521686113000" expanded="true" signature="1352:1371" ph="ALTER TABLE `group`... " />
+            <marker date="1521686113000" expanded="true" signature="1404:1441" ph="ALTER TABLE `group`... " />
+            <marker date="1521686113000" expanded="true" signature="1444:1478" ph="DELETE FROM `group`... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/group_tournament.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="22" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="18" selection-end-column="22" />
+          <folding />
         </state>
       </provider>
     </entry>

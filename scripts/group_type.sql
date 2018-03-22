@@ -6,4 +6,6 @@ CREATE TABLE IF NOT EXISTS group_type (
 INSERT INTO group_type (name)
 VALUES ('Group'),
 		('Conference'),
-		('Division');
+		('Division'),
+		('Stage'),
+		('Round');
