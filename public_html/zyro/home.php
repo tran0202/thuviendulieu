@@ -4,8 +4,8 @@
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<title>TVDL - Home</title>
 	<base href="{{base_url}}" />
-		<meta name="viewport" content="width=1200" />
-		<meta name="description" content="" />
+	<meta name="viewport" content="width=1200" />
+	<meta name="description" content="" />
 	<meta name="keywords" content="" />
 	<!-- Facebook Open Graph -->
 	<meta name="og:title" content="Home" />
@@ -32,7 +32,6 @@
 	<![endif]-->
     <?php include_once('header.php'); ?>
 </head>
-
 
 <body>
     <div class="header" id="myHeader">

@@ -4,11 +4,11 @@
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<title>TVDL - Russia 2018</title>
 	<base href="{{base_url}}" />
-		<meta name="viewport" content="width=1200" />
-		<meta name="description" content="" />
+	<meta name="viewport" content="width=1200" />
+	<meta name="description" content="" />
 	<meta name="keywords" content="" />
 	<!-- Facebook Open Graph -->
-	<meta name="og:title" content="Teams" />
+	<meta name="og:title" content="Soccer" />
 	<meta name="og:description" content="" />
 	<meta name="og:image" content="" />
 	<meta name="og:type" content="article" />
@@ -61,48 +61,52 @@
 	<div class="root content">
 		<div class="vbox wb_container" id="wb_main">
 			<div class="wb_cont_inner">
-				<div id="wb_element_instance14" class="wb_element wb_element_shape">
-<!--					<div class="wb_shp"></div>-->
-				</div>
+				<div id="wb_element_instance14" class="wb_element wb_element_shape"></div>
 				<div id="wb_element_instance15" class="wb_element" style=" line-height: normal;height: unset;">
-					<h1 class="wb-stl-heading1"><span style="color:#930c10;"><span class="wb_tr_ok">FIFA World Cup Russia 2018</span></span></h1>
-					<?php
+                    <div>
+                        <span class="wb-stl-heading1" style="color:#930c10;"><span class="wb_tr_ok">FIFA World Cup Russia 2018</span></span>
+                        <span class="wb-stl-heading3" style="margin-left: 40px"><a href="Russia2018/" target="_self">Groups</a></span>
+                        <span class="wb-stl-heading3" style="margin-left: 40px"><a href="Russia2018/" target="_self">Matches</a></span>
+                    </div>
+                    <div>
+                        <?php
                         include_once('tpl.team.php');
                         $teams = array();
-						include_once('config.php');
-						$output = '';
-						$sql = 'SELECT UCASE(t.name) AS name, team_id, ' .
-						 	'group_id, UCASE(g.name) AS group_name, ' .
-						 	'group_order, tt.tournament_id ' . 
-							'FROM team_tournament tt ' .
-							'LEFT JOIN team t ON t.id = tt.team_id ' .
-							'LEFT JOIN `group` g ON g.id = tt.group_id ' .
-							'WHERE tt.tournament_id = 1 ' .
-							'ORDER BY group_id, group_order';
-					    $query = $connection -> prepare($sql);
-						$query -> execute();
-						$count = $query -> rowCount();
-						if ($count != 0) {
-							while ($row = $query -> fetch(PDO::FETCH_ASSOC)) {
-							    $team = new Team($row['name'], $row['group_name'], $row['group_order']);
+                        include_once('config.php');
+                        $output = '';
+                        $sql = 'SELECT UCASE(t.name) AS name, team_id, ' .
+                            'group_id, UCASE(g.name) AS group_name, ' .
+                            'group_order, tt.tournament_id ' .
+                            'FROM team_tournament tt ' .
+                            'LEFT JOIN team t ON t.id = tt.team_id ' .
+                            'LEFT JOIN `group` g ON g.id = tt.group_id ' .
+                            'WHERE tt.tournament_id = 1 ' .
+                            'ORDER BY group_id, group_order';
+                        $query = $connection -> prepare($sql);
+                        $query -> execute();
+                        $count = $query -> rowCount();
+                        if ($count != 0) {
+                            while ($row = $query -> fetch(PDO::FETCH_ASSOC)) {
+                                $team = new Team($row['name'], $row['group_name'], $row['group_order']);
                                 $teams[$row['group_name']][$row['group_order']] = $team;
-							}
-						} 
-						else {
-							$output = '<h2>No result found!</h2>';
-						}
+                            }
+                        }
+                        else {
+                            $output = '<h2>No result found!</h2>';
+                        }
                         foreach ($teams as $group_name => $_teams) {
-                            $output .= '<span class="groupTitle">Group '.$group_name.'</span><br>';
+                            $output .= '<div class="groupTitle margin-top">Group '.$group_name.'</div>';
                             $output .= '<div class="groupBox">';
                             foreach ($_teams as $group_order => $_team) {
-                                $output .= '<span class="groupRow">'.$_team -> name.'</span><br>';
+                                $output .= '<div class="groupRow margin-top margin-bottom">'.$_team -> name.'</div>';
                             }
                             $output .= '</div>';
                         }
-					?>
-					<?php echo $output; ?>
-					<p class="wb-stl-normal"> </p>
-					<p class="wb-stl-normal"> </p>
+                        ?>
+                        <?php echo $output; ?>
+                        <p class="wb-stl-normal"> </p>
+                        <p class="wb-stl-normal"> </p>
+                    </div>
 				</div>
 				<div id="wb_element_instance16" class="wb_element wb_element_picture"><!--<img alt="gallery/football-1331838_1280" src="gallery_gen/6ed42b3cb0b0176b0c634015141cc98d_450x250.jpg">--></div>
 				<div id="wb_element_instance17" class="wb_element wb_element_picture"><!--<img alt="gallery/football-1276327_1280" src="gallery_gen/843428bf7f3e0f675942187cea07bff3_440x300.jpg">--></div>
