@@ -30,9 +30,8 @@
 	<!--[if lt IE 9]>
 	<script src="js/html5shiv.min.js"></script>
 	<![endif]-->
-    <?php
-        include_once('header.php');
-    ?>
+    <?php include_once('header.php'); ?>
+    <link href="css/footer.css" rel="stylesheet" type="text/css" />
 </head>
 
 
@@ -64,7 +63,7 @@
 		<div class="vbox wb_container" id="wb_main">
 			<div class="wb_cont_inner">
 				<div id="wb_element_instance24" class="wb_element" style=" line-height: normal;height: unset;">
-					<h1 class="wb-stl-heading1"><span class="pageTitle" style="color:#cc0000;"><span class="wb_tr_ok">NFL</span></span></h1>
+					<h1 class="wb-stl-heading1"><span style="color:#cc0000;"><span class="wb_tr_ok">NFL</span></span></h1>
 					<?php
                         include_once('tpl.team.php');
                         $teams = array();

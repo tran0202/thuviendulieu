@@ -30,8 +30,7 @@
 	<!--[if lt IE 9]>
 	<script src="js/html5shiv.min.js"></script>
 	<![endif]-->
-    <link href="css/tvdl.css" rel="stylesheet" type="text/css" />
-    <script src="js/sticky_header.js" type="text/javascript"></script>
+    <?php include_once('header.php'); ?>
 </head>
 
 
@@ -67,14 +66,14 @@
                 </div>
                 <div id="wb_element_instance6" class="wb_element" style=" line-height: normal;">
                     <p class="wb-stl-normal" style="text-align: center;">
-                        <span class="wb-stl-highlight"><span class="wb_tr_ok">Soccer</span></span>
+                        <span class="wb-stl-highlight"><span class="wb_tr_ok" style="font-family: 'Capture it';">Soccer</span></span>
                     </p>
                     <p class="wb-stl-normal"> </p>
                 </div>
 				<div id="wb_element_instance5" class="wb_element" style=" line-height: normal;">
-					<h5 class="wb-stl-subtitle" style="text-align: center;"><span class="wb_tr_ok">More than a game</span></h5>
+					<h5 class="wb-stl-subtitle" style="text-align: center;"><span class="wb_tr_ok" style="font-family: 'Nanum Gothic';">More than a game</span></h5>
 				</div>
-				<div id="wb_element_instance7" class="wb_element" style="width:470px;">
+				<div id="wb_element_instance7" class="wb_element" style="width:100%;text-align: center;padding-top: 30px;">
 					<a class="wb_button" href="Russia2018/" style="display:inline-block;"><span>FIFA World Cup Russia 2018</span></a>
 					<a class="wb_button" href="NFL/" style="display:inline-block;"><span>NFL</span></a>
 					<a class="wb_button" href="2017-US-Open-Mens-Singles/" style="display:inline-block;"><span>2017 US Open Men's Singles</span></a>

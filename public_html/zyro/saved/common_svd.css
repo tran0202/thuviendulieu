@@ -1,15 +1,15 @@
 
-.wb-stl-pagetitle { font: normal bold 50px "Merriweather",serif; color: #ffffff; text-decoration: none; text-align: left; line-height: 48px; margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; text-transform: none; }
-.wb-stl-pagetitle a { font: normal bold 50px "Merriweather",serif; color: #000000; text-decoration: none; text-align: left; line-height: 48px; font-weight: normal; font-style: normal; }
-.wb-stl-pagetitle a:hover { font: normal bold 50px "Merriweather",serif; color: #000000; text-decoration: none; text-align: left; line-height: 48px; font-weight: normal; font-style: normal; }
+.wb-stl-pagetitle { font: normal normal 48px Tahoma,Geneva,sans-serif; color: #ffffff; text-decoration: none; text-align: left; line-height: 48px; margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; text-transform: none; }
+.wb-stl-pagetitle a { font: normal normal 48px Tahoma,Geneva,sans-serif; color: #000000; text-decoration: none; text-align: left; line-height: 48px; font-weight: normal; font-style: normal; }
+.wb-stl-pagetitle a:hover { font: normal normal 48px Tahoma,Geneva,sans-serif; color: #000000; text-decoration: none; text-align: left; line-height: 48px; font-weight: normal; font-style: normal; }
 .wb-stl-pagetitle ul { list-style-image: url(''); }
 .wb-stl-subtitle { font: normal normal 72px Tahoma,Geneva,sans-serif; color: #16aa9e; text-decoration: none; text-align: left; margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; text-transform: none; }
 .wb-stl-subtitle a { font: normal normal 72px Tahoma,Geneva,sans-serif; color: #000000; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }
 .wb-stl-subtitle a:hover { font: normal normal 72px Tahoma,Geneva,sans-serif; color: #000000; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }
 .wb-stl-subtitle ul { list-style-image: url(''); }
-.wb-stl-heading1 { font: normal bold 40px "Merriweather",serif; color: #16aa9e; text-decoration: none; text-align: left; margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; text-transform: none; }
-.wb-stl-heading1 a { font: normal bold 40px "Merriweather",serif; color: #000000; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }
-.wb-stl-heading1 a:hover { font: normal bold 40px "Merriweather",serif; color: #000000; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }
+.wb-stl-heading1 { font: normal bold 31px Arial,Helvetica,sans-serif; color: #16aa9e; text-decoration: none; text-align: left; margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; text-transform: none; }
+.wb-stl-heading1 a { font: normal bold 31px Arial,Helvetica,sans-serif; color: #000000; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }
+.wb-stl-heading1 a:hover { font: normal bold 31px Arial,Helvetica,sans-serif; color: #000000; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }
 .wb-stl-heading1 ul { list-style-image: url(''); }
 .wb-stl-heading2 { font: normal bold 48px Arial,Helvetica,sans-serif; color: #000000; text-decoration: none; text-align: left; margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; text-transform: none; }
 .wb-stl-heading2 a { font: normal bold 48px Arial,Helvetica,sans-serif; color: #000000; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }
@@ -39,78 +39,11 @@
 .wb-stl-custom2 { font-size: 14px; }
 .wb-stl-custom3 { font-size: 14px; }
 
+
+
+
 @media (min-width: 768px) {
 }
 
 @media (min-width: 992px) {
 }
-
-/* ========== Override ========== */
-
-body {
-    background-color: #f8f8f8;
-    font-family: "Roboto", sans-serif;
-}
-
-/* ========== Sticky Header ========== */
-
-.header {
-    padding: 10px 16px;
-    background-color: #0055a6;
-    border-bottom: 1px solid #08355e;
-    box-shadow: 0 3px 3px 0 rgba(16,24,37,0.25);
-    color: #f1f1f1;
-    z-index: 5;
-}
-
-/* Page content */
-.content {
-    padding: 16px;
-}
-
-/* The sticky class is added to the header with JS when it reaches its scroll position */
-.sticky {
-    position: fixed;
-    top: 0;
-    width: 100%
-}
-
-/* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
-.sticky + .content {
-    padding-top: 306px;
-}
-
-/* ========== Boxes ========== */
-
-.pageTitle {
-    font-family: "Merriweather", serif;
-    font-size: 30px;
-}
-.stageTitle {
-    font-family: "Courgette", cursive;
-    font-size: 30px;
-}
-.groupTitle {
-    font-family: "Monoton", cursive;
-    font-size: 30px;
-}
-.groupBox {
-    transition: box-shadow .3s;
-    border-radius:10px;
-    border: 1px solid #e6e7e9;
-    background-color: #fff;
-    padding: 20px 50px;
-    box-shadow: 0 2px 0 0 rgba(230,230,230,0.5);
-}
-.groupBox:hover {
-    box-shadow: 0 0 11px rgba(33,33,33,.2);
-}
-.groupRow {
-    font-family: "Oswald", san-serif;
-    font-size: 30px;
-}
-.groupRow2 {
-    font-family: "Roboto", san-serif;
-    font-size: 30px;
-}
-

@@ -30,9 +30,8 @@
 	<!--[if lt IE 9]>
 	<script src="js/html5shiv.min.js"></script>
 	<![endif]-->
-    <?php
-        include_once('header.php');
-    ?>
+    <?php include_once('header.php'); ?>
+    <link href="css/footer.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -66,7 +65,7 @@
 <!--					<div class="wb_shp"></div>-->
 				</div>
 				<div id="wb_element_instance15" class="wb_element" style=" line-height: normal;height: unset;">
-					<h1 class="wb-stl-heading1"><span class="pageTitle" style="color:#930c10;"><span class="wb_tr_ok">FIFA World Cup Russia 2018</span></span></h1>
+					<h1 class="wb-stl-heading1"><span style="color:#930c10;"><span class="wb_tr_ok">FIFA World Cup Russia 2018</span></span></h1>
 					<?php
                         include_once('tpl.team.php');
                         $teams = array();
