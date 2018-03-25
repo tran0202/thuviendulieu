@@ -48,7 +48,7 @@
                         <li class="active"><a href="" target="_self">Home</a></li>
                         <li><a href="Russia2018/" target="_self">Russia 2018</a></li>
                         <li><a href="NFL/" target="_self">NFL</a></li>
-                        <li><a href="2017-US-Open-Mens-Singles/" target="_self">2017 US Open Men's Singles</a></li>
+                        <li><a href="2017USOpenMensSingles/" target="_self">2017 US Open Men's Singles</a></li>
                     </ul>
                     <div class="clearfix"></div>
                 </div>
@@ -75,7 +75,7 @@
 				<div id="wb_element_instance7" class="wb_element" style="width:100%;text-align: center;padding-top: 30px;">
 					<a class="wb_button" href="Russia2018/" style="display:inline-block;"><span>FIFA World Cup Russia 2018</span></a>
 					<a class="wb_button" href="NFL/" style="display:inline-block;"><span>NFL</span></a>
-					<a class="wb_button" href="2017-US-Open-Mens-Singles/" style="display:inline-block;"><span>2017 US Open Men's Singles</span></a>
+					<a class="wb_button" href="2017USOpenMensSingles/" style="display:inline-block;"><span>2017 US Open Men's Singles</span></a>
 				</div>
 				<div id="wb_element_instance8" class="wb_element" style="width: 100%;">
 					<?php

@@ -69,39 +69,52 @@
                         <span class="wb-stl-heading3" style="margin-left: 40px"><a href="Russia2018Schedule/" target="_self">Schedule</a></span>
                     </div>
                     <div>
-                        <div class="stageTitle margin-top">Groups</div>
+                        <div class="stageTitle margin-top">Matches</div>
                         <?php
-                        include_once('tpl.team.php');
-                        $teams = array();
+                        include_once('tpl.match.php');
+                        $matches = array();
                         include_once('config.php');
                         $output = '';
-                        $sql = 'SELECT UCASE(t.name) AS name, team_id, ' .
-                            'group_id, UCASE(g.name) AS group_name, ' .
-                            'group_order, tt.tournament_id ' .
-                            'FROM team_tournament tt ' .
-                            'LEFT JOIN team t ON t.id = tt.team_id ' .
-                            'LEFT JOIN `group` g ON g.id = tt.group_id ' .
-                            'WHERE tt.tournament_id = 1 ' .
-                            'ORDER BY group_id, group_order';
+                        $sql = 'SELECT t.name AS home_team_name, home_team_score,
+                                    t2.name AS away_team_name, away_team_score,
+                                    DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date, 
+                                    TIME_FORMAT(match_time, "%H:%i") as match_time, match_order,
+                                    g.name AS round, g2.name AS stage,
+                                    g3.name AS group_name, m.tournament_id
+                                FROM `match` m
+                                    LEFT JOIN team t ON t.id = m.home_team_id
+                                    LEFT JOIN team t2 ON t2.id = m.away_team_id
+                                    LEFT JOIN `group` g ON g.id = m.round_id
+                                    LEFT JOIN `group` g2 ON g2.id = m.stage_id
+                                    LEFT JOIN team_tournament tt ON tt.team_id = m.home_team_id
+                                    LEFT JOIN `group` g3 ON g3.id = tt.group_id
+                                WHERE m.tournament_id = 1
+                                ORDER BY stage_id, round_id, match_date, match_time;';
                         $query = $connection -> prepare($sql);
                         $query -> execute();
                         $count = $query -> rowCount();
                         if ($count != 0) {
                             while ($row = $query -> fetch(PDO::FETCH_ASSOC)) {
-                                $team = new Team($row['name'], $row['group_name'], $row['group_order']);
-                                $teams[$row['group_name']][$row['group_order']] = $team;
+                                $match = new Match($row['home_team_name'], $row['away_team_name'],
+                                    $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_order'],
+                                    $row['round'], $row['stage'], $row['group_name']);
+                                $matches[$row['match_date']][$row['match_order']] = $match;
                             }
                         }
                         else {
                             $output = '<h2>No result found!</h2>';
                         }
-                        foreach ($teams as $group_name => $_teams) {
-                            $output .= '<div class="groupTitle margin-top">Group '.$group_name.'</div>';
-                            $output .= '<div class="groupBox">';
-                            foreach ($_teams as $group_order => $_team) {
-                                $output .= '<div class="groupRow margin-top margin-bottom">'.$_team -> name.'</div>';
+                        foreach ($matches as $match_dates => $_matches) {
+                            $output .= '<div class="groupTitle2 margin-top-extra">'
+                                .$_matches[array_keys($_matches)[0]] -> match_date_fmt.'</div>';
+                            foreach ($_matches as $match_order => $_match) {
+                                $output .= '<div class="col-sm-12 margin-top margin-bottom border-bottom">'.
+                                    '<div class="col-sm-2" style="margin-top: 6px;">'.$_match -> match_time.' CST<br>Group '.$_match -> group_name.'</div>'.
+                                    '<div class="col-sm-3 groupRow">'.$_match -> home_team_name.'</div>'.
+                                    '<div class="col-sm-2 groupRow">vs</div>'.
+                                    '<div class="col-sm-3 groupRow">'.$_match -> away_team_name.'</div>'.
+                                    '</div>';
                             }
-                            $output .= '</div>';
                         }
                         ?>
                         <?php echo $output; ?>
