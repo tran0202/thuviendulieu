@@ -30,7 +30,7 @@
 	<!--[if lt IE 9]>
 	<script src="js/html5shiv.min.js"></script>
 	<![endif]-->
-    <?php include_once('header.php'); ?>
+    <?php include_once('header.inc.php'); ?>
 </head>
 
 <body>
@@ -77,37 +77,12 @@
 					<a class="wb_button" href="NFL/" style="display:inline-block;"><span>NFL</span></a>
 					<a class="wb_button" href="2017USOpenMensSingles/" style="display:inline-block;"><span>2017 US Open Men's Singles</span></a>
 				</div>
-				<div id="wb_element_instance8" class="wb_element" style="width: 100%;">
-					<?php
-						global $show_comments;
-						if (isset($show_comments) && $show_comments) {
-							renderComments(1);
-					?>
-					<script type="text/javascript">
-						$(function() {
-							var block = $("#wb_element_instance8");
-							var comments = block.children(".wb_comments").eq(0);
-							var contentBlock = $("#wb_main");
-							contentBlock.height(contentBlock.height() + comments.height());
-						});
-					</script>
-					<?php
-						} else {
-					?>
-					<script type="text/javascript">
-						$(function() {
-							$("#wb_element_instance8").hide();
-						});
-					</script>
-					<?php
-						}
-					?>
-				</div>
+                <?php include_once('comments.inc.php'); ?>
 			</div>
 			<div class="wb_cont_outer"></div>
 			<div class="wb_cont_bg"></div>
 		</div>
-        <?php include_once('footer.php'); ?>
+        <?php include_once('footer.inc.php'); ?>
 	</div>
 	{{hr_out}}
 </body>

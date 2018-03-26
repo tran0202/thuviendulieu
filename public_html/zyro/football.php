@@ -30,7 +30,7 @@
 	<!--[if lt IE 9]>
 	<script src="js/html5shiv.min.js"></script>
 	<![endif]-->
-    <?php include_once('header.php'); ?>
+    <?php include_once('header.inc.php'); ?>
     <link href="css/footer.css" rel="stylesheet" type="text/css" />
 </head>
 
@@ -115,37 +115,12 @@
 				<div id="wb_element_instance28" class="wb_element" style=" line-height: normal;"><!--<p class="wb-stl-normal"><span style="color:#ffffff;">You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form on our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form...</span></p>--></div>
 				<div id="wb_element_instance29" class="wb_element" style=" line-height: normal;"><!--<p class="wb-stl-normal"><span style="color:#ffffff;">You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form on our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form on our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best solution that helps everyone. If you want to contact us, please fill the contact form on our website. We wish you a good day! You will find the latest information about us on this page. Our company is constantly evolving and growing. We provide wide range of services. Our mission is to provide best...</span></p>--></div>
 				<div id="wb_element_instance30" class="wb_element wb_element_shape"></div>
-				<div id="wb_element_instance31" class="wb_element" style="width: 100%;">
-					<?php
-						global $show_comments;
-						if (isset($show_comments) && $show_comments) {
-							renderComments(3);
-					?>
-					<script type="text/javascript">
-						$(function() {
-							var block = $("#wb_element_instance31");
-							var comments = block.children(".wb_comments").eq(0);
-							var contentBlock = $("#wb_main");
-							contentBlock.height(contentBlock.height() + comments.height());
-						});
-					</script>
-					<?php
-						} else {
-					?>
-					<script type="text/javascript">
-						$(function() {
-							$("#wb_element_instance31").hide();
-						});
-					</script>
-					<?php
-						}
-					?>
-				</div>
+                <?php include_once('comments.inc.php'); ?>
 			</div>
 			<div class="wb_cont_outer"></div>
 			<div class="wb_cont_bg"></div>
 		</div>
-        <?php include_once('footer.php'); ?>
+        <?php include_once('footer.inc.php'); ?>
 	</div>
 	{{hr_out}}
 </body>

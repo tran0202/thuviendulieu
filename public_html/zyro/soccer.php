@@ -30,7 +30,7 @@
 	<!--[if lt IE 9]>
 	<script src="js/html5shiv.min.js"></script>
 	<![endif]-->
-    <?php include_once('header.php'); ?>
+    <?php include_once('header.inc.php'); ?>
     <link href="css/footer.css" rel="stylesheet" type="text/css" />
 </head>
 
@@ -113,37 +113,12 @@
                         <p class="wb-stl-normal"> </p>
                     </div>
 				</div>
-				<div id="wb_element_instance18" class="wb_element" style="width: 100%;">
-					<?php
-						global $show_comments;
-						if (isset($show_comments) && $show_comments) {
-							renderComments(2);
-					?>
-					<script type="text/javascript">
-						$(function() {
-							var block = $("#wb_element_instance18");
-							var comments = block.children(".wb_comments").eq(0);
-							var contentBlock = $("#wb_main");
-							contentBlock.height(contentBlock.height() + comments.height());
-						});
-					</script>
-					<?php
-						} else {
-					?>
-					<script type="text/javascript">
-						$(function() {
-							$("#wb_element_instance18").hide();
-						});
-					</script>
-					<?php
-						}
-					?>
-				</div>
+                <?php include_once('comments.inc.php'); ?>
 			</div>
 			<div class="wb_cont_outer"></div>
 			<div class="wb_cont_bg"></div>
 		</div>
-        <?php include_once('footer.php'); ?>
+        <?php include_once('footer.inc.php'); ?>
 	</div>
     <!-- Modal -->
     <div class="modal fade" id="groupMatchesModal" tabindex="-1" role="dialog" aria-labelledby="groupMatchesModalLabel" aria-hidden="true">
