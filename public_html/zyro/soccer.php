@@ -65,11 +65,10 @@
 				<div id="wb_element_instance15" class="wb_element" style=" line-height: normal;height: unset;">
                     <div>
                         <span class="wb-stl-heading1" style="color:#930c10;"><span class="wb_tr_ok">FIFA World Cup Russia 2018</span></span>
-                        <span class="wb-stl-heading3" style="margin-left: 40px"><a href="Russia2018/" target="_self">Groups</a></span>
-                        <span class="wb-stl-heading3" style="margin-left: 40px"><a href="Russia2018Schedule/" target="_self">Schedule</a></span>
+                        <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018/" target="_self">Groups</a></span>
+                        <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018Schedule/" target="_self">Schedule</a></span>
                     </div>
                     <div>
-                        <div class="stageTitle margin-top">Groups</div>
                         <?php
                         include_once('tpl.team.php');
                         $teams = array();
@@ -96,8 +95,13 @@
                             $output = '<h2>No result found!</h2>';
                         }
                         foreach ($teams as $group_name => $_teams) {
-                            $output .= '<div class="groupTitle margin-top">Group '.$group_name.'</div>';
-                            $output .= '<div class="groupBox">';
+                            $output .= '<div class="col-sm-12 margin-top">';
+                            $output .= '<span class="col-sm-2 groupTitle">Group '.$group_name.'</span>';
+                            $output .= '<span class="col-sm-2 wb-stl-heading4 margin-left-md" style="margin-top: 18px;">';
+                            $output .= '<a class="link-modal" data-toggle="modal" data-target="#groupMatchesModal">Matches</a>';
+                            $output .= '</span>';
+                            $output .= '</div>';
+                            $output .= '<div class="col-sm-12 groupBox">';
                             foreach ($_teams as $group_order => $_team) {
                                 $output .= '<div class="groupRow margin-top margin-bottom">'.$_team -> name.'</div>';
                             }
@@ -109,8 +113,6 @@
                         <p class="wb-stl-normal"> </p>
                     </div>
 				</div>
-				<div id="wb_element_instance16" class="wb_element wb_element_picture"><!--<img alt="gallery/football-1331838_1280" src="gallery_gen/6ed42b3cb0b0176b0c634015141cc98d_450x250.jpg">--></div>
-				<div id="wb_element_instance17" class="wb_element wb_element_picture"><!--<img alt="gallery/football-1276327_1280" src="gallery_gen/843428bf7f3e0f675942187cea07bff3_440x300.jpg">--></div>
 				<div id="wb_element_instance18" class="wb_element" style="width: 100%;">
 					<?php
 						global $show_comments;
@@ -166,6 +168,26 @@
 		</div>
 		<div class="wb_sbg"></div>
 	</div>
+    <!-- Modal -->
+    <div class="modal fade" id="groupMatchesModal" tabindex="-1" role="dialog" aria-labelledby="groupMatchesModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="groupMatchesModalLabel">Matches of Group A</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="groupMatchesModalBody">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+<!--                    <button type="button" class="btn btn-primary">Save changes</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
 	{{hr_out}}
 </body>
 </html>

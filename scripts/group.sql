@@ -31,7 +31,7 @@ VALUES ('AFC', 2, 2),
 INSERT INTO `group` (name, group_type_id)
 VALUES ('First Stage', 4),
 	('Second Stage', 4),
-	('Round Robin', 5),
+	('Group Matches', 5),
 	('Round of 16', 5),
 	('Quarterfinals', 5),
 	('Semifinals', 5),

@@ -65,11 +65,10 @@
 				<div id="wb_element_instance15" class="wb_element" style=" line-height: normal;height: unset;">
                     <div>
                         <span class="wb-stl-heading1" style="color:#930c10;"><span class="wb_tr_ok">FIFA World Cup Russia 2018</span></span>
-                        <span class="wb-stl-heading3" style="margin-left: 40px"><a href="Russia2018/" target="_self">Groups</a></span>
-                        <span class="wb-stl-heading3" style="margin-left: 40px"><a href="Russia2018Schedule/" target="_self">Schedule</a></span>
+                        <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018/" target="_self">Groups</a></span>
+                        <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018Schedule/" target="_self">Schedule</a></span>
                     </div>
                     <div>
-                        <div class="stageTitle margin-top">Matches</div>
                         <?php
                         include_once('tpl.match.php');
                         $matches = array();
@@ -98,22 +97,25 @@
                                 $match = new Match($row['home_team_name'], $row['away_team_name'],
                                     $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_order'],
                                     $row['round'], $row['stage'], $row['group_name']);
-                                $matches[$row['match_date']][$row['match_order']] = $match;
+                                $matches[$row['round']][$row['match_date']][$row['match_order']] = $match;
                             }
                         }
                         else {
                             $output = '<h2>No result found!</h2>';
                         }
-                        foreach ($matches as $match_dates => $_matches) {
-                            $output .= '<div class="groupTitle2 margin-top-extra">'
-                                .$_matches[array_keys($_matches)[0]] -> match_date_fmt.'</div>';
-                            foreach ($_matches as $match_order => $_match) {
-                                $output .= '<div class="col-sm-12 margin-top margin-bottom border-bottom">'.
-                                    '<div class="col-sm-2" style="margin-top: 6px;">'.$_match -> match_time.' CST<br>Group '.$_match -> group_name.'</div>'.
-                                    '<div class="col-sm-3 groupRow">'.$_match -> home_team_name.'</div>'.
-                                    '<div class="col-sm-2 groupRow">vs</div>'.
-                                    '<div class="col-sm-3 groupRow">'.$_match -> away_team_name.'</div>'.
-                                    '</div>';
+                        foreach ($matches as $rounds => $_round) {
+                        $output .= '<div class="stageTitle margin-top">'.$rounds.'</div>';
+                            foreach ($_round as $match_dates => $_matches) {
+                                $output .= '<div class="col-sm-12 groupTitle2 margin-top-md">'
+                                    .$_matches[array_keys($_matches)[0]] -> match_date_fmt.'</div>';
+                                foreach ($_matches as $match_order => $_match) {
+                                    $output .= '<div class="col-sm-12 margin-top margin-bottom border-bottom">'.
+                                        '<div class="col-sm-2" style="margin-top: 6px;">'.$_match -> match_time.' CST<br>Group '.$_match -> group_name.'</div>'.
+                                        '<div class="col-sm-3 groupRow">'.$_match -> home_team_name.'</div>'.
+                                        '<div class="col-sm-2 groupRow">vs</div>'.
+                                        '<div class="col-sm-3 groupRow">'.$_match -> away_team_name.'</div>'.
+                                        '</div>';
+                                }
                             }
                         }
                         ?>
