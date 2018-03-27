@@ -1,3 +1,27 @@
+<?php
+    include_once('config.php');
+    $sql = 'SELECT t.name AS name, team_id, ' .
+        'group_id, g.name AS group_name, group_order, ' .
+        'parent_group_id, pg.name AS parent_group_name, parent_group_order, tt.tournament_id ' .
+        'FROM team_tournament tt ' .
+        'LEFT JOIN team t ON t.id = tt.team_id ' .
+        'LEFT JOIN `group` g ON g.id = tt.group_id ' .
+        'LEFT JOIN `group` pg ON pg.id = tt.parent_group_id ' .
+        'WHERE tt.tournament_id = 4 ' .
+        'ORDER BY team_id';
+    $query = $connection -> prepare($sql);
+    $query -> execute();
+    $count = $query -> rowCount();
+    $output = '';
+    if ($count == 0) {
+        $output = '<h2>No result found!</h2>';
+    }
+    else {
+        while ($row = $query -> fetch(PDO::FETCH_ASSOC)) {
+            $output .= ''.$row['group_name'].' '.$row['group_order'].' '.$row['name'].'<br>';
+        }
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +30,6 @@
 	<link href="css/4.css?ts=1520882525" rel="stylesheet" type="text/css" />
     <link href="css/footer.css" rel="stylesheet" type="text/css" />
 </head>
-
 <body>
     <div class="header" id="myHeader">
         <div class="vbox wb_container" id="wb_header">
@@ -39,30 +62,6 @@
                         <h1 class="wb-stl-heading1"><span style="color:#13730f;"><span class="wb_tr_ok">2017 US Open Men's Singles</span></span></h1>
                     </div>
                     <div>
-                        <?php
-                        include_once('config.php');
-                        $output = '';
-                        $sql = 'SELECT t.name AS name, team_id, ' .
-                            'group_id, g.name AS group_name, group_order, ' .
-                            'parent_group_id, pg.name AS parent_group_name, parent_group_order, tt.tournament_id ' .
-                            'FROM team_tournament tt ' .
-                            'LEFT JOIN team t ON t.id = tt.team_id ' .
-                            'LEFT JOIN `group` g ON g.id = tt.group_id ' .
-                            'LEFT JOIN `group` pg ON pg.id = tt.parent_group_id ' .
-                            'WHERE tt.tournament_id = 4 ' .
-                            'ORDER BY team_id';
-                        $query = $connection -> prepare($sql);
-                        $query -> execute();
-                        $count = $query -> rowCount();
-                        if ($count != 0) {
-                            while ($row = $query -> fetch(PDO::FETCH_ASSOC)) {
-                                $output .= ''.$row['group_name'].' '.$row['group_order'].' '.$row['name'].'<br>';
-                            }
-                        }
-                        else {
-                            $output = '<h2>No result found!</h2>';
-                        }
-                        ?>
                         <?php echo $output; ?>
                         <p> </p>
                     </div>

@@ -5,7 +5,6 @@
     <?php include_once('header.inc.php'); ?>
 	<link href="css/1.css?ts=1520882525" rel="stylesheet" type="text/css" />
 </head>
-
 <body>
     <div class="header" id="myHeader">
         <div class="vbox wb_container" id="wb_header">
