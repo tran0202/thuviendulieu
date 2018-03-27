@@ -26,7 +26,7 @@
 <html lang="en">
 <head>
     <title>TVDL - 2017 US Open Men's Singles</title>
-    <?php include_once('header.inc.php'); ?>
+    <?php include_once('header_script.inc.php'); ?>
 	<link href="css/4.css?ts=1520882525" rel="stylesheet" type="text/css" />
     <link href="css/footer.css" rel="stylesheet" type="text/css" />
 </head>
@@ -34,21 +34,8 @@
     <div class="header" id="myHeader">
         <div class="vbox wb_container" id="wb_header">
             <div class="wb_cont_inner">
-                <div id="wb_element_instance35" class="wb_element wb_element_picture">
-                    <a href=""><img alt="gallery/football" src="gallery_gen/8cd979f289c541d79d7ea74cf4b31f3e.png"></a>
-                </div>
-                <div id="wb_element_instance34" class="wb_element" style=" line-height: normal;">
-                    <h4 class="wb-stl-pagetitle"><span class="wb_tr_ok">We Call It Soccer</span></h4>
-                </div>
-                <div id="wb_element_instance33" class="wb_element wb-menu">
-                    <ul class="hmenu">
-                        <li><a href="" target="_self">Home</a></li>
-                        <li><a href="Russia2018/" target="_self">Russia 2018</a></li>
-                        <li><a href="NFL/" target="_self">NFL</a></li>
-                        <li class="active"><a href="2017USOpenMensSingles/" target="_self">2017 US Open Men's Singles</a></li>
-                    </ul>
-                    <div class="clearfix"></div>
-                </div>
+                <?php include_once('logo.inc.php'); ?>
+                <?php include_once('menu4.inc.php'); ?>
             </div>
             <div class="wb_cont_outer"></div>
             <div class="wb_cont_bg"></div>
