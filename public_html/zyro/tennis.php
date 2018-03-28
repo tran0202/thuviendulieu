@@ -1,24 +1,56 @@
 <?php
     include_once('config.php');
-    $sql = 'SELECT t.name AS name, team_id, ' .
-        'group_id, g.name AS group_name, group_order, ' .
-        'parent_group_id, pg.name AS parent_group_name, parent_group_order, tt.tournament_id ' .
-        'FROM team_tournament tt ' .
-        'LEFT JOIN team t ON t.id = tt.team_id ' .
-        'LEFT JOIN `group` g ON g.id = tt.group_id ' .
-        'LEFT JOIN `group` pg ON pg.id = tt.parent_group_id ' .
-        'WHERE tt.tournament_id = 4 ' .
-        'ORDER BY team_id';
+    include_once('tpl.match.php');
+    $sql = 'SELECT t.name AS home_team_name, htt.seed AS home_team_seed,
+            t2.name AS away_team_name, att.seed AS away_team_seed,
+            home_set1_score, away_set1_score, home_set1_tiebreak, away_set1_tiebreak,
+            home_set2_score, away_set2_score, home_set2_tiebreak, away_set2_tiebreak,
+            home_set3_score, away_set3_score, home_set3_tiebreak, away_set3_tiebreak,
+            home_set4_score, away_set4_score, home_set4_tiebreak, away_set4_tiebreak,
+            home_set5_score, away_set5_score, home_set5_tiebreak, away_set5_tiebreak,
+            match_date, match_order,
+            g.name AS round,
+            m.tournament_id
+        FROM `match` m
+            LEFT JOIN team t ON t.id = m.home_team_id
+            LEFT JOIN team t2 ON t2.id = m.away_team_id
+            LEFT JOIN `group` g ON g.id = m.round_id
+            LEFT JOIN team_tournament htt ON (htt.team_id = m.home_team_id AND htt.tournament_id = m.tournament_id)
+            LEFT JOIN team_tournament att ON (att.team_id = m.away_team_id AND att.tournament_id = m.tournament_id)
+        WHERE m.tournament_id = 4
+        ORDER BY match_order;';
     $query = $connection -> prepare($sql);
     $query -> execute();
     $count = $query -> rowCount();
-    $output = '';
+    $matches = array();
+    $output = '<!-- Count = '.$count.' -->';
     if ($count == 0) {
         $output = '<h2>No result found!</h2>';
     }
     else {
         while ($row = $query -> fetch(PDO::FETCH_ASSOC)) {
-            $output .= ''.$row['group_name'].' '.$row['group_order'].' '.$row['name'].'<br>';
+            $match = new Match($row['home_team_name'], $row['away_team_name'],
+                $row['match_date'], '', '', '', $row['match_order'], $row['round'],
+                '', '', '', '', $row['home_team_seed'], $row['away_team_seed'],
+                $row['home_set1_score'], $row['away_set1_score'], $row['home_set1_tiebreak'], $row['away_set1_tiebreak'],
+                $row['home_set2_score'], $row['away_set2_score'], $row['home_set2_tiebreak'], $row['away_set2_tiebreak'],
+                $row['home_set3_score'], $row['away_set3_score'], $row['home_set3_tiebreak'], $row['away_set3_tiebreak'],
+                $row['home_set4_score'], $row['away_set4_score'], $row['home_set4_tiebreak'], $row['away_set4_tiebreak'],
+                $row['home_set5_score'], $row['away_set5_score'], $row['home_set5_tiebreak'], $row['away_set5_tiebreak']);
+            $matches[$row['round']][$row['match_order']] = $match;
+        }
+        foreach ($matches as $round => $_matches) {
+            $output .= '<div class="col-sm-3">';
+            $output .= '<div class="col-sm-12 margin-top">';
+            $output .= '<span class="groupTitle">'.$round.'</span>';
+            $output .= '</div>';
+            foreach ($_matches as $match_order => $_match) {
+                $output .= '<div class="col-sm-12 groupBox">';
+                $output .= '<div class="col-sm-12 groupRow margin-top margin-bottom">'.$_match -> home_team_name.' '.$_match -> home_team_seed.'</div>';
+                $output .= '<div class="col-sm-12 groupRow margin-top margin-bottom">'.$_match -> away_team_name.' '.$_match -> away_team_seed.'</div>';
+                $output .= '</div>';
+            }
+            $output .= '</div>';
         }
     }
 ?>

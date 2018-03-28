@@ -13,7 +13,7 @@
     $query -> execute();
     $count = $query -> rowCount();
     $teams = array();
-    $output = '';
+    $output = '<!-- Count = '.$count.' -->';
     if ($count == 0) {
         $output = '<h2>No result found!</h2>';
     }
@@ -57,7 +57,7 @@
     $query -> execute();
     $count = $query -> rowCount();
     $matches = array();
-    $output2 = '';
+    $output2 = '<!-- Count = '.$count.' -->';
     if ($count == 0) {
         $output2 = '<h2>No result found!</h2>';
     }

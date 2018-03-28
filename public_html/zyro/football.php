@@ -14,7 +14,7 @@
     $query -> execute();
     $count = $query -> rowCount();
     $teams = array();
-    $output = '';
+    $output = '<!-- Count = '.$count.' -->';
     if ($count == 0) {
         $output = '<h2>No result found!</h2>';
     }

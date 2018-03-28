@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS team_tournament (
 	group_order TINYINT UNSIGNED,
 	parent_group_id INT,
 	parent_group_order TINYINT UNSIGNED,
+	seed TINYINT UNSIGNED,
 	FOREIGN KEY (team_id) REFERENCES team(id),
 	FOREIGN KEY (tournament_id) REFERENCES tournament(id),
 	FOREIGN KEY (group_id) REFERENCES `group`(id),
@@ -20,7 +21,7 @@ ADD CONSTRAINT `team_tournament_ibfk_4`
 FOREIGN KEY (parent_group_id) REFERENCES `group`(id);
 
 ALTER TABLE team_tournament
-ADD COLUMN parent_group_order TINYINT UNSIGNED;
+ADD COLUMN seed TINYINT UNSIGNED;
 
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
 VALUES (3, 1, 4, 1),

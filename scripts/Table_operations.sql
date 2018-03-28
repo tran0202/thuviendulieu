@@ -16,12 +16,17 @@ SET team_type_uuid = '184d2659-257b-11e8-950c-feed01220059'
 ALTER TABLE team
 CHANGE team_uuid uuid CHAR(36) NOT NULL
 
-ALTER TABLE team
-ADD COLUMN team_type_uuid CHAR(36) NOT NULL
+ALTER TABLE `match`
+	ADD COLUMN home_seed TINYINT UNSIGNED,
+	ADD COLUMN away_seed TINYINT UNSIGNED;
 
 ALTER TABLE team
 ADD CONSTRAINT `fk_team$team_type`
-FOREIGN KEY (team_type_uuid) REFERENCES team_type(uuid)
+FOREIGN KEY (team_type_uuid) REFERENCES team_type(uuid);
+
+ALTER TABLE table
+	DROP COLUMN column_1,
+	DROP COLUMN column_2;
 
 CREATE TRIGGER before_insert_team
   	BEFORE INSERT ON team
