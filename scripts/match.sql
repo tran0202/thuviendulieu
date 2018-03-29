@@ -188,6 +188,90 @@ VALUES (65, 66, 4, '2017-08-29', 1, 47, 6, 2, NULL, NULL, 6, 2, NULL, NULL, 6, 0
 	(189, 190, 4, '2017-08-28', 63, 47, 7, 6, 7, 5, 7, 6, 7, 2, 6, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 	(191, 192, 4, '2017-08-28', 64, 47, 7, 6, 7, 5, 6, 4, NULL, NULL, 3, 6, NULL, NULL, 7, 6, 7, 4, NULL, NULL, NULL, NULL);
 
+INSERT INTO `match` (home_team_id, away_team_id, tournament_id, match_date, match_order, round_id,
+					 home_set1_score, away_set1_score, home_set1_tiebreak, away_set1_tiebreak,
+					 home_set2_score, away_set2_score, home_set2_tiebreak, away_set2_tiebreak,
+					 home_set3_score, away_set3_score, home_set3_tiebreak, away_set3_tiebreak,
+					 home_set4_score, away_set4_score, home_set4_tiebreak, away_set4_tiebreak,
+					 home_set5_score, away_set5_score, home_set5_tiebreak, away_set5_tiebreak)
+VALUES (114, 79, 4, '2017-08-31', 65, 48, 4, 6, NULL, NULL, 6, 3, NULL, NULL, 6, 2, NULL, NULL, 6, 2, NULL, NULL, NULL, NULL, NULL, NULL),
+	(65, 72, 4, '2017-08-31', 66, 48, 7, 6, 7, 3, 4, 6, NULL, NULL, 3, 6, NULL, NULL, 4, 6, NULL, NULL, NULL, NULL, NULL, NULL),
+	(98, 94, 4, '2017-08-31', 67, 48, 6, 7, 6, 8, 5, 7, NULL, NULL, 0, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(81, 83, 4, '2017-08-31', 68, 48, 3, 6, NULL, NULL, 6, 1, NULL, NULL, 7, 6, 7, 5, 6, 2, NULL, NULL, NULL, NULL, NULL, NULL),
+	(102, 108, 4, '2017-08-31', 69, 48, 3, 6, NULL, NULL, 7, 6, 7, 5, 6, 7, 2, 7, 7, 6, 7, 4, 6, 3, NULL, NULL),
+	(75, 78, 4, '2017-08-31', 70, 48, 3, 6, NULL, NULL, 7, 6, 7, 3, 4, 6, NULL, NULL, 6, 2, NULL, NULL, 5, 7, NULL, NULL),
+	(90, 99, 4, '2017-08-31', 71, 48, 4, 6, NULL, NULL, 6, 4, NULL, NULL, 6, 0, NULL, NULL, 6, 1, NULL, NULL, NULL, NULL, NULL, NULL),
+	(110, 111, 4, '2017-08-31', 72, 48, 7, 5, NULL, NULL, 7, 6, 7, 3, 6, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(127, 86, 4, '2017-08-31', 73, 48, 6, 1, NULL, NULL, 6, 7, 3, 7, 4, 6, NULL, NULL, 6, 4, NULL, NULL, 6, 2, NULL, NULL),
+	(118, 116, 4, '2017-08-31', 74, 48, 3, 6, NULL, NULL, 2, 6, NULL, NULL, 6, 3, NULL, NULL, 1, 6, NULL, NULL, NULL, NULL, NULL, NULL),
+	(121, 119, 4, '2017-08-31', 75, 48, 6, 2, NULL, NULL, 6, 1, NULL, NULL, 3, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(105, 104, 4, '2017-08-31', 76, 48, 1, 6, NULL, NULL, 6, 7, 1, 7, 1, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(125, 124, 4, '2017-08-31', 77, 48, 6, 1, NULL, NULL, 6, 3, NULL, NULL, 7, 6, 7, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(73, 96, 4, '2017-08-31', 78, 48, 2, 6, NULL, NULL, 3, 6, NULL, NULL, 6, 7, 3, 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(88, 69, 4, '2017-08-31', 79, 48, 6, 3, NULL, NULL, 6, 7, 4, 7, 6, 1, NULL, NULL, 6, 2, NULL, NULL, NULL, NULL, NULL, NULL),
+	(92, 67, 4, '2017-08-31', 80, 48, 4, 6, NULL, NULL, 4, 6, NULL, NULL, 6, 4, NULL, NULL, 5, 7, NULL, NULL, NULL, NULL, NULL, NULL),
+	(171, 169, 4, '2017-08-31', 81, 48, 6, 4, NULL, NULL, 6, 1, NULL, NULL, 6, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(149, 158, 4, '2017-08-31', 82, 48, 6, 2, NULL, NULL, 7, 6, 9, 7, 5, 7, NULL, NULL, 0, 6, NULL, NULL, 7, 6, 7, 2),
+	(165, 160, 4, '2017-08-31', 83, 48, 6, 3, NULL, NULL, 6, 2, NULL, NULL, 3, 6, NULL, NULL, 6, 7, 3, 7, 7, 5, NULL, NULL),
+	(129, 154, 4, '2017-08-31', 84, 48, 3, 6, NULL, NULL, 4, 6, NULL, NULL, 5, 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(186, 191, 4, '2017-08-31', 85, 48, 6, 2, NULL, NULL, 2, 6, NULL, NULL, 6, 3, NULL, NULL, 4, 6, NULL, NULL, 2, 6, NULL, NULL),
+	(167, 183, 4, '2017-08-31', 86, 48, 6, 7, 4, 7, 6, 3, NULL, NULL, 7, 6, 7, 4, 6, 3, NULL, NULL, NULL, NULL, NULL, NULL),
+	(141, 152, 4, '2017-08-31', 87, 48, 6, 3, NULL, NULL, 7, 5, NULL, NULL, 6, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(189, 187, 4, '2017-08-31', 88, 48, 3, 6, NULL, NULL, 7, 5, NULL, NULL, 7, 6, 7, 1, 7, 6, 7, 4, NULL, NULL, NULL, NULL),
+	(146, 176, 4, '2017-08-31', 89, 48, 4, 6, NULL, NULL, 4, 6, NULL, NULL, 6, 7, 3, 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(134, 131, 4, '2017-08-31', 90, 48, 5, 7, NULL, NULL, 2, 6, NULL, NULL, 6, 7, 4, 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(164, 174, 4, '2017-08-31', 91, 48, 6, 4, NULL, NULL, 4, 6, NULL, NULL, 6, 4, NULL, NULL, 3, 6, NULL, NULL, 0, 6, NULL, NULL),
+	(140, 135, 4, '2017-08-31', 92, 48, 2, 6, NULL, NULL, 4, 6, NULL, NULL, 3, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(180, 178, 4, '2017-08-31', 93, 48, 7, 5, NULL, NULL, 6, 4, NULL, NULL, 4, 6, NULL, NULL, 3, 6, NULL, NULL, 6, 4, NULL, NULL),
+	(147, 156, 4, '2017-08-31', 94, 48, 4, 6, NULL, NULL, 4, 6, NULL, NULL, 5, 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(144, 182, 4, '2017-08-31', 95, 48, 6, 2, NULL, NULL, 6, 4, NULL, NULL, 7, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(138, 161, 4, '2017-08-31', 96, 48, 3, 6, NULL, NULL, 3, 6, NULL, NULL, 3, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+INSERT INTO `match` (home_team_id, away_team_id, tournament_id, match_date, match_order, round_id,
+					 home_set1_score, away_set1_score, home_set1_tiebreak, away_set1_tiebreak,
+					 home_set2_score, away_set2_score, home_set2_tiebreak, away_set2_tiebreak,
+					 home_set3_score, away_set3_score, home_set3_tiebreak, away_set3_tiebreak,
+					 home_set4_score, away_set4_score, home_set4_tiebreak, away_set4_tiebreak,
+					 home_set5_score, away_set5_score, home_set5_tiebreak, away_set5_tiebreak)
+VALUES (114, 72, 4, '2017-09-02', 97, 49, 6, 7, 3, 7, 6, 3, NULL, NULL, 6, 1, NULL, NULL, 6, 4, NULL, NULL, NULL, NULL, NULL, NULL),
+	(94, 81, 4, '2017-09-02', 98, 49, 1, 6, NULL, NULL, 0, 6, NULL, NULL, 4, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(102, 78, 4, '2017-09-02', 99, 49, 7, 5, NULL, NULL, 5, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(90, 110, 4, '2017-09-02', 100, 49, 4, 6, NULL, NULL, 4, 6, NULL, NULL, 7, 5, NULL, NULL, 4, 6, NULL, NULL, NULL, NULL, NULL, NULL),
+	(127, 116, 4, '2017-09-02', 101, 49, 6, 3, NULL, NULL, 6, 3, NULL, NULL, 7, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(121, 104, 4, '2017-09-02', 102, 49, 7, 5, NULL, NULL, 6, 2, NULL, NULL, 6, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(125, 96, 4, '2017-09-02', 103, 49, 3, 6, NULL, NULL, 3, 6, NULL, NULL, 4, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(88, 67, 4, '2017-09-02', 104, 49, 5, 7, NULL, NULL, 3, 6, NULL, NULL, 4, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(171, 149, 4, '2017-09-02', 105, 49, 4, 6, NULL, NULL, 6, 2, NULL, NULL, 6, 4, NULL, NULL, 6, 4, NULL, NULL, NULL, NULL, NULL, NULL),
+	(165, 154, 4, '2017-09-02', 106, 49, 6, 4, NULL, NULL, 6, 3, NULL, NULL, 7, 6, 7, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(191, 167, 4, '2017-09-02', 107, 49, 2, 6, NULL, NULL, 4, 6, NULL, NULL, 4, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(141, 189, 4, '2017-09-02', 108, 49, 6, 4, NULL, NULL, 6, 3, NULL, NULL, 6, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(176, 131, 4, '2017-09-02', 109, 49, 3, 6, NULL, NULL, 6, 3, NULL, NULL, 6, 3, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL),
+	(174, 135, 4, '2017-09-02', 110, 49, 3, 6, NULL, NULL, 4, 6, NULL, NULL, 3, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(180, 156, 4, '2017-09-02', 111, 49, 2, 6, NULL, NULL, 6, 3, NULL, NULL, 6, 4, NULL, NULL, 6, 4, NULL, NULL, NULL, NULL, NULL, NULL),
+	(144, 161, 4, '2017-09-02', 112, 49, 4, 6, NULL, NULL, 7, 5, NULL, NULL, 7, 5, NULL, NULL, 6, 4, NULL, NULL, NULL, NULL, NULL, NULL);
+
+INSERT INTO `match` (home_team_id, away_team_id, tournament_id, match_date, match_order, round_id,
+					 home_set1_score, away_set1_score, home_set1_tiebreak, away_set1_tiebreak,
+					 home_set2_score, away_set2_score, home_set2_tiebreak, away_set2_tiebreak,
+					 home_set3_score, away_set3_score, home_set3_tiebreak, away_set3_tiebreak,
+					 home_set4_score, away_set4_score, home_set4_tiebreak, away_set4_tiebreak,
+					 home_set5_score, away_set5_score, home_set5_tiebreak, away_set5_tiebreak)
+VALUES (114, 81, 4, '2017-09-04', 113, 50, 6, 2, NULL, NULL, 6, 4, NULL, NULL, 6, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(102, 110, 4, '2017-09-04', 114, 50, 5, 7, NULL, NULL, 6, 7, 5, 7, 3, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(127, 121, 4, '2017-09-04', 115, 50, 6, 4, NULL, NULL, 6, 2, NULL, NULL, 7, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(96, 67, 4, '2017-09-04', 116, 50, 1, 6, NULL, NULL, 2, 6, NULL, NULL, 6, 1, NULL, NULL, 7, 6, 7, 1, 6, 4, NULL, NULL),
+	(171, 165, 4, '2017-09-04', 117, 50, 6, 2, NULL, NULL, 6, 2, NULL, NULL, 6, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(167, 141, 4, '2017-09-04', 118, 50, 4, 6, NULL, NULL, 3, 6, NULL, NULL, 7, 6, 7, 4, 4, 6, NULL, NULL, NULL, NULL, NULL, NULL),
+	(176, 135, 4, '2017-09-04', 119, 50, 6, 7, 2, 7, 6, 7, 4, 7, 6, 7, 3, 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(180, 144, 4, '2017-09-04', 120, 50, 6, 7, 3, 7, 5, 7, NULL, NULL, 6, 2, NULL, NULL, 2, 6, NULL, NULL, NULL, NULL, NULL, NULL),
+	(114, 110, 4, '2017-09-06', 121, 43, 6, 1, NULL, NULL, 6, 2, NULL, NULL, 6, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(127, 96, 4, '2017-09-06', 122, 43, 5, 7, NULL, NULL, 6, 3, NULL, NULL, 6, 7, 8, 10, 4, 6, NULL, NULL, NULL, NULL, NULL, NULL),
+	(171, 141, 4, '2017-09-06', 123, 43, 6, 7, 5, 7, 7, 6, 11, 9, 3, 6, NULL, NULL, 6, 7, 7, 9, NULL, NULL, NULL, NULL),
+	(135, 144, 4, '2017-09-06', 124, 43, 6, 4, NULL, NULL, 6, 4, NULL, NULL, 6, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(114, 96, 4, '2017-09-08', 125, 44, 4, 6, NULL, NULL, 6, 0, NULL, NULL, 6, 3, NULL, NULL, 6, 2, NULL, NULL, NULL, NULL, NULL, NULL),
+	(141, 135, 4, '2017-09-08', 126, 44, 4, 6, NULL, NULL, 7, 5, NULL, NULL, 6, 3, NULL, NULL, 6, 4, NULL, NULL, NULL, NULL, NULL, NULL),
+	(114, 141, 4, '2017-09-10', 126, 46, 6, 3, NULL, NULL, 6, 3, NULL, NULL, 6, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
 SELECT t.name AS home_team_name, htt.seed AS home_team_seed,
 	t2.name AS away_team_name, att.seed AS away_team_seed,
 	home_set1_score, away_set1_score, home_set1_tiebreak, away_set1_tiebreak,
@@ -206,3 +290,8 @@ FROM `match` m
 	LEFT JOIN team_tournament att ON (att.team_id = m.away_team_id AND att.tournament_id = m.tournament_id)
 WHERE m.tournament_id = 4
 ORDER BY match_order;
+# // From First Round: match_order >= 1 AND match_order <= 112
+# // From Second Round: match_order >= 65 AND match_order <= 120
+# // From Third Round: match_order >= 97 AND match_order <= 124
+# // From Fourth Round: match_order >= 113 AND match_order <= 126
+# // From Quarterfinals: match_order >= 121 AND match_order <= 127

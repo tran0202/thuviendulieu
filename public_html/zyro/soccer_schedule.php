@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php
     include_once('config.php');
     include_once('tpl.match.php');
@@ -55,7 +56,6 @@
         }
     }
 ?>
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>TVDL - Russia 2018</title>
@@ -89,6 +89,7 @@
                         <?php echo $output; ?>
                         <p class="wb-stl-normal"> </p>
                         <p class="wb-stl-normal"> </p>
+                        <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
                     </div>
 				</div>
 				<div id="wb_element_instance16" class="wb_element wb_element_picture"><!--<img alt="gallery/football-1331838_1280" src="gallery_gen/6ed42b3cb0b0176b0c634015141cc98d_450x250.jpg">--></div>

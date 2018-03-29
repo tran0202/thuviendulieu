@@ -427,14 +427,14 @@ $(function() {
 			} else {
 				var paddingT = parseInt($('#wb_main').css('padding-top')); if (isNaN(paddingT)) paddingT = 0;
 				var paddingB = parseInt($('#wb_main').css('padding-bottom')); if (isNaN(paddingB)) paddingB = 0;
-				$('#wb_main').css('height', (getMinContentHeight($('#wb_main').find('.wb_element')) + paddingB + paddingT) + 'px');
+				// $('#wb_main').css('height', (getMinContentHeight($('#wb_main').find('.wb_element')) + paddingB + paddingT) + 'px');
 			}
 			var rootH = 0;
 			$('.root').children('.wb_container').each(function() {
 				if ($(this).hasClass('wb_header_fixed')) return true;
 				rootH += $(this).outerHeight();
 			});
-			$('body, .root, .wb_sbg').css({ height: (rootH + 'px'), minHeight: (rootH + 'px') });
+			// $('body, .root, .wb_sbg').css({ height: (rootH + 'px'), minHeight: (rootH + 'px') });
 		};
 		
 		$(window).on('resize', applyModeAutoHeight);

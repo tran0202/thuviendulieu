@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php
     include_once('config.php');
     include_once('tpl.team.php');
@@ -36,7 +37,6 @@
         }
     }
 ?>
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>TVDL - NFL</title>
@@ -66,6 +66,7 @@
                         <?php echo $output; ?>
                         <p> </p>
                     </div>
+                    <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
 				</div>
 				<div id="wb_element_instance25" class="wb_element wb_element_picture"><!--<img alt="gallery/rush-1335365_1280" src="gallery_gen/deaceea944c1e5c8faa97dbc938638a2_330x230.jpg">--></div>
 				<div id="wb_element_instance26" class="wb_element wb_element_picture"><!--<img alt="gallery/soccer-933037_1280" src="gallery_gen/9f1f8dd4b573022ccb5f58534e63c223_340x230.jpg">--></div>

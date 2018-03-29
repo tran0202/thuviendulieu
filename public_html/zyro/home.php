@@ -20,7 +20,6 @@
 		<div class="vbox wb_container" id="wb_main">
 			<div class="wb_cont_inner">
                 <div id="wb_element_instance4" class="wb_element wb_element_picture">
-                    <img alt="gallery/ball_1" src="gallery_gen/740438132c8336073d625b0136159e8e_300x310.png">
                 </div>
                 <div id="wb_element_instance6" class="wb_element" style=" line-height: normal;">
                     <p class="wb-stl-normal" style="text-align: center;">
@@ -35,6 +34,8 @@
 					<a class="wb_button" href="Russia2018/" style="display:inline-block;"><span>FIFA World Cup Russia 2018</span></a>
 					<a class="wb_button" href="NFL/" style="display:inline-block;"><span>NFL</span></a>
 					<a class="wb_button" href="2017USOpenMensSingles/" style="display:inline-block;"><span>2017 US Open Men's Singles</span></a>
+                    <img alt="gallery/ball_1" src="gallery_gen/740438132c8336073d625b0136159e8e_300x310.png">
+                    <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
 				</div>
                 <?php include_once('comments.inc.php'); ?>
 			</div>

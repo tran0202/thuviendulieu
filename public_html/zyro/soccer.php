@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php
     include_once('config.php');
     include_once('tpl.team.php');
@@ -101,7 +102,6 @@
         }
     }
 ?>
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>TVDL - Russia 2018</title>
@@ -134,6 +134,7 @@
                         <?php echo $output; ?>
                         <p class="wb-stl-normal"> </p>
                         <p class="wb-stl-normal"> </p>
+                        <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
                     </div>
 				</div>
                 <?php include_once('comments.inc.php'); ?>

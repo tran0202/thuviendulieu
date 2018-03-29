@@ -282,6 +282,15 @@ body {
     font-weight: 300;
 }
 
+/* ========== Colors ========== */
+
+.blue { color: #0040ff; }
+
+/* ========== Typography ========== */
+
+a.blue-double-arrow { color: #0040ff; font-size: 40px; }
+a:hover.blue-double-arrow { color: #0040ff; font-size: 40px; text-decoration: underline; cursor: pointer; }
+
 /* ========== Utilities ========== */
 
 .border-top { border-top: 1px solid #e6e7e9; }
@@ -318,3 +327,10 @@ body {
 .padding-bottom-lg { padding-bottom: 40px; }
 .padding-left-lg { padding-left: 40px; }
 .padding-right-lg { padding-right: 40px; }
+
+.no-padding-top { padding-top: 0; }
+.no-padding-bottom { padding-bottom: 0; }
+.no-padding-left { padding-left: 0; }
+.no-padding-right { padding-right: 0; }
+.no-padding-tb { padding-top: 0; padding-bottom: 0; }
+.no-padding-lr { padding-left: 0; padding-right: 0; }

@@ -29,3 +29,4 @@
 <link href="https://fonts.googleapis.com/css?family=Courgette|Merriweather|Monoton|Oswald:300,400|Roboto" rel="stylesheet">
 <script src="js/sticky_header.js" type="text/javascript"></script>
 <script src="js/modal_position.js" type="text/javascript"></script>
+<script src="js/change_view.js" type="text/javascript"></script>

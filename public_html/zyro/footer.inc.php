@@ -2,7 +2,7 @@
 <div class="vbox wb_container" id="wb_footer">
     <div class="wb_cont_inner" style="height: 130px;">
         <div id="wb_element_instance3" class="wb_element" style=" line-height: normal;">
-            <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
+<!--            <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>-->
         </div>
         <div id="wb_element_instance9" class="wb_element" style="text-align: center; width: 100%;">
             <div class="wb_footer"></div>
@@ -22,4 +22,4 @@
     <div class="wb_cont_outer"></div>
     <div class="wb_cont_bg"></div>
 </div>
-<div class="wb_sbg"></div>
+<!--<div class="wb_sbg"></div>-->
