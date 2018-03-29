@@ -31,7 +31,8 @@
         while ($row = $query -> fetch(PDO::FETCH_ASSOC)) {
             $match = new Match($row['home_team_name'], $row['away_team_name'],
                 $row['match_date'], '', '', '', $row['match_order'], $row['round'],
-                '', '', '', '', $row['home_team_seed'], $row['away_team_seed'],
+                '', '', '', '',
+                $row['home_team_seed'], $row['away_team_seed'], '', '',
                 $row['home_set1_score'], $row['away_set1_score'], $row['home_set1_tiebreak'], $row['away_set1_tiebreak'],
                 $row['home_set2_score'], $row['away_set2_score'], $row['home_set2_tiebreak'], $row['away_set2_tiebreak'],
                 $row['home_set3_score'], $row['away_set3_score'], $row['home_set3_tiebreak'], $row['away_set3_tiebreak'],
@@ -40,14 +41,125 @@
             $matches[$row['round']][$row['match_order']] = $match;
         }
         foreach ($matches as $round => $_matches) {
-            $output .= '<div class="col-sm-3">';
+            $output .= '<div class="col-sm-4">';
             $output .= '<div class="col-sm-12 margin-top">';
             $output .= '<span class="groupTitle">'.$round.'</span>';
             $output .= '</div>';
             foreach ($_matches as $match_order => $_match) {
-                $output .= '<div class="col-sm-12 groupBox">';
-                $output .= '<div class="col-sm-12 groupRow margin-top margin-bottom">'.$_match -> home_team_name.' '.$_match -> home_team_seed.'</div>';
-                $output .= '<div class="col-sm-12 groupRow margin-top margin-bottom">'.$_match -> away_team_name.' '.$_match -> away_team_seed.'</div>';
+                $home_team_name = $_match -> home_team_name;
+                $away_team_name = $_match -> away_team_name;
+                $home_win = 0;
+                $away_win = 0;
+                if ($_match -> home_set1_score > $_match -> away_set1_score) $home_win = $home_win + 1;
+                if ($_match -> home_set2_score > $_match -> away_set2_score) $home_win = $home_win + 1;
+                if ($_match -> home_set3_score > $_match -> away_set3_score) $home_win = $home_win + 1;
+                if ($_match -> home_set4_score > $_match -> away_set4_score) $home_win = $home_win + 1;
+                if ($_match -> home_set5_score > $_match -> away_set5_score) $home_win = $home_win + 1;
+                if ($_match -> home_set1_score < $_match -> away_set1_score) $away_win = $away_win + 1;
+                if ($_match -> home_set2_score < $_match -> away_set2_score) $away_win = $away_win + 1;
+                if ($_match -> home_set3_score < $_match -> away_set3_score) $away_win = $away_win + 1;
+                if ($_match -> home_set4_score < $_match -> away_set4_score) $away_win = $away_win + 1;
+                if ($_match -> home_set5_score < $_match -> away_set5_score) $away_win = $away_win + 1;
+                if ($home_win > $away_win) $away_team_name = '<span style="color:#858585">'.$_match -> away_team_name.'</span>';
+                if ($home_win < $away_win) $home_team_name = '<span style="color:#858585">'.$_match -> home_team_name.'</span>';
+                $home_team_seed = '<span class="group-row-sm-thin">('.$_match -> home_team_seed.')</span> ';
+                $away_team_seed = '<span class="group-row-sm-thin">('.$_match -> away_team_seed.')</span> ';
+                if ($home_win > $away_win) $away_team_seed = '<span class="group-row-sm-thin" style="color:#858585">('.$_match -> away_team_seed.')</span> ';
+                if ($home_win < $away_win) $home_team_seed = '<span class="group-row-sm-thin" style="color:#858585">('.$_match -> home_team_seed.')</span> ';
+                $home_set1_score = $_match -> home_set1_score;
+                $home_set2_score = $_match -> home_set2_score;
+                $home_set3_score = $_match -> home_set3_score;
+                $home_set4_score = $_match -> home_set4_score;
+                $home_set5_score = $_match -> home_set5_score;
+                $away_set1_score = $_match -> away_set1_score;
+                $away_set2_score = $_match -> away_set2_score;
+                $away_set3_score = $_match -> away_set3_score;
+                $away_set4_score = $_match -> away_set4_score;
+                $away_set5_score = $_match -> away_set5_score;
+                $home_set1_tiebreak = ' <span class="group-row-sm-thin"><sup>'.$_match -> home_set1_tiebreak.'</sup></span>';
+                $home_set2_tiebreak = ' <span class="group-row-sm-thin"><sup>'.$_match -> home_set2_tiebreak.'</sup></span>';
+                $home_set3_tiebreak = ' <span class="group-row-sm-thin"><sup>'.$_match -> home_set3_tiebreak.'</sup></span>';
+                $home_set4_tiebreak = ' <span class="group-row-sm-thin"><sup>'.$_match -> home_set4_tiebreak.'</sup></span>';
+                $home_set5_tiebreak = ' <span class="group-row-sm-thin"><sup>'.$_match -> home_set5_tiebreak.'</sup></span>';
+                $away_set1_tiebreak = ' <span class="group-row-sm-thin"><sup>'.$_match -> away_set1_tiebreak.'</sup></span>';
+                $away_set2_tiebreak = ' <span class="group-row-sm-thin"><sup>'.$_match -> away_set2_tiebreak.'</sup></span>';
+                $away_set3_tiebreak = ' <span class="group-row-sm-thin"><sup>'.$_match -> away_set3_tiebreak.'</sup></span>';
+                $away_set4_tiebreak = ' <span class="group-row-sm-thin"><sup>'.$_match -> away_set4_tiebreak.'</sup></span>';
+                $away_set5_tiebreak = ' <span class="group-row-sm-thin"><sup>'.$_match -> away_set5_tiebreak.'</sup></span>';
+                if ($_match -> home_set1_score > $_match -> away_set1_score) $away_set1_score = '<span class="group-row-md-thin">'.$_match -> away_set1_score.'</span>';
+                if ($_match -> home_set1_score < $_match -> away_set1_score) $home_set1_score = '<span class="group-row-md-thin">'.$_match -> home_set1_score.'</span>';
+                if ($_match -> home_set2_score > $_match -> away_set2_score) $away_set2_score = '<span class="group-row-md-thin">'.$_match -> away_set2_score.'</span>';
+                if ($_match -> home_set2_score < $_match -> away_set2_score) $home_set2_score = '<span class="group-row-md-thin">'.$_match -> home_set2_score.'</span>';
+                if ($_match -> home_set3_score > $_match -> away_set3_score) $away_set3_score = '<span class="group-row-md-thin">'.$_match -> away_set3_score.'</span>';
+                if ($_match -> home_set3_score < $_match -> away_set3_score) $home_set3_score = '<span class="group-row-md-thin">'.$_match -> home_set3_score.'</span>';
+                if ($_match -> home_set4_score > $_match -> away_set4_score) $away_set4_score = '<span class="group-row-md-thin">'.$_match -> away_set4_score.'</span>';
+                if ($_match -> home_set4_score < $_match -> away_set4_score) $home_set4_score = '<span class="group-row-md-thin">'.$_match -> home_set4_score.'</span>';
+                if ($_match -> home_set5_score > $_match -> away_set5_score) $away_set5_score = '<span class="group-row-md-thin">'.$_match -> away_set5_score.'</span>';
+                if ($_match -> home_set5_score < $_match -> away_set5_score) $home_set5_score = '<span class="group-row-md-thin">'.$_match -> home_set5_score.'</span>';
+                if ($_match -> home_set1_tiebreak > $_match -> away_set1_tiebreak) $home_set1_tiebreak = ' <span class="group-row-sm-thin" style="font-weight: 400;"><sup>'.$_match -> home_set1_tiebreak.'</sup></span>';
+                if ($_match -> home_set2_tiebreak > $_match -> away_set2_tiebreak) $home_set2_tiebreak = ' <span class="group-row-sm-thin" style="font-weight: 400;"><sup>'.$_match -> home_set2_tiebreak.'</sup></span>';
+                if ($_match -> home_set3_tiebreak > $_match -> away_set3_tiebreak) $home_set3_tiebreak = ' <span class="group-row-sm-thin" style="font-weight: 400;"><sup>'.$_match -> home_set3_tiebreak.'</sup></span>';
+                if ($_match -> home_set4_tiebreak > $_match -> away_set4_tiebreak) $home_set4_tiebreak = ' <span class="group-row-sm-thin" style="font-weight: 400;"><sup>'.$_match -> home_set4_tiebreak.'</sup></span>';
+                if ($_match -> home_set5_tiebreak > $_match -> away_set5_tiebreak) $home_set5_tiebreak = ' <span class="group-row-sm-thin" style="font-weight: 400;"><sup>'.$_match -> home_set5_tiebreak.'</sup></span>';
+                if ($_match -> home_set1_tiebreak < $_match -> away_set1_tiebreak) $away_set1_tiebreak = ' <span class="group-row-sm-thin" style="font-weight: 400;"><sup>'.$_match -> away_set1_tiebreak.'</sup></span>';
+                if ($_match -> home_set2_tiebreak < $_match -> away_set2_tiebreak) $away_set2_tiebreak = ' <span class="group-row-sm-thin" style="font-weight: 400;"><sup>'.$_match -> away_set2_tiebreak.'</sup></span>';
+                if ($_match -> home_set3_tiebreak < $_match -> away_set3_tiebreak) $away_set3_tiebreak = ' <span class="group-row-sm-thin" style="font-weight: 400;"><sup>'.$_match -> away_set3_tiebreak.'</sup></span>';
+                if ($_match -> home_set4_tiebreak < $_match -> away_set4_tiebreak) $away_set4_tiebreak = ' <span class="group-row-sm-thin" style="font-weight: 400;"><sup>'.$_match -> away_set4_tiebreak.'</sup></span>';
+                if ($_match -> home_set5_tiebreak < $_match -> away_set5_tiebreak) $away_set5_tiebreak = ' <span class="group-row-sm-thin" style="font-weight: 400;"><sup>'.$_match -> away_set5_tiebreak.'</sup></span>';
+                $output .= '<div class="col-sm-12" style="height:20px;"></div>';
+                $output .= '<div class="col-sm-12 group-box-sm" style="height:120px;">';
+                $output .= '<div class="col-sm-12 group-row-md margin-top margin-bottom">';
+                $output .= '<div class="col-sm-7" style="padding-left: 0;padding-right: 0">';
+                if ($_match -> home_team_seed != '') $output .= $home_team_seed;
+                $output .= $home_team_name;
+                $output .= '</div>';
+                $output .= '<div class="col-sm-1" style="padding-left: 0;padding-right: 0">';
+                $output .= $home_set1_score;
+                if ($_match -> home_set1_tiebreak != '') $output .= $home_set1_tiebreak;
+                $output .= '</div>';
+                $output .= '<div class="col-sm-1" style="padding-left: 0;padding-right: 0">';
+                $output .= $home_set2_score;
+                if ($_match -> home_set2_tiebreak != '') $output .= $home_set2_tiebreak;
+                $output .= '</div>';
+                $output .= '<div class="col-sm-1" style="padding-left: 0;padding-right: 0">';
+                $output .= $home_set3_score;
+                if ($_match -> home_set3_tiebreak != '') $output .= $home_set3_tiebreak;
+                $output .= '</div>';
+                $output .= '<div class="col-sm-1" style="padding-left: 0;padding-right: 0">';
+                $output .= $home_set4_score;
+                if ($_match -> home_set4_tiebreak != '') $output .= $home_set4_tiebreak;
+                $output .= '</div>';
+                $output .= '<div class="col-sm-1" style="padding-left: 0;padding-right: 0">';
+                $output .= $home_set5_score;
+                if ($_match -> home_set5_tiebreak != '') $output .= $home_set5_tiebreak;
+                $output .= '</div>';
+                $output .= '</div>';
+                $output .= '<div class="col-sm-12 group-row-md margin-top margin-bottom">';
+                $output .= '<div class="col-sm-7" style="padding-left: 0;padding-right: 0">';
+                if ($_match -> away_team_seed != '') $output .= $away_team_seed;
+                $output .= $away_team_name;
+                $output .= '</div>';
+                $output .= '<div class="col-sm-1" style="padding-left: 0;padding-right: 0">';
+                $output .= $away_set1_score;
+                if ($_match -> away_set1_tiebreak != '') $output .= $away_set1_tiebreak;
+                $output .= '</div>';
+                $output .= '<div class="col-sm-1" style="padding-left: 0;padding-right: 0">';
+                $output .= $away_set2_score;
+                if ($_match -> away_set2_tiebreak != '') $output .= $away_set2_tiebreak;
+                $output .= '</div>';
+                $output .= '<div class="col-sm-1" style="padding-left: 0;padding-right: 0">';
+                $output .= $away_set3_score;
+                if ($_match -> away_set3_tiebreak != '') $output .= $away_set3_tiebreak;
+                $output .= '</div>';
+                $output .= '<div class="col-sm-1" style="padding-left: 0;padding-right: 0">';
+                $output .= $away_set4_score;
+                if ($_match -> away_set4_tiebreak != '') $output .= $away_set4_tiebreak;
+                $output .= '</div>';
+                $output .= '<div class="col-sm-1" style="padding-left: 0;padding-right: 0">';
+                $output .= $away_set5_score;
+                if ($_match -> away_set5_tiebreak != '') $output .= $away_set5_tiebreak;
+                $output .= '</div>';
+                $output .= '</div>';
                 $output .= '</div>';
             }
             $output .= '</div>';

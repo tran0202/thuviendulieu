@@ -231,6 +231,17 @@ body {
     font-size: 20px;
     border-bottom: 1px solid #5c6066;
 }
+.group-box-sm {
+    transition: box-shadow .3s;
+    border-radius:10px;
+    border: 1px solid #e6e7e9;
+    background-color: #fff;
+    padding: 10px 0;
+    box-shadow: 0 2px 0 0 rgba(230,230,230,0.5);
+}
+.group-box-sm:hover {
+    box-shadow: 0 0 11px rgba(33,33,33,.2);
+}
 .groupBox {
     transition: box-shadow .3s;
     border-radius:10px;
@@ -249,6 +260,26 @@ body {
 .groupRow2 {
     font-family: "Roboto", sans-serif;
     font-size: 30px;
+}
+.group-row-sm {
+    font-family: "Oswald", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+}
+.group-row-sm-thin {
+    font-family: "Oswald", sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+}
+.group-row-md {
+    font-family: "Oswald", sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+}
+.group-row-md-thin {
+    font-family: "Oswald", sans-serif;
+    font-size: 18px;
+    font-weight: 300;
 }
 
 /* ========== Utilities ========== */
