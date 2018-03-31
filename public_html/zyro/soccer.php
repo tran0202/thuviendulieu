@@ -33,7 +33,7 @@
             $output .= '</div>';
             $output .= '<div class="col-sm-12 groupBox">';
             foreach ($_teams as $group_order => $_team) {
-                $output .= '<div class="col-sm-12 groupRow padding-top-md padding-bottom-md border-bottom">';
+                $output .= '<div class="col-sm-12 group-row-lg padding-top-md padding-bottom-md">';
                 $output .= '<div class="col-sm-1"><img class="flag" src="/images/flags/'.$_team -> flag_filename.'"></div>';
                 $output .= '<div class="col-sm-11" style="padding-top: 3px;">'.$_team -> name.'</div>';
                 $output .= '</div>';
@@ -99,9 +99,9 @@
                 $output2 .= '<div class="col-sm-12 groupRow padding-top-md padding-bottom-md padding-left-xs padding-right-xs border-bottom">'.
                     '<div class="col-sm-2 padding-left-xs padding-right-xs"><img class="flag" src="/images/flags/'.$_match -> home_flag.'"></div>'.
                     '<div class="col-sm-3 padding-left-xs padding-right-xs">'.$_match -> home_team_name.'</div>'.
-                    '<div class="col-sm-2 padding-left-xs padding-right-xs">vs</div>'.
-                    '<div class="col-sm-3 padding-left-xs padding-right-xs">'.$_match -> away_team_name.'</div>'.
-                    '<div class="col-sm-2 padding-left-xs padding-right-xs"><img class="flag" src="/images/flags/'.$_match -> away_flag.'"></div>'.
+                    '<div class="col-sm-2 padding-left-xs padding-right-xs text-center">vs</div>'.
+                    '<div class="col-sm-3 padding-left-xs padding-right-xs text-right">'.$_match -> away_team_name.'</div>'.
+                    '<div class="col-sm-2 padding-left-xs padding-right-xs text-right"><img class="flag" src="/images/flags/'.$_match -> away_flag.'"></div>'.
                     '</div>';
             }
             $output2 .= '

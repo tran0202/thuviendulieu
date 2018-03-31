@@ -281,6 +281,16 @@ body {
     font-size: 18px;
     font-weight: 300;
 }
+.group-row-lg {
+    font-family: "Oswald", sans-serif;
+    font-size: 30px;
+    border-bottom: 1px solid #e6e7e9;
+}
+.group-row-lg:last-child {
+    font-family: "Oswald", sans-serif;
+    font-size: 30px;
+    border-bottom: none;
+}
 
 .flag {
     width: 48px;
@@ -293,6 +303,10 @@ body {
 .blue { color: #0040ff; }
 
 /* ========== Typography ========== */
+
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
 
 a.blue-double-arrow { color: #0040ff; font-size: 40px; }
 a:hover.blue-double-arrow { color: #0040ff; font-size: 40px; text-decoration: underline; cursor: pointer; }

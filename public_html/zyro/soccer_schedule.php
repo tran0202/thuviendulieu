@@ -2,8 +2,8 @@
 <?php
     include_once('config.php');
     include_once('tpl.match.php');
-    $sql = 'SELECT t.name AS home_team_name, home_team_score,
-                t2.name AS away_team_name, away_team_score,
+    $sql = 'SELECT t.name AS home_team_name, home_team_score, n.flag_filename AS home_flag, 
+                t2.name AS away_team_name, away_team_score, n2.flag_filename AS away_flag, 
                 DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date, 
                 TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order,
                 waiting_home_team, waiting_away_team,
@@ -15,7 +15,9 @@
                 LEFT JOIN `group` g ON g.id = m.round_id
                 LEFT JOIN `group` g2 ON g2.id = m.stage_id
                 LEFT JOIN team_tournament tt ON tt.team_id = m.home_team_id
-                LEFT JOIN `group` g3 ON g3.id = tt.group_id
+                LEFT JOIN `group` g3 ON g3.id = tt.group_id 
+                LEFT JOIN nation n ON n.id = t.nation_id  
+                LEFT JOIN nation n2 ON n2.id = t2.nation_id 
             WHERE m.tournament_id = 1
             ORDER BY stage_id, round_id, match_date, match_time;';
     $query = $connection -> prepare($sql);
@@ -30,7 +32,14 @@
         while ($row = $query -> fetch(PDO::FETCH_ASSOC)) {
             $match = new Match($row['home_team_name'], $row['away_team_name'],
                 $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_time_fmt'], $row['match_order'],
-                $row['round'], $row['stage'], $row['group_name'], $row['waiting_home_team'], $row['waiting_away_team']);
+                $row['round'], $row['stage'], $row['group_name'], $row['waiting_home_team'], $row['waiting_away_team'],
+                '', '', '', '',
+                '', '', '', '',
+                '', '', '', '',
+                '', '', '', '',
+                '', '', '', '',
+                '', '', '', '',
+                $row['home_flag'], $row['away_flag']);
             $matches[$row['round']][$row['match_date']][$row['match_order']] = $match;
         }
         foreach ($matches as $rounds => $_round) {
@@ -46,12 +55,18 @@
                     $away_team_tmp = $_match -> away_team_name;
                     if ($away_team_tmp == null) $away_team_tmp = '['.$_match -> waiting_away_team.']';
                     $group_text = '';
+                    $home_flag_tmp = '<div class="col-sm-1 padding-left-xs padding-right-xs padding-top"><img class="flag" src="/images/flags/'.$_match -> home_flag.'"></div>';
+                    if ($_match -> home_flag == '') $home_flag_tmp = '<div class="col-sm-1 padding-left-xs padding-right-xs padding-top"></div>';
+                    $away_flag_tmp = '<div class="col-sm-1 padding-left-xs padding-right-xs padding-top"><img class="flag" src="/images/flags/'.$_match -> away_flag.'"></div>';
+                    if ($_match -> away_flag == '') $away_flag_tmp = '<div class="col-sm-1 padding-left-xs padding-right-xs padding-top"></div>';
                     if ($_match -> group_name != null) $group_text = 'Group '.$_match -> group_name;
-                    $output .= '<div class="col-sm-12 margin-top margin-bottom border-bottom">'.
-                        '<div class="col-sm-2 margin-top">'.$_match -> match_time_fmt.' CST<br>'.$group_text.'</div>'.
-                        '<div class="col-sm-3 groupRow">'.$home_team_tmp.'</div>'.
-                        '<div class="col-sm-2 groupRow">vs</div>'.
-                        '<div class="col-sm-3 groupRow">'.$away_team_tmp.'</div>'.
+                    $output .= '<div class="col-sm-12 padding-top-md padding-bottom-md border-bottom">'.
+                        '<div class="col-sm-2 padding-left-xs padding-right-xs margin-top">'.$_match -> match_time_fmt.' CST<br>'.$group_text.'</div>'.
+                        $home_flag_tmp.
+                        '<div class="col-sm-3 groupRow padding-left-xs padding-right-xs">'.$home_team_tmp.'</div>'.
+                        '<div class="col-sm-1 groupRow padding-left-xs padding-right-xs">vs</div>'.
+                        '<div class="col-sm-3 groupRow padding-left-xs padding-right-xs text-right">'.$away_team_tmp.'</div>'.
+                        $away_flag_tmp.
                         '</div>';
                 }
             }
