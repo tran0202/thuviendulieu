@@ -37,6 +37,8 @@
         public $away_set5_score;
         public $home_set5_tiebreak;
         public $away_set5_tiebreak;
+        public $home_flag;
+        public $away_flag;
         function __construct($home_team_name, $away_team_name,
                              $match_date, $match_date_fmt, $match_time, $match_time_fmt, $match_order,
                              $round, $stage, $group_name,
@@ -47,7 +49,8 @@
                              $home_set2_score = 0, $away_set2_score = 0, $home_set2_tiebreak = 0, $away_set2_tiebreak = 0,
                              $home_set3_score = 0, $away_set3_score = 0, $home_set3_tiebreak = 0, $away_set3_tiebreak = 0,
                              $home_set4_score = 0, $away_set4_score = 0, $home_set4_tiebreak = 0, $away_set4_tiebreak = 0,
-                             $home_set5_score = 0, $away_set5_score = 0, $home_set5_tiebreak = 0, $away_set5_tiebreak = 0) {
+                             $home_set5_score = 0, $away_set5_score = 0, $home_set5_tiebreak = 0, $away_set5_tiebreak = 0,
+                             $home_flag = '', $away_flag = '') {
             $this -> home_team_name = $home_team_name;
             $this -> home_team_score = $home_team_score;
             $this -> away_team_name = $away_team_name;
@@ -84,5 +87,7 @@
             $this -> away_set5_score = $away_set5_score;
             $this -> home_set5_tiebreak = $home_set5_tiebreak;
             $this -> away_set5_tiebreak = $away_set5_tiebreak;
+            $this -> home_flag = $home_flag;
+            $this -> away_flag = $away_flag;
         }
     }

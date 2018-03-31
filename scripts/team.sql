@@ -4,8 +4,17 @@ CREATE TABLE IF NOT EXISTS team (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	name VARCHAR(255) NOT NULL UNIQUE,
 	team_type_id INT,
-	FOREIGN KEY (team_type_id) REFERENCES team_type(id)
+	nation_id INT,
+	FOREIGN KEY (team_type_id) REFERENCES team_type(id),
+	FOREIGN KEY (nation_id) REFERENCES nation(id)
 );
+
+ALTER TABLE team
+	ADD COLUMN nation_id INT;
+
+ALTER TABLE team
+	ADD CONSTRAINT team_ibfk_2
+	FOREIGN KEY (nation_id) REFERENCES nation(id);
 
 INSERT INTO team (name, team_type_id)
 VALUES ('Brazil', 1), ('Germany', 1), ('Argentina', 1),	('Portugal', 1),

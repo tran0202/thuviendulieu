@@ -230,6 +230,8 @@
                             $(function() {$("#view-0").show();});
                         </script>
                         <p> </p>
+                    </div>
+                    <div class="col-sm-12 margin-top-lg margin-bottom-lg">
                         <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
                     </div>
 				</div>

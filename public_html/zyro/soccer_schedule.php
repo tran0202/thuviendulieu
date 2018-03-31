@@ -34,7 +34,9 @@
             $matches[$row['round']][$row['match_date']][$row['match_order']] = $match;
         }
         foreach ($matches as $rounds => $_round) {
-            $output .= '<div class="col-sm-12 stageTitle margin-top-md">'.$rounds.'</div>';
+            $output .= '<div class="col-sm-12 stageTitle margin-top-md">'.$rounds;
+            if ($rounds != 'Group Matches') $output .= ' <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018Bracket/" target="_self">Bracket</a></span>';
+            $output .= '</div>';
             foreach ($_round as $match_dates => $_matches) {
                 $output .= '<div class="col-sm-12 groupTitle2 margin-top-md">'
                     .$_matches[array_keys($_matches)[0]] -> match_date_fmt.'</div>';
@@ -90,6 +92,8 @@
                         <?php echo $output; ?>
                         <p class="wb-stl-normal"> </p>
                         <p class="wb-stl-normal"> </p>
+                    </div>
+                    <div class="col-sm-12 margin-top-lg margin-bottom-lg">
                         <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
                     </div>
 				</div>

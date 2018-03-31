@@ -9,3 +9,7 @@ VALUES ('Group'),
 		('Division'),
 		('Stage'),
 		('Round');
+
+INSERT INTO group_type (name)
+VALUES ('Nation'),
+	('Association');

@@ -36,65 +36,41 @@
         }
         $views = array();
         $box_height = 120;
-        $gap_heights = array(array(20, 20), array(90, 160), array(230, 440), array(510, 1000), array(10, 2120));
-        for ($round_start = 0; $round_start <= 0; $round_start++) {
-            $output = '';
-            $i = 0;
-            $j = 0;
-            $k = 0;
-            $round_end = $round_start + 2;
-            $output .= '<div class="col-sm-12 no-padding-lr" id="view-'.$round_start.'" style="display:none;">';
-            foreach ($matches as $round => $_matches) {
-//                $prev_view = $round_start - 1;
-//                $next_view = $round_start + 1;
-//                $left_arrow = '';
-//                if ($round_start != 0 AND $k == $round_start) $left_arrow = '<a class="blue-double-arrow margin-right"><i class="fa fa-angle-double-left link-change-view" data-target="'.$prev_view.'"></i></a>';
-//                $right_arrow = '';
-//                if ($round_start != 2 AND $k == $round_end) $right_arrow = '<a class="blue-double-arrow margin-left"><i class="fa fa-angle-double-right link-change-view" data-target="'.$next_view.'"></i></a>';
-//                if ($k >= $round_start AND $k <= $round_end) {
-                    $gap_height = $gap_heights[$i][0];
-                    $output .= '<div class="col-sm-3">';
-                    $output .= '<div class="col-sm-12 margin-top">';
-//                    $output .= $left_arrow.'<span class="groupTitle">'.$round.'</span>'.$right_arrow;
-                    $output .= '<span class="groupTitle">'.$round.'</span>';
-                    $output .= '</div>';
-                    foreach ($_matches as $match_order => $_match) {
-                        if ($j != 0) $gap_height = $gap_heights[$i][1];
-                        $home_team_name = $_match -> home_team_name;
-                        $away_team_name = $_match -> away_team_name;
-                        $waiting_home_team = $_match -> waiting_home_team;
-                        $waiting_away_team = $_match -> waiting_away_team;
-//                        $home_team_seed = '<span class="group-row-sm-thin">('.$_match -> home_team_seed.')</span> ';
-//                        $away_team_seed = '<span class="group-row-sm-thin">('.$_match -> away_team_seed.')</span> ';
-//                        if ($home_win > $away_win) $away_team_seed = '<span class="group-row-sm-thin" style="color:#858585">('.$_match -> away_team_seed.')</span> ';
-//                        if ($home_win < $away_win) $home_team_seed = '<span class="group-row-sm-thin" style="color:#858585">('.$_match -> home_team_seed.')</span> ';
-                        $output .= '<div class="col-sm-12" style="height:'.$gap_height.'px;"></div>';
-                        $output .= '<div class="col-sm-12 group-box-sm" style="height:'.$box_height.'px;">';
-                        $output .= '<div class="col-sm-12 group-row-md margin-top margin-bottom">';
-                        $output .= '<div class="col-sm-7" style="padding-left: 0;padding-right: 0">';
-//                        if ($_match -> home_team_seed != '') $output .= $home_team_seed;
-//                        $output .= $home_team_name;
-                        $output .= $waiting_home_team;
-                        $output .= '</div>';
-                        $output .= '</div>';
-                        $output .= '<div class="col-sm-12 group-row-md margin-top margin-bottom">';
-                        $output .= '<div class="col-sm-7" style="padding-left: 0;padding-right: 0">';
-//                        if ($_match -> away_team_seed != '') $output .= $away_team_seed;
-//                        $output .= $away_team_name;
-                        $output .= $waiting_away_team;
-                        $output .= '</div>';
-                        $output .= '</div>';
-                        $output .= '</div>';
-                        $j = $j + 1;
-                    }
-                    $output .= '</div>';
-                    $i = $i + 1;
-                    $j = 0;
-//                }
-//                $k++;
+        $gap_heights = array(array(20, 20), array(90, 160), array(230, 440), array(10, 1000), array(10, 2120));
+        $output = '';
+        $i = 0;
+        $j = 0;
+        foreach ($matches as $round => $_matches) {
+            $gap_height = $gap_heights[$i][0];
+            $output .= '<div class="col-sm-3">';
+            if ($round == 'Final') $output .= '<div class="col-sm-12" style="height:410px;"></div>';
+            $output .= '<div class="col-sm-12 margin-top">';
+            $output .= '<span class="stageTitle">'.$round.'</span>';
+            $output .= '</div>';
+            foreach ($_matches as $match_order => $_match) {
+                if ($j != 0) $gap_height = $gap_heights[$i][1];
+                $home_team_name = $_match -> home_team_name;
+                $away_team_name = $_match -> away_team_name;
+                $waiting_home_team = $_match -> waiting_home_team;
+                $waiting_away_team = $_match -> waiting_away_team;
+                $output .= '<div class="col-sm-12" style="height:'.$gap_height.'px;"></div>';
+                $output .= '<div class="col-sm-12 group-box-sm" style="height:'.$box_height.'px;">';
+                $output .= '<div class="col-sm-12 group-row-md margin-top margin-bottom">';
+                $output .= '<div class="col-sm-7" style="padding-left: 0;padding-right: 0">';
+                $output .= $waiting_home_team;
+                $output .= '</div>';
+                $output .= '</div>';
+                $output .= '<div class="col-sm-12 group-row-md margin-top margin-bottom">';
+                $output .= '<div class="col-sm-7" style="padding-left: 0;padding-right: 0">';
+                $output .= $waiting_away_team;
+                $output .= '</div>';
+                $output .= '</div>';
+                $output .= '</div>';
+                $j = $j + 1;
             }
             $output .= '</div>';
-            array_push($views, $output);
+            $i = $i + 1;
+            $j = 0;
         }
     }
 ?>
@@ -127,15 +103,10 @@
                         <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018Bracket/" target="_self">Bracket</a></span>
                     </div>
                     <div>
-                        <?php
-                            for ($view = 0; $view <= 0; $view++) {
-                                echo $views[$view];
-                            }
-                        ?>
-                        <script>
-                            $(function() {$("#view-0").show();});
-                        </script>
+                        <?php echo $output; ?>
                         <p> </p>
+                    </div>
+                    <div class="col-sm-12 margin-top-lg margin-bottom-lg">
                         <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
                     </div>
 				</div>
