@@ -3,11 +3,18 @@ CREATE TABLE IF NOT EXISTS nation (
 	name VARCHAR(255) NOT NULL UNIQUE,
 	alternative_name VARCHAR(255),
 	flag_filename VARCHAR(255),
+	alternative_flag_filename VARCHAR(255),
 	parent_nation_id INT,
 	nation_type_id INT,
 	FOREIGN KEY (parent_nation_id) REFERENCES nation(id),
 	FOREIGN KEY (nation_type_id) REFERENCES group_type(id)
 );
+
+ALTER TABLE nation
+	ADD COLUMN alternative_flag_filename VARCHAR(255);
+
+INSERT INTO nation (name, flag_filename, nation_type_id)
+VALUES ('Great Britain', 'Great_Britain.png', 6);
 
 INSERT INTO nation (name, flag_filename, nation_type_id)
 VALUES ('Afghanistan', 'Afghanistan.png', 6), ('Albania', 'Albania.png', 6), ('Algeria', 'Algeria.png', 6), ('American Samoa', 'American_Samoa.png', 7),

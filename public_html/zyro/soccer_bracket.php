@@ -36,18 +36,19 @@
         }
         $views = array();
         $box_height = 120;
-        $gap_heights = array(array(20, 20), array(90, 160), array(230, 440), array(10, 1000), array(10, 2120));
+        $gap_heights = array(array(10, 20), array(80, 160), array(220, 440), array(410, 1000), array(10, 2120));
         $output = '';
         $i = 0;
         $j = 0;
         foreach ($matches as $round => $_matches) {
             $gap_height = $gap_heights[$i][0];
             $output .= '<div class="col-sm-3">';
-            if ($round == 'Final') $output .= '<div class="col-sm-12" style="height:410px;"></div>';
+            $output .= '<div class="col-sm-12" style="height:'.$gap_height.'px;"></div>';
             $output .= '<div class="col-sm-12 margin-top">';
             $output .= '<span class="stageTitle">'.$round.'</span>';
             $output .= '</div>';
             foreach ($_matches as $match_order => $_match) {
+                $gap_height = 10;
                 if ($j != 0) $gap_height = $gap_heights[$i][1];
                 $home_team_name = $_match -> home_team_name;
                 $away_team_name = $_match -> away_team_name;

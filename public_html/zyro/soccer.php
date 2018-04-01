@@ -79,7 +79,7 @@
                 '', '', '', '',
                 '', '', '', '',
                 '', '', '', '',
-                $row['home_flag'], $row['away_flag']);
+                $row['home_flag'], '', $row['away_flag'], '');
             $matches[$row['group_name']][$row['match_order']] = $match;
         }
         foreach ($matches as $group_name => $_matches) {

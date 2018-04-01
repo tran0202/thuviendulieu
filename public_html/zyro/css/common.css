@@ -261,6 +261,16 @@ body {
     font-family: "Roboto", sans-serif;
     font-size: 30px;
 }
+.group-row-xs {
+    font-family: "Oswald", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+}
+.group-row-xs-thin {
+    font-family: "Oswald", sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+}
 .group-row-sm {
     font-family: "Oswald", sans-serif;
     font-size: 16px;
@@ -295,6 +305,12 @@ body {
 .flag {
     width: 48px;
     height: 32px;
+    border: 1px solid #c7c6c6;
+}
+
+.flag-sm {
+    width: 24px;
+    height: 16px;
     border: 1px solid #c7c6c6;
 }
 
