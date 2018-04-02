@@ -21,7 +21,7 @@
     }
     else {
         while ($row = $query -> fetch(PDO::FETCH_ASSOC)) {
-            $team = new Team($row['name'], $row['group_name'], $row['group_order'], $row['flag_filename']);
+            $team = new Team($row['name'], $row['group_name'], $row['group_order'], '', '', $row['flag_filename']);
             $teams[$row['group_name']][$row['group_order']] = $team;
         }
         foreach ($teams as $group_name => $_teams) {
@@ -32,10 +32,30 @@
             $output .= '</span>';
             $output .= '</div>';
             $output .= '<div class="col-sm-12 groupBox">';
+            $output .= '<div class="col-sm-12 group-row-lg padding-top-md padding-bottom-md" style="font-weight:bold;">';
+            $output .= '<div class="col-sm-1"></div>';
+            $output .= '<div class="col-sm-3"></div>';
+            $output .= '<div class="col-sm-1">MP</div>';
+            $output .= '<div class="col-sm-1">W</div>';
+            $output .= '<div class="col-sm-1">D</div>';
+            $output .= '<div class="col-sm-1">L</div>';
+            $output .= '<div class="col-sm-1">GF</div>';
+            $output .= '<div class="col-sm-1">GA</div>';
+            $output .= '<div class="col-sm-1">+/-</div>';
+            $output .= '<div class="col-sm-1">Pts</div>';
+            $output .= '</div>';
             foreach ($_teams as $group_order => $_team) {
                 $output .= '<div class="col-sm-12 group-row-lg padding-top-md padding-bottom-md">';
                 $output .= '<div class="col-sm-1"><img class="flag" src="/images/flags/'.$_team -> flag_filename.'"></div>';
-                $output .= '<div class="col-sm-11" style="padding-top: 3px;">'.$_team -> name.'</div>';
+                $output .= '<div class="col-sm-3" style="padding-top: 3px;">'.$_team -> name.'</div>';
+                $output .= '<div class="col-sm-1"></div>';
+                $output .= '<div class="col-sm-1"></div>';
+                $output .= '<div class="col-sm-1"></div>';
+                $output .= '<div class="col-sm-1"></div>';
+                $output .= '<div class="col-sm-1"></div>';
+                $output .= '<div class="col-sm-1"></div>';
+                $output .= '<div class="col-sm-1"></div>';
+                $output .= '<div class="col-sm-1"></div>';
                 $output .= '</div>';
             }
             $output .= '</div>';

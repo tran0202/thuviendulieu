@@ -39,7 +39,7 @@
                 '', '', '', '',
                 '', '', '', '',
                 '', '', '', '',
-                $row['home_flag'], $row['away_flag']);
+                $row['home_flag'], '', $row['away_flag'], '');
             $matches[$row['round']][$row['match_date']][$row['match_order']] = $match;
         }
         foreach ($matches as $rounds => $_round) {
@@ -55,10 +55,10 @@
                     $away_team_tmp = $_match -> away_team_name;
                     if ($away_team_tmp == null) $away_team_tmp = '['.$_match -> waiting_away_team.']';
                     $group_text = '';
-                    $home_flag_tmp = '<div class="col-sm-1 padding-left-xs padding-right-xs padding-top"><img class="flag" src="/images/flags/'.$_match -> home_flag.'"></div>';
-                    if ($_match -> home_flag == '') $home_flag_tmp = '<div class="col-sm-1 padding-left-xs padding-right-xs padding-top"></div>';
-                    $away_flag_tmp = '<div class="col-sm-1 padding-left-xs padding-right-xs padding-top"><img class="flag" src="/images/flags/'.$_match -> away_flag.'"></div>';
-                    if ($_match -> away_flag == '') $away_flag_tmp = '<div class="col-sm-1 padding-left-xs padding-right-xs padding-top"></div>';
+                    $home_flag_tmp = '<div class="col-sm-1 padding-left-xs padding-right-xs padding-top text-right"><img class="flag" src="/images/flags/'.$_match -> home_flag.'"></div>';
+                    if ($_match -> home_flag == '') $home_flag_tmp = '<div class="col-sm-1 padding-left-xs padding-right-xs padding-top text-right"></div>';
+                    $away_flag_tmp = '<div class="col-sm-1 padding-left-xs padding-right-xs padding-top text-right"><img class="flag" src="/images/flags/'.$_match -> away_flag.'"></div>';
+                    if ($_match -> away_flag == '') $away_flag_tmp = '<div class="col-sm-1 padding-left-xs padding-right-xs padding-top text-right"></div>';
                     if ($_match -> group_name != null) $group_text = 'Group '.$_match -> group_name;
                     $output .= '<div class="col-sm-12 padding-top-md padding-bottom-md border-bottom">'.
                         '<div class="col-sm-2 padding-left-xs padding-right-xs margin-top">'.$_match -> match_time_fmt.' CST<br>'.$group_text.'</div>'.

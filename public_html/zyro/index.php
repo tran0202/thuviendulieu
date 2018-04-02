@@ -4,7 +4,7 @@
 		'0'	=> array('id' => '1', 'alias' => '', 'file' => 'home.php','controllers' => array()),
 		'1'	=> array('id' => '2', 'alias' => 'Russia2018', 'file' => 'soccer.php','controllers' => array()),
 		'2'	=> array('id' => '3', 'alias' => 'NFL', 'file' => 'football.php','controllers' => array()),
-		'3'	=> array('id' => '4', 'alias' => '2017USOpenMensSingles', 'file' => 'tennis.php','controllers' => array()),
+		'3'	=> array('id' => '4', 'alias' => 'Tennis', 'file' => 'tennis.php','controllers' => array()),
         '4'	=> array('id' => '5', 'alias' => 'Russia2018Schedule', 'file' => 'soccer_schedule.php','controllers' => array()),
         '5'	=> array('id' => '6', 'alias' => 'Russia2018Bracket', 'file' => 'soccer_bracket.php','controllers' => array())
 //		'4'	=> array('id' => '4', 'alias' => 'New-Link', 'file' => 'tennis.php','controllers' => array())

@@ -2,15 +2,17 @@
 <?php
     include_once('config.php');
     include_once('tpl.team.php');
-    $sql = 'SELECT t.name AS name, team_id, ' .
-        'group_id, g.name AS group_name, group_order, ' .
-        'parent_group_id, pg.name AS parent_group_name, pg.long_name AS parent_group_long_name, parent_group_order, tt.tournament_id ' .
-        'FROM team_tournament tt ' .
-        'LEFT JOIN team t ON t.id = tt.team_id ' .
-        'LEFT JOIN `group` g ON g.id = tt.group_id ' .
-        'LEFT JOIN `group` pg ON pg.id = tt.parent_group_id ' .
-        'WHERE tt.tournament_id = 2 ' .
-        'ORDER BY parent_group_name, group_id, group_order';
+    $sql = 'SELECT t.name AS name, tt.team_id, 
+                group_id, g.name AS group_name, group_order, 
+                parent_group_id, pg.name AS parent_group_name, 
+                pg.long_name AS parent_group_long_name, parent_group_order, tl.logo_filename, tt.tournament_id 
+            FROM team_tournament tt 
+            LEFT JOIN team t ON t.id = tt.team_id 
+            LEFT JOIN `group` g ON g.id = tt.group_id 
+            LEFT JOIN `group` pg ON pg.id = tt.parent_group_id 
+            LEFT JOIN team_logo tl ON tl.team_id = t.id 
+            WHERE tt.tournament_id = 2 
+            ORDER BY parent_group_name, group_id, group_order';
     $query = $connection -> prepare($sql);
     $query -> execute();
     $count = $query -> rowCount();
@@ -21,16 +23,50 @@
     }
     else {
         while ($row = $query -> fetch(PDO::FETCH_ASSOC)) {
-            $team = new Team($row['name'], $row['group_name'], $row['group_order'], $row['parent_group_long_name'], $row['parent_group_order']);
+            $team = new Team($row['name'], $row['group_name'], $row['group_order'],
+                $row['parent_group_long_name'], $row['parent_group_order'], '', $row['logo_filename']);
             $teams[$row['parent_group_long_name']][$row['parent_group_name'].' '.$row['group_name']][$row['group_order']] = $team;
         }
         foreach ($teams as $parent_group_long_name => $_conferences) {
-            $output .= '<div class="stageTitle margin-top">'.$parent_group_long_name.'</div>';
+            $output .= '<div class="col-sm-12 stageTitle margin-top-md">'.$parent_group_long_name.'</div>';
             foreach ($_conferences as $group_name => $_divisions) {
-                $output .= '<div class="groupTitle margin-top">'.$group_name.'</div>';
-                $output .= '<div class="groupBox">';
+                $output .= '<div class="col-sm-12 groupTitle margin-top">'.$group_name.'</div>';
+                $output .= '<div class="col-sm-12 groupBox">';
+                $output .= '<div class="col-sm-12 no-padding-lr group-row2-md padding-top padding-bottom" style="font-weight:bold;">';
+                $output .= '<div class="col-sm-3 no-padding-lr"></div>';
+                $output .= '<div class="col-sm-2 no-padding-lr">';
+                $output .= '<div class="col-sm-4 no-padding-lr">W</div>';
+                $output .= '<div class="col-sm-4 no-padding-lr">L</div>';
+                $output .= '<div class="col-sm-4 no-padding-lr">T</div>';
+                $output .= '</div>';
+                $output .= '<div class="col-sm-5 no-padding-lr">';
+                $output .= '<div class="col-sm-3 no-padding-lr">Home</div>';
+                $output .= '<div class="col-sm-3 no-padding-lr">Road</div>';
+                $output .= '<div class="col-sm-3 no-padding-lr">Div</div>';
+                $output .= '<div class="col-sm-3 no-padding-lr">Conf</div>';
+                $output .= '</div>';
+                $output .= '<div class="col-sm-2 no-padding-lr">';
+                $output .= '<div class="col-sm-6 no-padding-lr">Streak</div>';
+                $output .= '<div class="col-sm-6 no-padding-lr">Last 5</div>';
+                $output .= '</div>';
+                $output .= '</div>';
                 foreach ($_divisions as $group_order => $_team) {
-                    $output .= '<div class="groupRow2 margin-top margin-bottom">' . $_team->name . '</div>';
+                    $output .= '<div class="col-sm-12 no-padding-lr group-row2-md padding-top padding-bottom">';
+                    $output .= '<div class="col-sm-3 no-padding-lr">';
+                    $output .= '<div class="col-sm-2 no-padding-lr">';
+                    $output .= '<img src="/images/nfl_logos/'.$_team->logo_filename.'" style="width:40px;" />';
+                    $output .= '</div>';
+                    $output .= '<div class="col-sm-10 no-padding-lr" style="padding-top:8px;">';
+                    $output .= $_team->name;
+                    $output .= '</div>';
+                    $output .= '</div>';
+                    $output .= '<div class="col-sm-2 no-padding-lr">';
+                    $output .= '</div>';
+                    $output .= '<div class="col-sm-5 no-padding-lr">';
+                    $output .= '</div>';
+                    $output .= '<div class="col-sm-2 no-padding-lr">';
+                    $output .= '</div>';
+                    $output .= '</div>';
                 }
                 $output .= '</div>';
             }

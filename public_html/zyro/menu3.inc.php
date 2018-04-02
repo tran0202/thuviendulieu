@@ -4,7 +4,7 @@
         <li><a href="" target="_self">Home</a></li>
         <li><a href="Russia2018/" target="_self">Russia 2018</a></li>
         <li class="active"><a href="NFL/" target="_self">NFL</a></li>
-        <li><a href="2017USOpenMensSingles/" target="_self">2017 US Open Men's Singles</a></li>
+        <li><a href="Tennis/" target="_self">Tennis</a></li>
     </ul>
     <div class="clearfix"></div>
 </div>
