@@ -11,52 +11,52 @@
             LEFT JOIN nation n ON n.id = t.nation_id 
             WHERE tt.tournament_id = 1 
             ORDER BY group_id, group_order';
-    $query = $connection -> prepare($sql);
-    $query -> execute();
-    $count = $query -> rowCount();
+    $query = $connection->prepare($sql);
+    $query->execute();
+    $count = $query->rowCount();
     $teams = array();
     $output = '<!-- Count = '.$count.' -->';
     if ($count == 0) {
         $output = '<h2>No result found!</h2>';
     }
     else {
-        while ($row = $query -> fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
             $team = new Team($row['name'], $row['group_name'], $row['group_order'], '', '', $row['flag_filename']);
             $teams[$row['group_name']][$row['group_order']] = $team;
         }
         foreach ($teams as $group_name => $_teams) {
-            $output .= '<div class="col-sm-12 margin-top">';
-            $output .= '<span class="col-sm-2 groupTitle">Group '.$group_name.'</span>';
-            $output .= '<span class="col-sm-2 wb-stl-heading4 margin-left-md" style="margin-top: 18px;">';
-            $output .= '<a class="link-modal" data-toggle="modal" data-target="#group'.$group_name.'MatchesModal">Matches</a>';
-            $output .= '</span>';
-            $output .= '</div>';
-            $output .= '<div class="col-sm-12 groupBox">';
-            $output .= '<div class="col-sm-12 group-row-lg padding-top-md padding-bottom-md" style="font-weight:bold;">';
-            $output .= '<div class="col-sm-1"></div>';
-            $output .= '<div class="col-sm-3"></div>';
-            $output .= '<div class="col-sm-1">MP</div>';
-            $output .= '<div class="col-sm-1">W</div>';
-            $output .= '<div class="col-sm-1">D</div>';
-            $output .= '<div class="col-sm-1">L</div>';
-            $output .= '<div class="col-sm-1">GF</div>';
-            $output .= '<div class="col-sm-1">GA</div>';
-            $output .= '<div class="col-sm-1">+/-</div>';
-            $output .= '<div class="col-sm-1">Pts</div>';
-            $output .= '</div>';
+            $output .= '<div class="col-sm-12 margin-top">
+                            <span class="col-sm-2 groupTitle">Group '.$group_name.'</span>
+                            <span class="col-sm-2 wb-stl-heading4 margin-left-md" style="margin-top: 18px;">
+                                <a class="link-modal" data-toggle="modal" data-target="#group'.$group_name.'MatchesModal">Matches</a>
+                            </span>
+                        </div>
+                        <div class="col-sm-12 groupBox">
+                            <div class="col-sm-12 group-row-xl padding-top-md padding-bottom-md" style="font-weight:bold;">
+                                <div class="col-sm-1"></div>
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-1">MP</div>
+                                <div class="col-sm-1">W</div>
+                                <div class="col-sm-1">D</div>
+                                <div class="col-sm-1">L</div>
+                                <div class="col-sm-1">GF</div>
+                                <div class="col-sm-1">GA</div>
+                                <div class="col-sm-1">+/-</div>
+                                <div class="col-sm-1">Pts</div>
+                            </div>';
             foreach ($_teams as $group_order => $_team) {
-                $output .= '<div class="col-sm-12 group-row-lg padding-top-md padding-bottom-md">';
-                $output .= '<div class="col-sm-1"><img class="flag" src="/images/flags/'.$_team -> flag_filename.'"></div>';
-                $output .= '<div class="col-sm-3" style="padding-top: 3px;">'.$_team -> name.'</div>';
-                $output .= '<div class="col-sm-1"></div>';
-                $output .= '<div class="col-sm-1"></div>';
-                $output .= '<div class="col-sm-1"></div>';
-                $output .= '<div class="col-sm-1"></div>';
-                $output .= '<div class="col-sm-1"></div>';
-                $output .= '<div class="col-sm-1"></div>';
-                $output .= '<div class="col-sm-1"></div>';
-                $output .= '<div class="col-sm-1"></div>';
-                $output .= '</div>';
+                $output .= '<div class="col-sm-12 group-row-xl padding-top-md padding-bottom-md">
+                                <div class="col-sm-1"><img class="flag" src="/images/flags/'.$_team->flag_filename.'"></div>
+                                <div class="col-sm-3" style="padding-top: 3px;">'.$_team->name.'</div>
+                                <div class="col-sm-1"></div>
+                                <div class="col-sm-1"></div>
+                                <div class="col-sm-1"></div>
+                                <div class="col-sm-1"></div>
+                                <div class="col-sm-1"></div>
+                                <div class="col-sm-1"></div>
+                                <div class="col-sm-1"></div>
+                                <div class="col-sm-1"></div>
+                            </div>';
             }
             $output .= '</div>';
         }
@@ -80,16 +80,16 @@
             LEFT JOIN nation n2 ON n2.id = t2.nation_id 
         WHERE m.tournament_id = 1
         ORDER BY stage_id, round_id, match_date, match_time;';
-    $query = $connection -> prepare($sql);
-    $query -> execute();
-    $count = $query -> rowCount();
+    $query = $connection->prepare($sql);
+    $query->execute();
+    $count = $query->rowCount();
     $matches = array();
-    $output2 = '<!-- Count = '.$count.' -->';
+    $output2 = '<!-- Count2 = '.$count.' -->';
     if ($count == 0) {
         $output2 = '<h2>No result found!</h2>';
     }
     else {
-        while ($row = $query -> fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
             $match = new Match($row['home_team_name'], $row['away_team_name'],
                 $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_time_fmt'], $row['match_order'],
                 $row['round'], $row['stage'], $row['group_name'], '', '',
@@ -116,13 +116,13 @@
                             </div>
                             <div class="modal-body col-sm-12 padding-left-lg padding-right-lg" id="group'.$group_name.'MatchesModalBody">';
             foreach ($_matches as $match_order => $_match) {
-                $output2 .= '<div class="col-sm-12 groupRow padding-top-md padding-bottom-md padding-left-xs padding-right-xs border-bottom">'.
-                    '<div class="col-sm-2 padding-left-xs padding-right-xs"><img class="flag" src="/images/flags/'.$_match -> home_flag.'"></div>'.
-                    '<div class="col-sm-3 padding-left-xs padding-right-xs">'.$_match -> home_team_name.'</div>'.
-                    '<div class="col-sm-2 padding-left-xs padding-right-xs text-center">vs</div>'.
-                    '<div class="col-sm-3 padding-left-xs padding-right-xs text-right">'.$_match -> away_team_name.'</div>'.
-                    '<div class="col-sm-2 padding-left-xs padding-right-xs text-right"><img class="flag" src="/images/flags/'.$_match -> away_flag.'"></div>'.
-                    '</div>';
+                $output2 .= '<div class="col-sm-12 groupRow padding-top-md padding-bottom-md padding-left-xs padding-right-xs border-bottom">
+                                <div class="col-sm-2 padding-left-xs padding-right-xs"><img class="flag" src="/images/flags/'.$_match->home_flag.'"></div>
+                                <div class="col-sm-3 padding-left-xs padding-right-xs">'.$_match->home_team_name.'</div>
+                                <div class="col-sm-2 padding-left-xs padding-right-xs text-center">vs</div>
+                                <div class="col-sm-3 padding-left-xs padding-right-xs text-right">'.$_match->away_team_name.'</div>
+                                <div class="col-sm-2 padding-left-xs padding-right-xs text-right"><img class="flag" src="/images/flags/'.$_match->away_flag.'"></div>
+                            </div>';
             }
             $output2 .= '
                             </div>

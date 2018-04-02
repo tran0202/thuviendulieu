@@ -42,12 +42,12 @@
 	include_once('config.php');
 	$output = '';
 	$sql = 'SELECT * FROM `team` WHERE id = :uid';
-    $query = $connection -> prepare($sql);
-	$query -> bindValue(':uid', 1, PDO::PARAM_INT);
-	$query -> execute();
-	$count = $query -> rowCount();
+    $query = $connection->prepare($sql);
+	$query->bindValue(':uid', 1, PDO::PARAM_INT);
+	$query->execute();
+	$count = $query->rowCount();
 	if ($count != 0) {
-		while ($row = $query -> fetch(PDO::FETCH_ASSOC)) {
+		while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 			$output .= '<h2>'.$row['id'].' '.$row['name'].'</h2><br>';
 		}
 	} 

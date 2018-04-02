@@ -13,16 +13,16 @@
             LEFT JOIN team_logo tl ON tl.team_id = t.id 
             WHERE tt.tournament_id = 2 
             ORDER BY parent_group_name, group_id, group_order';
-    $query = $connection -> prepare($sql);
-    $query -> execute();
-    $count = $query -> rowCount();
+    $query = $connection->prepare($sql);
+    $query->execute();
+    $count = $query->rowCount();
     $teams = array();
     $output = '<!-- Count = '.$count.' -->';
     if ($count == 0) {
         $output = '<h2>No result found!</h2>';
     }
     else {
-        while ($row = $query -> fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
             $team = new Team($row['name'], $row['group_name'], $row['group_order'],
                 $row['parent_group_long_name'], $row['parent_group_order'], '', $row['logo_filename']);
             $teams[$row['parent_group_long_name']][$row['parent_group_name'].' '.$row['group_name']][$row['group_order']] = $team;
@@ -30,43 +30,41 @@
         foreach ($teams as $parent_group_long_name => $_conferences) {
             $output .= '<div class="col-sm-12 stageTitle margin-top-md">'.$parent_group_long_name.'</div>';
             foreach ($_conferences as $group_name => $_divisions) {
-                $output .= '<div class="col-sm-12 groupTitle margin-top">'.$group_name.'</div>';
-                $output .= '<div class="col-sm-12 groupBox">';
-                $output .= '<div class="col-sm-12 no-padding-lr group-row2-md padding-top padding-bottom" style="font-weight:bold;">';
-                $output .= '<div class="col-sm-3 no-padding-lr"></div>';
-                $output .= '<div class="col-sm-2 no-padding-lr">';
-                $output .= '<div class="col-sm-4 no-padding-lr">W</div>';
-                $output .= '<div class="col-sm-4 no-padding-lr">L</div>';
-                $output .= '<div class="col-sm-4 no-padding-lr">T</div>';
-                $output .= '</div>';
-                $output .= '<div class="col-sm-5 no-padding-lr">';
-                $output .= '<div class="col-sm-3 no-padding-lr">Home</div>';
-                $output .= '<div class="col-sm-3 no-padding-lr">Road</div>';
-                $output .= '<div class="col-sm-3 no-padding-lr">Div</div>';
-                $output .= '<div class="col-sm-3 no-padding-lr">Conf</div>';
-                $output .= '</div>';
-                $output .= '<div class="col-sm-2 no-padding-lr">';
-                $output .= '<div class="col-sm-6 no-padding-lr">Streak</div>';
-                $output .= '<div class="col-sm-6 no-padding-lr">Last 5</div>';
-                $output .= '</div>';
-                $output .= '</div>';
+                $output .= '<div class="col-sm-12 groupTitle margin-top">'.$group_name.'</div>
+                            <div class="col-sm-12 groupBox">
+                                <div class="col-sm-12 no-padding-lr group-row2-md padding-top padding-bottom" style="font-weight:bold;">
+                                    <div class="col-sm-3 no-padding-lr"></div>
+                                    <div class="col-sm-2 no-padding-lr">
+                                        <div class="col-sm-4 no-padding-lr">W</div>
+                                        <div class="col-sm-4 no-padding-lr">L</div>
+                                        <div class="col-sm-4 no-padding-lr">T</div>
+                                    </div>
+                                    <div class="col-sm-5 no-padding-lr">
+                                        <div class="col-sm-3 no-padding-lr">Home</div>
+                                        <div class="col-sm-3 no-padding-lr">Road</div>
+                                        <div class="col-sm-3 no-padding-lr">Div</div>
+                                        <div class="col-sm-3 no-padding-lr">Conf</div>
+                                    </div>
+                                    <div class="col-sm-2 no-padding-lr">
+                                        <div class="col-sm-6 no-padding-lr">Streak</div>
+                                        <div class="col-sm-6 no-padding-lr">Last 5</div>
+                                    </div>
+                                </div>';
                 foreach ($_divisions as $group_order => $_team) {
-                    $output .= '<div class="col-sm-12 no-padding-lr group-row2-md padding-top padding-bottom">';
-                    $output .= '<div class="col-sm-3 no-padding-lr">';
-                    $output .= '<div class="col-sm-2 no-padding-lr">';
-                    $output .= '<img src="/images/nfl_logos/'.$_team->logo_filename.'" style="width:40px;" />';
-                    $output .= '</div>';
-                    $output .= '<div class="col-sm-10 no-padding-lr" style="padding-top:8px;">';
-                    $output .= $_team->name;
-                    $output .= '</div>';
-                    $output .= '</div>';
-                    $output .= '<div class="col-sm-2 no-padding-lr">';
-                    $output .= '</div>';
-                    $output .= '<div class="col-sm-5 no-padding-lr">';
-                    $output .= '</div>';
-                    $output .= '<div class="col-sm-2 no-padding-lr">';
-                    $output .= '</div>';
-                    $output .= '</div>';
+                    $output .= '<div class="col-sm-12 no-padding-lr group-row2-md padding-top padding-bottom">
+                                    <div class="col-sm-3 no-padding-lr">
+                                        <div class="col-sm-2 no-padding-lr">
+                                            <img src="/images/nfl_logos/'.$_team->logo_filename.'" style="width:40px;" />
+                                        </div>
+                                        <div class="col-sm-10 no-padding-lr" style="padding-top:8px;">'.$_team->name.'</div>
+                                    </div>
+                                    <div class="col-sm-2 no-padding-lr">
+                                    </div>
+                                    <div class="col-sm-5 no-padding-lr">
+                                    </div>
+                                    <div class="col-sm-2 no-padding-lr">
+                                    </div>
+                                </div>';
                 }
                 $output .= '</div>';
             }

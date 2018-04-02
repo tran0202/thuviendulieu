@@ -313,10 +313,20 @@ body {
 }
 .group-row-lg {
     font-family: "Oswald", sans-serif;
-    font-size: 30px;
+    font-size: 20px;
     border-bottom: 1px solid #e6e7e9;
 }
 .group-row-lg:last-child {
+    font-family: "Oswald", sans-serif;
+    font-size: 20px;
+    border-bottom: none;
+}
+.group-row-xl {
+    font-family: "Oswald", sans-serif;
+    font-size: 30px;
+    border-bottom: 1px solid #e6e7e9;
+}
+.group-row-xl:last-child {
     font-family: "Oswald", sans-serif;
     font-size: 30px;
     border-bottom: none;

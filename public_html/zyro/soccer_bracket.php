@@ -18,17 +18,16 @@
                 LEFT JOIN `group` g3 ON g3.id = tt.group_id
             WHERE m.tournament_id = 1 AND m.stage_id = 40
             ORDER BY match_order;';
-    $query = $connection -> prepare($sql);
-    $query -> execute();
-    $count = $query -> rowCount();
+    $query = $connection->prepare($sql);
+    $query->execute();
+    $count = $query->rowCount();
     $matches = array();
     $output = '<!-- Total Count = '.$count.' -->';
-    echo $output;
     if ($count == 0) {
         $output = '<h2>No result found!</h2>';
     }
     else {
-        while ($row = $query -> fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
             $match = new Match($row['home_team_name'], $row['away_team_name'],
                 $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_time_fmt'], $row['match_order'], $row['round'],
                 $row['stage'], $row['group_name'], $row['waiting_home_team'], $row['waiting_away_team']);
@@ -37,36 +36,35 @@
         $views = array();
         $box_height = 120;
         $gap_heights = array(array(10, 20), array(80, 160), array(220, 440), array(410, 1000), array(10, 2120));
-        $output = '';
         $i = 0;
         $j = 0;
         foreach ($matches as $round => $_matches) {
             $gap_height = $gap_heights[$i][0];
-            $output .= '<div class="col-sm-3">';
-            $output .= '<div class="col-sm-12" style="height:'.$gap_height.'px;"></div>';
-            $output .= '<div class="col-sm-12 margin-top">';
-            $output .= '<span class="stageTitle">'.$round.'</span>';
-            $output .= '</div>';
+            $output .= '<div class="col-sm-3">
+                            <div class="col-sm-12" style="height:'.$gap_height.'px;"></div>
+                            <div class="col-sm-12 margin-top">
+                                <span class="stageTitle">'.$round.'</span>
+                            </div>';
             foreach ($_matches as $match_order => $_match) {
                 $gap_height = 10;
                 if ($j != 0) $gap_height = $gap_heights[$i][1];
-                $home_team_name = $_match -> home_team_name;
-                $away_team_name = $_match -> away_team_name;
-                $waiting_home_team = $_match -> waiting_home_team;
-                $waiting_away_team = $_match -> waiting_away_team;
-                $output .= '<div class="col-sm-12" style="height:'.$gap_height.'px;"></div>';
-                $output .= '<div class="col-sm-12 group-box-sm" style="height:'.$box_height.'px;">';
-                $output .= '<div class="col-sm-12 group-row-md margin-top margin-bottom">';
-                $output .= '<div class="col-sm-7" style="padding-left: 0;padding-right: 0">';
-                $output .= $waiting_home_team;
-                $output .= '</div>';
-                $output .= '</div>';
-                $output .= '<div class="col-sm-12 group-row-md margin-top margin-bottom">';
-                $output .= '<div class="col-sm-7" style="padding-left: 0;padding-right: 0">';
-                $output .= $waiting_away_team;
-                $output .= '</div>';
-                $output .= '</div>';
-                $output .= '</div>';
+                $home_team_name = $_match->home_team_name;
+                $away_team_name = $_match->away_team_name;
+                $waiting_home_team = $_match->waiting_home_team;
+                $waiting_away_team = $_match->waiting_away_team;
+                $output .= '<div class="col-sm-12" style="height:'.$gap_height.'px;"></div>
+                            <div class="col-sm-12 group-box-sm" style="height:'.$box_height.'px;">
+                                <div class="col-sm-12 group-row-md margin-top margin-bottom">
+                                    <div class="col-sm-7" style="padding-left: 0;padding-right: 0">'.
+                                        $waiting_home_team.
+                                    '</div>
+                                </div>
+                                <div class="col-sm-12 group-row-md margin-top margin-bottom">
+                                    <div class="col-sm-7" style="padding-left: 0;padding-right: 0">'.
+                                        $waiting_away_team.
+                                    '</div>
+                                </div>
+                            </div>';
                 $j = $j + 1;
             }
             $output .= '</div>';
