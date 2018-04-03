@@ -33,7 +33,6 @@
                 $row['stage'], $row['group_name'], $row['waiting_home_team'], $row['waiting_away_team']);
             $matches[$row['round']][$row['match_order']] = $match;
         }
-        $views = array();
         $box_height = 120;
         $gap_heights = array(array(10, 20), array(80, 160), array(220, 440), array(410, 1000), array(10, 2120));
         $i = 0;

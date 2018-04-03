@@ -24,7 +24,9 @@
     $query->execute();
     $count = $query->rowCount();
     $matches = array();
+    $bracket_matches = array();
     $output = '<!-- Count = '.$count.' -->';
+    $output2 = '';
     if ($count == 0) {
         $output = '<h2>No result found!</h2>';
     }
@@ -41,13 +43,68 @@
                 '', '', '', '',
                 $row['home_flag'], '', $row['away_flag'], '');
             $matches[$row['round']][$row['match_date']][$row['match_order']] = $match;
+            if ($row['round'] != 'Group Matches') $bracket_matches[$row['round']][$row['match_order']] = $match;
         }
-        foreach ($matches as $rounds => $_round) {
-            $output .= '<div class="col-sm-12 stageTitle margin-top-md">'.$rounds;
-            if ($rounds != 'Group Matches') $output .= ' <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018Bracket/" target="_self">Bracket</a></span>';
+        $output .= '
+                        <div id="accordion" class="">
+                            <div class="card col-sm-12 padding-top-md padding-bottom-md border-bottom">
+                                <div class="card-header" id="headingTwo" style="width:100%;padding-left:0;">
+                                    
+                                        <button class="btn btn-link collapsed title no-padding-left" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            Bracket <i id="bracket-down-arrow" class="fa fa-angle-double-down blue-pale-xl"></i> <i id="bracket-up-arrow" class="fa fa-angle-double-up blue-pale-xl" style="display:none;"></i>
+                                        </button>
+                                    
+                                </div>
+                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                    <div class="card-body">
+                                        ';
+        $box_height = 120;
+        $gap_heights = array(array(10, 20), array(80, 160), array(220, 440), array(410, 1000), array(10, 2120));
+        $i = 0;
+        $j = 0;
+        foreach ($bracket_matches as $bracket_round => $_bracket_matches) {
+            $gap_height = $gap_heights[$i][0];
+            $output .= '<div class="col-sm-3">
+                            <div class="col-sm-12" style="height:'.$gap_height.'px;"></div>
+                            <div class="col-sm-12 margin-top">
+                                <span class="stageTitle">'.$bracket_round.'</span>
+                            </div>';
+            foreach ($_bracket_matches as $bracket_match_order => $_bracket_match) {
+                $gap_height = 10;
+                if ($j != 0) $gap_height = $gap_heights[$i][1];
+                $home_team_name = $_bracket_match->home_team_name;
+                $away_team_name = $_bracket_match->away_team_name;
+                $waiting_home_team = $_bracket_match->waiting_home_team;
+                $waiting_away_team = $_bracket_match->waiting_away_team;
+                $output .= '<div class="col-sm-12" style="height:'.$gap_height.'px;"></div>
+                            <div class="col-sm-12 group-box-sm" style="height:'.$box_height.'px;">
+                                <div class="col-sm-12 group-row-md margin-top margin-bottom">
+                                    <div class="col-sm-7" style="padding-left: 0;padding-right: 0">'.
+                    $waiting_home_team.
+                    '</div>
+                                </div>
+                                <div class="col-sm-12 group-row-md margin-top margin-bottom">
+                                    <div class="col-sm-7" style="padding-left: 0;padding-right: 0">'.
+                    $waiting_away_team.
+                    '</div>
+                                </div>
+                            </div>';
+                $j = $j + 1;
+            }
             $output .= '</div>';
+            $i = $i + 1;
+            $j = 0;
+        }
+        $output .=         '
+                                    </div>
+                                </div>
+                            </div>
+                        </div>';
+        foreach ($matches as $rounds => $_round) {
+            if ($rounds == 'Round of 16') $output2 .= $output;
+            $output2 .= '<div class="col-sm-12 stageTitle margin-top-md">'.$rounds.'</div>';
             foreach ($_round as $match_dates => $_matches) {
-                $output .= '<div class="col-sm-12 groupTitle2 margin-top-md">'
+                $output2 .= '<div class="col-sm-12 groupTitle2 margin-top-md">'
                     .$_matches[array_keys($_matches)[0]]->match_date_fmt.'</div>';
                 foreach ($_matches as $match_order => $_match) {
                     $home_team_tmp = $_match->home_team_name;
@@ -65,7 +122,7 @@
                     if ($_match->away_flag == '') $away_flag_tmp = '<div class="col-sm-1 padding-left-xs padding-right-xs padding-top text-right"></div>';
                     if ($_match->group_name != null) $group_text = '<a class="link-modal" data-toggle="modal" data-target="#group'.$_match->group_name.'StandingModal">
                                                                         Group '.$_match->group_name.'</a>' ;
-                    $output .= '<div class="col-sm-12 padding-top-md padding-bottom-md border-bottom">
+                    $output2 .= '<div class="col-sm-12 padding-top-md padding-bottom-md border-bottom">
                                     <div class="col-sm-2 padding-left-xs padding-right-xs margin-top">'.$_match->match_time_fmt.' CST<br>'.$group_text.'</div>'.
                                     $home_flag_tmp.
                                     '<div class="col-sm-3 groupRow padding-left-lg padding-right-xs">'.$home_team_tmp.'</div>
@@ -92,9 +149,9 @@
     $query->execute();
     $count = $query->rowCount();
     $teams = array();
-    $output2 = '<!-- Count2 = '.$count.' -->';
+    $output3 = '<!-- Count2 = '.$count.' -->';
     if ($count == 0) {
-        $output2 = '<h2>No result found!</h2>';
+        $output3 = '<h2>No result found!</h2>';
     }
     else {
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
@@ -102,7 +159,7 @@
             $teams[$row['group_name']][$row['group_order']] = $team;
         }
         foreach ($teams as $group_name => $_teams) {
-            $output2 .= '<div class="modal fade" id="group'.$group_name.'StandingModal" tabindex="-1" role="dialog" aria-labelledby="group'.$group_name.'StandingModalLabel" aria-hidden="true">
+            $output3 .= '<div class="modal fade" id="group'.$group_name.'StandingModal" tabindex="-1" role="dialog" aria-labelledby="group'.$group_name.'StandingModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document" style="width:800px;">
                         <div class="modal-content">
                             <div class="col-sm-12">
@@ -127,7 +184,7 @@
                                     <div class="col-sm-1">Pts</div>
                                 </div>';
             foreach ($_teams as $group_order => $_team) {
-                $output2 .=     '<div class="col-sm-12 group-row-lg padding-top-md padding-bottom-md">
+                $output3 .=     '<div class="col-sm-12 group-row-lg padding-top-md padding-bottom-md">
                                     <div class="col-sm-1"><img class="flag" src="/images/flags/'.$_team->flag_filename.'"></div>
                                     <div class="col-sm-3" style="padding-top: 3px;">'.$_team->name.'</div>
                                     <div class="col-sm-1"></div>
@@ -140,7 +197,7 @@
                                     <div class="col-sm-1"></div>
                                 </div>';
             }
-            $output2 .= '
+            $output3 .= '
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -159,6 +216,18 @@
     <?php include_once('header_script.inc.php'); ?>
 	<link href="css/2.css?ts=1520882525" rel="stylesheet" type="text/css" />
     <link href="css/footer.css" rel="stylesheet" type="text/css" />
+    <script>
+        $(function() {
+            $('#collapseTwo').on('shown.bs.collapse', function () {
+                $('#bracket-down-arrow').hide();
+                $('#bracket-up-arrow').show();
+            })
+            $('#collapseTwo').on('hidden.bs.collapse', function () {
+                $('#bracket-down-arrow').show();
+                $('#bracket-up-arrow').hide();
+            })
+        });
+    </script>
 </head>
 
 <body>
@@ -184,7 +253,7 @@
                         <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018Bracket/" target="_self">Bracket</a></span>
                     </div>
                     <div>
-                        <?php echo $output; ?>
+                        <?php echo $output2; ?>
                         <p class="wb-stl-normal"> </p>
                         <p class="wb-stl-normal"> </p>
                     </div>
@@ -202,7 +271,7 @@
         <?php include_once('footer.inc.php'); ?>
 	</div>
     <!-- Modal -->
-    <?php echo $output2; ?>
+    <?php echo $output3; ?>
 	{{hr_out}}
 </body>
 </html>
