@@ -42,7 +42,7 @@
             $output .= '<div class="col-sm-3">
                             <div class="col-sm-12" style="height:'.$gap_height.'px;"></div>
                             <div class="col-sm-12 margin-top">
-                                <span class="stageTitle">'.$round.'</span>
+                                <span class="h2-ff1">'.$round.'</span>
                             </div>';
             foreach ($_matches as $match_order => $_match) {
                 $gap_height = 10;
@@ -52,14 +52,14 @@
                 $waiting_home_team = $_match->waiting_home_team;
                 $waiting_away_team = $_match->waiting_away_team;
                 $output .= '<div class="col-sm-12" style="height:'.$gap_height.'px;"></div>
-                            <div class="col-sm-12 group-box-sm" style="height:'.$box_height.'px;">
-                                <div class="col-sm-12 group-row-md margin-top margin-bottom">
-                                    <div class="col-sm-7" style="padding-left: 0;padding-right: 0">'.
+                            <div class="col-sm-12 box-sm" style="height:'.$box_height.'px;">
+                                <div class="col-sm-12 h4-ff3 margin-tb-sm">
+                                    <div class="col-sm-7 no-padding-lr">'.
                                         $waiting_home_team.
                                     '</div>
                                 </div>
-                                <div class="col-sm-12 group-row-md margin-top margin-bottom">
-                                    <div class="col-sm-7" style="padding-left: 0;padding-right: 0">'.
+                                <div class="col-sm-12 h4-ff3 margin-tb-sm">
+                                    <div class="col-sm-7 no-padding-lr">'.
                                         $waiting_away_team.
                                     '</div>
                                 </div>
@@ -104,7 +104,7 @@
                         <?php echo $output; ?>
                         <p> </p>
                     </div>
-                    <div class="col-sm-12 margin-top-lg margin-bottom-lg">
+                    <div class="col-sm-12 margin-tb-lg">
                         <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
                     </div>
 				</div>

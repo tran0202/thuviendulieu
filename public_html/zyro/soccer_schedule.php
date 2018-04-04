@@ -47,15 +47,15 @@
         }
         $output .= '
                         <div id="accordion" class="">
-                            <div class="card col-sm-12 padding-top-md padding-bottom-md border-bottom">
-                                <div class="card-header" id="headingTwo" style="width:100%;padding-left:0;">
-                                    
-                                        <button class="btn btn-link collapsed title no-padding-left" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                            Bracket <i id="bracket-down-arrow" class="fa fa-angle-double-down blue-pale-xl"></i> <i id="bracket-up-arrow" class="fa fa-angle-double-up blue-pale-xl" style="display:none;"></i>
-                                        </button>
-                                    
+                            <div class="card col-sm-12 padding-tb-md border-bottom">
+                                <div class="card-header" id="heading-bracket" style="width:100%;padding-left:0;">                                    
+                                    <button class="btn btn-link collapsed h2-ff1 no-padding-left" data-toggle="collapse" 
+                                        data-target="#collapse-bracket" aria-expanded="false" aria-controls="collapse-bracket">
+                                            Bracket <i id="bracket-down-arrow" class="fa fa-angle-double-down font-xl"></i> 
+                                            <i id="bracket-up-arrow" class="fa fa-angle-double-up font-xl no-display"></i>
+                                    </button>                                    
                                 </div>
-                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                <div id="collapse-bracket" class="collapse" aria-labelledby="heading-bracket" data-parent="#accordion">
                                     <div class="card-body">
                                         ';
         $box_height = 120;
@@ -66,8 +66,8 @@
             $gap_height = $gap_heights[$i][0];
             $output .= '<div class="col-sm-3">
                             <div class="col-sm-12" style="height:'.$gap_height.'px;"></div>
-                            <div class="col-sm-12 margin-top">
-                                <span class="stageTitle">'.$bracket_round.'</span>
+                            <div class="col-sm-12 margin-top-sm">
+                                <span class="h2-ff1">'.$bracket_round.'</span>
                             </div>';
             foreach ($_bracket_matches as $bracket_match_order => $_bracket_match) {
                 $gap_height = 10;
@@ -77,14 +77,14 @@
                 $waiting_home_team = $_bracket_match->waiting_home_team;
                 $waiting_away_team = $_bracket_match->waiting_away_team;
                 $output .= '<div class="col-sm-12" style="height:'.$gap_height.'px;"></div>
-                            <div class="col-sm-12 group-box-sm" style="height:'.$box_height.'px;">
-                                <div class="col-sm-12 group-row-md margin-top margin-bottom">
-                                    <div class="col-sm-7" style="padding-left: 0;padding-right: 0">'.
+                            <div class="col-sm-12 box-sm" style="height:'.$box_height.'px;">
+                                <div class="col-sm-12 h4-ff3 margin-tb-sm">
+                                    <div class="col-sm-7 no-padding-lr">'.
                     $waiting_home_team.
                     '</div>
                                 </div>
-                                <div class="col-sm-12 group-row-md margin-top margin-bottom">
-                                    <div class="col-sm-7" style="padding-left: 0;padding-right: 0">'.
+                                <div class="col-sm-12 h4-ff3 margin-tb-sm">
+                                    <div class="col-sm-7 no-padding-lr">'.
                     $waiting_away_team.
                     '</div>
                                 </div>
@@ -102,9 +102,9 @@
                         </div>';
         foreach ($matches as $rounds => $_round) {
             if ($rounds == 'Round of 16') $output2 .= $output;
-            $output2 .= '<div class="col-sm-12 stageTitle margin-top-md">'.$rounds.'</div>';
+            $output2 .= '<div class="col-sm-12 h2-ff1 margin-top-md">'.$rounds.'</div>';
             foreach ($_round as $match_dates => $_matches) {
-                $output2 .= '<div class="col-sm-12 groupTitle2 margin-top-md">'
+                $output2 .= '<div class="col-sm-12 h3-ff3 border-bottom-gray2 margin-top-md">'
                     .$_matches[array_keys($_matches)[0]]->match_date_fmt.'</div>';
                 foreach ($_matches as $match_order => $_match) {
                     $home_team_tmp = $_match->home_team_name;
@@ -112,22 +112,22 @@
                     $away_team_tmp = $_match->away_team_name;
                     if ($away_team_tmp == null) $away_team_tmp = '['.$_match->waiting_away_team.']';
                     $group_text = '';
-                    $home_flag_tmp = '<div class="col-sm-1 padding-left-xs padding-right-xs padding-top text-right">
-                                            <img class="flag" src="/images/flags/'.$_match->home_flag.'">
+                    $home_flag_tmp = '<div class="col-sm-1 padding-lr-xs padding-top-sm text-right">
+                                            <img class="flag-md" src="/images/flags/'.$_match->home_flag.'">
                                         </div>';
-                    if ($_match->home_flag == '') $home_flag_tmp = '<div class="col-sm-1 padding-left-xs padding-right-xs padding-top text-right"></div>';
-                    $away_flag_tmp = '<div class="col-sm-1 padding-left-xs padding-right-xs padding-top text-right">
-                                            <img class="flag" src="/images/flags/'.$_match->away_flag.'">
+                    if ($_match->home_flag == '') $home_flag_tmp = '<div class="col-sm-1 padding-lr-xs padding-top-sm text-right"></div>';
+                    $away_flag_tmp = '<div class="col-sm-1 padding-lr-xs padding-top-sm text-right">
+                                            <img class="flag-md" src="/images/flags/'.$_match->away_flag.'">
                                         </div>';
-                    if ($_match->away_flag == '') $away_flag_tmp = '<div class="col-sm-1 padding-left-xs padding-right-xs padding-top text-right"></div>';
+                    if ($_match->away_flag == '') $away_flag_tmp = '<div class="col-sm-1 padding-lr-xs padding-top-sm text-right"></div>';
                     if ($_match->group_name != null) $group_text = '<a class="link-modal" data-toggle="modal" data-target="#group'.$_match->group_name.'StandingModal">
                                                                         Group '.$_match->group_name.'</a>' ;
-                    $output2 .= '<div class="col-sm-12 padding-top-md padding-bottom-md border-bottom">
-                                    <div class="col-sm-2 padding-left-xs padding-right-xs margin-top">'.$_match->match_time_fmt.' CST<br>'.$group_text.'</div>'.
+                    $output2 .= '<div class="col-sm-12 padding-tb-md border-bottom-gray5">
+                                    <div class="col-sm-2 padding-lr-xs margin-top-sm">'.$_match->match_time_fmt.' CST<br>'.$group_text.'</div>'.
                                     $home_flag_tmp.
-                                    '<div class="col-sm-3 groupRow padding-left-lg padding-right-xs">'.$home_team_tmp.'</div>
-                                    <div class="col-sm-1 groupRow padding-left-xs padding-right-xs">vs</div>
-                                    <div class="col-sm-3 groupRow padding-left-xs padding-right-xs text-right">'.$away_team_tmp.'</div>'.
+                                    '<div class="col-sm-3 h2-ff3 padding-left-lg padding-right-xs">'.$home_team_tmp.'</div>
+                                    <div class="col-sm-1 h2-ff3 padding-lr-xs">vs</div>
+                                    <div class="col-sm-3 h2-ff3 padding-lr-xs text-right">'.$away_team_tmp.'</div>'.
                                     $away_flag_tmp.
                                 '</div>';
                 }
@@ -164,14 +164,14 @@
                         <div class="modal-content">
                             <div class="col-sm-12">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span style="font-size:48px;" aria-hidden="true">&times;</span>
+                                    <span class="modal-X" aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-header col-sm-12 padding-left-lg padding-right-lg" style="border-bottom:none;">
-                                <div class="col-sm-12 groupTitle2" id="group'.$group_name.'StandingModalLabel">Group '.$group_name.'</div>
+                            <div class="modal-header col-sm-12 padding-lr-lg" style="border-bottom:none;">
+                                <div class="col-sm-12 h3-ff3 border-bottom-gray2" id="group'.$group_name.'StandingModalLabel">Group '.$group_name.'</div>
                             </div>
-                            <div class="modal-body col-sm-12 padding-left-lg padding-right-lg" id="group'.$group_name.'StandingModalBody">
-                                <div class="col-sm-12 group-row-lg padding-top-md padding-bottom-md" style="font-weight:bold;">
+                            <div class="modal-body col-sm-12 padding-lr-lg" id="group'.$group_name.'StandingModalBody">
+                                <div class="col-sm-12 h3-ff3 row padding-tb-md font-bold">
                                     <div class="col-sm-1"></div>
                                     <div class="col-sm-3"></div>
                                     <div class="col-sm-1">MP</div>
@@ -184,8 +184,8 @@
                                     <div class="col-sm-1">Pts</div>
                                 </div>';
             foreach ($_teams as $group_order => $_team) {
-                $output3 .=     '<div class="col-sm-12 group-row-lg padding-top-md padding-bottom-md">
-                                    <div class="col-sm-1"><img class="flag" src="/images/flags/'.$_team->flag_filename.'"></div>
+                $output3 .=     '<div class="col-sm-12 h3-ff3 row padding-tb-md">
+                                    <div class="col-sm-1"><img class="flag-md" src="/images/flags/'.$_team->flag_filename.'"></div>
                                     <div class="col-sm-3" style="padding-top: 3px;">'.$_team->name.'</div>
                                     <div class="col-sm-1"></div>
                                     <div class="col-sm-1"></div>
@@ -201,7 +201,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span style="font-size:26px;" aria-hidden="true">Close</span>
+                                    <span class="modal-close" aria-hidden="true">Close</span>
                                 </button>
                             </div>
                         </div>
@@ -216,18 +216,6 @@
     <?php include_once('header_script.inc.php'); ?>
 	<link href="css/2.css?ts=1520882525" rel="stylesheet" type="text/css" />
     <link href="css/footer.css" rel="stylesheet" type="text/css" />
-    <script>
-        $(function() {
-            $('#collapseTwo').on('shown.bs.collapse', function () {
-                $('#bracket-down-arrow').hide();
-                $('#bracket-up-arrow').show();
-            })
-            $('#collapseTwo').on('hidden.bs.collapse', function () {
-                $('#bracket-down-arrow').show();
-                $('#bracket-up-arrow').hide();
-            })
-        });
-    </script>
 </head>
 
 <body>
@@ -257,7 +245,7 @@
                         <p class="wb-stl-normal"> </p>
                         <p class="wb-stl-normal"> </p>
                     </div>
-                    <div class="col-sm-12 margin-top-lg margin-bottom-lg">
+                    <div class="col-sm-12 margin-tb-lg">
                         <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
                     </div>
 				</div>

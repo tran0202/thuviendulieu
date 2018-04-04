@@ -28,11 +28,11 @@
             $teams[$row['parent_group_long_name']][$row['parent_group_name'].' '.$row['group_name']][$row['group_order']] = $team;
         }
         foreach ($teams as $parent_group_long_name => $_conferences) {
-            $output .= '<div class="col-sm-12 stageTitle margin-top-md">'.$parent_group_long_name.'</div>';
+            $output .= '<div class="col-sm-12 h2-ff1 margin-top-md">'.$parent_group_long_name.'</div>';
             foreach ($_conferences as $group_name => $_divisions) {
-                $output .= '<div class="col-sm-12 groupTitle margin-top">'.$group_name.'</div>
-                            <div class="col-sm-12 groupBox">
-                                <div class="col-sm-12 no-padding-lr group-row2-md padding-top padding-bottom" style="font-weight:bold;">
+                $output .= '<div class="col-sm-12 h2-ff2 margin-top-sm">'.$group_name.'</div>
+                            <div class="col-sm-12 box-xl">
+                                <div class="col-sm-12 no-padding-lr h3-ff4 row padding-tb-sm font-bold">
                                     <div class="col-sm-3 no-padding-lr"></div>
                                     <div class="col-sm-2 no-padding-lr">
                                         <div class="col-sm-4 no-padding-lr">W</div>
@@ -51,7 +51,7 @@
                                     </div>
                                 </div>';
                 foreach ($_divisions as $group_order => $_team) {
-                    $output .= '<div class="col-sm-12 no-padding-lr group-row2-md padding-top padding-bottom">
+                    $output .= '<div class="col-sm-12 no-padding-lr h3-ff4 row padding-tb-sm">
                                     <div class="col-sm-3 no-padding-lr">
                                         <div class="col-sm-2 no-padding-lr">
                                             <img src="/images/nfl_logos/'.$_team->logo_filename.'" style="width:40px;" />
@@ -100,7 +100,7 @@
                         <?php echo $output; ?>
                         <p> </p>
                     </div>
-                    <div class="col-sm-12 margin-top-lg margin-bottom-lg">
+                    <div class="col-sm-12 margin-tb-lg">
                         <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
                     </div>
 				</div>

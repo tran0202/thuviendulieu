@@ -25,14 +25,14 @@
             $teams[$row['group_name']][$row['group_order']] = $team;
         }
         foreach ($teams as $group_name => $_teams) {
-            $output .= '<div class="col-sm-12 margin-top">
-                            <span class="col-sm-2 groupTitle">Group '.$group_name.'</span>
+            $output .= '<div class="col-sm-12 margin-top-sm">
+                            <span class="col-sm-2 h2-ff2">Group '.$group_name.'</span>
                             <span class="col-sm-2 wb-stl-heading4 margin-left-md" style="margin-top: 18px;">
                                 <a class="link-modal" data-toggle="modal" data-target="#group'.$group_name.'MatchesModal">Matches</a>
                             </span>
                         </div>
-                        <div class="col-sm-12 groupBox">
-                            <div class="col-sm-12 group-row-xl padding-top-md padding-bottom-md" style="font-weight:bold;">
+                        <div class="col-sm-12 box-xl">
+                            <div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md font-bold">
                                 <div class="col-sm-1"></div>
                                 <div class="col-sm-3"></div>
                                 <div class="col-sm-1">MP</div>
@@ -45,8 +45,8 @@
                                 <div class="col-sm-1">Pts</div>
                             </div>';
             foreach ($_teams as $group_order => $_team) {
-                $output .= '<div class="col-sm-12 group-row-xl padding-top-md padding-bottom-md">
-                                <div class="col-sm-1"><img class="flag" src="/images/flags/'.$_team->flag_filename.'"></div>
+                $output .= '<div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md">
+                                <div class="col-sm-1"><img class="flag-md" src="/images/flags/'.$_team->flag_filename.'"></div>
                                 <div class="col-sm-3" style="padding-top: 3px;">'.$_team->name.'</div>
                                 <div class="col-sm-1"></div>
                                 <div class="col-sm-1"></div>
@@ -104,31 +104,31 @@
         }
         foreach ($matches as $group_name => $_matches) {
             $output2 .= '<div class="modal fade" id="group'.$group_name.'MatchesModal" tabindex="-1" role="dialog" aria-labelledby="group'.$group_name.'MatchesModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document" style="width:800px;">
+                    <div class="modal-dialog modal-md" role="document">
                         <div class="modal-content">
                             <div class="col-sm-12">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span style="font-size:48px;" aria-hidden="true">&times;</span>
+                                    <span class="modal-X" aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-header col-sm-12 padding-left-lg padding-right-lg" style="border-bottom:none;">
-                                <div class="col-sm-12 groupTitle2" id="group'.$group_name.'MatchesModalLabel">Group '.$group_name.'</div>
+                            <div class="modal-header col-sm-12 padding-lr-lg" style="border-bottom:none;">
+                                <div class="col-sm-12 h3-ff3 border-bottom-gray2" id="group'.$group_name.'MatchesModalLabel">Group '.$group_name.'</div>
                             </div>
-                            <div class="modal-body col-sm-12 padding-left-lg padding-right-lg" id="group'.$group_name.'MatchesModalBody">';
+                            <div class="modal-body col-sm-12 padding-lr-lg" id="group'.$group_name.'MatchesModalBody">';
             foreach ($_matches as $match_order => $_match) {
-                $output2 .= '<div class="col-sm-12 groupRow padding-top-md padding-bottom-md padding-left-xs padding-right-xs border-bottom">
-                                <div class="col-sm-2 padding-left-xs padding-right-xs"><img class="flag" src="/images/flags/'.$_match->home_flag.'"></div>
-                                <div class="col-sm-3 padding-left-xs padding-right-xs">'.$_match->home_team_name.'</div>
-                                <div class="col-sm-2 padding-left-xs padding-right-xs text-center">vs</div>
-                                <div class="col-sm-3 padding-left-xs padding-right-xs text-right">'.$_match->away_team_name.'</div>
-                                <div class="col-sm-2 padding-left-xs padding-right-xs text-right"><img class="flag" src="/images/flags/'.$_match->away_flag.'"></div>
+                $output2 .= '<div class="col-sm-12 h2-ff3 padding-tb-md padding-lr-xs border-bottom-gray5">
+                                <div class="col-sm-2 padding-lr-xs"><img class="flag-md" src="/images/flags/'.$_match->home_flag.'"></div>
+                                <div class="col-sm-3 padding-lr-xs">'.$_match->home_team_name.'</div>
+                                <div class="col-sm-2 padding-lr-xs text-center">vs</div>
+                                <div class="col-sm-3 padding-lr-xs text-right">'.$_match->away_team_name.'</div>
+                                <div class="col-sm-2 padding-lr-xs text-right"><img class="flag-md" src="/images/flags/'.$_match->away_flag.'"></div>
                             </div>';
             }
             $output2 .= '
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span style="font-size:26px;" aria-hidden="true">Close</span>
+                                    <span class="modal-close" aria-hidden="true">Close</span>
                                 </button>
                             </div>
                         </div>
@@ -171,7 +171,7 @@
                         <p class="wb-stl-normal"> </p>
                         <p class="wb-stl-normal"> </p>
                     </div>
-                    <div class="col-sm-12 margin-top-lg margin-bottom-lg">
+                    <div class="col-sm-12 margin-tb-lg">
                         <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
                     </div>
 				</div>

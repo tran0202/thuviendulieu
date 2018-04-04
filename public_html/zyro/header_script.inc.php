@@ -30,3 +30,4 @@
 <script src="js/sticky_header.js" type="text/javascript"></script>
 <script src="js/modal_position.js" type="text/javascript"></script>
 <script src="js/change_view.js" type="text/javascript"></script>
+<script src="js/bracket_collapse.js" type="text/javascript"></script>
