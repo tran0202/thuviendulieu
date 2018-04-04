@@ -21,7 +21,7 @@
     }
     else {
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-            $team = new Team($row['name'], $row['group_name'], $row['group_order'], '', '', $row['flag_filename']);
+            $team = Team::CreateSoccerTeam($row['name'], $row['group_name'], $row['group_order'], $row['flag_filename']);
             $teams[$row['group_name']][$row['group_order']] = $team;
         }
         foreach ($teams as $group_name => $_teams) {
@@ -46,8 +46,8 @@
                             </div>';
             foreach ($_teams as $group_order => $_team) {
                 $output .= '<div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md">
-                                <div class="col-sm-1"><img class="flag-md" src="/images/flags/'.$_team->flag_filename.'"></div>
-                                <div class="col-sm-3" style="padding-top: 3px;">'.$_team->name.'</div>
+                                <div class="col-sm-1"><img class="flag-md" src="/images/flags/'.$_team->getFlagFilename().'"></div>
+                                <div class="col-sm-3" style="padding-top: 3px;">'.$_team->getName().'</div>
                                 <div class="col-sm-1"></div>
                                 <div class="col-sm-1"></div>
                                 <div class="col-sm-1"></div>
@@ -90,16 +90,14 @@
     }
     else {
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-            $match = new Match($row['home_team_name'], $row['away_team_name'],
-                $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_time_fmt'], $row['match_order'],
-                $row['round'], $row['stage'], $row['group_name'], '', '',
-                '', '', '', '',
-                '', '', '', '',
-                '', '', '', '',
-                '', '', '', '',
-                '', '', '', '',
-                '', '', '', '',
-                $row['home_flag'], '', $row['away_flag'], '');
+            $home_team_score = $row['home_team_score'];
+            if ($row['home_team_score'] == null) $home_team_score = mt_rand(0,10);
+            $away_team_score = $row['away_team_score'];
+            if ($row['away_team_score'] == null) $away_team_score = mt_rand(0,10);
+            $match = Match::CreateSoccerMatch($row['home_team_name'], $row['away_team_name'],
+                $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_time_fmt'],
+                $row['match_order'], $row['round'], $row['stage'], $row['group_name'], '', '',
+                $home_team_score, $away_team_score, $row['home_flag'], $row['away_flag']);
             $matches[$row['group_name']][$row['match_order']] = $match;
         }
         foreach ($matches as $group_name => $_matches) {
@@ -117,11 +115,11 @@
                             <div class="modal-body col-sm-12 padding-lr-lg" id="group'.$group_name.'MatchesModalBody">';
             foreach ($_matches as $match_order => $_match) {
                 $output2 .= '<div class="col-sm-12 h2-ff3 padding-tb-md padding-lr-xs border-bottom-gray5">
-                                <div class="col-sm-2 padding-lr-xs"><img class="flag-md" src="/images/flags/'.$_match->home_flag.'"></div>
-                                <div class="col-sm-3 padding-lr-xs" style="padding-top:3px;">'.$_match->home_team_name.'</div>
+                                <div class="col-sm-2 padding-lr-xs"><img class="flag-md" src="/images/flags/'.$_match->getHomeFlag().'"></div>
+                                <div class="col-sm-3 padding-lr-xs" style="padding-top:3px;">'.$_match->getHomeTeamName().'</div>
                                 <div class="col-sm-2 padding-lr-xs text-center" style="padding-top:3px;">vs</div>
-                                <div class="col-sm-3 padding-lr-xs text-right" style="padding-top:3px;">'.$_match->away_team_name.'</div>
-                                <div class="col-sm-2 padding-lr-xs text-right"><img class="flag-md" src="/images/flags/'.$_match->away_flag.'"></div>
+                                <div class="col-sm-3 padding-lr-xs text-right" style="padding-top:3px;">'.$_match->getAwayTeamName().'</div>
+                                <div class="col-sm-2 padding-lr-xs text-right"><img class="flag-md" src="/images/flags/'.$_match->getAwayFlag().'"></div>
                             </div>';
             }
             $output2 .= '

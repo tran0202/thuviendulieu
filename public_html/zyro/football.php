@@ -23,8 +23,8 @@
     }
     else {
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-            $team = new Team($row['name'], $row['group_name'], $row['group_order'],
-                $row['parent_group_long_name'], $row['parent_group_order'], '', $row['logo_filename']);
+            $team = Team::CreateFootballTeam($row['name'], $row['group_name'], $row['group_order'],
+                $row['parent_group_long_name'], $row['parent_group_order'], $row['logo_filename']);
             $teams[$row['parent_group_long_name']][$row['parent_group_name'].' '.$row['group_name']][$row['group_order']] = $team;
         }
         foreach ($teams as $parent_group_long_name => $_conferences) {
@@ -54,9 +54,9 @@
                     $output .= '<div class="col-sm-12 no-padding-lr h3-ff4 row padding-tb-sm">
                                     <div class="col-sm-3 no-padding-lr">
                                         <div class="col-sm-2 no-padding-lr">
-                                            <img src="/images/nfl_logos/'.$_team->logo_filename.'" style="width:40px;" />
+                                            <img src="/images/nfl_logos/'.$_team->getLogoFileName().'" style="width:40px;" />
                                         </div>
-                                        <div class="col-sm-10 no-padding-lr" style="padding-top:8px;">'.$_team->name.'</div>
+                                        <div class="col-sm-10 no-padding-lr" style="padding-top:8px;">'.$_team->getName().'</div>
                                     </div>
                                     <div class="col-sm-2 no-padding-lr">
                                     </div>

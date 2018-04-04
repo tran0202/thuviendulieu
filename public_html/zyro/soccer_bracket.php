@@ -2,8 +2,8 @@
 <?php
     include_once('config.php');
     include_once('class.match.php');
-    $sql = 'SELECT t.name AS home_team_name, home_team_score,
-                t2.name AS away_team_name, away_team_score,
+    $sql = 'SELECT t.name AS home_team_name, home_team_score, n.flag_filename AS home_flag,
+                t2.name AS away_team_name, away_team_score, n2.flag_filename AS away_flag,
                 DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date, 
                 TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order,
                 waiting_home_team, waiting_away_team,
@@ -16,6 +16,8 @@
                 LEFT JOIN `group` g2 ON g2.id = m.stage_id
                 LEFT JOIN team_tournament tt ON tt.team_id = m.home_team_id
                 LEFT JOIN `group` g3 ON g3.id = tt.group_id
+                LEFT JOIN nation n ON n.id = t.nation_id
+                LEFT JOIN nation n2 ON n2.id = t2.nation_id
             WHERE m.tournament_id = 1 AND m.stage_id = 40
             ORDER BY match_order;';
     $query = $connection->prepare($sql);
@@ -28,9 +30,14 @@
     }
     else {
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-            $match = new Match($row['home_team_name'], $row['away_team_name'],
+            $home_team_score = $row['home_team_score'];
+            if ($row['home_team_score'] == null) $home_team_score = mt_rand(0,10);
+            $away_team_score = $row['away_team_score'];
+            if ($row['away_team_score'] == null) $away_team_score = mt_rand(0,10);
+            $match = Match::CreateSoccerMatch($row['home_team_name'], $row['away_team_name'],
                 $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_time_fmt'], $row['match_order'], $row['round'],
-                $row['stage'], $row['group_name'], $row['waiting_home_team'], $row['waiting_away_team']);
+                $row['stage'], $row['group_name'], $row['waiting_home_team'], $row['waiting_away_team'],
+                $home_team_score, $away_team_score, $row['home_flag'], $row['away_flag']);
             $matches[$row['round']][$row['match_order']] = $match;
         }
         $box_height = 120;
@@ -47,10 +54,10 @@
             foreach ($_matches as $match_order => $_match) {
                 $gap_height = 10;
                 if ($j != 0) $gap_height = $gap_heights[$i][1];
-                $home_team_name = $_match->home_team_name;
-                $away_team_name = $_match->away_team_name;
-                $waiting_home_team = $_match->waiting_home_team;
-                $waiting_away_team = $_match->waiting_away_team;
+                $home_team_name = $_match->getHomeTeamName();
+                $away_team_name = $_match->getAwayTeamName();
+                $waiting_home_team = $_match->getWaitingHomeTeam();
+                $waiting_away_team = $_match->getWaitingAwayTeam();
                 $output .= '<div class="col-sm-12" style="height:'.$gap_height.'px;"></div>
                             <div class="col-sm-12 box-sm" style="height:'.$box_height.'px;">
                                 <div class="col-sm-12 h4-ff3 margin-tb-sm">
