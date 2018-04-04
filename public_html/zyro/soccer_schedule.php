@@ -51,8 +51,8 @@
                                 <div class="card-header" id="heading-bracket" style="width:100%;padding-left:0;">                                    
                                     <button class="btn btn-link collapsed h2-ff1 no-padding-left" data-toggle="collapse" 
                                         data-target="#collapse-bracket" aria-expanded="false" aria-controls="collapse-bracket">
-                                            Bracket <i id="bracket-down-arrow" class="fa fa-angle-double-down font-xl"></i> 
-                                            <i id="bracket-up-arrow" class="fa fa-angle-double-up font-xl no-display"></i>
+                                            Bracket <i id="bracket-down-arrow" class="fa fa-angle-double-down font-custom1"></i> 
+                                            <i id="bracket-up-arrow" class="fa fa-angle-double-up font-custom1 no-display"></i>
                                     </button>                                    
                                 </div>
                                 <div id="collapse-bracket" class="collapse" aria-labelledby="heading-bracket" data-parent="#accordion">

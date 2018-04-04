@@ -75,8 +75,8 @@
 <head>
     <title>TVDL - NFL</title>
     <?php include_once('header_script.inc.php'); ?>
-	<link href="../css/3.css?ts=1520882525" rel="stylesheet" type="text/css" />
-    <link href="../css/footer.css" rel="stylesheet" type="text/css" />
+	<link href="3.css?ts=1520882525" rel="stylesheet" type="text/css" />
+    <link href="footer.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
     <div class="header" id="myHeader">

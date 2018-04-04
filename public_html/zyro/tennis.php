@@ -65,9 +65,9 @@
                 $prev_view = $round_start - 1;
                 $next_view = $round_start + 1;
                 $left_arrow = '';
-                if ($round_start != 0 AND $k == $round_start) $left_arrow = '<a class="blue font-xl link-pointer margin-right-sm"><i class="fa fa-angle-double-left link-change-view" data-target="'.$prev_view.'"></i></a>';
+                if ($round_start != 0 AND $k == $round_start) $left_arrow = '<a class="blue font-custom1 hover-pointer margin-right-sm"><i class="fa fa-angle-double-left link-change-view" data-target="'.$prev_view.'"></i></a>';
                 $right_arrow = '';
-                if ($round_start != 4 AND $k == $round_end) $right_arrow = '<a class="blue font-xl link-pointer margin-left-sm"><i class="fa fa-angle-double-right link-change-view" data-target="'.$next_view.'"></i></a>';
+                if ($round_start != 4 AND $k == $round_end) $right_arrow = '<a class="blue font-custom1 hover-pointer margin-left-sm"><i class="fa fa-angle-double-right link-change-view" data-target="'.$next_view.'"></i></a>';
                 if ($k >= $round_start AND $k <= $round_end) {
                     $gap_height = $gap_heights[$i][0];
                     $output .= '<div class="col-sm-4">
