@@ -61,7 +61,7 @@ html[lang="fa"] .rtl * {
 	/* text-align: right!important; */
 }
 
-html, body	{ /* height: 100%; */ height: auto; padding: 0; }
+html, body	{ height: auto; padding: 0; }
 .root		{ margin: 0; width: 100%; min-height: 200px; }
 .vbox		{ width: 100%; float: none; position: relative; }
 .hbox		{ min-height: 100%; float: left; position: relative; }

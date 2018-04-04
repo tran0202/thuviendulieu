@@ -1,16 +1,16 @@
 
-#wb_header { height: 270px; }
-#wb_header > .wb_cont_bg { background: transparent none repeat scroll left top; }
-#wb_main { height: 710px; padding-bottom: 50px; }
-#wb_main > .wb_cont_bg { background: transparent none repeat scroll left top; }
+/*#wb_header { height: 270px; }*/
+/*#wb_header > .wb_cont_bg { background: transparent none repeat scroll left top; }*/
+/*#wb_main { height: 710px; padding-bottom: 50px; }*/
+/*#wb_main > .wb_cont_bg { background: transparent none repeat scroll left top; }*/
 #wb_footer { height: 50px; }
 #wb_footer > .wb_cont_bg { background: transparent none repeat-x scroll left top; }
 /*body { background: transparent url("../gallery_gen/2e2b5ed481378571fee71d28f855c5fc.jpg") no-repeat scroll center top; }*/
 .wb_sbg { background: transparent none repeat-x scroll left top; }
-body, .wb_sbg { min-width: 1200px; min-height: 1030px; }
-.wb_cont_inner { width: 1200px; }
-.wb_cont_bg { width: 1200px; margin-left: -600px; }
-.root { height: 980px; overflow: visible; min-height: 1030px; }
+/*body, .wb_sbg { min-width: 1200px; min-height: 1030px; }*/
+/*.wb_cont_inner { width: 1200px; }*/
+/*.wb_cont_bg { width: 1200px; margin-left: -600px; }*/
+/*.root { height: 980px; overflow: visible; min-height: 1030px; }*/
 
 @media (min-width: 768px) {
 }

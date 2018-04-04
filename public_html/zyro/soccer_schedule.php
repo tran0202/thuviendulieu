@@ -112,18 +112,18 @@
                     $away_team_tmp = $_match->away_team_name;
                     if ($away_team_tmp == null) $away_team_tmp = '['.$_match->waiting_away_team.']';
                     $group_text = '';
-                    $home_flag_tmp = '<div class="col-sm-1 padding-lr-xs padding-top-sm text-right">
+                    $home_flag_tmp = '<div class="col-sm-1 padding-lr-xs text-right" style="padding-top:6px;">
                                             <img class="flag-md" src="/images/flags/'.$_match->home_flag.'">
                                         </div>';
-                    if ($_match->home_flag == '') $home_flag_tmp = '<div class="col-sm-1 padding-lr-xs padding-top-sm text-right"></div>';
-                    $away_flag_tmp = '<div class="col-sm-1 padding-lr-xs padding-top-sm text-right">
+                    if ($_match->home_flag == '') $home_flag_tmp = '<div class="col-sm-1 padding-lr-xs text-right" style="padding-top:6px;"></div>';
+                    $away_flag_tmp = '<div class="col-sm-1 padding-lr-xs text-right" style="padding-top:6px;">
                                             <img class="flag-md" src="/images/flags/'.$_match->away_flag.'">
                                         </div>';
-                    if ($_match->away_flag == '') $away_flag_tmp = '<div class="col-sm-1 padding-lr-xs padding-top-sm text-right"></div>';
+                    if ($_match->away_flag == '') $away_flag_tmp = '<div class="col-sm-1 padding-lr-xs text-right" style="padding-top:6px;"></div>';
                     if ($_match->group_name != null) $group_text = '<a class="link-modal" data-toggle="modal" data-target="#group'.$_match->group_name.'StandingModal">
                                                                         Group '.$_match->group_name.'</a>' ;
                     $output2 .= '<div class="col-sm-12 padding-tb-md border-bottom-gray5">
-                                    <div class="col-sm-2 padding-lr-xs margin-top-sm">'.$_match->match_time_fmt.' CST<br>'.$group_text.'</div>'.
+                                    <div class="col-sm-2 padding-lr-xs">'.$_match->match_time_fmt.' CST<br>'.$group_text.'</div>'.
                                     $home_flag_tmp.
                                     '<div class="col-sm-3 h2-ff3 padding-left-lg padding-right-xs">'.$home_team_tmp.'</div>
                                     <div class="col-sm-1 h2-ff3 padding-lr-xs">vs</div>
@@ -214,49 +214,36 @@
 <head>
     <title>TVDL - Russia 2018</title>
     <?php include_once('header_script.inc.php'); ?>
-	<link href="css/2.css?ts=1520882525" rel="stylesheet" type="text/css" />
-    <link href="css/footer.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-    <div class="header" id="myHeader">
+    <div class="header" id="page-header">
         <div class="vbox wb_container" id="wb_header">
             <div class="wb_cont_inner">
                 <?php include_once('logo.inc.php'); ?>
                 <?php include_once('menu2.inc.php'); ?>
             </div>
-            <div class="wb_cont_outer"></div>
-            <div class="wb_cont_bg"></div>
         </div>
     </div>
 	<div class="root content">
 		<div class="vbox wb_container" id="wb_main">
 			<div class="wb_cont_inner">
-				<div id="wb_element_instance14" class="wb_element wb_element_shape"></div>
-				<div id="wb_element_instance15" class="wb_element" style=" line-height: normal;height: unset;">
-                    <div>
-                        <span class="wb-stl-heading1" style="color:#930c10;"><span class="wb_tr_ok">FIFA World Cup Russia 2018</span></span>
-                        <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018/" target="_self">Groups</a></span>
-                        <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018Schedule/" target="_self">Schedule</a></span>
-                        <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018Bracket/" target="_self">Bracket</a></span>
-                    </div>
-                    <div>
-                        <?php echo $output2; ?>
-                        <p class="wb-stl-normal"> </p>
-                        <p class="wb-stl-normal"> </p>
-                    </div>
-                    <div class="col-sm-12 margin-tb-lg">
-                        <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
-                    </div>
-				</div>
-				<div id="wb_element_instance16" class="wb_element wb_element_picture"><!--<img alt="gallery/football-1331838_1280" src="gallery_gen/6ed42b3cb0b0176b0c634015141cc98d_450x250.jpg">--></div>
-				<div id="wb_element_instance17" class="wb_element wb_element_picture"><!--<img alt="gallery/football-1276327_1280" src="gallery_gen/843428bf7f3e0f675942187cea07bff3_440x300.jpg">--></div>
-                <?php include_once('comments.inc.php'); ?>
+                <div>
+                    <span class="wb-stl-heading1 russia-2018">FIFA World Cup Russia 2018</span>
+                    <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018/" target="_self">Groups</a></span>
+                    <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018Schedule/" target="_self">Schedule</a></span>
+                    <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018Bracket/" target="_self">Bracket</a></span>
+                </div>
+                <div>
+                    <?php echo $output2; ?>
+                    <p class="wb-stl-normal"> </p>
+                    <p class="wb-stl-normal"> </p>
+                </div>
+                <div class="col-sm-12 margin-tb-lg">
+                    <p class="wb-stl-footer black">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
+                </div>
 			</div>
-			<div class="wb_cont_outer"></div>
-			<div class="wb_cont_bg"></div>
 		</div>
-        <?php include_once('footer.inc.php'); ?>
 	</div>
     <!-- Modal -->
     <?php echo $output3; ?>
