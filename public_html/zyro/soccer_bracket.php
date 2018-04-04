@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
     include_once('config.php');
-    include_once('tpl.match.php');
+    include_once('class.match.php');
     $sql = 'SELECT t.name AS home_team_name, home_team_score,
                 t2.name AS away_team_name, away_team_score,
                 DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date, 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
     include_once('config.php');
-    include_once('tpl.match.php');
+    include_once('class.match.php');
     $sql = 'SELECT t.id AS home_id, t.name AS home_team_name, htt.seed AS home_team_seed, 
             n.flag_filename AS home_flag_filename, n.alternative_flag_filename AS home_alternative_flag_filename,
             t2.id AS away_id, t2.name AS away_team_name, att.seed AS away_team_seed, 

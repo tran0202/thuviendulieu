@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
     include_once('config.php');
-    include_once('tpl.team.php');
+    include_once('class.team.php');
     $sql = 'SELECT UCASE(t.name) AS name, team_id, 
                 group_id, UCASE(g.name) AS group_name, 
                 group_order, n.flag_filename, tt.tournament_id 
@@ -62,7 +62,7 @@
         }
     }
 
-    include_once('tpl.match.php');
+    include_once('class.match.php');
     $sql = 'SELECT t.name AS home_team_name, home_team_score, n.flag_filename AS home_flag, 
             t2.name AS away_team_name, away_team_score, n2.flag_filename AS away_flag, 
             DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date, 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
     include_once('config.php');
-    include_once('tpl.team.php');
+    include_once('class.team.php');
     $sql = 'SELECT t.name AS name, tt.team_id, 
                 group_id, g.name AS group_name, group_order, 
                 parent_group_id, pg.name AS parent_group_name, 
