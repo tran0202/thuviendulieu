@@ -2,47 +2,18 @@
 <?php
     include_once('config.php');
     include_once('class.match.php');
-    $sql = 'SELECT t.name AS home_team_name, home_team_score, n.flag_filename AS home_flag,
-                t2.name AS away_team_name, away_team_score, n2.flag_filename AS away_flag,
-                DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date,
-                TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order,
-                waiting_home_team, waiting_away_team,
-                g.name AS round, g2.name AS stage,
-                g3.name AS group_name, m.tournament_id
-            FROM `match` m
-                LEFT JOIN team t ON t.id = m.home_team_id
-                LEFT JOIN team t2 ON t2.id = m.away_team_id
-                LEFT JOIN `group` g ON g.id = m.round_id
-                LEFT JOIN `group` g2 ON g2.id = m.stage_id
-                LEFT JOIN team_tournament tt ON tt.team_id = m.home_team_id
-                LEFT JOIN `group` g3 ON g3.id = tt.group_id
-                LEFT JOIN nation n ON n.id = t.nation_id
-                LEFT JOIN nation n2 ON n2.id = t2.nation_id
-            WHERE m.tournament_id = 1
-            ORDER BY stage_id, round_id, match_date, match_time;';
-    $query = $connection->prepare($sql);
-    $query->execute();
-    $count = $query->rowCount();
+    $match_dto = Match::getSoccerMatch(1);
     $matches = array();
     $bracket_matches = array();
-    $output = '<!-- Count = '.$count.' -->';
+    $count = $match_dto->getCount();
+    $output = '';
     $output2 = '';
     if ($count == 0) {
         $output = '<h2>No result found!</h2>';
     }
     else {
-        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-            $home_team_score = $row['home_team_score'];
-            if ($row['home_team_score'] == null) $home_team_score = mt_rand(0,10);
-            $away_team_score = $row['away_team_score'];
-            if ($row['away_team_score'] == null) $away_team_score = mt_rand(0,10);
-            $match = Match::CreateSoccerMatch($row['home_team_name'], $row['away_team_name'],
-                $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_time_fmt'],
-                $row['match_order'], $row['round'], $row['stage'], $row['group_name'], $row['waiting_home_team'], $row['waiting_away_team'],
-                $home_team_score, $away_team_score, $row['home_flag'], $row['away_flag']);
-            $matches[$row['round']][$row['match_date']][$row['match_order']] = $match;
-            if ($row['round'] != 'Group Matches') $bracket_matches[$row['round']][$row['match_order']] = $match;
-        }
+        $matches = $match_dto->getMatches();
+        $bracket_matches = $match_dto->getBracketMatches();
         $output .= '
                         <div id="accordion" class="">
                             <div class="card col-sm-12 padding-tb-md border-bottom">
@@ -122,12 +93,12 @@
                                                                         Group '.$_match->getGroupName().'</a>' ;
                     $output2 .= '<div class="col-sm-12 padding-tb-md border-bottom-gray5">
                                     <div class="col-sm-2 padding-lr-xs">'.$_match->getMatchTimeFmt().' CST<br>'.$group_text.'</div>'.
-                                    $home_flag_tmp.
-                                    '<div class="col-sm-3 h2-ff3 padding-left-lg padding-right-xs">'.$home_team_tmp.'</div>
+                        $home_flag_tmp.
+                        '<div class="col-sm-3 h2-ff3 padding-left-lg padding-right-xs">'.$home_team_tmp.'</div>
                                     <div class="col-sm-1 h2-ff3 padding-lr-xs">'.$_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore().'</div>
                                     <div class="col-sm-3 h2-ff3 padding-lr-xs text-right">'.$away_team_tmp.'</div>'.
-                                    $away_flag_tmp.
-                                '</div>';
+                        $away_flag_tmp.
+                        '</div>';
                 }
             }
         }

@@ -42,6 +42,184 @@
         private $home_alternative_flag;
         private $away_alternative_flag;
 
+        protected function __construct(){ }
+
+        public static function CreateSoccerMatch (
+            $home_team_name, $away_team_name,
+            $match_date, $match_date_fmt, $match_time, $match_time_fmt,
+            $match_order, $round, $stage, $group_name,
+            $waiting_home_team, $waiting_away_team,
+            $home_team_score, $away_team_score,
+            $home_flag, $away_flag)
+        {
+            $m = new Match();
+            $m->home_team_name = $home_team_name;
+            $m->away_team_name = $away_team_name;
+            $m->home_team_score = $home_team_score;
+            $m->away_team_score = $away_team_score;
+            $m->match_date = $match_date;
+            $m->match_date_fmt = $match_date_fmt;
+            $m->match_time = $match_time;
+            $m->match_time_fmt = $match_time_fmt;
+            $m->match_order = $match_order;
+            $m->round = $round;
+            $m->stage = $stage;
+            $m->group_name = $group_name;
+            $m->waiting_home_team = $waiting_home_team;
+            $m->waiting_away_team = $waiting_away_team;
+            $m->home_flag = $home_flag;
+            $m->away_flag = $away_flag;
+            return $m;
+        }
+
+        public static function CreateTennisMatch (
+            $home_team_name, $away_team_name,
+            $match_date, $match_order, $round, $home_team_seed, $away_team_seed,
+            $home_set1_score, $away_set1_score, $home_set1_tiebreak, $away_set1_tiebreak,
+            $home_set2_score, $away_set2_score, $home_set2_tiebreak, $away_set2_tiebreak,
+            $home_set3_score, $away_set3_score, $home_set3_tiebreak, $away_set3_tiebreak,
+            $home_set4_score, $away_set4_score, $home_set4_tiebreak, $away_set4_tiebreak,
+            $home_set5_score, $away_set5_score, $home_set5_tiebreak, $away_set5_tiebreak,
+            $home_flag, $home_alternative_flag, $away_flag, $away_alternative_flag)
+        {
+            $m = new Match();
+            $m->home_team_name = $home_team_name;
+            $m->away_team_name = $away_team_name;
+            $m->match_date = $match_date;
+            $m->match_order = $match_order;
+            $m->round = $round;
+            $m->home_team_seed = $home_team_seed;
+            $m->away_team_seed = $away_team_seed;
+            $m->home_set1_score = $home_set1_score;
+            $m->away_set1_score = $away_set1_score;
+            $m->home_set1_tiebreak = $home_set1_tiebreak;
+            $m->away_set1_tiebreak = $away_set1_tiebreak;
+            $m->home_set2_score = $home_set2_score;
+            $m->away_set2_score = $away_set2_score;
+            $m->home_set2_tiebreak = $home_set2_tiebreak;
+            $m->away_set2_tiebreak = $away_set2_tiebreak;
+            $m->home_set3_score = $home_set3_score;
+            $m->away_set3_score = $away_set3_score;
+            $m->home_set3_tiebreak = $home_set3_tiebreak;
+            $m->away_set3_tiebreak = $away_set3_tiebreak;
+            $m->home_set4_score = $home_set4_score;
+            $m->away_set4_score = $away_set4_score;
+            $m->home_set4_tiebreak = $home_set4_tiebreak;
+            $m->away_set4_tiebreak = $away_set4_tiebreak;
+            $m->home_set5_score = $home_set5_score;
+            $m->away_set5_score = $away_set5_score;
+            $m->home_set5_tiebreak = $home_set5_tiebreak;
+            $m->away_set5_tiebreak = $away_set5_tiebreak;
+            $m->home_flag = $home_flag;
+            $m->away_flag = $away_flag;
+            $m->home_alternative_flag = $home_alternative_flag;
+            $m->away_alternative_flag = $away_alternative_flag;
+            return $m;
+        }
+
+        public static function getSoccerMatch($tournament_id) {
+
+            $sql = Match::getSoccerMatchSql($tournament_id);
+            $query = $GLOBALS['connection']->prepare($sql);
+            $query->execute();
+            $count = $query->rowCount();
+            $matches = array();
+            $bracket_matches = array();
+
+            if ($count == 0) {
+                return MatchDTO::CreateMatchDTO(null, null, $count);
+            }
+            else {
+                while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                    $home_team_score = $row['home_team_score'];
+                    if ($row['home_team_score'] == null) $home_team_score = mt_rand(0,10);
+                    $away_team_score = $row['away_team_score'];
+                    if ($row['away_team_score'] == null) $away_team_score = mt_rand(0,10);
+                    $match = Match::CreateSoccerMatch($row['home_team_name'], $row['away_team_name'],
+                        $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_time_fmt'],
+                        $row['match_order'], $row['round'], $row['stage'], $row['group_name'], $row['waiting_home_team'], $row['waiting_away_team'],
+                        $home_team_score, $away_team_score, $row['home_flag'], $row['away_flag']);
+                    $matches[$row['round']][$row['match_date']][$row['match_order']] = $match;
+                    if ($row['round'] != 'Group Matches') $bracket_matches[$row['round']][$row['match_order']] = $match;
+                }
+                return MatchDTO::CreateMatchDTO($matches, $bracket_matches, $count);
+            }
+        }
+
+        public static function getSoccerMatchSql($tournament_id) {
+            $sql = 'SELECT t.name AS home_team_name, home_team_score, n.flag_filename AS home_flag, 
+                    t2.name AS away_team_name, away_team_score, n2.flag_filename AS away_flag, 
+                    DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date, 
+                    TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order,
+                    waiting_home_team, waiting_away_team,
+                    g.name AS round, g2.name AS stage,
+                    g3.name AS group_name, m.tournament_id
+                FROM `match` m
+                    LEFT JOIN team t ON t.id = m.home_team_id
+                    LEFT JOIN team t2 ON t2.id = m.away_team_id
+                    LEFT JOIN `group` g ON g.id = m.round_id
+                    LEFT JOIN `group` g2 ON g2.id = m.stage_id
+                    LEFT JOIN team_tournament tt ON tt.team_id = m.home_team_id
+                    LEFT JOIN `group` g3 ON g3.id = tt.group_id 
+                    LEFT JOIN nation n ON n.id = t.nation_id  
+                    LEFT JOIN nation n2 ON n2.id = t2.nation_id 
+                WHERE m.tournament_id = '.$tournament_id.'
+                ORDER BY stage_id, round_id, match_date, match_time;';
+            return $sql;
+        }
+
+        public static function getSoccerSecondStageMatchSql($tournament_id, $stage_id) {
+            $sql = 'SELECT t.name AS home_team_name, home_team_score, n.flag_filename AS home_flag,
+                t2.name AS away_team_name, away_team_score, n2.flag_filename AS away_flag,
+                DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date,
+                TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order,
+                waiting_home_team, waiting_away_team,
+                g.name AS round, g2.name AS stage,
+                g3.name AS group_name, m.tournament_id
+            FROM `match` m
+                LEFT JOIN team t ON t.id = m.home_team_id
+                LEFT JOIN team t2 ON t2.id = m.away_team_id
+                LEFT JOIN `group` g ON g.id = m.round_id
+                LEFT JOIN `group` g2 ON g2.id = m.stage_id
+                LEFT JOIN team_tournament tt ON tt.team_id = m.home_team_id
+                LEFT JOIN `group` g3 ON g3.id = tt.group_id
+                LEFT JOIN nation n ON n.id = t.nation_id
+                LEFT JOIN nation n2 ON n2.id = t2.nation_id
+            WHERE m.tournament_id = '.$tournament_id.' AND m.stage_id = '.$stage_id.'
+            ORDER BY match_order;';
+            return $sql;
+        }
+
+        public static function getTennisMatchSql($tournament_id) {
+            $sql = 'SELECT t.id AS home_id, t.name AS home_team_name, htt.seed AS home_team_seed, 
+                n.flag_filename AS home_flag_filename, n.alternative_flag_filename AS home_alternative_flag_filename,
+                t2.id AS away_id, t2.name AS away_team_name, att.seed AS away_team_seed, 
+                n2.flag_filename AS away_flag_filename, n2.alternative_flag_filename AS away_alternative_flag_filename,
+                home_set1_score, away_set1_score, home_set1_tiebreak, away_set1_tiebreak,
+                home_set2_score, away_set2_score, home_set2_tiebreak, away_set2_tiebreak,
+                home_set3_score, away_set3_score, home_set3_tiebreak, away_set3_tiebreak,
+                home_set4_score, away_set4_score, home_set4_tiebreak, away_set4_tiebreak,
+                home_set5_score, away_set5_score, home_set5_tiebreak, away_set5_tiebreak,
+                match_date, match_order,
+                g.name AS round,
+                m.tournament_id
+            FROM `match` m
+                LEFT JOIN team t ON t.id = m.home_team_id
+                LEFT JOIN team t2 ON t2.id = m.away_team_id
+                LEFT JOIN `group` g ON g.id = m.round_id
+                LEFT JOIN team_tournament htt ON (htt.team_id = m.home_team_id AND htt.tournament_id = m.tournament_id)
+                LEFT JOIN team_tournament att ON (att.team_id = m.away_team_id AND att.tournament_id = m.tournament_id)  
+                LEFT JOIN team_player tp ON tp.team_id = t.id  
+                LEFT JOIN player p ON p.id = tp.player_id 
+                LEFT JOIN nation n ON n.id = p.nation_id  
+                LEFT JOIN team_player tp2 ON tp2.team_id = t2.id  
+                LEFT JOIN player p2 ON p2.id = tp2.player_id 
+                LEFT JOIN nation n2 ON n2.id = p2.nation_id 
+            WHERE m.tournament_id = '.$tournament_id.'
+            ORDER BY match_order;';
+            return $sql;
+        }
+
         /**
          * @return mixed
          */
@@ -697,100 +875,68 @@
         {
             $this->away_alternative_flag = $away_alternative_flag;
         }
+    }
+
+    class MatchDTO {
+        private $matches;
+        private $bracket_matches;
+        private $count;
 
         protected function __construct(){ }
 
-        public static function CreateSoccerMatch (
-            $home_team_name, $away_team_name,
-            $match_date, $match_date_fmt, $match_time, $match_time_fmt,
-            $match_order, $round, $stage, $group_name,
-            $waiting_home_team, $waiting_away_team,
-            $home_team_score, $away_team_score,
-            $home_flag, $away_flag)
-        {
-            $m = new Match();
-            $m->home_team_name = $home_team_name;
-            $m->away_team_name = $away_team_name;
-            $m->home_team_score = $home_team_score;
-            $m->away_team_score = $away_team_score;
-            $m->match_date = $match_date;
-            $m->match_date_fmt = $match_date_fmt;
-            $m->match_time = $match_time;
-            $m->match_time_fmt = $match_time_fmt;
-            $m->match_order = $match_order;
-            $m->round = $round;
-            $m->stage = $stage;
-            $m->group_name = $group_name;
-            $m->waiting_home_team = $waiting_home_team;
-            $m->waiting_away_team = $waiting_away_team;
-            $m->home_flag = $home_flag;
-            $m->away_flag = $away_flag;
-            return $m;
+        public static function CreateMatchDTO($matches, $bracket_matches, $count) {
+            $match_dto = new MatchDTO();
+            $match_dto->matches = $matches;
+            $match_dto->bracket_matches = $bracket_matches;
+            $match_dto->count = $count;
+            return $match_dto;
         }
 
-        public static function CreateTennisMatch (
-            $home_team_name, $away_team_name,
-            $match_date, $match_order, $round, $home_team_seed, $away_team_seed,
-            $home_set1_score, $away_set1_score, $home_set1_tiebreak, $away_set1_tiebreak,
-            $home_set2_score, $away_set2_score, $home_set2_tiebreak, $away_set2_tiebreak,
-            $home_set3_score, $away_set3_score, $home_set3_tiebreak, $away_set3_tiebreak,
-            $home_set4_score, $away_set4_score, $home_set4_tiebreak, $away_set4_tiebreak,
-            $home_set5_score, $away_set5_score, $home_set5_tiebreak, $away_set5_tiebreak,
-            $home_flag, $home_alternative_flag, $away_flag, $away_alternative_flag)
+        /**
+         * @return mixed
+         */
+        public function getMatches()
         {
-            $m = new Match();
-            $m->home_team_name = $home_team_name;
-            $m->away_team_name = $away_team_name;
-            $m->match_date = $match_date;
-            $m->match_order = $match_order;
-            $m->round = $round;
-            $m->home_team_seed = $home_team_seed;
-            $m->away_team_seed = $away_team_seed;
-            $m->home_set1_score = $home_set1_score;
-            $m->away_set1_score = $away_set1_score;
-            $m->home_set1_tiebreak = $home_set1_tiebreak;
-            $m->away_set1_tiebreak = $away_set1_tiebreak;
-            $m->home_set2_score = $home_set2_score;
-            $m->away_set2_score = $away_set2_score;
-            $m->home_set2_tiebreak = $home_set2_tiebreak;
-            $m->away_set2_tiebreak = $away_set2_tiebreak;
-            $m->home_set3_score = $home_set3_score;
-            $m->away_set3_score = $away_set3_score;
-            $m->home_set3_tiebreak = $home_set3_tiebreak;
-            $m->away_set3_tiebreak = $away_set3_tiebreak;
-            $m->home_set4_score = $home_set4_score;
-            $m->away_set4_score = $away_set4_score;
-            $m->home_set4_tiebreak = $home_set4_tiebreak;
-            $m->away_set4_tiebreak = $away_set4_tiebreak;
-            $m->home_set5_score = $home_set5_score;
-            $m->away_set5_score = $away_set5_score;
-            $m->home_set5_tiebreak = $home_set5_tiebreak;
-            $m->away_set5_tiebreak = $away_set5_tiebreak;
-            $m->home_flag = $home_flag;
-            $m->away_flag = $away_flag;
-            $m->home_alternative_flag = $home_alternative_flag;
-            $m->away_alternative_flag = $away_alternative_flag;
-            return $m;
+            return $this->matches;
         }
-        public static function getSql() {
-            $sql = 'SELECT t.name AS home_team_name, home_team_score, n.flag_filename AS home_flag, 
-                    t2.name AS away_team_name, away_team_score, n2.flag_filename AS away_flag, 
-                    DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date, 
-                    TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order,
-                    waiting_home_team, waiting_away_team,
-                    g.name AS round, g2.name AS stage,
-                    g3.name AS group_name, m.tournament_id
-                FROM `match` m
-                    LEFT JOIN team t ON t.id = m.home_team_id
-                    LEFT JOIN team t2 ON t2.id = m.away_team_id
-                    LEFT JOIN `group` g ON g.id = m.round_id
-                    LEFT JOIN `group` g2 ON g2.id = m.stage_id
-                    LEFT JOIN team_tournament tt ON tt.team_id = m.home_team_id
-                    LEFT JOIN `group` g3 ON g3.id = tt.group_id 
-                    LEFT JOIN nation n ON n.id = t.nation_id  
-                    LEFT JOIN nation n2 ON n2.id = t2.nation_id 
-                WHERE m.tournament_id = 1
-                ORDER BY stage_id, round_id, match_date, match_time;';
-            return $sql;
+
+        /**
+         * @param mixed $matches
+         */
+        public function setMatches($matches)
+        {
+            $this->matches = $matches;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getBracketMatches()
+        {
+            return $this->bracket_matches;
+        }
+
+        /**
+         * @param mixed $bracket_matches
+         */
+        public function setBracketMatches($bracket_matches)
+        {
+            $this->bracket_matches = $bracket_matches;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getCount()
+        {
+            return $this->count;
+        }
+
+        /**
+         * @param mixed $count
+         */
+        public function setCount($count)
+        {
+            $this->count = $count;
         }
     }

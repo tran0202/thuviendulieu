@@ -63,23 +63,7 @@
     }
 
     include_once('class.match.php');
-    $sql = 'SELECT t.name AS home_team_name, home_team_score, n.flag_filename AS home_flag, 
-            t2.name AS away_team_name, away_team_score, n2.flag_filename AS away_flag, 
-            DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date, 
-            TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order,
-            g.name AS round, g2.name AS stage,
-            g3.name AS group_name, m.tournament_id
-        FROM `match` m
-            LEFT JOIN team t ON t.id = m.home_team_id
-            LEFT JOIN team t2 ON t2.id = m.away_team_id
-            LEFT JOIN `group` g ON g.id = m.round_id
-            LEFT JOIN `group` g2 ON g2.id = m.stage_id
-            LEFT JOIN team_tournament tt ON tt.team_id = m.home_team_id
-            LEFT JOIN `group` g3 ON g3.id = tt.group_id 
-            LEFT JOIN nation n ON n.id = t.nation_id  
-            LEFT JOIN nation n2 ON n2.id = t2.nation_id 
-        WHERE m.tournament_id = 1
-        ORDER BY stage_id, round_id, match_date, match_time;';
+    $sql = Match::getSoccerMatchSql(1);
     $query = $connection->prepare($sql);
     $query->execute();
     $count = $query->rowCount();

@@ -17,7 +17,11 @@
 		<div class="vbox wb_container" id="wb_main">
 			<div class="wb_cont_inner">
                 <div class="col-sm-12">
-                    <p class="wb-stl-highlight text-center">Soccer</p>
+                    <p class="wb-stl-highlight text-center">Russia 2018</p>
+                    <p class="wb-stl-normal"> </p>
+                </div>
+                <div class="col-sm-12">
+                    <p id="clockCountdown" class="wb-stl-highlight text-center"></p>
                     <p class="wb-stl-normal"> </p>
                 </div>
                 <div class="col-sm-12">
