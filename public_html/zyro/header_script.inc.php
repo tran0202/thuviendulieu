@@ -20,6 +20,7 @@
 <link href="css/font-awesome/font-awesome.min.css?v=4.7.0" rel="stylesheet" type="text/css" />
 <link href="css/site.css?v=20180308163726" rel="stylesheet" type="text/css" />
 <link href="css/common.css?ts=1520882525" rel="stylesheet" type="text/css" />
+<link href="css/flipclock.css" rel="stylesheet" type="text/css" />
 {{ga_code}}
 <link rel="shortcut icon" href="/gallery/tvdl_favicon-ts1520881176.png" type="image/png" />
 <script type="text/javascript">var currLang = '';</script>
@@ -31,4 +32,5 @@
 <script src="js/modal_position.js" type="text/javascript"></script>
 <script src="js/change_view.js" type="text/javascript"></script>
 <script src="js/bracket_collapse.js" type="text/javascript"></script>
+<script src="js/flipclock.min.js" type="text/javascript"></script>
 <script src="js/countdown.js" type="text/javascript"></script>

@@ -21,8 +21,10 @@
                     <p class="wb-stl-normal"> </p>
                 </div>
                 <div class="col-sm-12">
-                    <p id="clockCountdown" class="wb-stl-highlight text-center"></p>
-                    <p class="wb-stl-normal"> </p>
+                    <div class="col-sm-2" style="margin-right:55px;"></div>
+                    <div class="col-sm-8 text-center">
+                        <div class="clock"></div>
+                    </div>
                 </div>
                 <div class="col-sm-12">
                     <h5 class="wb-stl-subtitle text-center">More than a game</h5>
