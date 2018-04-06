@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <?php
-    include_once('config.php');
     include_once('class.team.php');
     $teams = array();
     $team_dto = Team::getSoccerTeams(1);

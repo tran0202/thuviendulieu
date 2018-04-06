@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <?php
-    include_once('config.php');
     include_once('class.match.php');
     $matches = array();
     $match_dto = Match::getTennisMatches(4);

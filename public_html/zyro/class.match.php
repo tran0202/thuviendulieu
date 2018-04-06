@@ -1,4 +1,5 @@
 <?php
+    include_once('config.php');
     class Match{
         private $home_team_name;
         private $home_team_score;

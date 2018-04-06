@@ -1,4 +1,5 @@
 <?php
+    include_once('config.php');
     class Team {
         private $name;
         private $group_name;

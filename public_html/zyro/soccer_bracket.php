@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <?php
-    include_once('config.php');
     include_once('class.match.php');
     $second_stage_matches = array();
     $match_dto = Match::getSoccerSecondStageMatches(1, 40);
