@@ -1,58 +1,8 @@
 <!DOCTYPE html>
 <?php
     include_once('class.team.php');
-    $teams = array();
     $team_dto = Team::getFootballTeams(2);
-    $count = $team_dto->getCount();
-    $output = '<!-- Count = '.$count.' -->';
-    if ($count == 0) {
-        $output = '<h2>No result found!</h2>';
-    }
-    else {
-        $teams = $team_dto->getTeams();
-        foreach ($teams as $parent_group_long_name => $_conferences) {
-            $output .= '<div class="col-sm-12 h2-ff1 margin-top-md">'.$parent_group_long_name.'</div>';
-            foreach ($_conferences as $group_name => $_divisions) {
-                $output .= '<div class="col-sm-12 h2-ff2 margin-top-sm">'.$group_name.'</div>
-                            <div class="col-sm-12 box-xl">
-                                <div class="col-sm-12 no-padding-lr h3-ff4 row padding-tb-sm font-bold">
-                                    <div class="col-sm-3 no-padding-lr"></div>
-                                    <div class="col-sm-2 no-padding-lr">
-                                        <div class="col-sm-4 no-padding-lr">W</div>
-                                        <div class="col-sm-4 no-padding-lr">L</div>
-                                        <div class="col-sm-4 no-padding-lr">T</div>
-                                    </div>
-                                    <div class="col-sm-5 no-padding-lr">
-                                        <div class="col-sm-3 no-padding-lr">Home</div>
-                                        <div class="col-sm-3 no-padding-lr">Road</div>
-                                        <div class="col-sm-3 no-padding-lr">Div</div>
-                                        <div class="col-sm-3 no-padding-lr">Conf</div>
-                                    </div>
-                                    <div class="col-sm-2 no-padding-lr">
-                                        <div class="col-sm-6 no-padding-lr">Streak</div>
-                                        <div class="col-sm-6 no-padding-lr">Last 5</div>
-                                    </div>
-                                </div>';
-                foreach ($_divisions as $group_order => $_team) {
-                    $output .= '<div class="col-sm-12 no-padding-lr h3-ff4 row padding-tb-sm">
-                                    <div class="col-sm-3 no-padding-lr">
-                                        <div class="col-sm-2 no-padding-lr">
-                                            <img src="/images/nfl_logos/'.$_team->getLogoFileName().'" style="width:40px;" />
-                                        </div>
-                                        <div class="col-sm-10 no-padding-lr" style="padding-top:8px;">'.$_team->getName().'</div>
-                                    </div>
-                                    <div class="col-sm-2 no-padding-lr">
-                                    </div>
-                                    <div class="col-sm-5 no-padding-lr">
-                                    </div>
-                                    <div class="col-sm-2 no-padding-lr">
-                                    </div>
-                                </div>';
-                }
-                $output .= '</div>';
-            }
-        }
-    }
+    $output = $team_dto->getHtml();
 ?>
 <html lang="en">
 <head>

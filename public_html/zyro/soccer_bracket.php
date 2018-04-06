@@ -1,53 +1,8 @@
 <!DOCTYPE html>
 <?php
     include_once('class.match.php');
-    $second_stage_matches = array();
     $match_dto = Match::getSoccerSecondStageMatches(1, 40);
-    $count = $match_dto->getCount();
-    $output = '<!-- Count = '.$count.' -->';
-    if ($count == 0) {
-        $output = '<h2>No result found!</h2>';
-    }
-    else {
-        $second_stage_matches = $match_dto->getSecondStageMatches();
-        $box_height = 120;
-        $gap_heights = array(array(10, 20), array(80, 160), array(220, 440), array(410, 1000), array(10, 2120));
-        $i = 0;
-        $j = 0;
-        foreach ($second_stage_matches as $round => $_matches) {
-            $gap_height = $gap_heights[$i][0];
-            $output .= '<div class="col-sm-3">
-                            <div class="col-sm-12" style="height:'.$gap_height.'px;"></div>
-                            <div class="col-sm-12 margin-top">
-                                <span class="h2-ff1">'.$round.'</span>
-                            </div>';
-            foreach ($_matches as $match_order => $_match) {
-                $gap_height = 10;
-                if ($j != 0) $gap_height = $gap_heights[$i][1];
-                $home_team_name = $_match->getHomeTeamName();
-                $away_team_name = $_match->getAwayTeamName();
-                $waiting_home_team = $_match->getWaitingHomeTeam();
-                $waiting_away_team = $_match->getWaitingAwayTeam();
-                $output .= '<div class="col-sm-12" style="height:'.$gap_height.'px;"></div>
-                            <div class="col-sm-12 box-sm" style="height:'.$box_height.'px;">
-                                <div class="col-sm-12 h4-ff3 margin-tb-sm">
-                                    <div class="col-sm-7 no-padding-lr">'.
-                                        $waiting_home_team.
-                                    '</div>
-                                </div>
-                                <div class="col-sm-12 h4-ff3 margin-tb-sm">
-                                    <div class="col-sm-7 no-padding-lr">'.
-                                        $waiting_away_team.
-                                    '</div>
-                                </div>
-                            </div>';
-                $j = $j + 1;
-            }
-            $output .= '</div>';
-            $i = $i + 1;
-            $j = 0;
-        }
-    }
+    $output = $match_dto->getHtml();
 ?>
 <html lang="en">
 <head>
