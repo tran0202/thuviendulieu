@@ -2,32 +2,20 @@
 <?php
     include_once('config.php');
     include_once('class.match.php');
-    $sql = Match::getSoccerSecondStageMatchSql(1, 40);
-    $query = $connection->prepare($sql);
-    $query->execute();
-    $count = $query->rowCount();
-    $matches = array();
-    $output = '<!-- Total Count = '.$count.' -->';
+    $second_stage_matches = array();
+    $match_dto = Match::getSoccerSecondStageMatches(1, 40);
+    $count = $match_dto->getCount();
+    $output = '<!-- Count = '.$count.' -->';
     if ($count == 0) {
         $output = '<h2>No result found!</h2>';
     }
     else {
-        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-            $home_team_score = $row['home_team_score'];
-            if ($row['home_team_score'] == null) $home_team_score = mt_rand(0,10);
-            $away_team_score = $row['away_team_score'];
-            if ($row['away_team_score'] == null) $away_team_score = mt_rand(0,10);
-            $match = Match::CreateSoccerMatch($row['home_team_name'], $row['away_team_name'],
-                $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_time_fmt'], $row['match_order'], $row['round'],
-                $row['stage'], $row['group_name'], $row['waiting_home_team'], $row['waiting_away_team'],
-                $home_team_score, $away_team_score, $row['home_flag'], $row['away_flag']);
-            $matches[$row['round']][$row['match_order']] = $match;
-        }
+        $second_stage_matches = $match_dto->getSecondStageMatches();
         $box_height = 120;
         $gap_heights = array(array(10, 20), array(80, 160), array(220, 440), array(410, 1000), array(10, 2120));
         $i = 0;
         $j = 0;
-        foreach ($matches as $round => $_matches) {
+        foreach ($second_stage_matches as $round => $_matches) {
             $gap_height = $gap_heights[$i][0];
             $output .= '<div class="col-sm-3">
                             <div class="col-sm-12" style="height:'.$gap_height.'px;"></div>

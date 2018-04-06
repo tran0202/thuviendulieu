@@ -2,29 +2,16 @@
 <?php
     include_once('config.php');
     include_once('class.match.php');
-    $sql = Match::getTennisMatchSql(4);
-    $query = $connection-> prepare($sql);
-    $query->execute();
-    $count = $query->rowCount();
     $matches = array();
-    $output = '<!-- Total Count = '.$count.' -->';
+    $match_dto = Match::getTennisMatches(4);
+    $count = $match_dto->getCount();
+    $output = '<!-- Count = '.$count.' -->';
     echo $output;
     if ($count == 0) {
         $output = '<h2>No result found!</h2>';
     }
     else {
-        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-            $match = Match::CreateTennisMatch($row['home_team_name'], $row['away_team_name'],
-                $row['match_date'], $row['match_order'], $row['round'],
-                $row['home_team_seed'], $row['away_team_seed'],
-                $row['home_set1_score'], $row['away_set1_score'], $row['home_set1_tiebreak'], $row['away_set1_tiebreak'],
-                $row['home_set2_score'], $row['away_set2_score'], $row['home_set2_tiebreak'], $row['away_set2_tiebreak'],
-                $row['home_set3_score'], $row['away_set3_score'], $row['home_set3_tiebreak'], $row['away_set3_tiebreak'],
-                $row['home_set4_score'], $row['away_set4_score'], $row['home_set4_tiebreak'], $row['away_set4_tiebreak'],
-                $row['home_set5_score'], $row['away_set5_score'], $row['home_set5_tiebreak'], $row['away_set5_tiebreak'],
-                $row['home_flag_filename'], $row['home_alternative_flag_filename'], $row['away_flag_filename'], $row['away_alternative_flag_filename']);
-            $matches[$row['round']][$row['match_order']] = $match;
-        }
+        $matches = $match_dto->getMatches();
         $views = array();
         $box_height = 120;
         $gap_heights = array(array(20, 20), array(90, 160), array(230, 440), array(510, 1000), array(1070, 2120), array(2235, 4360), array(4475, 8840));

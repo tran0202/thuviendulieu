@@ -2,11 +2,11 @@
 <?php
     include_once('config.php');
     include_once('class.match.php');
-    $match_dto = Match::getSoccerMatch(1);
     $matches = array();
     $bracket_matches = array();
+    $match_dto = Match::getSoccerMatches(1);
     $count = $match_dto->getCount();
-    $output = '';
+    $output = '<!-- Count = '.$count.' -->';
     $output2 = '';
     if ($count == 0) {
         $output = '<h2>No result found!</h2>';
@@ -105,28 +105,15 @@
     }
 
     include_once('class.team.php');
-    $sql = 'SELECT UCASE(t.name) AS name, team_id, 
-                    group_id, UCASE(g.name) AS group_name, 
-                    group_order, n.flag_filename, tt.tournament_id 
-                FROM team_tournament tt 
-                LEFT JOIN team t ON t.id = tt.team_id 
-                LEFT JOIN `group` g ON g.id = tt.group_id  
-                LEFT JOIN nation n ON n.id = t.nation_id 
-                WHERE tt.tournament_id = 1 
-                ORDER BY group_id, group_order';
-    $query = $connection->prepare($sql);
-    $query->execute();
-    $count = $query->rowCount();
     $teams = array();
+    $team_dto = Team::getSoccerTeams(1);
+    $count = $team_dto->getCount();
     $output3 = '<!-- Count2 = '.$count.' -->';
     if ($count == 0) {
         $output3 = '<h2>No result found!</h2>';
     }
     else {
-        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-            $team = Team::CreateSoccerTeam($row['name'], $row['group_name'], $row['group_order'], $row['flag_filename']);
-            $teams[$row['group_name']][$row['group_order']] = $team;
-        }
+        $teams = $team_dto->getTeams();
         foreach ($teams as $group_name => $_teams) {
             $output3 .= '<div class="modal fade" id="group'.$group_name.'StandingModal" tabindex="-1" role="dialog" aria-labelledby="group'.$group_name.'StandingModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document" style="width:800px;">

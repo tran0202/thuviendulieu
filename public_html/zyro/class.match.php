@@ -44,7 +44,7 @@
 
         protected function __construct(){ }
 
-        public static function CreateSoccerMatch (
+        public static function CreateSoccerMatch(
             $home_team_name, $away_team_name,
             $match_date, $match_date_fmt, $match_time, $match_time_fmt,
             $match_order, $round, $stage, $group_name,
@@ -72,7 +72,7 @@
             return $m;
         }
 
-        public static function CreateTennisMatch (
+        public static function CreateTennisMatch(
             $home_team_name, $away_team_name,
             $match_date, $match_order, $round, $home_team_seed, $away_team_seed,
             $home_set1_score, $away_set1_score, $home_set1_tiebreak, $away_set1_tiebreak,
@@ -117,17 +117,39 @@
             return $m;
         }
 
-        public static function getSoccerMatch($tournament_id) {
+        public static function getSoccerMatches($tournament_id) {
 
             $sql = Match::getSoccerMatchSql($tournament_id);
+
+            return self::getSoccerMatchDTO($sql);
+        }
+
+        public static function getSoccerSecondStageMatches($tournament_id, $stage_id) {
+
+            $sql = Match::getSoccerSecondStageMatchSql($tournament_id, $stage_id);
+
+            return self::getSoccerMatchDTO($sql);
+        }
+
+        public static function getTennisMatches($tournament_id) {
+
+            $sql = Match::getTennisMatchSql($tournament_id);
+
+            return self::getTennisMatchDTO($sql);
+        }
+
+        public static function getSoccerMatchDTO($sql) {
+
             $query = $GLOBALS['connection']->prepare($sql);
             $query->execute();
             $count = $query->rowCount();
             $matches = array();
             $bracket_matches = array();
+            $group_matches = array();
+            $second_stage_matches = array();
 
             if ($count == 0) {
-                return MatchDTO::CreateMatchDTO(null, null, $count);
+                return MatchDTO::CreateSoccerMatchDTO(null, null, null, null, $count);
             }
             else {
                 while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
@@ -141,8 +163,37 @@
                         $home_team_score, $away_team_score, $row['home_flag'], $row['away_flag']);
                     $matches[$row['round']][$row['match_date']][$row['match_order']] = $match;
                     if ($row['round'] != 'Group Matches') $bracket_matches[$row['round']][$row['match_order']] = $match;
+                    $group_matches[$row['group_name']][$row['match_order']] = $match;
+                    $second_stage_matches[$row['round']][$row['match_order']] = $match;
                 }
-                return MatchDTO::CreateMatchDTO($matches, $bracket_matches, $count);
+                return MatchDTO::CreateSoccerMatchDTO($matches, $bracket_matches, $group_matches, $second_stage_matches, $count);
+            }
+        }
+
+        public static function getTennisMatchDTO($sql) {
+
+            $query = $GLOBALS['connection']->prepare($sql);
+            $query->execute();
+            $count = $query->rowCount();
+            $matches = array();
+
+            if ($count == 0) {
+                return MatchDTO::CreateTennisMatchDTO(null, $count);
+            }
+            else {
+                while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                    $match = Match::CreateTennisMatch($row['home_team_name'], $row['away_team_name'],
+                        $row['match_date'], $row['match_order'], $row['round'],
+                        $row['home_team_seed'], $row['away_team_seed'],
+                        $row['home_set1_score'], $row['away_set1_score'], $row['home_set1_tiebreak'], $row['away_set1_tiebreak'],
+                        $row['home_set2_score'], $row['away_set2_score'], $row['home_set2_tiebreak'], $row['away_set2_tiebreak'],
+                        $row['home_set3_score'], $row['away_set3_score'], $row['home_set3_tiebreak'], $row['away_set3_tiebreak'],
+                        $row['home_set4_score'], $row['away_set4_score'], $row['home_set4_tiebreak'], $row['away_set4_tiebreak'],
+                        $row['home_set5_score'], $row['away_set5_score'], $row['home_set5_tiebreak'], $row['away_set5_tiebreak'],
+                        $row['home_flag_filename'], $row['home_alternative_flag_filename'], $row['away_flag_filename'], $row['away_alternative_flag_filename']);
+                    $matches[$row['round']][$row['match_order']] = $match;
+                }
+                return MatchDTO::CreateTennisMatchDTO($matches, $count);
             }
         }
 
@@ -880,14 +931,25 @@
     class MatchDTO {
         private $matches;
         private $bracket_matches;
+        private $group_matches;
+        private $second_stage_matches;
         private $count;
 
         protected function __construct(){ }
 
-        public static function CreateMatchDTO($matches, $bracket_matches, $count) {
+        public static function CreateSoccerMatchDTO($matches, $bracket_matches, $group_matches, $second_stage_matches, $count) {
             $match_dto = new MatchDTO();
             $match_dto->matches = $matches;
             $match_dto->bracket_matches = $bracket_matches;
+            $match_dto->group_matches = $group_matches;
+            $match_dto->second_stage_matches = $second_stage_matches;
+            $match_dto->count = $count;
+            return $match_dto;
+        }
+
+        public static function CreateTennisMatchDTO($matches, $count) {
+            $match_dto = new MatchDTO();
+            $match_dto->matches = $matches;
             $match_dto->count = $count;
             return $match_dto;
         }
@@ -922,6 +984,38 @@
         public function setBracketMatches($bracket_matches)
         {
             $this->bracket_matches = $bracket_matches;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getGroupMatches()
+        {
+            return $this->group_matches;
+        }
+
+        /**
+         * @param mixed $group_matches
+         */
+        public function setGroupMatches($group_matches)
+        {
+            $this->group_matches = $group_matches;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getSecondStageMatches()
+        {
+            return $this->second_stage_matches;
+        }
+
+        /**
+         * @param mixed $second_stage_matches
+         */
+        public function setSecondStageMatches($second_stage_matches)
+        {
+            $this->second_stage_matches = $second_stage_matches;
         }
 
         /**

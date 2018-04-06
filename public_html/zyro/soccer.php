@@ -2,28 +2,15 @@
 <?php
     include_once('config.php');
     include_once('class.team.php');
-    $sql = 'SELECT UCASE(t.name) AS name, team_id, 
-                group_id, UCASE(g.name) AS group_name, 
-                group_order, n.flag_filename, tt.tournament_id 
-            FROM team_tournament tt 
-            LEFT JOIN team t ON t.id = tt.team_id 
-            LEFT JOIN `group` g ON g.id = tt.group_id  
-            LEFT JOIN nation n ON n.id = t.nation_id 
-            WHERE tt.tournament_id = 1 
-            ORDER BY group_id, group_order';
-    $query = $connection->prepare($sql);
-    $query->execute();
-    $count = $query->rowCount();
     $teams = array();
+    $team_dto = Team::getSoccerTeams(1);
+    $count = $team_dto->getCount();
     $output = '<!-- Count = '.$count.' -->';
     if ($count == 0) {
         $output = '<h2>No result found!</h2>';
     }
     else {
-        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-            $team = Team::CreateSoccerTeam($row['name'], $row['group_name'], $row['group_order'], $row['flag_filename']);
-            $teams[$row['group_name']][$row['group_order']] = $team;
-        }
+        $teams = $team_dto->getTeams();
         foreach ($teams as $group_name => $_teams) {
             $output .= '<div class="col-sm-12 margin-top-sm">
                             <span class="col-sm-2 h2-ff2">Group '.$group_name.'</span>
@@ -63,28 +50,16 @@
     }
 
     include_once('class.match.php');
-    $sql = Match::getSoccerMatchSql(1);
-    $query = $connection->prepare($sql);
-    $query->execute();
-    $count = $query->rowCount();
-    $matches = array();
+    $group_matches = array();
+    $match_dto = Match::getSoccerMatches(1);
+    $count = $match_dto->getCount();
     $output2 = '<!-- Count2 = '.$count.' -->';
     if ($count == 0) {
         $output2 = '<h2>No result found!</h2>';
     }
     else {
-        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-            $home_team_score = $row['home_team_score'];
-            if ($row['home_team_score'] == null) $home_team_score = mt_rand(0,10);
-            $away_team_score = $row['away_team_score'];
-            if ($row['away_team_score'] == null) $away_team_score = mt_rand(0,10);
-            $match = Match::CreateSoccerMatch($row['home_team_name'], $row['away_team_name'],
-                $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_time_fmt'],
-                $row['match_order'], $row['round'], $row['stage'], $row['group_name'], '', '',
-                $home_team_score, $away_team_score, $row['home_flag'], $row['away_flag']);
-            $matches[$row['group_name']][$row['match_order']] = $match;
-        }
-        foreach ($matches as $group_name => $_matches) {
+        $group_matches = $match_dto->getGroupMatches();
+        foreach ($group_matches as $group_name => $_matches) {
             $output2 .= '<div class="modal fade" id="group'.$group_name.'MatchesModal" tabindex="-1" role="dialog" aria-labelledby="group'.$group_name.'MatchesModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-md" role="document">
                         <div class="modal-content">

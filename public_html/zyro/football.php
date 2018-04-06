@@ -2,31 +2,15 @@
 <?php
     include_once('config.php');
     include_once('class.team.php');
-    $sql = 'SELECT t.name AS name, tt.team_id, 
-                group_id, g.name AS group_name, group_order, 
-                parent_group_id, pg.name AS parent_group_name, 
-                pg.long_name AS parent_group_long_name, parent_group_order, tl.logo_filename, tt.tournament_id 
-            FROM team_tournament tt 
-            LEFT JOIN team t ON t.id = tt.team_id 
-            LEFT JOIN `group` g ON g.id = tt.group_id 
-            LEFT JOIN `group` pg ON pg.id = tt.parent_group_id 
-            LEFT JOIN team_logo tl ON tl.team_id = t.id 
-            WHERE tt.tournament_id = 2 
-            ORDER BY parent_group_name, group_id, group_order';
-    $query = $connection->prepare($sql);
-    $query->execute();
-    $count = $query->rowCount();
     $teams = array();
+    $team_dto = Team::getFootballTeams(2);
+    $count = $team_dto->getCount();
     $output = '<!-- Count = '.$count.' -->';
     if ($count == 0) {
         $output = '<h2>No result found!</h2>';
     }
     else {
-        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-            $team = Team::CreateFootballTeam($row['name'], $row['group_name'], $row['group_order'],
-                $row['parent_group_long_name'], $row['parent_group_order'], $row['logo_filename']);
-            $teams[$row['parent_group_long_name']][$row['parent_group_name'].' '.$row['group_name']][$row['group_order']] = $team;
-        }
+        $teams = $team_dto->getTeams();
         foreach ($teams as $parent_group_long_name => $_conferences) {
             $output .= '<div class="col-sm-12 h2-ff1 margin-top-md">'.$parent_group_long_name.'</div>';
             foreach ($_conferences as $group_name => $_divisions) {
