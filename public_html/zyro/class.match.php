@@ -268,7 +268,7 @@
             $output2 = '';
             $output .= '
                         <div id="accordion" class="">
-                            <div class="card col-sm-12 padding-tb-md border-bottom">
+                            <div class="card col-sm-12 padding-tb-md border-bottom-gray5">
                                 <div class="card-header" id="heading-bracket" style="width:100%;padding-left:0;">                                    
                                     <button class="btn btn-link collapsed h2-ff1 no-padding-left" data-toggle="collapse" 
                                         data-target="#collapse-bracket" aria-expanded="false" aria-controls="collapse-bracket">
