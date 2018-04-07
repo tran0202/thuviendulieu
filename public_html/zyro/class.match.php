@@ -118,25 +118,25 @@
             return $m;
         }
 
-        public static function getSoccerMatches($tournament_id) {
+        public static function getSoccerGroupMatches($tournament_id) {
 
             $sql = Match::getSoccerMatchSql($tournament_id);
 
-            return self::getSoccerMatchDTO($sql);
+            return self::getSoccerMatchDTO($sql, MatchView::GroupView);
         }
 
-        public static function getSoccerBracketMatches($tournament_id) {
+        public static function getSoccerScheduleMatches($tournament_id) {
 
             $sql = Match::getSoccerMatchSql($tournament_id);
 
-            return self::getSoccerBracketMatchDTO($sql);
+            return self::getSoccerMatchDTO($sql, MatchView::ScheduleView);
         }
 
-        public static function getSoccerSecondStageMatches($tournament_id, $stage_id) {
+        public static function getSoccerBracketMatches($tournament_id, $stage_id) {
 
-            $sql = Match::getSoccerSecondStageMatchSql($tournament_id, $stage_id);
+            $sql = Match::getSoccerMatchSql($tournament_id, $stage_id);
 
-            return self::getSoccerSecondStageMatchDTO($sql);
+            return self::getSoccerMatchDTO($sql, MatchView::BracketView);
         }
 
         public static function getTennisMatches($tournament_id) {
@@ -146,7 +146,7 @@
             return self::getTennisMatchDTO($sql);
         }
 
-        public static function getSoccerMatchDTO($sql) {
+        public static function getSoccerMatchDTO($sql, $view) {
 
             $query = $GLOBALS['connection']->prepare($sql);
             $query->execute();
@@ -159,7 +159,7 @@
 
             if ($count == 0) {
                 $output = '<h2>No result found!</h2>';
-                return MatchDTO::CreateSoccerMatchDTO(null, null, null, null, $count, $output);
+                return MatchDTO::CreateSoccerMatchDTO(null, $count, $output);
             }
             else {
                 while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
@@ -176,78 +176,20 @@
                     $group_matches[$row['group_name']][$row['match_order']] = $match;
                     $second_stage_matches[$row['round']][$row['match_order']] = $match;
                 }
-                $output .= self::getSoccerHtml($group_matches);
-                return MatchDTO::CreateSoccerMatchDTO($matches, $bracket_matches, $group_matches, $second_stage_matches, $count, $output);
-            }
-        }
-
-        public static function getSoccerBracketMatchDTO($sql) {
-
-            $query = $GLOBALS['connection']->prepare($sql);
-            $query->execute();
-            $count = $query->rowCount();
-            $matches = array();
-            $bracket_matches = array();
-            $group_matches = array();
-            $second_stage_matches = array();
-            $output = '<!-- Count = '.$count.' -->';
-
-            if ($count == 0) {
-                $output = '<h2>No result found!</h2>';
-                return MatchDTO::CreateSoccerMatchDTO(null, null, null, null, $count, $output);
-            }
-            else {
-                while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                    $home_team_score = $row['home_team_score'];
-                    if ($row['home_team_score'] == null) $home_team_score = mt_rand(0,10);
-                    $away_team_score = $row['away_team_score'];
-                    if ($row['away_team_score'] == null) $away_team_score = mt_rand(0,10);
-                    $match = Match::CreateSoccerMatch($row['home_team_name'], $row['away_team_name'],
-                        $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_time_fmt'],
-                        $row['match_order'], $row['round'], $row['stage'], $row['group_name'], $row['waiting_home_team'], $row['waiting_away_team'],
-                        $home_team_score, $away_team_score, $row['home_flag'], $row['away_flag']);
-                    $matches[$row['round']][$row['match_date']][$row['match_order']] = $match;
-                    if ($row['round'] != 'Group Matches') $bracket_matches[$row['round']][$row['match_order']] = $match;
-                    $group_matches[$row['group_name']][$row['match_order']] = $match;
-                    $second_stage_matches[$row['round']][$row['match_order']] = $match;
+                switch ($view) {
+                    case MatchView::GroupView:
+                        $output .= self::getSoccerGroupHtml($group_matches);
+                        break;
+                    case MatchView::ScheduleView:
+                        $output .= self::getSoccerScheduleHtml($matches, $bracket_matches);
+                        break;
+                    case MatchView::BracketView:
+                        $output .= self::getSoccerBracketHtml($second_stage_matches);
+                        break;
+                    default:
+                        $output .= self::getSoccerGroupHtml($group_matches);
                 }
-                $output .= self::getSoccerBracketHtml($matches, $bracket_matches);
-                return MatchDTO::CreateSoccerMatchDTO($matches, $bracket_matches, $group_matches, $second_stage_matches, $count, $output);
-            }
-        }
-
-        public static function getSoccerSecondStageMatchDTO($sql) {
-
-            $query = $GLOBALS['connection']->prepare($sql);
-            $query->execute();
-            $count = $query->rowCount();
-            $matches = array();
-            $bracket_matches = array();
-            $group_matches = array();
-            $second_stage_matches = array();
-            $output = '<!-- Count = '.$count.' -->';
-
-            if ($count == 0) {
-                $output = '<h2>No result found!</h2>';
-                return MatchDTO::CreateSoccerMatchDTO(null, null, null, null, $count, $output);
-            }
-            else {
-                while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                    $home_team_score = $row['home_team_score'];
-                    if ($row['home_team_score'] == null) $home_team_score = mt_rand(0,10);
-                    $away_team_score = $row['away_team_score'];
-                    if ($row['away_team_score'] == null) $away_team_score = mt_rand(0,10);
-                    $match = Match::CreateSoccerMatch($row['home_team_name'], $row['away_team_name'],
-                        $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_time_fmt'],
-                        $row['match_order'], $row['round'], $row['stage'], $row['group_name'], $row['waiting_home_team'], $row['waiting_away_team'],
-                        $home_team_score, $away_team_score, $row['home_flag'], $row['away_flag']);
-                    $matches[$row['round']][$row['match_date']][$row['match_order']] = $match;
-                    if ($row['round'] != 'Group Matches') $bracket_matches[$row['round']][$row['match_order']] = $match;
-                    $group_matches[$row['group_name']][$row['match_order']] = $match;
-                    $second_stage_matches[$row['round']][$row['match_order']] = $match;
-                }
-                $output .= self::getSoccerSecondStageHtml($second_stage_matches);
-                return MatchDTO::CreateSoccerMatchDTO($matches, $bracket_matches, $group_matches, $second_stage_matches, $count, $output);
+                return MatchDTO::CreateSoccerMatchDTO($matches, $count, $output);
             }
         }
 
@@ -281,7 +223,7 @@
             }
         }
 
-        public static function getSoccerHtml($group_matches) {
+        public static function getSoccerGroupHtml($group_matches) {
             $output = '';
             foreach ($group_matches as $group_name => $_matches) {
                 if ($group_name != '') {
@@ -321,7 +263,7 @@
             return $output;
         }
 
-        public static function getSoccerBracketHtml($matches, $bracket_matches) {
+        public static function getSoccerScheduleHtml($matches, $bracket_matches) {
             $output = '';
             $output2 = '';
             $output .= '
@@ -415,7 +357,7 @@
             return $output2;
         }
 
-        public static function getSoccerSecondStageHtml($second_stage_matches) {
+        public static function getSoccerBracketHtml($second_stage_matches) {
             $output = '';
             $box_height = 120;
             $gap_heights = array(array(10, 20), array(80, 160), array(220, 440), array(410, 1000), array(10, 2120));
@@ -626,7 +568,9 @@
             return $output2;
         }
 
-        public static function getSoccerMatchSql($tournament_id) {
+        public static function getSoccerMatchSql($tournament_id, $stage_id = 0) {
+            $stage_where = '';
+            if ($stage_id != 0) $stage_where = ' AND m.stage_id = '.$stage_id;
             $sql = 'SELECT t.name AS home_team_name, home_team_score, n.flag_filename AS home_flag, 
                     t2.name AS away_team_name, away_team_score, n2.flag_filename AS away_flag, 
                     DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date, 
@@ -643,30 +587,8 @@
                     LEFT JOIN `group` g3 ON g3.id = tt.group_id 
                     LEFT JOIN nation n ON n.id = t.nation_id  
                     LEFT JOIN nation n2 ON n2.id = t2.nation_id 
-                WHERE m.tournament_id = '.$tournament_id.'
+                WHERE m.tournament_id = '.$tournament_id.$stage_where.'
                 ORDER BY stage_id, round_id, match_date, match_time;';
-            return $sql;
-        }
-
-        public static function getSoccerSecondStageMatchSql($tournament_id, $stage_id) {
-            $sql = 'SELECT t.name AS home_team_name, home_team_score, n.flag_filename AS home_flag,
-                t2.name AS away_team_name, away_team_score, n2.flag_filename AS away_flag,
-                DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date,
-                TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order,
-                waiting_home_team, waiting_away_team,
-                g.name AS round, g2.name AS stage,
-                g3.name AS group_name, m.tournament_id
-            FROM `match` m
-                LEFT JOIN team t ON t.id = m.home_team_id
-                LEFT JOIN team t2 ON t2.id = m.away_team_id
-                LEFT JOIN `group` g ON g.id = m.round_id
-                LEFT JOIN `group` g2 ON g2.id = m.stage_id
-                LEFT JOIN team_tournament tt ON tt.team_id = m.home_team_id
-                LEFT JOIN `group` g3 ON g3.id = tt.group_id
-                LEFT JOIN nation n ON n.id = t.nation_id
-                LEFT JOIN nation n2 ON n2.id = t2.nation_id
-            WHERE m.tournament_id = '.$tournament_id.' AND m.stage_id = '.$stage_id.'
-            ORDER BY match_order;';
             return $sql;
         }
 
@@ -1367,13 +1289,9 @@
 
         protected function __construct(){ }
 
-        public static function CreateSoccerMatchDTO($matches, $bracket_matches, $group_matches, $second_stage_matches,
-                                                    $count, $html) {
+        public static function CreateSoccerMatchDTO($matches, $count, $html) {
             $match_dto = new MatchDTO();
             $match_dto->matches = $matches;
-            $match_dto->bracket_matches = $bracket_matches;
-            $match_dto->group_matches = $group_matches;
-            $match_dto->second_stage_matches = $second_stage_matches;
             $match_dto->count = $count;
             $match_dto->html = $html;
             return $match_dto;
@@ -1482,4 +1400,10 @@
         {
             $this->html = $html;
         }
+    }
+
+    abstract class MatchView {
+        const GroupView = 1;
+        const ScheduleView = 2;
+        const BracketView = 3;
     }

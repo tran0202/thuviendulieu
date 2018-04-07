@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
     include_once('class.match.php');
-    $match_dto = Match::getSoccerBracketMatches(1);
+    $match_dto = Match::getSoccerScheduleMatches(1);
     $output2 = $match_dto->getHtml();
 
     include_once('class.team.php');

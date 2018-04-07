@@ -39,14 +39,14 @@
 
             $sql = Team::getSoccerTeamSql($tournament_id);
 
-            return self::getSoccerTeamDTO($sql);
+            return self::getSoccerTeamDTO($sql, TeamView::GroupView);
         }
 
         public static function getSoccerModalTeams($tournament_id) {
 
             $sql = Team::getSoccerTeamSql($tournament_id);
 
-            return self::getSoccerModalTeamDTO($sql);
+            return self::getSoccerTeamDTO($sql, TeamView::ModalView);
         }
 
         public static function getFootballTeams($tournament_id) {
@@ -56,7 +56,7 @@
             return self::getFootballTeamDTO($sql);
         }
 
-        public static function getSoccerTeamDTO($sql) {
+        public static function getSoccerTeamDTO($sql, $view) {
 
             $query = $GLOBALS['connection']->prepare($sql);
             $query->execute();
@@ -73,29 +73,16 @@
                     $team = Team::CreateSoccerTeam($row['name'], $row['group_name'], $row['group_order'], $row['flag_filename']);
                     $teams[$row['group_name']][$row['group_order']] = $team;
                 }
-                $output .= self::getSoccerHtml($teams);
-                return TeamDTO::CreateSoccerTeamDTO($teams, $count, $output);
-            }
-        }
-
-        public static function getSoccerModalTeamDTO($sql) {
-
-            $query = $GLOBALS['connection']->prepare($sql);
-            $query->execute();
-            $count = $query->rowCount();
-            $teams = array();
-            $output = '<!-- Count = '.$count.' -->';
-
-            if ($count == 0) {
-                $output = '<h2>No result found!</h2>';
-                return TeamDTO::CreateSoccerTeamDTO(null, $count, $output);
-            }
-            else {
-                while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                    $team = Team::CreateSoccerTeam($row['name'], $row['group_name'], $row['group_order'], $row['flag_filename']);
-                    $teams[$row['group_name']][$row['group_order']] = $team;
+                switch ($view) {
+                    case TeamView::GroupView:
+                        $output .= self::getSoccerHtml($teams);
+                        break;
+                    case TeamView::ModalView:
+                        $output .= self::getSoccerModalHtml($teams);
+                        break;
+                    default:
+                        $output .= self::getSoccerHtml($teams);
                 }
-                $output .= self::getSoccerModalHtml($teams);
                 return TeamDTO::CreateSoccerTeamDTO($teams, $count, $output);
             }
         }
@@ -268,29 +255,29 @@
 
         public static function getSoccerTeamSql($tournament_id) {
             $sql = 'SELECT UCASE(t.name) AS name, team_id, 
-                    group_id, UCASE(g.name) AS group_name, 
-                    group_order, n.flag_filename, tt.tournament_id 
-                FROM team_tournament tt 
-                LEFT JOIN team t ON t.id = tt.team_id 
-                LEFT JOIN `group` g ON g.id = tt.group_id  
-                LEFT JOIN nation n ON n.id = t.nation_id 
-                WHERE tt.tournament_id = '.$tournament_id.' 
-                ORDER BY group_id, group_order';
+                        group_id, UCASE(g.name) AS group_name, group_order, 
+                        n.flag_filename, tt.tournament_id 
+                    FROM team_tournament tt 
+                    LEFT JOIN team t ON t.id = tt.team_id 
+                    LEFT JOIN `group` g ON g.id = tt.group_id  
+                    LEFT JOIN nation n ON n.id = t.nation_id 
+                    WHERE tt.tournament_id = '.$tournament_id.' 
+                    ORDER BY group_id, group_order';
             return $sql;
         }
 
         public static function getFootballTeamSql($tournament_id) {
             $sql = 'SELECT t.name AS name, tt.team_id, 
-                group_id, g.name AS group_name, group_order, 
-                parent_group_id, pg.name AS parent_group_name, 
-                pg.long_name AS parent_group_long_name, parent_group_order, tl.logo_filename, tt.tournament_id 
-            FROM team_tournament tt 
-            LEFT JOIN team t ON t.id = tt.team_id 
-            LEFT JOIN `group` g ON g.id = tt.group_id 
-            LEFT JOIN `group` pg ON pg.id = tt.parent_group_id 
-            LEFT JOIN team_logo tl ON tl.team_id = t.id 
-            WHERE tt.tournament_id = '.$tournament_id.' 
-            ORDER BY parent_group_name, group_id, group_order';
+                        group_id, g.name AS group_name, group_order, 
+                        parent_group_id, pg.name AS parent_group_name, pg.long_name AS parent_group_long_name, parent_group_order, 
+                        tl.logo_filename, tt.tournament_id 
+                    FROM team_tournament tt 
+                    LEFT JOIN team t ON t.id = tt.team_id 
+                    LEFT JOIN `group` g ON g.id = tt.group_id 
+                    LEFT JOIN `group` pg ON pg.id = tt.parent_group_id 
+                    LEFT JOIN team_logo tl ON tl.team_id = t.id 
+                    WHERE tt.tournament_id = '.$tournament_id.' 
+                    ORDER BY parent_group_name, group_id, group_order';
             return $sql;
         }
 
@@ -493,4 +480,9 @@
         {
             $this->html = $html;
         }
+    }
+
+    abstract class TeamView {
+        const GroupView = 1;
+        const ModalView = 2;
     }

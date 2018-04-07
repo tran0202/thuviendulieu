@@ -5,7 +5,7 @@
     $output = $team_dto->getHtml();
 
     include_once('class.match.php');
-    $match_dto = Match::getSoccerMatches(1);
+    $match_dto = Match::getSoccerGroupMatches(1);
     $output2 = $match_dto->getHtml();
 ?>
 <html lang="en">
