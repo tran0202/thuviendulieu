@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <?php
-    include_once('class.match.php');
-    $match_dto = Match::getTennisMatches(4);
-    $output = $match_dto->getHtml();
+    include_once('class.tournament.php');
+    $tournament_dto = Tournament::getTennisTournament(4);
+    $output = $tournament_dto->getMatchHtml();
 ?>
 <html lang="en">
 <head>

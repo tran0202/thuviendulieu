@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <?php
-    include_once('class.team.php');
-    $team_dto = Team::getFootballTeams(2);
-    $output = $team_dto->getHtml();
+    include_once('class.tournament.php');
+    $tournament_dto = Tournament::getFootballTournament(2);
+    $output = $tournament_dto->getTeamHtml();
 ?>
 <html lang="en">
 <head>

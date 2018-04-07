@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <?php
-    include_once('class.match.php');
-    $match_dto = Match::getSoccerScheduleMatches(1);
-    $output2 = $match_dto->getHtml();
-
-    include_once('class.team.php');
-    $team_dto = Team::getSoccerModalTeams(1);
-    $output3 = $team_dto->getHtml();
+    include_once('class.tournament.php');
+    $tournament_dto = Tournament::getSoccerTournamentBySchedule(1);
+    $output2 = $tournament_dto->getMatchHtml();
+    $output3 = $tournament_dto->getTeamHtml();
 ?>
 <html lang="en">
 <head>

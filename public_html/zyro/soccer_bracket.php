@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <?php
-    include_once('class.match.php');
-    $match_dto = Match::getSoccerBracketMatches(1, 40);
-    $output = $match_dto->getHtml();
+    include_once('class.tournament.php');
+    $tournament_dto = Tournament::getSoccerTournamentByBracket(1, 40);
+    $output = $tournament_dto->getMatchHtml();
 ?>
 <html lang="en">
 <head>
