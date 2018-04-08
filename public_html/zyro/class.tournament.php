@@ -16,18 +16,18 @@
 
         public static function getSoccerTournamentByGroup($tournament_id) {
 
-            $team_dto = Team::getSoccerTeams($tournament_id);
             $match_dto = Match::getSoccerGroupMatches($tournament_id);
+            $team_dto = Team::getSoccerTeams($tournament_id, $match_dto);
 
-            return TournamentDTO::CreateSoccerTournamentDTO($team_dto->getHtml(), $match_dto->getHtml());
+            return TournamentDTO::CreateSoccerTournamentDTO($team_dto->getTeamHtml(), $team_dto->getMatchHtml());
         }
 
         public static function getSoccerTournamentBySchedule($tournament_id) {
 
-            $team_dto = Team::getSoccerModalTeams($tournament_id);
             $match_dto = Match::getSoccerScheduleMatches($tournament_id);
+            $team_dto = Team::getSoccerModalTeams($tournament_id, $match_dto);
 
-            return TournamentDTO::CreateSoccerTournamentDTO($team_dto->getHtml(), $match_dto->getHtml());
+            return TournamentDTO::CreateSoccerTournamentDTO($team_dto->getTeamHtml(), $team_dto->getMatchHtml());
         }
 
         public static function getSoccerTournamentByBracket($tournament_id, $stage_id) {
@@ -41,7 +41,7 @@
 
             $team_dto = Team::getFootballTeams($tournament_id);
 
-            return TournamentDTO::CreateSoccerTournamentDTO($team_dto->getHtml(), null);
+            return TournamentDTO::CreateSoccerTournamentDTO($team_dto->getTeamHtml(), null);
         }
 
         public static function getTennisTournament($tournament_id) {

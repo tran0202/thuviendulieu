@@ -1,10 +1,16 @@
 <?php
     include_once('config.php');
     class Match{
+        private $home_team_id;
         private $home_team_name;
         private $home_team_score;
+        private $home_team_extra_time_score;
+        private $home_team_penalty_score;
         private $away_team_name;
+        private $away_team_id;
         private $away_team_score;
+        private $away_team_extra_time_score;
+        private $away_team_penalty_score;
         private $match_date;
         private $match_date_fmt;
         private $match_time;
@@ -46,18 +52,26 @@
         protected function __construct(){ }
 
         public static function CreateSoccerMatch(
-            $home_team_name, $away_team_name,
+            $home_team_id, $home_team_name, $away_team_id, $away_team_name,
             $match_date, $match_date_fmt, $match_time, $match_time_fmt,
             $match_order, $round, $stage, $group_name,
             $waiting_home_team, $waiting_away_team,
             $home_team_score, $away_team_score,
+            $home_team_extra_time_score, $away_team_extra_time_score,
+            $home_team_penalty_score, $away_team_penalty_score,
             $home_flag, $away_flag)
         {
             $m = new Match();
+            $m->home_team_id = $home_team_id;
             $m->home_team_name = $home_team_name;
+            $m->away_team_id = $away_team_id;
             $m->away_team_name = $away_team_name;
             $m->home_team_score = $home_team_score;
             $m->away_team_score = $away_team_score;
+            $m->home_team_extra_time_score = $home_team_extra_time_score;
+            $m->away_team_extra_time_score = $away_team_extra_time_score;
+            $m->home_team_penalty_score = $home_team_penalty_score;
+            $m->away_team_penalty_score = $away_team_penalty_score;
             $m->match_date = $match_date;
             $m->match_date_fmt = $match_date_fmt;
             $m->match_time = $match_time;
@@ -155,6 +169,7 @@
             $bracket_matches = array();
             $group_matches = array();
             $second_stage_matches = array();
+            $match_array = array();
             $output = '<!-- Count = '.$count.' -->';
 
             if ($count == 0) {
@@ -167,14 +182,31 @@
                     if ($row['home_team_score'] == null) $home_team_score = mt_rand(0,10);
                     $away_team_score = $row['away_team_score'];
                     if ($row['away_team_score'] == null) $away_team_score = mt_rand(0,10);
-                    $match = Match::CreateSoccerMatch($row['home_team_name'], $row['away_team_name'],
+                    $home_team_extra_time_score = $row['home_team_extra_time_score'];
+                    $away_team_extra_time_score = $row['away_team_extra_time_score'];
+                    if ($home_team_score == $home_team_score) {
+                        $home_team_extra_time_score = mt_rand(0,10);
+                        $away_team_extra_time_score = mt_rand(0,10);
+                    }
+                    $home_team_penalty_score = $row['home_team_penalty_score'];
+                    $away_team_penalty_score = $row['away_team_penalty_score'];
+                    if ($home_team_extra_time_score == $home_team_extra_time_score) {
+                        $home_team_penalty_score = mt_rand(0,10);
+                        $away_team_penalty_score = mt_rand(0,10);
+                        while ($home_team_penalty_score == $away_team_penalty_score) {
+                            $away_team_penalty_score = mt_rand(0,10);
+                        }
+                    }
+                    $match = Match::CreateSoccerMatch($row['home_team_id'], $row['home_team_name'], $row['away_team_id'], $row['away_team_name'],
                         $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_time_fmt'],
                         $row['match_order'], $row['round'], $row['stage'], $row['group_name'], $row['waiting_home_team'], $row['waiting_away_team'],
-                        $home_team_score, $away_team_score, $row['home_flag'], $row['away_flag']);
+                        $home_team_score, $away_team_score, $home_team_extra_time_score, $away_team_extra_time_score, $home_team_penalty_score, $away_team_penalty_score,
+                        $row['home_flag'], $row['away_flag']);
                     $matches[$row['round']][$row['match_date']][$row['match_order']] = $match;
                     if ($row['round'] != 'Group Matches') $bracket_matches[$row['round']][$row['match_order']] = $match;
                     $group_matches[$row['group_name']][$row['match_order']] = $match;
                     $second_stage_matches[$row['round']][$row['match_order']] = $match;
+                    array_push($match_array, $match);
                 }
                 switch ($view) {
                     case MatchView::GroupView:
@@ -189,7 +221,7 @@
                     default:
                         $output .= self::getSoccerGroupHtml($group_matches);
                 }
-                return MatchDTO::CreateSoccerMatchDTO($matches, $count, $output);
+                return MatchDTO::CreateSoccerMatchDTO($match_array, $count, $output);
             }
         }
 
@@ -295,8 +327,8 @@
                     if ($j != 0) $gap_height = $gap_heights[$i][1];
 //                    $home_team_name = $_bracket_match->getHomeTeamName();
 //                    $away_team_name = $_bracket_match->getAwayTeamName();
-                    $waiting_home_team = $_bracket_match->getWaitingHomeTeam();
-                    $waiting_away_team = $_bracket_match->getWaitingAwayTeam();
+                    $waiting_home_team = '['.$_bracket_match->getWaitingHomeTeam().']';
+                    $waiting_away_team = '['.$_bracket_match->getWaitingAwayTeam().']';
                     $output .= '<div class="col-sm-12" style="height:'.$gap_height.'px;"></div>
                             <div class="col-sm-12 box-sm" style="height:'.$box_height.'px;">
                                 <div class="col-sm-12 h4-ff3 margin-tb-sm">
@@ -336,21 +368,29 @@
                         $home_flag_tmp = '<div class="col-sm-1 padding-lr-xs text-right" style="padding-top:6px;">
                                             <img class="flag-md" src="/images/flags/'.$_match->getHomeFlag().'">
                                         </div>';
-                        if ($_match->getHomeFlag() == '') $home_flag_tmp = '<div class="col-sm-1 padding-lr-xs text-right" style="padding-top:6px;"></div>';
+                        if ($_match->getHomeFlag() == '') $home_flag_tmp = '<div class="col-sm-1 padding-lr-xs text-right" style="padding-top:6px;"><!--['.$_match->getWaitingHomeTeam().'FlagHolder]--></div>';
                         $away_flag_tmp = '<div class="col-sm-1 padding-lr-xs text-right" style="padding-top:6px;">
                                             <img class="flag-md" src="/images/flags/'.$_match->getAwayFlag().'">
                                         </div>';
-                        if ($_match->getAwayFlag() == '') $away_flag_tmp = '<div class="col-sm-1 padding-lr-xs text-right" style="padding-top:6px;"></div>';
+                        if ($_match->getAwayFlag() == '') $away_flag_tmp = '<div class="col-sm-1 padding-lr-xs text-right" style="padding-top:6px;"><!--['.$_match->getWaitingAwayTeam().'FlagHolder]--></div>';
                         if ($_match->getGroupName() != null) $group_text = '<a class="link-modal" data-toggle="modal" data-target="#group'.$_match->getGroupName().'StandingModal">
-                                                                        Group '.$_match->getGroupName().'</a>' ;
+                                                                                Group '.$_match->getGroupName().'</a>' ;
+                        $extra_time_score = '';
+                        $penalty_score = '';
+                        if ($rounds != 'Group Matches' && $_match->getHomeTeamScore() == $_match->getAwayTeamScore()) {
+                            $extra_time_score = ' '.$_match->getHomeTeamExtraTimeScore().'-'.$_match->getAwayTeamExtraTimeScore().'et';
+                            if ($_match->getHomeTeamExtraTimeScore() == $_match->getAwayTeamExtraTimeScore()) {
+                                $penalty_score = ' '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore().' pen';
+                            }
+                        }
                         $output2 .= '<div class="col-sm-12 padding-tb-md border-bottom-gray5">
-                                    <div class="col-sm-2 padding-lr-xs">'.$_match->getMatchTimeFmt().' CST<br>'.$group_text.'</div>'.
-                            $home_flag_tmp.
-                            '<div class="col-sm-3 h2-ff3 padding-left-lg padding-right-xs">'.$home_team_tmp.'</div>
-                                    <div class="col-sm-1 h2-ff3 padding-lr-xs">'.$_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore().'</div>
-                                    <div class="col-sm-3 h2-ff3 padding-lr-xs text-right">'.$away_team_tmp.'</div>'.
-                            $away_flag_tmp.
-                            '</div>';
+                                        <div class="col-sm-2 padding-lr-xs">'.$_match->getMatchTimeFmt().' CST<br>'.$group_text.'</div>'.
+                                            $home_flag_tmp.
+                                        '<div class="col-sm-3 h2-ff3 padding-left-lg padding-right-xs">'.$home_team_tmp.'</div>
+                                        <div class="col-sm-1 h2-ff3 padding-lr-xs">'.$_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore().$extra_time_score.$penalty_score.'</div>
+                                        <div class="col-sm-3 h2-ff3 padding-lr-xs text-right">'.$away_team_tmp.'</div>'.
+                                            $away_flag_tmp.
+                                    '</div>';
                     }
                 }
             }
@@ -571,24 +611,25 @@
         public static function getSoccerMatchSql($tournament_id, $stage_id = 0) {
             $stage_where = '';
             if ($stage_id != 0) $stage_where = ' AND m.stage_id = '.$stage_id;
-            $sql = 'SELECT t.name AS home_team_name, home_team_score, n.flag_filename AS home_flag, 
-                    t2.name AS away_team_name, away_team_score, n2.flag_filename AS away_flag, 
-                    DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date, 
-                    TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order,
-                    waiting_home_team, waiting_away_team,
-                    g.name AS round, g2.name AS stage,
-                    g3.name AS group_name, m.tournament_id
-                FROM `match` m
-                    LEFT JOIN team t ON t.id = m.home_team_id
-                    LEFT JOIN team t2 ON t2.id = m.away_team_id
-                    LEFT JOIN `group` g ON g.id = m.round_id
-                    LEFT JOIN `group` g2 ON g2.id = m.stage_id
-                    LEFT JOIN team_tournament tt ON tt.team_id = m.home_team_id
-                    LEFT JOIN `group` g3 ON g3.id = tt.group_id 
-                    LEFT JOIN nation n ON n.id = t.nation_id  
-                    LEFT JOIN nation n2 ON n2.id = t2.nation_id 
-                WHERE m.tournament_id = '.$tournament_id.$stage_where.'
-                ORDER BY stage_id, round_id, match_date, match_time;';
+            $sql = 'SELECT t.id AS home_team_id, UCASE(t.name) AS home_team_name, home_team_score, n.flag_filename AS home_flag, 
+                        t2.id AS away_team_id, UCASE(t2.name) AS away_team_name, away_team_score, n2.flag_filename AS away_flag, 
+                        home_team_extra_time_score, away_team_extra_time_score, home_team_penalty_score, away_team_penalty_score, 
+                        DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date, 
+                        TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order,
+                        waiting_home_team, waiting_away_team,
+                        g.name AS round, g2.name AS stage,
+                        g3.name AS group_name, m.tournament_id
+                    FROM `match` m
+                        LEFT JOIN team t ON t.id = m.home_team_id
+                        LEFT JOIN team t2 ON t2.id = m.away_team_id
+                        LEFT JOIN `group` g ON g.id = m.round_id
+                        LEFT JOIN `group` g2 ON g2.id = m.stage_id
+                        LEFT JOIN team_tournament tt ON tt.team_id = m.home_team_id
+                        LEFT JOIN `group` g3 ON g3.id = tt.group_id 
+                        LEFT JOIN nation n ON n.id = t.nation_id  
+                        LEFT JOIN nation n2 ON n2.id = t2.nation_id 
+                    WHERE m.tournament_id = '.$tournament_id.$stage_where.'
+                    ORDER BY stage_id, round_id, match_date, match_time;';
             return $sql;
         }
 
@@ -620,6 +661,22 @@
             WHERE m.tournament_id = '.$tournament_id.'
             ORDER BY match_order;';
             return $sql;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getHomeTeamId()
+        {
+            return $this->home_team_id;
+        }
+
+        /**
+         * @param mixed $home_team_id
+         */
+        public function setHomeTeamId($home_team_id)
+        {
+            $this->home_team_id = $home_team_id;
         }
 
         /**
@@ -657,6 +714,54 @@
         /**
          * @return mixed
          */
+        public function getHomeTeamExtraTimeScore()
+        {
+            return $this->home_team_extra_time_score;
+        }
+
+        /**
+         * @param mixed $home_team_extra_time_score
+         */
+        public function setHomeTeamExtraTimeScore($home_team_extra_time_score)
+        {
+            $this->home_team_extra_time_score = $home_team_extra_time_score;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getHomeTeamPenaltyScore()
+        {
+            return $this->home_team_penalty_score;
+        }
+
+        /**
+         * @param mixed $home_team_penalty_score
+         */
+        public function setHomeTeamPenaltyScore($home_team_penalty_score)
+        {
+            $this->home_team_penalty_score = $home_team_penalty_score;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getAwayTeamId()
+        {
+            return $this->away_team_id;
+        }
+
+        /**
+         * @param mixed $away_team_id
+         */
+        public function setAwayTeamId($away_team_id)
+        {
+            $this->away_team_id = $away_team_id;
+        }
+
+        /**
+         * @return mixed
+         */
         public function getAwayTeamName()
         {
             return $this->away_team_name;
@@ -684,6 +789,38 @@
         public function setAwayTeamScore($away_team_score)
         {
             $this->away_team_score = $away_team_score;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getAwayTeamExtraTimeScore()
+        {
+            return $this->away_team_extra_time_score;
+        }
+
+        /**
+         * @param mixed $away_team_extra_time_score
+         */
+        public function setAwayTeamExtraTimeScore($away_team_extra_time_score)
+        {
+            $this->away_team_extra_time_score = $away_team_extra_time_score;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getAwayTeamPenaltyScore()
+        {
+            return $this->away_team_penalty_score;
+        }
+
+        /**
+         * @param mixed $away_team_penalty_score
+         */
+        public function setAwayTeamPenaltyScore($away_team_penalty_score)
+        {
+            $this->away_team_penalty_score = $away_team_penalty_score;
         }
 
         /**
