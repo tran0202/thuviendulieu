@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS `match` (
 	match_date DATE,
 	match_time TIME,
 	match_order TINYINT UNSIGNED,
+	bracket_order TINYINT UNSIGNED,
 	waiting_home_team VARCHAR(255),
 	waiting_away_team VARCHAR(255),
 	home_team_extra_time_score TINYINT UNSIGNED,
