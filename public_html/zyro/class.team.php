@@ -3,6 +3,7 @@
     class Team {
         private $id;
         private $name;
+        private $code;
         private $group_name;
         private $group_order;
         private $parent_group_name;
@@ -35,10 +36,11 @@
             return $t;
         }
 
-        public static function CreateSoccerTeam($id, $name, $group_name, $group_order, $flag_filename) {
+        public static function CreateSoccerTeam($id, $name, $code, $group_name, $group_order, $flag_filename) {
             $t = new Team();
             $t->id = $id;
             $t->name = $name;
+            $t->code = $code;
             $t->group_name = $group_name;
             $t->group_order = $group_order;
             $t->flag_filename = $flag_filename;
@@ -89,7 +91,7 @@
             }
             else {
                 while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                    $team = Team::CreateSoccerTeam($row['team_id'], $row['name'], $row['group_name'], $row['group_order'], $row['flag_filename']);
+                    $team = Team::CreateSoccerTeam($row['team_id'], $row['name'], $row['code'], $row['group_name'], $row['group_order'], $row['flag_filename']);
                     $teams[$row['group_name']][$row['group_order']] = $team;
                 }
                 $teams = self::calculateSoccerStanding($teams, $match_dto->getMatches());
@@ -147,33 +149,41 @@
             if (self::isHomeTeamWin($matches[60])) {
                 $final_teams['W61'] = $tmp_team[$matches[60]->getHomeTeamName()];
                 $match_html = str_replace('[W61]', $matches[60]->getHomeTeamName(), $match_html);
+                $match_html = str_replace('[W61Short]', $matches[60]->getHomeTeamCode(), $match_html);
                 $match_html = str_replace('<!--[W61FlagHolder]-->', '<img class="flag-md" src="/images/flags/'.$matches[60]->getHomeFlag().'">', $match_html);
                 $final_teams['L61'] = $tmp_team[$matches[60]->getAwayTeamName()];
                 $match_html = str_replace('[L61]', $matches[60]->getAwayTeamName(), $match_html);
+                $match_html = str_replace('[L61Short]', $matches[60]->getAwayTeamCode(), $match_html);
                 $match_html = str_replace('<!--[L61FlagHolder]-->', '<img class="flag-md" src="/images/flags/'.$matches[60]->getAwayFlag().'">', $match_html);
             }
             else {
                 $final_teams['W61'] = $tmp_team[$matches[60]->getAwayTeamName()];
                 $match_html = str_replace('[W61]', $matches[60]->getAwayTeamName(), $match_html);
+                $match_html = str_replace('[W61Short]', $matches[60]->getAwayTeamCode(), $match_html);
                 $match_html = str_replace('<!--[W61FlagHolder]-->', '<img class="flag-md" src="/images/flags/'.$matches[60]->getAwayFlag().'">', $match_html);
                 $final_teams['L61'] = $tmp_team[$matches[60]->getHomeTeamName()];
                 $match_html = str_replace('[L61]', $matches[60]->getHomeTeamName(), $match_html);
+                $match_html = str_replace('[L61Short]', $matches[60]->getHomeTeamCode(), $match_html);
                 $match_html = str_replace('<!--[L61FlagHolder]-->', '<img class="flag-md" src="/images/flags/'.$matches[60]->getHomeFlag().'">', $match_html);
             }
             if (self::isHomeTeamWin($matches[61])) {
                 $final_teams['W62'] = $tmp_team[$matches[61]->getHomeTeamName()];
                 $match_html = str_replace('[W62]', $matches[61]->getHomeTeamName(), $match_html);
+                $match_html = str_replace('[W62Short]', $matches[60]->getHomeTeamCode(), $match_html);
                 $match_html = str_replace('<!--[W62FlagHolder]-->', '<img class="flag-md" src="/images/flags/'.$matches[61]->getHomeFlag().'">', $match_html);
                 $final_teams['L62'] = $tmp_team[$matches[61]->getAwayTeamName()];
                 $match_html = str_replace('[L62]', $matches[61]->getAwayTeamName(), $match_html);
+                $match_html = str_replace('[L62Short]', $matches[60]->getAwayTeamCode(), $match_html);
                 $match_html = str_replace('<!--[L62FlagHolder]-->', '<img class="flag-md" src="/images/flags/'.$matches[61]->getAwayFlag().'">', $match_html);
             }
             else {
                 $final_teams['W62'] = $tmp_team[$matches[61]->getAwayTeamName()];
                 $match_html = str_replace('[W62]', $matches[61]->getAwayTeamName(), $match_html);
+                $match_html = str_replace('[W62Short]', $matches[61]->getAwayTeamCode(), $match_html);
                 $match_html = str_replace('<!--[W62FlagHolder]-->', '<img class="flag-md" src="/images/flags/'.$matches[61]->getAwayFlag().'">', $match_html);
                 $final_teams['L62'] = $tmp_team[$matches[61]->getHomeTeamName()];
                 $match_html = str_replace('[L62]', $matches[61]->getHomeTeamName(), $match_html);
+                $match_html = str_replace('[L62Short]', $matches[61]->getHomeTeamCode(), $match_html);
                 $match_html = str_replace('<!--[L62FlagHolder]-->', '<img class="flag-md" src="/images/flags/'.$matches[61]->getHomeFlag().'">', $match_html);
             }
             $match_dto->setHtml($match_html);
@@ -195,11 +205,13 @@
                 if (self::isHomeTeamWin($matches[$i])) {
                     $semifinal_teams['W'.($i+1)] = $tmp_team[$matches[$i]->getHomeTeamName()];
                     $match_html = str_replace('[W'.($i+1).']', $matches[$i]->getHomeTeamName(), $match_html);
+                    $match_html = str_replace('[W'.($i+1).'Short]', $matches[$i]->getHomeTeamCode(), $match_html);
                     $match_html = str_replace('<!--[W'.($i+1).'FlagHolder]-->', '<img class="flag-md" src="/images/flags/'.$matches[$i]->getHomeFlag().'">', $match_html);
                 }
                 else {
                     $semifinal_teams['W'.($i+1)] = $tmp_team[$matches[$i]->getAwayTeamName()];
                     $match_html = str_replace('[W'.($i+1).']', $matches[$i]->getAwayTeamName(), $match_html);
+                    $match_html = str_replace('[W'.($i+1).'Short]', $matches[$i]->getAwayTeamCode(), $match_html);
                     $match_html = str_replace('<!--[W'.($i+1).'FlagHolder]-->', '<img class="flag-md" src="/images/flags/'.$matches[$i]->getAwayFlag().'">', $match_html);
                 }
             }
@@ -207,6 +219,8 @@
             for ($i = 60; $i < 62; $i++ ) {
                 $matches[$i]->setHomeTeamName($semifinal_teams[$matches[$i]->getWaitingHomeTeam()]->getName());
                 $matches[$i]->setAwayTeamName($semifinal_teams[$matches[$i]->getWaitingAwayTeam()]->getName());
+                $matches[$i]->setHomeTeamCode($semifinal_teams[$matches[$i]->getWaitingHomeTeam()]->getCode());
+                $matches[$i]->setAwayTeamCode($semifinal_teams[$matches[$i]->getWaitingAwayTeam()]->getCode());
                 $matches[$i]->setHomeFlag($semifinal_teams[$matches[$i]->getWaitingHomeTeam()]->getFlagFilename());
                 $matches[$i]->setAwayFlag($semifinal_teams[$matches[$i]->getWaitingAwayTeam()]->getFlagFilename());
             }
@@ -228,11 +242,13 @@
                 if (self::isHomeTeamWin($matches[$i])) {
                     $quarterfinal_teams['W'.($i+1)] = $tmp_team[$matches[$i]->getHomeTeamName()];
                     $match_html = str_replace('[W'.($i+1).']', $matches[$i]->getHomeTeamName(), $match_html);
+                    $match_html = str_replace('[W'.($i+1).'Short]', $matches[$i]->getHomeTeamCode(), $match_html);
                     $match_html = str_replace('<!--[W'.($i+1).'FlagHolder]-->', '<img class="flag-md" src="/images/flags/'.$matches[$i]->getHomeFlag().'">', $match_html);
                 }
                 else {
                     $quarterfinal_teams['W'.($i+1)] = $tmp_team[$matches[$i]->getAwayTeamName()];
                     $match_html = str_replace('[W'.($i+1).']', $matches[$i]->getAwayTeamName(), $match_html);
+                    $match_html = str_replace('[W'.($i+1).'Short]', $matches[$i]->getAwayTeamCode(), $match_html);
                     $match_html = str_replace('<!--[W'.($i+1).'FlagHolder]-->', '<img class="flag-md" src="/images/flags/'.$matches[$i]->getAwayFlag().'">', $match_html);
                 }
             }
@@ -240,6 +256,8 @@
             for ($i = 56; $i < 60; $i++ ) {
                 $matches[$i]->setHomeTeamName($quarterfinal_teams[$matches[$i]->getWaitingHomeTeam()]->getName());
                 $matches[$i]->setAwayTeamName($quarterfinal_teams[$matches[$i]->getWaitingAwayTeam()]->getName());
+                $matches[$i]->setHomeTeamCode($quarterfinal_teams[$matches[$i]->getWaitingHomeTeam()]->getCode());
+                $matches[$i]->setAwayTeamCode($quarterfinal_teams[$matches[$i]->getWaitingAwayTeam()]->getCode());
                 $matches[$i]->setHomeFlag($quarterfinal_teams[$matches[$i]->getWaitingHomeTeam()]->getFlagFilename());
                 $matches[$i]->setAwayFlag($quarterfinal_teams[$matches[$i]->getWaitingAwayTeam()]->getFlagFilename());
             }
@@ -282,6 +300,7 @@
                     if ($i <= 1) {
                         $round16_teams[($i+1).$group_name] = $_team;
                         $match_html = str_replace('['.($i+1).$group_name.']', $_team->getName(), $match_html);
+                        $match_html = str_replace('['.($i+1).$group_name.'Short]', $_team->getCode(), $match_html);
                         $match_html = str_replace('<!--['.($i+1).$group_name.'FlagHolder]-->', '<img class="flag-md" src="/images/flags/'.$_team->getFlagFilename().'">', $match_html);
                     }
                     $i++;
@@ -291,6 +310,8 @@
             for ($i = 48; $i < 56; $i++ ) {
                 $matches[$i]->setHomeTeamName($round16_teams[$matches[$i]->getWaitingHomeTeam()]->getName());
                 $matches[$i]->setAwayTeamName($round16_teams[$matches[$i]->getWaitingAwayTeam()]->getName());
+                $matches[$i]->setHomeTeamCode($round16_teams[$matches[$i]->getWaitingHomeTeam()]->getCode());
+                $matches[$i]->setAwayTeamCode($round16_teams[$matches[$i]->getWaitingAwayTeam()]->getCode());
                 $matches[$i]->setHomeFlag($round16_teams[$matches[$i]->getWaitingHomeTeam()]->getFlagFilename());
                 $matches[$i]->setAwayFlag($round16_teams[$matches[$i]->getWaitingAwayTeam()]->getFlagFilename());
             }
@@ -535,7 +556,7 @@
         public static function getSoccerTeamSql($tournament_id) {
             $sql = 'SELECT UCASE(t.name) AS name, team_id, 
                         group_id, UCASE(g.name) AS group_name, group_order, 
-                        n.flag_filename, tt.tournament_id 
+                        n.flag_filename, n.code, tt.tournament_id 
                     FROM team_tournament tt 
                     LEFT JOIN team t ON t.id = tt.team_id 
                     LEFT JOIN `group` g ON g.id = tt.group_id  
@@ -590,6 +611,22 @@
         public function setName($name)
         {
             $this->name = $name;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getCode()
+        {
+            return $this->code;
+        }
+
+        /**
+         * @param mixed $code
+         */
+        public function setCode($code)
+        {
+            $this->code = $code;
         }
 
         /**
