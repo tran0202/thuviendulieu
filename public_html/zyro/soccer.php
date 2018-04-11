@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <?php
     include_once('class.tournament.php');
+    $tournament_dto = Tournament::getSoccerTournamentByGroup2(1, 40);
+    $output = $tournament_dto->getTeamDto()->getHtml();
+    $output2 = $tournament_dto->getMatchDto()->getHtml();
     $tournament_dto = Tournament::getSoccerTournamentByGroup(1);
-    $output = $tournament_dto->getTeamHtml();
-    $output2 = $tournament_dto->getMatchHtml();
+    $output3 = $tournament_dto->getTeamHtml();
+    $output4 = $tournament_dto->getMatchHtml();
 ?>
 <html lang="en">
 <head>
@@ -30,6 +33,7 @@
                 </div>
                 <div>
                     <?php echo $output; ?>
+                    <?php //echo $output3; ?>
                     <p> </p>
                 </div>
                 <div class="col-sm-12 margin-tb-lg">
@@ -40,6 +44,7 @@
 	</div>
     <!-- Modal -->
     <?php echo $output2; ?>
+    <?php //echo $output4; ?>
 	{{hr_out}}
 </body>
 </html>

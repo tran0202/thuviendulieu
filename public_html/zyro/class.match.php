@@ -138,6 +138,142 @@
             return $m;
         }
 
+        public static function getSoccerGroupMatches2($tournament_id, $stage_id) {
+
+            $sql = Match::getSoccerMatchSql($tournament_id);
+
+            return self::getSoccerMatchDTO2($sql);
+        }
+
+        public static function getSoccerMatchDTO2($sql) {
+
+            $query = $GLOBALS['connection']->prepare($sql);
+            $query->execute();
+            $count = $query->rowCount();
+            $matches = array();
+            $output = '<!-- Match Count = '.$count.' -->';
+
+            if ($count == 0) {
+                $output = '<h2>No result found!</h2>';
+                return MatchDTO::CreateSoccerMatchDTO(null, $count, $output);
+            }
+            else {
+                while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                    $home_team_score = $row['home_team_score'];
+                    if ($row['home_team_score'] == null) $home_team_score = mt_rand(0,6);
+                    $away_team_score = $row['away_team_score'];
+                    if ($row['away_team_score'] == null) $away_team_score = mt_rand(0,6);
+                    $home_team_extra_time_score = $row['home_team_extra_time_score'];
+                    $away_team_extra_time_score = $row['away_team_extra_time_score'];
+                    if ($home_team_score == $home_team_score) {
+                        $home_team_extra_time_score = mt_rand(0,3);
+                        $away_team_extra_time_score = mt_rand(0,3);
+                    }
+                    $home_team_penalty_score = $row['home_team_penalty_score'];
+                    $away_team_penalty_score = $row['away_team_penalty_score'];
+                    if ($home_team_extra_time_score == $home_team_extra_time_score) {
+                        $rand = mt_rand(0,21);
+                        switch ($rand) {
+                            case 0:
+                                $home_team_penalty_score = 1;
+                                $away_team_penalty_score = 0;
+                                break;
+                            case 1:
+                                $home_team_penalty_score = 2;
+                                $away_team_penalty_score = 0;
+                                break;
+                            case 2:
+                                $home_team_penalty_score = 3;
+                                $away_team_penalty_score = 0;
+                                break;
+                            case 3:
+                                $home_team_penalty_score = 2;
+                                $away_team_penalty_score = 1;
+                                break;
+                            case 4:
+                                $home_team_penalty_score = 3;
+                                $away_team_penalty_score = 1;
+                                break;
+                            case 5:
+                                $home_team_penalty_score = 4;
+                                $away_team_penalty_score = 1;
+                                break;
+                            case 6:
+                                $home_team_penalty_score = 3;
+                                $away_team_penalty_score = 2;
+                                break;
+                            case 7:
+                                $home_team_penalty_score = 4;
+                                $away_team_penalty_score = 2;
+                                break;
+                            case 8:
+                                $home_team_penalty_score = 4;
+                                $away_team_penalty_score = 3;
+                                break;
+                            case 9:
+                                $home_team_penalty_score = 5;
+                                $away_team_penalty_score = 3;
+                                break;
+                            case 10:
+                                $home_team_penalty_score = 5;
+                                $away_team_penalty_score = 4;
+                                break;
+                            case 11:
+                                $home_team_penalty_score = 0;
+                                $away_team_penalty_score = 1;
+                                break;
+                            case 12:
+                                $home_team_penalty_score = 0;
+                                $away_team_penalty_score = 2;
+                                break;
+                            case 13:
+                                $home_team_penalty_score = 0;
+                                $away_team_penalty_score = 3;
+                                break;
+                            case 14:
+                                $home_team_penalty_score = 1;
+                                $away_team_penalty_score = 2;
+                                break;
+                            case 15:
+                                $home_team_penalty_score = 1;
+                                $away_team_penalty_score = 3;
+                                break;
+                            case 16:
+                                $home_team_penalty_score = 1;
+                                $away_team_penalty_score = 4;
+                                break;
+                            case 17:
+                                $home_team_penalty_score = 2;
+                                $away_team_penalty_score = 3;
+                                break;
+                            case 18:
+                                $home_team_penalty_score = 2;
+                                $away_team_penalty_score = 4;
+                                break;
+                            case 19:
+                                $home_team_penalty_score = 3;
+                                $away_team_penalty_score = 4;
+                                break;
+                            case 20:
+                                $home_team_penalty_score = 3;
+                                $away_team_penalty_score = 5;
+                                break;
+                            default:
+                                $home_team_penalty_score = 4;
+                                $away_team_penalty_score = 5;
+                        }
+                    }
+                    $match = Match::CreateSoccerMatch($row['home_team_id'], $row['home_team_name'], $row['home_team_code'], $row['away_team_id'], $row['away_team_name'], $row['away_team_code'],
+                        $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_time_fmt'],
+                        $row['match_order'], $row['bracket_order'], $row['round'], $row['stage'], $row['group_name'], $row['waiting_home_team'], $row['waiting_away_team'],
+                        $home_team_score, $away_team_score, $home_team_extra_time_score, $away_team_extra_time_score, $home_team_penalty_score, $away_team_penalty_score,
+                        $row['home_flag'], $row['away_flag']);
+                    array_push($matches, $match);
+                }
+                return MatchDTO::CreateSoccerMatchDTO($matches, $count, $output);
+            }
+        }
+
         public static function getSoccerGroupMatches($tournament_id) {
 
             $sql = Match::getSoccerMatchSql($tournament_id);

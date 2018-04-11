@@ -14,6 +14,18 @@
             return $t;
         }
 
+        public static function getSoccerTournamentByGroup2($tournament_id, $stage_id) {
+
+            $team_dto = Team::getSoccerTeams2($tournament_id);
+            $match_dto = Match::getSoccerGroupMatches2($tournament_id, $stage_id);
+
+            Team::calculateSoccerStanding2($team_dto, $match_dto);
+            $teams = Team::getTeamArrayByGroup($team_dto);
+            $team_dto->setHtml(Team::getSoccerHtml($teams));
+
+            return TournamentDTO::CreateSoccerTournamentDTO2($team_dto, $match_dto);
+        }
+
         public static function getSoccerTournamentByGroup($tournament_id) {
 
             $match_dto = Match::getSoccerGroupMatches($tournament_id);
@@ -84,12 +96,22 @@
         }
     }
 
-    class TournamentDTO
-    {
+    class TournamentDTO {
+
+        private $team_dto;
+        private $match_dto;
         private $team_html;
         private $match_html;
 
         protected function __construct() { }
+
+        public static function CreateSoccerTournamentDTO2($team_dto, $match_dto)
+        {
+            $tournament_dto = new TournamentDTO();
+            $tournament_dto->team_dto = $team_dto;
+            $tournament_dto->match_dto = $match_dto;
+            return $tournament_dto;
+        }
 
         public static function CreateSoccerTournamentDTO($team_html, $match_html)
         {
@@ -97,6 +119,38 @@
             $tournament_dto->team_html = $team_html;
             $tournament_dto->match_html = $match_html;
             return $tournament_dto;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getTeamDto()
+        {
+            return $this->team_dto;
+        }
+
+        /**
+         * @param mixed $team_dto
+         */
+        public function setTeamDto($team_dto)
+        {
+            $this->team_dto = $team_dto;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getMatchDto()
+        {
+            return $this->match_dto;
+        }
+
+        /**
+         * @param mixed $match_dto
+         */
+        public function setMatchDto($match_dto)
+        {
+            $this->match_dto = $match_dto;
         }
 
         /**

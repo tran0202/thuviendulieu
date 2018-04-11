@@ -55,6 +55,113 @@
             return $t;
         }
 
+        public static function getSoccerTeams2($tournament_id) {
+
+            $sql = Team::getSoccerTeamSql($tournament_id);
+
+            return self::getSoccerTeamDTO2($sql);
+        }
+
+        public static function getSoccerTeamDTO2($sql) {
+
+            $query = $GLOBALS['connection']->prepare($sql);
+            $query->execute();
+            $count = $query->rowCount();
+            $teams = array();
+            $output = '<!-- Team Count = '.$count.' -->';
+
+            if ($count == 0) {
+                $output = '<h2>No result found!</h2>';
+                return TeamDTO::CreateSoccerTeamDTO2(null, $count, $output);
+            }
+            else {
+                while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                    $team = Team::CreateSoccerTeam($row['team_id'], $row['name'], $row['code'], $row['group_name'], $row['group_order'], $row['flag_filename']);
+                    array_push($teams, $team);
+                }
+                return TeamDTO::CreateSoccerTeamDTO2($teams, $count, $output);
+            }
+        }
+
+        public static function getTeamArrayById($team_dto) {
+            $result = array();
+            for ($i = 0; $i < sizeof($team_dto->getTeams()); $i++) {
+                $result[$team_dto->getTeams()[$i]->getId()] = $team_dto->getTeams()[$i];
+            }
+            return $result;
+        }
+
+        public static function getTeamArrayByGroup($team_dto) {
+            $teams = $team_dto->getTeams();
+            $result = array();
+            for ($i = 0; $i < sizeof($teams); $i++) {
+                $result[$teams[$i]->getGroupName()][$teams[$i]->getGroupOrder()] = $teams[$i];
+            }
+            return $result;
+        }
+
+        public static function calculateSoccerStanding2($team_dto, $match_dto) {
+            $matches = $match_dto->getMatches();
+            $team_array = self::getTeamArrayById($team_dto);
+            $tmp_array = array();
+            $result = array();
+            for ($i = 0; $i < 48; $i++ ) {
+                $home_id = $matches[$i]->getHomeTeamId();
+                $away_id = $matches[$i]->getAwayTeamId();
+                $home_score = $matches[$i]->getHomeTeamScore();
+                $away_score = $matches[$i]->getAwayTeamScore();
+                $team_array[$home_id]->setMatchPlay($team_array[$home_id]->getMatchPlay() + 1);
+                $team_array[$away_id]->setMatchPlay($team_array[$away_id]->getMatchPlay() + 1);
+                if ($home_score > $away_score) {
+                    $team_array[$home_id]->setWin($team_array[$home_id]->getWin() + 1);
+                    $team_array[$home_id]->setPoint($team_array[$home_id]->getPoint() + 3);
+                    $team_array[$away_id]->setLoss($team_array[$away_id]->getLoss() + 1);
+                }
+                elseif ($home_score < $away_score) {
+                    $team_array[$home_id]->setLoss($team_array[$home_id]->getLoss() + 1);
+                    $team_array[$away_id]->setWin($team_array[$away_id]->getWin() + 1);
+                    $team_array[$away_id]->setPoint($team_array[$away_id]->getPoint() + 3);
+                }
+                else {
+                    $team_array[$home_id]->setDraw($team_array[$home_id]->getDraw() + 1);
+                    $team_array[$home_id]->setPoint($team_array[$home_id]->getPoint() + 1);
+                    $team_array[$away_id]->setDraw($team_array[$away_id]->getDraw() + 1);
+                    $team_array[$away_id]->setPoint($team_array[$away_id]->getPoint() + 1);
+                }
+                $team_array[$home_id]->setGoalFor($team_array[$home_id]->getGoalFor() + $home_score);
+                $team_array[$home_id]->setGoalAgainst($team_array[$home_id]->getGoalAgainst() + $away_score);
+                $team_array[$home_id]->setGoalDiff($team_array[$home_id]->getGoalDiff() + $home_score - $away_score);
+                $team_array[$away_id]->setGoalFor($team_array[$away_id]->getGoalFor() + $away_score);
+                $team_array[$away_id]->setGoalAgainst($team_array[$away_id]->getGoalAgainst() + $home_score);
+                $team_array[$away_id]->setGoalDiff($team_array[$away_id]->getGoalDiff() + $away_score - $home_score);
+            }
+            foreach ($team_array as $id => $_team) {
+                $tmp_array[$_team->getGroupName()][$_team->getId()] = $_team;
+            }
+            foreach ($tmp_array as $group_name => $_teams) {
+                $tmp_array2 = array();
+                foreach ($_teams as $_id => $_team) {
+                    array_push($tmp_array2, $_team);
+                }
+                for ($i = 0; $i <= 2; $i++) {
+                    for ($j = $i+1; $j <= 3; $j++) {
+                        if (self::isTeamGreaterThanOrEqual($tmp_array2[$j], $tmp_array2[$i])) {
+                            $tmp_t = $tmp_array2[$i];
+                            $tmp_array2[$i] = $tmp_array2[$j];
+                            $tmp_array2[$j] = $tmp_t;
+                        }
+                    }
+                }
+                $tmp_array[$group_name] = $tmp_array2;
+            }
+            foreach ($tmp_array as $group_name => $_teams) {
+                foreach ($_teams as $_id => $_team) {
+                    array_push($result, $_team);
+                }
+            }
+            $team_dto->setTeams($result);
+        }
+
         public static function getSoccerTeams($tournament_id, $match_dto) {
 
             $sql = Team::getSoccerTeamSql($tournament_id);
@@ -436,14 +543,14 @@
                     $output .= '<div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md">
                                 <div class="col-sm-1"><img class="flag-md" src="/images/flags/'.$_team->getFlagFilename().'"></div>
                                 <div class="col-sm-3" style="padding-top: 3px;">'.$_team->getName().'</div>
-                                <div class="col-sm-1"></div>
-                                <div class="col-sm-1"></div>
-                                <div class="col-sm-1"></div>
-                                <div class="col-sm-1"></div>
-                                <div class="col-sm-1"></div>
-                                <div class="col-sm-1"></div>
-                                <div class="col-sm-1"></div>
-                                <div class="col-sm-1"></div>
+                                <div class="col-sm-1">'.$_team->getMatchPlay().'</div>
+                                <div class="col-sm-1">'.$_team->getWin().'</div>
+                                <div class="col-sm-1">'.$_team->getDraw().'</div>
+                                <div class="col-sm-1">'.$_team->getLoss().'</div>
+                                <div class="col-sm-1">'.$_team->getGoalFor().'</div>
+                                <div class="col-sm-1">'.$_team->getGoalAgainst().'</div>
+                                <div class="col-sm-1">'.$_team->getGoalDiff().'</div>
+                                <div class="col-sm-1">'.$_team->getPoint().'</div>
                             </div>';
                 }
                 $output .= '</div>';
@@ -875,8 +982,17 @@
         private $count;
         private $team_html;
         private $match_html;
+        private $html;
 
         protected function __construct(){ }
+
+        public static function CreateSoccerTeamDTO2($teams, $count, $html) {
+            $team_dto = new TeamDTO();
+            $team_dto->teams = $teams;
+            $team_dto->count = $count;
+            $team_dto->html = $html;
+            return $team_dto;
+        }
 
         public static function CreateSoccerTeamDTO($teams, $count, $team_html, $match_html) {
             $team_dto = new TeamDTO();
@@ -957,6 +1073,22 @@
         public function setMatchHtml($match_html)
         {
             $this->match_html = $match_html;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getHtml()
+        {
+            return $this->html;
+        }
+
+        /**
+         * @param mixed $html
+         */
+        public function setHtml($html)
+        {
+            $this->html = $html;
         }
     }
 
