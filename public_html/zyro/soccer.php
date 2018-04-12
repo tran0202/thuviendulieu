@@ -4,9 +4,9 @@
     $tournament_dto = Tournament::getSoccerTournamentByGroup2(1, 40);
     $output = $tournament_dto->getTeamDto()->getHtml();
     $output2 = $tournament_dto->getMatchDto()->getHtml();
-    $tournament_dto = Tournament::getSoccerTournamentByGroup(1);
-    $output3 = $tournament_dto->getTeamHtml();
-    $output4 = $tournament_dto->getMatchHtml();
+//    $tournament_dto = Tournament::getSoccerTournamentByGroup(1);
+//    $output3 = $tournament_dto->getTeamHtml();
+//    $output4 = $tournament_dto->getMatchHtml();
 ?>
 <html lang="en">
 <head>

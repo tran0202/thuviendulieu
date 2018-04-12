@@ -274,6 +274,24 @@
             }
         }
 
+        public static function getMatchArrayByGroup($match_dto) {
+            $matches = $match_dto->getMatches();
+            $result = array();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                $result[$matches[$i]->getGroupName()][$matches[$i]->getMatchOrder()] = $matches[$i];
+            }
+            return $result;
+        }
+
+        public static function getMatchArraySecondStage($match_dto) {
+            $matches = $match_dto->getMatches();
+            $result = array();
+            for ($i = 48; $i < 64; $i++) {
+                $result[$matches[$i]->getRound()][$matches[$i]->getMatchOrder()] = $matches[$i];
+            }
+            return $result;
+        }
+
         public static function getSoccerGroupMatches($tournament_id) {
 
             $sql = Match::getSoccerMatchSql($tournament_id);
@@ -499,10 +517,11 @@
                             </div>
                             <div class="modal-body col-sm-12 padding-lr-lg" id="group'.$group_name.'MatchesModalBody">';
                     foreach ($_matches as $match_order => $_match) {
+                        $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
                         $output .= '<div class="col-sm-12 h2-ff3 padding-tb-md padding-lr-xs border-bottom-gray5">
                                 <div class="col-sm-2 padding-lr-xs"><img class="flag-md" src="/images/flags/'.$_match->getHomeFlag().'"></div>
                                 <div class="col-sm-3 padding-lr-xs" style="padding-top:3px;">'.$_match->getHomeTeamName().'</div>
-                                <div class="col-sm-2 padding-lr-xs text-center" style="padding-top:3px;">vs</div>
+                                <div class="col-sm-2 padding-lr-xs text-center" style="padding-top:3px;">'.$score.'</div>
                                 <div class="col-sm-3 padding-lr-xs text-right" style="padding-top:3px;">'.$_match->getAwayTeamName().'</div>
                                 <div class="col-sm-2 padding-lr-xs text-right"><img class="flag-md" src="/images/flags/'.$_match->getAwayFlag().'"></div>
                             </div>';
@@ -669,22 +688,31 @@
                 foreach ($_matches as $match_order => $_match) {
                     $gap_height = 10;
                     if ($j != 0) $gap_height = $gap_heights[$i][1];
-//                    $home_team_name = $_match->getHomeTeamName();
-//                    $away_team_name = $_match->getAwayTeamName();
-                    $waiting_home_team = $_match->getWaitingHomeTeam();
-                    $waiting_away_team = $_match->getWaitingAwayTeam();
+                    $home_team_name = $_match->getHomeTeamCode();
+                    $away_team_name = $_match->getAwayTeamCode();
+                    if ($home_team_name == '') $home_team_name = $_match->getWaitingHomeTeam();
+                    if ($away_team_name == '') $away_team_name = $_match->getWaitingAwayTeam();
+                    $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
+                    $penalty_score = '';
+                    if ($_match->getHomeTeamScore() == $_match->getAwayTeamScore()) {
+                        $score = ($_match->getHomeTeamScore()+$_match->getHomeTeamExtraTimeScore()).'-'.($_match->getAwayTeamScore()+$_match->getAwayTeamExtraTimeScore()).' aet';
+                        if ($_match->getHomeTeamExtraTimeScore() == $_match->getAwayTeamExtraTimeScore()) {
+                            $penalty_score = ' '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore().' pen';
+                        }
+                    }
                     $output .= '<div class="col-sm-12" style="height:'.$gap_height.'px;"></div>
                             <div class="col-sm-12 box-sm" style="height:'.$box_height.'px;">
-                                <div class="col-sm-12 h4-ff3 margin-tb-sm">
-                                    <div class="col-sm-7 no-padding-lr">'.
-                        $waiting_home_team.
-                        '</div>
-                                </div>
-                                <div class="col-sm-12 h4-ff3 margin-tb-sm">
-                                    <div class="col-sm-7 no-padding-lr">'.
-                        $waiting_away_team.
-                        '</div>
-                                </div>
+                                <div class="col-sm-4 h4-ff3 margin-tb-sm text-center">
+                                    <img class="flag-md" src="/images/flags/'.$_match->getHomeFlag().'">'.
+                                    $home_team_name.
+                                '</div>
+                                <div class="col-sm-4 h4-ff3 margin-tb-sm text-center">'.
+                                    $score.'<br>'.$penalty_score.
+                                '</div>
+                                <div class="col-sm-4 h4-ff3 margin-tb-sm text-center">
+                                    <img class="flag-md" src="/images/flags/'.$_match->getAwayFlag().'">'.
+                                    $away_team_name.
+                                '</div>
                             </div>';
                     $j = $j + 1;
                 }

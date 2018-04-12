@@ -21,7 +21,13 @@
 
             Team::calculateSoccerStanding2($team_dto, $match_dto);
             $teams = Team::getTeamArrayByGroup($team_dto);
-            $team_dto->setHtml(Team::getSoccerHtml($teams));
+            $team_dto->setHtml($team_dto->getHtml().Team::getSoccerHtml($teams));
+
+            $matches = Match::getMatchArrayByGroup($match_dto);
+            $match_dto->setHtml(Match::getSoccerGroupHtml($matches));
+
+            $matches = Match::getMatchArraySecondStage($match_dto);
+            $team_dto->setHtml($team_dto->getHtml().Match::getSoccerBracketHtml($matches));
 
             return TournamentDTO::CreateSoccerTournamentDTO2($team_dto, $match_dto);
         }
