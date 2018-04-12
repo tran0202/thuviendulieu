@@ -2,7 +2,7 @@
 <?php
     include_once('class.tournament.php');
     $tournament_dto = Tournament::getTennisTournament(4);
-    $output = $tournament_dto->getMatchHtml();
+    $body_html = $tournament_dto->getBodyHtml();
 ?>
 <html lang="en">
 <head>
@@ -25,7 +25,7 @@
                     <h1 class="wb-stl-heading1 green">2017 US Open Men's Singles</h1>
                 </div>
                 <div>
-                    <?php echo $output; ?>
+                    <?php echo $body_html; ?>
                     <script>
                         $(function() {$("#view-0").show();});
                     </script>

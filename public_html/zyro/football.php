@@ -2,7 +2,7 @@
 <?php
     include_once('class.tournament.php');
     $tournament_dto = Tournament::getFootballTournament(2);
-    $output = $tournament_dto->getTeamHtml();
+    $body_html = $tournament_dto->getBodyHtml();
 ?>
 <html lang="en">
 <head>
@@ -25,7 +25,7 @@
                     <h1 class="wb-stl-heading1 red">NFL</h1>
                 </div>
                 <div>
-                    <?php echo $output; ?>
+                    <?php echo $body_html; ?>
                     <p> </p>
                 </div>
                 <div class="col-sm-12 margin-tb-lg">

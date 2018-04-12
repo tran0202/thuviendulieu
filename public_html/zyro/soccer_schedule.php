@@ -2,15 +2,14 @@
 <?php
     include_once('class.tournament.php');
     $tournament_dto = Tournament::getSoccerTournamentBySchedule(1);
-    $output2 = $tournament_dto->getMatchHtml();
-    $output3 = $tournament_dto->getTeamHtml();
+    $body_html = $tournament_dto->getBodyHtml();
+    $modal_html = $tournament_dto->getModalHtml();
 ?>
 <html lang="en">
 <head>
     <title>TVDL - Russia 2018</title>
     <?php include_once('header_script.inc.php'); ?>
 </head>
-
 <body>
     <div class="header" id="page-header">
         <div class="vbox wb_container" id="wb_header">
@@ -27,10 +26,9 @@
                     <span class="wb-stl-heading1 russia-2018">FIFA World Cup Russia 2018</span>
                     <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018/" target="_self">Groups</a></span>
                     <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018Schedule/" target="_self">Schedule</a></span>
-                    <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018Bracket/" target="_self">Bracket</a></span>
                 </div>
                 <div>
-                    <?php echo $output2; ?>
+                    <?php echo $body_html; ?>
                     <p class="wb-stl-normal"> </p>
                     <p class="wb-stl-normal"> </p>
                 </div>
@@ -41,7 +39,7 @@
 		</div>
 	</div>
     <!-- Modal -->
-    <?php echo $output3; ?>
+    <?php echo $modal_html; ?>
 	{{hr_out}}
 </body>
 </html>

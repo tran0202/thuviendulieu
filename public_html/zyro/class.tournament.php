@@ -14,59 +14,58 @@
             return $t;
         }
 
-        public static function getSoccerTournamentByGroup2($tournament_id, $stage_id) {
-
-            $team_dto = Team::getSoccerTeams2($tournament_id);
-            $match_dto = Match::getSoccerGroupMatches2($tournament_id, $stage_id);
-
-            Team::calculateSoccerStanding2($team_dto, $match_dto);
-            $teams = Team::getTeamArrayByGroup($team_dto);
-            $team_dto->setHtml($team_dto->getHtml().Team::getSoccerHtml($teams));
-
-            $matches = Match::getMatchArrayByGroup($match_dto);
-            $match_dto->setHtml(Match::getSoccerGroupHtml($matches));
-
-            $matches = Match::getMatchArraySecondStage($match_dto);
-            $team_dto->setHtml($team_dto->getHtml().Match::getSoccerBracketHtml($matches));
-
-            return TournamentDTO::CreateSoccerTournamentDTO2($team_dto, $match_dto);
-        }
-
         public static function getSoccerTournamentByGroup($tournament_id) {
 
-            $match_dto = Match::getSoccerGroupMatches($tournament_id);
-            $team_dto = Team::getSoccerTeams($tournament_id, $match_dto);
+            $team_dto = Team::getSoccerTeams($tournament_id);
+            $match_dto = Match::getSoccerMatches($tournament_id);
+            $body_html = $team_dto->getHtml();
+            $modal_html = $match_dto->getHtml();
 
-            return TournamentDTO::CreateSoccerTournamentDTO($team_dto->getTeamHtml(), $team_dto->getMatchHtml());
+            Team::calculateSoccerStanding($team_dto, $match_dto);
+
+            $body_html .= Team::getSoccerHtml($team_dto);
+
+            $body_html .= Match::getSoccerBracketHtml($match_dto);
+
+            $modal_html .= Match::getSoccerGroupHtml($match_dto);
+
+            return TournamentDTO::CreateSoccerTournamentDTO($body_html, $modal_html);
         }
 
         public static function getSoccerTournamentBySchedule($tournament_id) {
 
-            $match_dto = Match::getSoccerScheduleMatches($tournament_id);
-            $team_dto = Team::getSoccerModalTeams($tournament_id, $match_dto);
+            $team_dto = Team::getSoccerTeams($tournament_id);
+            $match_dto = Match::getSoccerMatches($tournament_id);
+            $body_html = $team_dto->getHtml();
+            $modal_html = $match_dto->getHtml();
 
-            return TournamentDTO::CreateSoccerTournamentDTO($team_dto->getTeamHtml(), $team_dto->getMatchHtml());
-        }
+            Team::calculateSoccerStanding($team_dto, $match_dto);
 
-        public static function getSoccerTournamentByBracket($tournament_id, $stage_id) {
+            $body_html .= Match::getSoccerScheduleHtml($match_dto);
 
-            $match_dto = Match::getSoccerBracketMatches($tournament_id, $stage_id);
+            $modal_html .= Team::getSoccerModalHtml($team_dto);
 
-            return TournamentDTO::CreateSoccerTournamentDTO(null, $match_dto->getHtml());
+            return TournamentDTO::CreateSoccerTournamentDTO($body_html, $modal_html);
         }
 
         public static function getFootballTournament($tournament_id) {
 
             $team_dto = Team::getFootballTeams($tournament_id);
+            $body_html = $team_dto->getHtml();
 
-            return TournamentDTO::CreateSoccerTournamentDTO($team_dto->getTeamHtml(), null);
+            $body_html .= Team::getFootballHtml($team_dto);
+
+            return TournamentDTO::CreateFootballTournamentDTO($body_html, null);
         }
 
         public static function getTennisTournament($tournament_id) {
 
             $match_dto = Match::getTennisMatches($tournament_id);
+            $body_html = $match_dto->getHtml();
 
-            return TournamentDTO::CreateSoccerTournamentDTO(null, $match_dto->getHtml());
+            $body_html .= Match::getTennisHtml($match_dto);
+
+            return TournamentDTO::CreateTennisTournamentDTO($body_html, null);
         }
 
         /**
@@ -104,90 +103,64 @@
 
     class TournamentDTO {
 
-        private $team_dto;
-        private $match_dto;
-        private $team_html;
-        private $match_html;
+        private $body_html;
+        private $modal_html;
 
         protected function __construct() { }
 
-        public static function CreateSoccerTournamentDTO2($team_dto, $match_dto)
+        public static function CreateSoccerTournamentDTO($body_html, $modal_html)
         {
             $tournament_dto = new TournamentDTO();
-            $tournament_dto->team_dto = $team_dto;
-            $tournament_dto->match_dto = $match_dto;
+            $tournament_dto->body_html = $body_html;
+            $tournament_dto->modal_html = $modal_html;
             return $tournament_dto;
         }
 
-        public static function CreateSoccerTournamentDTO($team_html, $match_html)
+        public static function CreateFootballTournamentDTO($body_html, $modal_html)
         {
             $tournament_dto = new TournamentDTO();
-            $tournament_dto->team_html = $team_html;
-            $tournament_dto->match_html = $match_html;
+            $tournament_dto->body_html = $body_html;
+            $tournament_dto->modal_html = $modal_html;
+            return $tournament_dto;
+        }
+
+        public static function CreateTennisTournamentDTO($body_html, $modal_html)
+        {
+            $tournament_dto = new TournamentDTO();
+            $tournament_dto->body_html = $body_html;
+            $tournament_dto->modal_html = $modal_html;
             return $tournament_dto;
         }
 
         /**
          * @return mixed
          */
-        public function getTeamDto()
+        public function getBodyHtml()
         {
-            return $this->team_dto;
+            return $this->body_html;
         }
 
         /**
-         * @param mixed $team_dto
+         * @param mixed $body_html
          */
-        public function setTeamDto($team_dto)
+        public function setBodyHtml($body_html)
         {
-            $this->team_dto = $team_dto;
-        }
-
-        /**
-         * @return mixed
-         */
-        public function getMatchDto()
-        {
-            return $this->match_dto;
-        }
-
-        /**
-         * @param mixed $match_dto
-         */
-        public function setMatchDto($match_dto)
-        {
-            $this->match_dto = $match_dto;
+            $this->body_html = $body_html;
         }
 
         /**
          * @return mixed
          */
-        public function getTeamHtml()
+        public function getModalHtml()
         {
-            return $this->team_html;
+            return $this->modal_html;
         }
 
         /**
-         * @param mixed $team_html
+         * @param mixed $modal_html
          */
-        public function setTeamHtml($team_html)
+        public function setModalHtml($modal_html)
         {
-            $this->team_html = $team_html;
-        }
-
-        /**
-         * @return mixed
-         */
-        public function getMatchHtml()
-        {
-            return $this->match_html;
-        }
-
-        /**
-         * @param mixed $match_html
-         */
-        public function setMatchHtml($match_html)
-        {
-            $this->match_html = $match_html;
+            $this->modal_html = $modal_html;
         }
     }

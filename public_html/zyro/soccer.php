@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <?php
     include_once('class.tournament.php');
-    $tournament_dto = Tournament::getSoccerTournamentByGroup2(1, 40);
-    $output = $tournament_dto->getTeamDto()->getHtml();
-    $output2 = $tournament_dto->getMatchDto()->getHtml();
-//    $tournament_dto = Tournament::getSoccerTournamentByGroup(1);
-//    $output3 = $tournament_dto->getTeamHtml();
-//    $output4 = $tournament_dto->getMatchHtml();
+    $tournament_dto = Tournament::getSoccerTournamentByGroup(1);
+    $body_html = $tournament_dto->getBodyHtml();
+    $modal_html = $tournament_dto->getModalHtml();
 ?>
 <html lang="en">
 <head>
@@ -29,11 +26,9 @@
                     <span class="wb-stl-heading1 russia-2018">FIFA World Cup Russia 2018</span>
                     <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018/" target="_self">Groups</a></span>
                     <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018Schedule/" target="_self">Schedule</a></span>
-                    <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018Bracket/" target="_self">Bracket</a></span>
                 </div>
                 <div>
-                    <?php echo $output; ?>
-                    <?php //echo $output3; ?>
+                    <?php echo $body_html; ?>
                     <p> </p>
                 </div>
                 <div class="col-sm-12 margin-tb-lg">
@@ -43,8 +38,7 @@
 		</div>
 	</div>
     <!-- Modal -->
-    <?php echo $output2; ?>
-    <?php //echo $output4; ?>
+    <?php echo $modal_html; ?>
 	{{hr_out}}
 </body>
 </html>
