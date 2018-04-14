@@ -182,8 +182,24 @@
                         $row['home_flag'], $row['away_flag']);
                     array_push($matches, $match);
                 }
+                self::mockGroupAScore($matches);
                 return MatchDTO::CreateSoccerMatchDTO($matches, $count, $output);
             }
+        }
+
+        public static function mockGroupAScore($matches) {
+            $matches[0]->setHomeTeamScore(1);
+            $matches[0]->setAwayTeamScore(0);
+            $matches[1]->setHomeTeamScore(1);
+            $matches[1]->setAwayTeamScore(0);
+            $matches[16]->setHomeTeamScore(1);
+            $matches[16]->setAwayTeamScore(0);
+            $matches[18]->setHomeTeamScore(1);
+            $matches[18]->setAwayTeamScore(0);
+            $matches[32]->setHomeTeamScore(1);
+            $matches[32]->setAwayTeamScore(0);
+            $matches[33]->setHomeTeamScore(3);
+            $matches[33]->setAwayTeamScore(3);
         }
 
         public static function getTennisMatchDTO($sql, $fantasy = false) {

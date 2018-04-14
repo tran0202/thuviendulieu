@@ -332,10 +332,12 @@
                 }
                 for ($i = 0; $i <= 2; $i++) {
                     for ($j = $i+1; $j <= 3; $j++) {
-                        if (self::isTeamGreaterThanOrEqual($tmp_array2[$j], $tmp_array2[$i])) {
-                            $tmp_t = $tmp_array2[$i];
-                            $tmp_array2[$i] = $tmp_array2[$j];
-                            $tmp_array2[$j] = $tmp_t;
+                        if (self::isEqualStanding($tmp_array2[$i], $tmp_array2[$j])) {
+                            $still_tie = self::applyTiebreaker($tmp_array2[$i], $tmp_array2[$j], $match_dto);
+                            if ($still_tie) self::coinToss($tmp_array2[$i], $tmp_array2[$j]);
+                        }
+                        elseif (self::isHigherStanding($tmp_array2[$j], $tmp_array2[$i])) {
+                            self::swapTeam($tmp_array2[$i], $tmp_array2[$j]);
                         }
                     }
                 }
@@ -529,7 +531,7 @@
             }
         }
 
-        public static function isTeamGreaterThanOrEqual($t1, $t2) {
+        public static function isHigherStanding($t1, $t2) {
             if ($t1->getPoint() > $t2->getPoint()) {
                 return true;
             }
@@ -538,7 +540,7 @@
                     return true;
                 }
                 elseif ($t1->getGoalDiff() == $t2->getGoalDiff()) {
-                    if ($t1->getGoalFor() >= $t2->getGoalFor()) {
+                    if ($t1->getGoalFor() > $t2->getGoalFor()) {
                         return true;
                     }
                     else {
@@ -552,6 +554,48 @@
             else {
                 return false;
             }
+        }
+
+        public static function isEqualStanding($t1, $t2) {
+            return $t1->getPoint() == $t2->getPoint() && $t1->getGoalDiff() == $t2->getGoalDiff()
+                && $t1->getGoalFor() == $t2->getGoalFor();
+        }
+
+        public static function applyTiebreaker(&$t1, &$t2, $match_dto) {
+            $still_tie = false;
+            $matches = $match_dto->getMatches();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                if ($matches[$i]->getHomeTeamName() == $t1->getName() && $matches[$i]->getAwayTeamName() == $t2->getName()) {
+                    if ($matches[$i]->getHomeTeamScore() < $matches[$i]->getAwayTeamScore()) {
+                        self::swapTeam($t1, $t2);
+                    }
+                    elseif ($matches[$i]->getHomeTeamScore() == $matches[$i]->getAwayTeamScore()) {
+                        $still_tie = true;
+                    }
+                    break;
+                }
+                elseif ($matches[$i]->getAwayTeamName() == $t1->getName() && $matches[$i]->getHomeTeamName() == $t2->getName()) {
+                    if ($matches[$i]->getAwayTeamScore() < $matches[$i]->getHomeTeamScore()) {
+                        self::swapTeam($t1, $t2);
+                    }
+                    elseif ($matches[$i]->getAwayTeamScore() == $matches[$i]->getHomeTeamScore()) {
+                        $still_tie = true;
+                    }
+                    break;
+                }
+            }
+            return $still_tie;
+        }
+
+        public static function coinToss(&$t1, &$t2) {
+            $coin = mt_rand(0,1);
+            if ($coin == 1) self::swapTeam($t1, $t2);
+        }
+
+        public static function swapTeam(&$t1, &$t2) {
+            $tmp_t = $t1;
+            $t1 = $t2;
+            $t2 = $tmp_t;
         }
 
         /**
