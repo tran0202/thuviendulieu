@@ -14,14 +14,16 @@
             return $t;
         }
 
-        public static function getSoccerTournamentByGroup($tournament_id) {
+        public static function getSoccerTournamentByGroup($tournament_id, $fantasy = false) {
 
-            $team_dto = Team::getSoccerTeams($tournament_id);
-            $match_dto = Match::getSoccerMatches($tournament_id);
+            $tournament_dto = TournamentDTO::CreateTournamentDTO($tournament_id, $fantasy);
+
+            $team_dto = Team::getSoccerTeams($tournament_dto);
+            $match_dto = Match::getSoccerMatches($tournament_dto);
             $body_html = $team_dto->getHtml();
             $modal_html = $match_dto->getHtml();
 
-            Team::calculateSoccerStanding($team_dto, $match_dto);
+            if ($fantasy) Team::calculateSoccerStanding($team_dto, $match_dto);
 
             $body_html .= Team::getSoccerHtml($team_dto);
 
@@ -32,14 +34,16 @@
             return TournamentDTO::CreateSoccerTournamentDTO($body_html, $modal_html);
         }
 
-        public static function getSoccerTournamentBySchedule($tournament_id) {
+        public static function getSoccerTournamentBySchedule($tournament_id, $fantasy = false) {
 
-            $team_dto = Team::getSoccerTeams($tournament_id);
-            $match_dto = Match::getSoccerMatches($tournament_id);
+            $tournament_dto = TournamentDTO::CreateTournamentDTO($tournament_id, $fantasy);
+
+            $team_dto = Team::getSoccerTeams($tournament_dto);
+            $match_dto = Match::getSoccerMatches($tournament_dto);
             $body_html = $team_dto->getHtml();
             $modal_html = $match_dto->getHtml();
 
-            Team::calculateSoccerStanding($team_dto, $match_dto);
+            if ($fantasy) Team::calculateSoccerStanding($team_dto, $match_dto);
 
             $body_html .= Match::getSoccerScheduleHtml($match_dto);
 
@@ -48,9 +52,11 @@
             return TournamentDTO::CreateSoccerTournamentDTO($body_html, $modal_html);
         }
 
-        public static function getFootballTournament($tournament_id) {
+        public static function getFootballTournament($tournament_id, $fantasy = false) {
 
-            $team_dto = Team::getFootballTeams($tournament_id);
+            $tournament_dto = TournamentDTO::CreateTournamentDTO($tournament_id, $fantasy);
+
+            $team_dto = Team::getFootballTeams($tournament_dto);
             $body_html = $team_dto->getHtml();
 
             $body_html .= Team::getFootballHtml($team_dto);
@@ -58,9 +64,11 @@
             return TournamentDTO::CreateFootballTournamentDTO($body_html, null);
         }
 
-        public static function getTennisTournament($tournament_id) {
+        public static function getTennisTournament($tournament_id, $fantasy = false) {
 
-            $match_dto = Match::getTennisMatches($tournament_id);
+            $tournament_dto = TournamentDTO::CreateTournamentDTO($tournament_id, $fantasy);
+
+            $match_dto = Match::getTennisMatches($tournament_dto);
             $body_html = $match_dto->getHtml();
 
             $body_html .= Match::getTennisHtml($match_dto);
@@ -102,11 +110,20 @@
     }
 
     class TournamentDTO {
-
+        private $tournament_id;
+        private $fantasy;
         private $body_html;
         private $modal_html;
 
         protected function __construct() { }
+
+        public static function CreateTournamentDTO($tournament_id, $fantasy)
+        {
+            $tournament_dto = new TournamentDTO();
+            $tournament_dto->tournament_id = $tournament_id;
+            $tournament_dto->fantasy = $fantasy;
+            return $tournament_dto;
+        }
 
         public static function CreateSoccerTournamentDTO($body_html, $modal_html)
         {
@@ -130,6 +147,38 @@
             $tournament_dto->body_html = $body_html;
             $tournament_dto->modal_html = $modal_html;
             return $tournament_dto;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getTournamentId()
+        {
+            return $this->tournament_id;
+        }
+
+        /**
+         * @param mixed $tournament_id
+         */
+        public function setTournamentId($tournament_id)
+        {
+            $this->tournament_id = $tournament_id;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getFantasy()
+        {
+            return $this->fantasy;
+        }
+
+        /**
+         * @param mixed $fantasy
+         */
+        public function setFantasy($fantasy)
+        {
+            $this->fantasy = $fantasy;
         }
 
         /**

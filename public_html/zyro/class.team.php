@@ -55,16 +55,16 @@
             return $t;
         }
 
-        public static function getSoccerTeams($tournament_id) {
+        public static function getSoccerTeams($tournament_dto) {
 
-            $sql = Team::getSoccerTeamSql($tournament_id);
+            $sql = Team::getSoccerTeamSql($tournament_dto->getTournamentId());
 
             return self::getSoccerTeamDTO($sql);
         }
 
-        public static function getFootballTeams($tournament_id) {
+        public static function getFootballTeams($tournament_dto) {
 
-            $sql = Team::getFootballTeamSql($tournament_id);
+            $sql = Team::getFootballTeamSql($tournament_dto->getTournamentId());
 
             return self::getFootballTeamDTO($sql);
         }
@@ -83,7 +83,8 @@
             }
             else {
                 while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                    $team = Team::CreateSoccerTeam($row['team_id'], $row['name'], $row['code'], $row['group_name'], $row['group_order'], $row['flag_filename']);
+                    $team = Team::CreateSoccerTeam($row['team_id'], $row['name'], $row['code'],
+                        $row['group_name'], $row['group_order'], $row['flag_filename']);
                     array_push($teams, $team);
                 }
                 return TeamDTO::CreateSoccerTeamDTO($teams, $count, $output);
@@ -96,7 +97,7 @@
             $query->execute();
             $count = $query->rowCount();
             $teams = array();
-            $output = '<!-- Count = '.$count.' -->';
+            $output = '<!-- Team Count = '.$count.' -->';
 
             if ($count == 0) {
                 $output = '<h2>No result found!</h2>';
@@ -106,7 +107,7 @@
                 while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
                     $team = Team::CreateFootballTeam($row['name'], $row['group_name'], $row['group_order'],
                         $row['parent_group_long_name'], $row['parent_group_order'], $row['logo_filename']);
-                    $teams[$row['parent_group_long_name']][$row['parent_group_name'].' '.$row['group_name']][$row['group_order']] = $team;
+                    array_push($teams, $team);
                 }
                 return TeamDTO::CreateFootballTeamDTO($teams, $count, $output);
             }
@@ -211,7 +212,7 @@
         }
 
         public static function getFootballHtml($team_dto) {
-            $teams = $team_dto->getTeams();
+            $teams = Team::getFootballTeamArrayByConfDiv($team_dto);
             $output = '';
             foreach ($teams as $parent_group_long_name => $_conferences) {
                 $output .= '<div class="col-sm-12 h2-ff1 margin-top-md">'.$parent_group_long_name.'</div>';
@@ -378,21 +379,15 @@
         }
 
         public static function quarterfinalQualifiers($team_dto, $match_dto) {
-            $teams = self::getTeamArrayByGroup($team_dto);
-            $tmp_team = array();
-            foreach ($teams as $group_name => $_teams) {
-                foreach ($_teams as $group_order => $_team) {
-                    $tmp_team[$_team->getName()] = $_team;
-                }
-            }
+            $teams = self::getTeamArrayByName($team_dto);
             $quarterfinal_teams = array();
             $matches = $match_dto->getMatches();
             for ($i = 48; $i < 56; $i++ ) {
                 if (self::isHomeTeamWin($matches[$i])) {
-                    $quarterfinal_teams['W'.($i+1)] = $tmp_team[$matches[$i]->getHomeTeamName()];
+                    $quarterfinal_teams['W'.($i+1)] = $teams[$matches[$i]->getHomeTeamName()];
                 }
                 else {
-                    $quarterfinal_teams['W'.($i+1)] = $tmp_team[$matches[$i]->getAwayTeamName()];
+                    $quarterfinal_teams['W'.($i+1)] = $teams[$matches[$i]->getAwayTeamName()];
                 }
             }
             for ($i = 56; $i < 60; $i++ ) {
@@ -416,16 +411,15 @@
         }
 
         public static function semifinalQualifiers($team_dto, $match_dto) {
-            $tmp_team = self::getTeamArrayByName($team_dto);
+            $teams = self::getTeamArrayByName($team_dto);
             $semifinal_teams = array();
-            $match_html = $match_dto->getHtml();
             $matches = $match_dto->getMatches();
             for ($i = 56; $i < 60; $i++ ) {
                 if (self::isHomeTeamWin($matches[$i])) {
-                    $semifinal_teams['W'.($i+1)] = $tmp_team[$matches[$i]->getHomeTeamName()];
+                    $semifinal_teams['W'.($i+1)] = $teams[$matches[$i]->getHomeTeamName()];
                 }
                 else {
-                    $semifinal_teams['W'.($i+1)] = $tmp_team[$matches[$i]->getAwayTeamName()];
+                    $semifinal_teams['W'.($i+1)] = $teams[$matches[$i]->getAwayTeamName()];
                 }
             }
             for ($i = 60; $i < 62; $i++ ) {
@@ -440,24 +434,24 @@
         }
 
         public static function finalQualifiers($team_dto, $match_dto) {
-            $tmp_team = self::getTeamArrayByName($team_dto);
+            $teams = self::getTeamArrayByName($team_dto);
             $final_teams = array();
             $matches = $match_dto->getMatches();
             if (self::isHomeTeamWin($matches[60])) {
-                $final_teams['W61'] = $tmp_team[$matches[60]->getHomeTeamName()];
-                $final_teams['L61'] = $tmp_team[$matches[60]->getAwayTeamName()];
+                $final_teams['W61'] = $teams[$matches[60]->getHomeTeamName()];
+                $final_teams['L61'] = $teams[$matches[60]->getAwayTeamName()];
             }
             else {
-                $final_teams['W61'] = $tmp_team[$matches[60]->getAwayTeamName()];
-                $final_teams['L61'] = $tmp_team[$matches[60]->getHomeTeamName()];
+                $final_teams['W61'] = $teams[$matches[60]->getAwayTeamName()];
+                $final_teams['L61'] = $teams[$matches[60]->getHomeTeamName()];
             }
             if (self::isHomeTeamWin($matches[61])) {
-                $final_teams['W62'] = $tmp_team[$matches[61]->getHomeTeamName()];
-                $final_teams['L62'] = $tmp_team[$matches[61]->getAwayTeamName()];
+                $final_teams['W62'] = $teams[$matches[61]->getHomeTeamName()];
+                $final_teams['L62'] = $teams[$matches[61]->getAwayTeamName()];
             }
             else {
-                $final_teams['W62'] = $tmp_team[$matches[61]->getAwayTeamName()];
-                $final_teams['L62'] = $tmp_team[$matches[61]->getHomeTeamName()];
+                $final_teams['W62'] = $teams[$matches[61]->getAwayTeamName()];
+                $final_teams['L62'] = $teams[$matches[61]->getHomeTeamName()];
             }
             for ($i = 62; $i < 64; $i++ ) {
                 $matches[$i]->setHomeTeamName($final_teams[$matches[$i]->getWaitingHomeTeam()]->getName());
@@ -482,9 +476,10 @@
         }
 
         public static function getTeamArrayByName($team_dto) {
+            $teams = $team_dto->getTeams();
             $result = array();
-            for ($i = 0; $i < sizeof($team_dto->getTeams()); $i++) {
-                $result[$team_dto->getTeams()[$i]->getName()] = $team_dto->getTeams()[$i];
+            for ($i = 0; $i < sizeof($teams); $i++) {
+                $result[$teams[$i]->getName()] = $teams[$i];
             }
             return $result;
         }
@@ -494,6 +489,17 @@
             $result = array();
             for ($i = 0; $i < sizeof($teams); $i++) {
                 $result[$teams[$i]->getGroupName()][$teams[$i]->getGroupOrder()] = $teams[$i];
+            }
+            return $result;
+        }
+
+        public static function getFootballTeamArrayByConfDiv($team_dto) {
+            $teams = $team_dto->getTeams();
+            $result = array();
+            for ($i = 0; $i < sizeof($teams); $i++) {
+                $result[$teams[$i]->getParentGroupLongName()]
+                        [$teams[$i]->getParentGroupName().' '.$teams[$i]->getGroupName()]
+                        [$teams[$i]->getGroupOrder()] = $teams[$i];
             }
             return $result;
         }

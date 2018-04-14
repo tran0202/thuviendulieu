@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
     include_once('class.tournament.php');
-    $tournament_dto = Tournament::getSoccerTournamentBySchedule(1);
+    $tournament_dto = Tournament::getSoccerTournamentBySchedule(1, true);
     $body_html = $tournament_dto->getBodyHtml();
     $modal_html = $tournament_dto->getModalHtml();
 ?>
