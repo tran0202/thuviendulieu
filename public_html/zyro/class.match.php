@@ -182,7 +182,7 @@
                         $row['home_flag'], $row['away_flag']);
                     array_push($matches, $match);
                 }
-                self::mockGroupAScore($matches);
+//                self::mockGroupAScore($matches);
                 return MatchDTO::CreateSoccerMatchDTO($matches, $count, $output);
             }
         }

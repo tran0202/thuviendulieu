@@ -8,7 +8,7 @@
     if (isset($query_string['tid'])) $tournament_id = $query_string['tid'];
     $fantasy = false;
     if (isset($query_string['ftsy'])) $fantasy = true;
-    $tournament_dto = Tournament::getSoccerTournamentBySchedule($tournament_id, $fantasy);
+    $tournament_dto = Tournament::getSoccerTournamentByGroup($tournament_id, $fantasy);
     $body_html = $tournament_dto->getBodyHtml();
     $modal_html = $tournament_dto->getModalHtml();
 ?>
@@ -31,13 +31,12 @@
 			<div class="wb_cont_inner">
                 <div>
                     <span class="wb-stl-heading1 russia-2018">FIFA World Cup Russia 2018</span>
-                    <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018Groups/<?php echo $qs; ?>" target="_self">Groups</a></span>
-                    <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018Schedule/<?php echo $qs; ?>" target="_self">Schedule</a></span>
+                    <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018Groups<?php echo $qs; ?>" target="_self">Groups</a></span>
+                    <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018Schedule<?php echo $qs; ?>" target="_self">Schedule</a></span>
                 </div>
                 <div>
                     <?php echo $body_html; ?>
-                    <p class="wb-stl-normal"> </p>
-                    <p class="wb-stl-normal"> </p>
+                    <p> </p>
                 </div>
                 <div class="col-sm-12 margin-tb-lg">
                     <p class="wb-stl-footer black">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
