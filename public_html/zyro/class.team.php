@@ -958,8 +958,3 @@
             $this->html = $html;
         }
     }
-
-    abstract class TeamView {
-        const GroupView = 1;
-        const ModalView = 2;
-    }

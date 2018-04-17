@@ -6,8 +6,8 @@
     parse_str($_SERVER['QUERY_STRING'], $query_string);
     $tournament_id = 1;
     if (isset($query_string['tid'])) $tournament_id = $query_string['tid'];
-    $fantasy = false;
-    if (isset($query_string['ftsy'])) $fantasy = true;
+    $fantasy = '';
+    if (isset($query_string['ftsy'])) $fantasy = $query_string['ftsy'];
     $tournament_dto = Tournament::getSoccerTournamentByGroup($tournament_id, $fantasy);
     $body_html = $tournament_dto->getBodyHtml();
     $modal_html = $tournament_dto->getModalHtml();

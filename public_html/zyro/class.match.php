@@ -152,7 +152,7 @@
             return self::getTennisMatchDTO($sql, $tournament_dto->getFantasy());
         }
 
-        public static function getSoccerMatchDTO($sql, $fantasy = false) {
+        public static function getSoccerMatchDTO($sql, $fantasy) {
 
             $query = $GLOBALS['connection']->prepare($sql);
             $query->execute();
@@ -166,9 +166,10 @@
             }
             else {
                 while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                    $ft = new FantasyType();
                     $home_team_score = -1;
                     $away_team_score = -1;
-                    if ($fantasy) {
+                    if ($fantasy == $ft->getFantasyType('AllMatches')) {
                         $row = self::randomMatchScore($row);
                         $home_team_score = $row['home_team_score'];
                         $away_team_score = $row['away_team_score'];
@@ -1711,10 +1712,4 @@
         {
             $this->html = $html;
         }
-    }
-
-    abstract class MatchView {
-        const GroupView = 1;
-        const ScheduleView = 2;
-        const BracketView = 3;
     }

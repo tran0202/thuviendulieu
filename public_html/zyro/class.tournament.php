@@ -14,8 +14,10 @@
             return $t;
         }
 
-        public static function getSoccerTournamentByGroup($tournament_id, $fantasy = false) {
+        public static function getSoccerTournamentByGroup($tournament_id, $fantasy) {
 
+            $ft = new FantasyType();
+            $fantasy = $ft->getFantasyType($fantasy);
             $tournament_dto = TournamentDTO::CreateTournamentDTO($tournament_id, $fantasy);
 
             $team_dto = Team::getSoccerTeams($tournament_dto);
@@ -23,7 +25,7 @@
             $body_html = $team_dto->getHtml();
             $modal_html = $match_dto->getHtml();
 
-            if ($fantasy) Team::calculateSoccerStanding($team_dto, $match_dto);
+            if ($fantasy == $ft->getFantasyType('AllMatches')) Team::calculateSoccerStanding($team_dto, $match_dto);
 
             $body_html .= Team::getSoccerHtml($team_dto);
 
@@ -34,8 +36,10 @@
             return TournamentDTO::CreateSoccerTournamentDTO($body_html, $modal_html);
         }
 
-        public static function getSoccerTournamentBySchedule($tournament_id, $fantasy = false) {
+        public static function getSoccerTournamentBySchedule($tournament_id, $fantasy) {
 
+            $ft = new FantasyType();
+            $fantasy = $ft->getFantasyType($fantasy);
             $tournament_dto = TournamentDTO::CreateTournamentDTO($tournament_id, $fantasy);
 
             $team_dto = Team::getSoccerTeams($tournament_dto);
@@ -43,7 +47,7 @@
             $body_html = $team_dto->getHtml();
             $modal_html = $match_dto->getHtml();
 
-            if ($fantasy) Team::calculateSoccerStanding($team_dto, $match_dto);
+            if ($fantasy == $ft->getFantasyType('AllMatches')) Team::calculateSoccerStanding($team_dto, $match_dto);
 
             $body_html .= Match::getSoccerScheduleHtml($match_dto);
 
@@ -212,4 +216,23 @@
         {
             $this->modal_html = $modal_html;
         }
+    }
+
+    class FantasyType {
+
+        public $fantasy_type = array(
+            'AllMatches'=>1,
+            'First2Matches'=>2
+        );
+
+        public function __construct() { }
+
+        public function getFantasyType($type) {
+            return $this->fantasy_type[$type];
+        }
+    }
+
+    abstract class Fantasy {
+        const AllMatches = 1;
+        const First2Matches = 2;
     }
