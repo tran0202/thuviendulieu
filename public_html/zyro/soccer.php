@@ -37,7 +37,8 @@
                 </div>
                 <div class="col-sm-12">
                     <h5 class="wb-stl-subtitle2 text-center">
-                        <a href="Russia2018Groups?tid=1&ftsy=AllMatches">Groups</a> | <a href="Russia2018Schedule?tid=1&ftsy=AllMatches">Schedule</a>
+                        All Matches: <a href="Russia2018Groups?tid=1&ftsy=AllMatches">Groups</a> | <a href="Russia2018Schedule?tid=1&ftsy=AllMatches">Schedule</a><br>
+                        First 2 Matches: <a href="Russia2018Groups?tid=1&ftsy=First2Matches">Groups</a> | <a href="Russia2018Schedule?tid=1&ftsy=First2Matches">Schedule</a>
                     </h5>
                 </div>
                 <div class="col-sm-12 margin-tb-lg">

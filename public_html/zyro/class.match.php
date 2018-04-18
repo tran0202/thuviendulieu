@@ -165,6 +165,7 @@
                 return MatchDTO::CreateSoccerMatchDTO(null, $count, $output);
             }
             else {
+                $i = 0;
                 while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
                     $ft = new FantasyType();
                     $home_team_score = -1;
@@ -173,6 +174,14 @@
                         $row = self::randomMatchScore($row);
                         $home_team_score = $row['home_team_score'];
                         $away_team_score = $row['away_team_score'];
+                    }
+                    elseif ($fantasy == $ft->getFantasyType('First2Matches')) {
+                        if ($i < 32) {
+                            $row = self::randomMatchScore($row);
+                            $home_team_score = $row['home_team_score'];
+                            $away_team_score = $row['away_team_score'];
+                        }
+                        $i = $i + 1;
                     }
                     $match = Match::CreateSoccerMatch($row['home_team_id'], $row['home_team_name'], $row['home_team_code'], $row['away_team_id'], $row['away_team_name'], $row['away_team_code'],
                         $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_time_fmt'],

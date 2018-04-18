@@ -287,12 +287,14 @@
             return $sql;
         }
 
-        public static function calculateSoccerStanding($team_dto, $match_dto) {
+        public static function calculateSoccerStanding($team_dto, $match_dto, $first2Matches = false) {
+            $numberOfMatches = 48;
+            if ($first2Matches) $numberOfMatches = 32;
             $matches = $match_dto->getMatches();
             $team_array = self::getTeamArrayById($team_dto);
             $tmp_array = array();
             $result = array();
-            for ($i = 0; $i < 48; $i++ ) {
+            for ($i = 0; $i < $numberOfMatches; $i++ ) {
                 $home_id = $matches[$i]->getHomeTeamId();
                 $away_id = $matches[$i]->getAwayTeamId();
                 $home_score = $matches[$i]->getHomeTeamScore();
@@ -349,10 +351,12 @@
                 }
             }
             $team_dto->setTeams($result);
-            self::round16Qualifiers($team_dto, $match_dto);
-            self::quarterfinalQualifiers($team_dto, $match_dto);
-            self::semifinalQualifiers($team_dto, $match_dto);
-            self::finalQualifiers($team_dto, $match_dto);
+            if (!$first2Matches) {
+                self::round16Qualifiers($team_dto, $match_dto);
+                self::quarterfinalQualifiers($team_dto, $match_dto);
+                self::semifinalQualifiers($team_dto, $match_dto);
+                self::finalQualifiers($team_dto, $match_dto);
+            }
         }
 
         public static function round16Qualifiers($team_dto, $match_dto) {

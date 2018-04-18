@@ -26,7 +26,7 @@
             $modal_html = $match_dto->getHtml();
 
             if ($fantasy == $ft->getFantasyType('AllMatches')) Team::calculateSoccerStanding($team_dto, $match_dto);
-
+            if ($fantasy == $ft->getFantasyType('First2Matches')) Team::calculateSoccerStanding($team_dto, $match_dto, true);
             $body_html .= Team::getSoccerHtml($team_dto);
 
             $body_html .= Match::getSoccerBracketHtml($match_dto);
@@ -48,7 +48,7 @@
             $modal_html = $match_dto->getHtml();
 
             if ($fantasy == $ft->getFantasyType('AllMatches')) Team::calculateSoccerStanding($team_dto, $match_dto);
-
+            if ($fantasy == $ft->getFantasyType('First2Matches')) Team::calculateSoccerStanding($team_dto, $match_dto, true);
             $body_html .= Match::getSoccerScheduleHtml($match_dto);
 
             $modal_html .= Team::getSoccerModalHtml($team_dto);
