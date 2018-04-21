@@ -1,6 +1,7 @@
 <?php
     include_once('class.match.php');
     include_once('class.team.php');
+    include_once('class.soccer.php');
     class Tournament{
         private $teams;
         private $matches;
@@ -25,8 +26,8 @@
             $body_html = $team_dto->getHtml();
             $modal_html = $match_dto->getHtml();
 
-            if ($fantasy == $ft->getFantasyType('AllMatches')) Team::calculateSoccerStanding($team_dto, $match_dto);
-            if ($fantasy == $ft->getFantasyType('First2Matches')) Team::calculateSoccerStanding($team_dto, $match_dto, true);
+            if ($fantasy == $ft->getFantasyType('AllMatches')) Soccer::calculateStanding($team_dto, $match_dto);
+            if ($fantasy == $ft->getFantasyType('First2Matches')) Soccer::calculateStanding($team_dto, $match_dto, true);
             $body_html .= Team::getSoccerHtml($team_dto);
 
             $body_html .= Match::getSoccerBracketHtml($match_dto);
@@ -47,8 +48,8 @@
             $body_html = $team_dto->getHtml();
             $modal_html = $match_dto->getHtml();
 
-            if ($fantasy == $ft->getFantasyType('AllMatches')) Team::calculateSoccerStanding($team_dto, $match_dto);
-            if ($fantasy == $ft->getFantasyType('First2Matches')) Team::calculateSoccerStanding($team_dto, $match_dto, true);
+            if ($fantasy == $ft->getFantasyType('AllMatches')) Soccer::calculateStanding($team_dto, $match_dto);
+            if ($fantasy == $ft->getFantasyType('First2Matches')) Soccer::calculateStanding($team_dto, $match_dto, true);
             $body_html .= Match::getSoccerScheduleHtml($match_dto);
 
             $modal_html .= Team::getSoccerModalHtml($team_dto);
