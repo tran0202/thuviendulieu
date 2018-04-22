@@ -47,6 +47,23 @@
                 $team_array[$away_id]->setGoalAgainst($team_array[$away_id]->getGoalAgainst() + $home_score);
                 $team_array[$away_id]->setGoalDiff($team_array[$away_id]->getGoalDiff() + $away_score - $home_score);
             }
+            for ($i = $numberOfMatches; $i < 48; $i++) {
+                $tmp_scenarios = array();
+                $tmp_s = Scenario::CreateScenario($matches[$i]->getHomeTeamName(), 'Win', $matches[$i]->getAwayTeamName(), 'Lose');
+                array_push($tmp_scenarios, $tmp_s);
+                array_push($tmp_scenarios, $tmp_s);
+                array_push($tmp_scenarios, $tmp_s);
+                array_push($tmp_scenarios, $tmp_s);
+                array_push($tmp_scenarios, $tmp_s);
+                array_push($tmp_scenarios, $tmp_s);
+                array_push($tmp_scenarios, $tmp_s);
+                array_push($tmp_scenarios, $tmp_s);
+                array_push($tmp_scenarios, $tmp_s);
+                $home_id = $matches[$i]->getHomeTeamId();
+                $away_id = $matches[$i]->getAwayTeamId();
+                $team_array[$home_id]->setScenarios($tmp_scenarios);
+                $team_array[$away_id]->setScenarios($tmp_scenarios);
+            }
             foreach ($team_array as $id => $_team) {
                 $tmp_array[$_team->getGroupName()][$_team->getId()] = $_team;
             }

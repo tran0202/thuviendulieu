@@ -21,6 +21,8 @@ function wb_form_validateForm(formId, values, errors) {
 	}
 }
 
+var currLang = '';
+
 $(function() {
 	var comboBoxes = $('.wb-combobox-controll');
 	if (comboBoxes.length) {

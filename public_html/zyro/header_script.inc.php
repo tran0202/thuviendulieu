@@ -1,4 +1,3 @@
-
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <base href="{{base_url}}" />
 <meta name="viewport" content="width=1200" />
@@ -23,14 +22,10 @@
 <link href="css/flipclock.css" rel="stylesheet" type="text/css" />
 {{ga_code}}
 <link rel="shortcut icon" href="/gallery/tvdl_favicon-ts1520881176.png" type="image/png" />
-<script type="text/javascript">var currLang = '';</script>
 <!--[if lt IE 9]>
 <script src="js/html5shiv.min.js"></script>
 <![endif]-->
 <link href="https://fonts.googleapis.com/css?family=Courgette|Merriweather|Monoton|Oswald:300,400|Roboto" rel="stylesheet">
-<script src="js/sticky_header.js" type="text/javascript"></script>
-<script src="js/modal_position.js" type="text/javascript"></script>
-<script src="js/change_view.js" type="text/javascript"></script>
-<script src="js/bracket_collapse.js" type="text/javascript"></script>
+<script src="js/utilities.js" type="text/javascript"></script>
 <script src="js/flipclock.min.js" type="text/javascript"></script>
 <script src="js/countdown.js" type="text/javascript"></script>

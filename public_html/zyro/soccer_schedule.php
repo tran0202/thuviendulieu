@@ -11,6 +11,7 @@
     $tournament_dto = Tournament::getSoccerTournamentBySchedule($tournament_id, $fantasy);
     $body_html = $tournament_dto->getBodyHtml();
     $modal_html = $tournament_dto->getModalHtml();
+    $popover_html = $tournament_dto->getPopoverHtml();
 ?>
 <html lang="en">
 <head>
@@ -36,7 +37,7 @@
                 </div>
                 <div>
                     <?php echo $body_html; ?>
-                    <p class="wb-stl-normal"> </p>
+                    <?php echo $popover_html; ?>
                     <p class="wb-stl-normal"> </p>
                 </div>
                 <div class="col-sm-12 margin-tb-lg">

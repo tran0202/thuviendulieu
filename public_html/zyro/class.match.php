@@ -470,14 +470,22 @@
                                 }
                             }
                         }
+                        $advance_popover = '';
+                        $advance_popover2 = '';
+                        if ($match_order > 32 && $match_order <= 48) {
+                            $advance_popover = ' <a id="popover_'.$_match->getHomeTeamCode().'" data-toggle="popover" data-container="body" data-placement="right" type="button" 
+                                data-html="true" tabindex="0" data-trigger="focus"><span class="fa fa-futbol-o" style="font-size:medium;vertical-align:middle;"></span></a>';
+                            $advance_popover2 = '<a id="popover_'.$_match->getAwayTeamCode().'" data-toggle="popover" data-container="body" data-placement="left" type="button" 
+                                data-html="true" tabindex="0" data-trigger="focus"><span class="fa fa-futbol-o" style="font-size:medium;vertical-align:middle;"></span></a> ';
+                        }
                         $output2 .= '<div class="col-sm-12 padding-tb-md border-bottom-gray5">
                                         <div class="col-sm-2 padding-lr-xs">'.$_match->getMatchTimeFmt().' CST<br>'.$group_text.'</div>
                                         <div class="col-sm-1 padding-lr-xs text-right" style="padding-top:6px;">'.
                                             $home_flag_tmp.
                                         '</div>
-                                        <div class="col-sm-3 h2-ff3 padding-left-lg padding-right-xs">'.$home_team_tmp.'</div>
+                                        <div class="col-sm-3 h2-ff3 padding-left-lg padding-right-xs">'.$home_team_tmp.$advance_popover.'</div>
                                         <div class="col-sm-1 h2-ff3 padding-lr-xs">'.$score.'<br>'.$penalty_score.'</div>
-                                        <div class="col-sm-3 h2-ff3 padding-lr-xs text-right">'.$away_team_tmp.'</div>
+                                        <div class="col-sm-3 h2-ff3 padding-lr-xs text-right">'.$advance_popover2.$away_team_tmp.'</div>
                                         <div class="col-sm-1 padding-lr-xs text-right" style="padding-top:6px;">'.
                                             $away_flag_tmp.
                                         '</div>

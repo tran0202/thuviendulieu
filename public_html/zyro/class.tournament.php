@@ -34,7 +34,7 @@
 
             $modal_html .= Match::getSoccerGroupHtml($match_dto);
 
-            return TournamentDTO::CreateSoccerTournamentDTO($body_html, $modal_html);
+            return TournamentDTO::CreateSoccerTournamentDTO($body_html, $modal_html, '');
         }
 
         public static function getSoccerTournamentBySchedule($tournament_id, $fantasy) {
@@ -54,7 +54,9 @@
 
             $modal_html .= Team::getSoccerModalHtml($team_dto);
 
-            return TournamentDTO::CreateSoccerTournamentDTO($body_html, $modal_html);
+            $popover_html = Team::getSoccerPopoverHtml($team_dto);
+
+            return TournamentDTO::CreateSoccerTournamentDTO($body_html, $modal_html, $popover_html);
         }
 
         public static function getFootballTournament($tournament_id, $fantasy = false) {
@@ -119,6 +121,7 @@
         private $fantasy;
         private $body_html;
         private $modal_html;
+        private $popover_html;
 
         protected function __construct() { }
 
@@ -130,11 +133,12 @@
             return $tournament_dto;
         }
 
-        public static function CreateSoccerTournamentDTO($body_html, $modal_html)
+        public static function CreateSoccerTournamentDTO($body_html, $modal_html, $popover_html)
         {
             $tournament_dto = new TournamentDTO();
             $tournament_dto->body_html = $body_html;
             $tournament_dto->modal_html = $modal_html;
+            $tournament_dto->popover_html = $popover_html;
             return $tournament_dto;
         }
 
@@ -216,6 +220,22 @@
         public function setModalHtml($modal_html)
         {
             $this->modal_html = $modal_html;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getPopoverHtml()
+        {
+            return $this->popover_html;
+        }
+
+        /**
+         * @param mixed $popover_html
+         */
+        public function setPopoverHtml($popover_html)
+        {
+            $this->popover_html = $popover_html;
         }
     }
 
