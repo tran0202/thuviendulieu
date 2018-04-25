@@ -93,6 +93,22 @@
             return $m;
         }
 
+        public static function NewSoccerMatch(
+            $home_team_id, $home_team_name, $home_team_code, $away_team_id, $away_team_name, $away_team_code,
+            $home_team_score, $away_team_score)
+        {
+            $m = new Match();
+            $m->home_team_id = $home_team_id;
+            $m->home_team_name = $home_team_name;
+            $m->home_team_code = $home_team_code;
+            $m->away_team_id = $away_team_id;
+            $m->away_team_name = $away_team_name;
+            $m->away_team_code = $away_team_code;
+            $m->home_team_score = $home_team_score;
+            $m->away_team_score = $away_team_score;
+            return $m;
+        }
+
         public static function CreateTennisMatch(
             $home_team_name, $away_team_name,
             $match_date, $match_order, $round, $home_team_seed, $away_team_seed,
@@ -343,7 +359,7 @@
             return $output;
         }
 
-        public static function getSoccerScheduleHtml($match_dto) {
+        public static function getSoccerScheduleHtml($match_dto, $first2Matches = false) {
             $bracket_matches = self::getMatchArraySecondStage($match_dto);
             $output = '';
             $output2 = '';
@@ -472,7 +488,7 @@
                         }
                         $advance_popover = '';
                         $advance_popover2 = '';
-                        if ($match_order > 32 && $match_order <= 48) {
+                        if ($first2Matches && $match_order > 32 && $match_order <= 48) {
                             $advance_popover = ' <a id="popover_'.$_match->getHomeTeamCode().'" data-toggle="popover" data-container="body" data-placement="right" type="button" 
                                 data-html="true" tabindex="0" data-trigger="focus"><span class="fa fa-futbol-o" style="font-size:medium;vertical-align:middle;"></span></a>';
                             $advance_popover2 = '<a id="popover_'.$_match->getAwayTeamCode().'" data-toggle="popover" data-container="body" data-placement="left" type="button" 
@@ -680,7 +696,7 @@
                         LEFT JOIN team t2 ON t2.id = m.away_team_id
                         LEFT JOIN `group` g ON g.id = m.round_id
                         LEFT JOIN `group` g2 ON g2.id = m.stage_id
-                        LEFT JOIN team_tournament tt ON tt.team_id = m.home_team_id
+                        LEFT JOIN team_tournament tt ON (tt.team_id = m.home_team_id AND tt.tournament_id = '.$tournament_id.')
                         LEFT JOIN `group` g3 ON g3.id = tt.group_id 
                         LEFT JOIN nation n ON n.id = t.nation_id  
                         LEFT JOIN nation n2 ON n2.id = t2.nation_id 

@@ -42,6 +42,25 @@
             return $t;
         }
 
+        public static function NewSoccerTeam($id, $name, $code, $group_name, $group_order,
+                                             $match_play, $win, $draw, $loss, $goal_for, $goal_against, $goal_diff, $point) {
+            $t = new Team();
+            $t->id = $id;
+            $t->name = $name;
+            $t->code = $code;
+            $t->group_name = $group_name;
+            $t->group_order = $group_order;
+            $t->match_play = $match_play;
+            $t->win = $win;
+            $t->draw = $draw;
+            $t->loss = $loss;
+            $t->goal_for = $goal_for;
+            $t->goal_against = $goal_against;
+            $t->goal_diff = $goal_diff;
+            $t->point = $point;
+            return $t;
+        }
+
         public static function CreateFootballTeam(
             $name, $group_name, $group_order,
             $parent_group_long_name, $parent_group_order, $logo_filename)
@@ -221,8 +240,11 @@
                     <div id="popover-content-'.$teams[$i]->getCode().'" class="hide">
                         <ul class="list-group">';
                 for ($j = 0; $j < 9; $j++) {
-                    $output .= '<li class="list-group-item">'.$scenarios[$j]->getTeam1().$scenarios[$j]->getTeam1Result().
-                        $scenarios[$j]->getTeam3().$scenarios[$j]->getTeam3Result().'</li>';
+                    $output .= '<li class="list-group-item">If '.$scenarios[$j]->getTeam1().' '.$scenarios[$j]->getTeam1Result().
+                        ' '.$scenarios[$j]->getTeam2().' '.$scenarios[$j]->getTeam1GoalFor().'-'.$scenarios[$j]->getTeam1GoalAgainst().
+                        ' and '.$scenarios[$j]->getTeam3().' '.$scenarios[$j]->getTeam3Result().
+                        ' '.$scenarios[$j]->getTeam4().' '.$scenarios[$j]->getTeam3GoalFor().'-'.$scenarios[$j]->getTeam3GoalAgainst().
+                        ', '.$scenarios[$j]->getTeam1().' will '.$scenarios[$j]->getTeam1Status().'</li>';
                 };
                 $output .= '</ul>
                     </div>';
@@ -724,28 +746,44 @@
         private $team1;
         private $team1_result;
         private $team1_goal_diff;
+        private $team1_goal_for;
+        private $team1_goal_against;
         private $team1_status;
         private $team2;
         private $team2_result;
         private $team2_goal_diff;
+        private $team2_goal_for;
+        private $team2_goal_against;
         private $team2_status;
         private $team3;
         private $team3_result;
         private $team3_goal_diff;
+        private $team3_goal_for;
+        private $team3_goal_against;
         private $team3_status;
         private $team4;
         private $team4_result;
         private $team4_goal_diff;
         private $team4_status;
+        private $team4_goal_for;
+        private $team4_goal_against;
 
         protected function __construct(){ }
 
-        public static function CreateScenario($team1, $team1_result, $team3, $team3_result) {
+        public static function CreateScenario($team1, $team1_result, $team1_goal_for, $team1_goal_against, $team1_status, $team2,
+                                               $team3, $team3_result, $team3_goal_for, $team3_goal_against, $team4) {
             $s = new Scenario();
             $s->team1 = $team1;
             $s->team1_result = $team1_result;
+            $s->team1_goal_for = $team1_goal_for;
+            $s->team1_goal_against = $team1_goal_against;
+            $s->team1_status = $team1_status;
+            $s->team2 = $team2;
             $s->team3 = $team3;
             $s->team3_result = $team3_result;
+            $s->team3_goal_for = $team3_goal_for;
+            $s->team3_goal_against = $team3_goal_against;
+            $s->team4 = $team4;
             return $s;
         }
 
@@ -795,6 +833,38 @@
         public function setTeam1GoalDiff($team1_goal_diff)
         {
             $this->team1_goal_diff = $team1_goal_diff;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getTeam1GoalFor()
+        {
+            return $this->team1_goal_for;
+        }
+
+        /**
+         * @param mixed $team1_goal_for
+         */
+        public function setTeam1GoalFor($team1_goal_for)
+        {
+            $this->team1_goal_for = $team1_goal_for;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getTeam1GoalAgainst()
+        {
+            return $this->team1_goal_against;
+        }
+
+        /**
+         * @param mixed $team1_goal_against
+         */
+        public function setTeam1GoalAgainst($team1_goal_against)
+        {
+            $this->team1_goal_against = $team1_goal_against;
         }
 
         /**
@@ -864,6 +934,38 @@
         /**
          * @return mixed
          */
+        public function getTeam2GoalFor()
+        {
+            return $this->team2_goal_for;
+        }
+
+        /**
+         * @param mixed $team2_goal_for
+         */
+        public function setTeam2GoalFor($team2_goal_for)
+        {
+            $this->team2_goal_for = $team2_goal_for;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getTeam2GoalAgainst()
+        {
+            return $this->team2_goal_against;
+        }
+
+        /**
+         * @param mixed $team2_goal_against
+         */
+        public function setTeam2GoalAgainst($team2_goal_against)
+        {
+            $this->team2_goal_against = $team2_goal_against;
+        }
+
+        /**
+         * @return mixed
+         */
         public function getTeam2Status()
         {
             return $this->team2_status;
@@ -928,6 +1030,38 @@
         /**
          * @return mixed
          */
+        public function getTeam3GoalFor()
+        {
+            return $this->team3_goal_for;
+        }
+
+        /**
+         * @param mixed $team3_goal_for
+         */
+        public function setTeam3GoalFor($team3_goal_for)
+        {
+            $this->team3_goal_for = $team3_goal_for;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getTeam3GoalAgainst()
+        {
+            return $this->team3_goal_against;
+        }
+
+        /**
+         * @param mixed $team3_goal_against
+         */
+        public function setTeam3GoalAgainst($team3_goal_against)
+        {
+            $this->team3_goal_against = $team3_goal_against;
+        }
+
+        /**
+         * @return mixed
+         */
         public function getTeam3Status()
         {
             return $this->team3_status;
@@ -987,6 +1121,38 @@
         public function setTeam4GoalDiff($team4_goal_diff)
         {
             $this->team4_goal_diff = $team4_goal_diff;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getTeam4GoalFor()
+        {
+            return $this->team4_goal_for;
+        }
+
+        /**
+         * @param mixed $team4_goal_for
+         */
+        public function setTeam4GoalFor($team4_goal_for)
+        {
+            $this->team4_goal_for = $team4_goal_for;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getTeam4GoalAgainst()
+        {
+            return $this->team4_goal_against;
+        }
+
+        /**
+         * @param mixed $team4_goal_against
+         */
+        public function setTeam4GoalAgainst($team4_goal_against)
+        {
+            $this->team4_goal_against = $team4_goal_against;
         }
 
         /**

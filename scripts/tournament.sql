@@ -10,8 +10,9 @@ CREATE TABLE IF NOT EXISTS tournament (
 );
 
 INSERT INTO tournament (name, start_date, end_date, tournament_type_id)
-VALUES ('FIFA World Cup Russia 2018', '2018-06-14', '2018-07-15', 1),
-		('NFL Season 2018', '2018-08-03', '2019-02-04', 2);
+VALUES ('2018 FIFA World Cup Russia', '2018-06-14', '2018-07-15', 1),
+		('NFL Season 2018', '2018-08-03', '2019-02-04', 2),
+		('2014 FIFA World Cup Brazil', '2014-06-12', '2014-07-13', 1);
 
 INSERT INTO tournament (name, start_date, end_date)
 VALUES ('2017 US Open', '2017-08-28', '2017-09-10');
