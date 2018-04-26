@@ -244,7 +244,7 @@
                         $scenarios[$j]->getTeam1GoalFor().'-'.$scenarios[$j]->getTeam1GoalAgainst().
                         ' and '.$scenarios[$j]->getTeam3().'-'.$scenarios[$j]->getTeam4().' '.
                         $scenarios[$j]->getTeam3GoalFor().'-'.$scenarios[$j]->getTeam3GoalAgainst().
-                        ', '.$scenarios[$j]->getTeam1().' will '.$scenarios[$j]->getTeam1Status().'</li>';
+                        ', '.$scenarios[$j]->getTeam1().' will rank '.$scenarios[$j]->getTeam1Status().'</li>';
                 };
                 $output .= '</ul>
                     </div>';
