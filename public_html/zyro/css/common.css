@@ -82,6 +82,8 @@ body {
 
 .link-modal { cursor: pointer; }
 
+.popover { max-width: 500px; }
+
 /* ========== Sticky Header ========== */
 
 .header {

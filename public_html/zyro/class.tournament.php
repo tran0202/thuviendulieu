@@ -58,6 +58,9 @@
                 $body_html .= Match::getSoccerScheduleHtml($match_dto, true);
                 $popover_html = Team::getSoccerPopoverHtml($team_dto);
             }
+            else {
+                $body_html .= Match::getSoccerScheduleHtml($match_dto);
+            }
 
             $modal_html .= Team::getSoccerModalHtml($team_dto);
 
@@ -254,6 +257,7 @@
         public function __construct() { }
 
         public function getFantasyType($type) {
+            if ($type == null) return null;
             return $this->fantasy_type[$type];
         }
     }

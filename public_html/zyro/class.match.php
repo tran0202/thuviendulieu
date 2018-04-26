@@ -222,10 +222,10 @@
             $matches[16]->setAwayTeamScore(0);
             $matches[18]->setHomeTeamScore(1);
             $matches[18]->setAwayTeamScore(0);
-            $matches[32]->setHomeTeamScore(1);
-            $matches[32]->setAwayTeamScore(0);
-            $matches[33]->setHomeTeamScore(3);
-            $matches[33]->setAwayTeamScore(3);
+//            $matches[32]->setHomeTeamScore(1);
+//            $matches[32]->setAwayTeamScore(0);
+//            $matches[33]->setHomeTeamScore(3);
+//            $matches[33]->setAwayTeamScore(3);
         }
 
         public static function getTennisMatchDTO($sql, $fantasy = false) {

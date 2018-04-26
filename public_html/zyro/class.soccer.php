@@ -70,28 +70,61 @@
         }
 
         public static function calculateGroupScenarios($group_team_names, $group_teams, $match_dto) {
-            $group_teams[$group_team_names[0]]->setScenarios(array());
-            $group_teams[$group_team_names[1]]->setScenarios(array());
-            $group_teams[$group_team_names[2]]->setScenarios(array());
-            $group_teams[$group_team_names[3]]->setScenarios(array());
-            self::calculateGroupStanding($group_teams, $group_team_names[0], 1, 0, $group_team_names[1],
-                                            $group_team_names[2], 1, 0, $group_team_names[3], $match_dto);
-            self::calculateGroupStanding($group_teams, $group_team_names[0], 1, 0, $group_team_names[1],
-                $group_team_names[2], 0, 0, $group_team_names[3], $match_dto);
-            self::calculateGroupStanding($group_teams, $group_team_names[0], 1, 0, $group_team_names[1],
-                $group_team_names[2], 0, 1, $group_team_names[3], $match_dto);
-            self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 0, $group_team_names[1],
-                $group_team_names[2], 1, 0, $group_team_names[3], $match_dto);
-            self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 0, $group_team_names[1],
-                $group_team_names[2], 0, 0, $group_team_names[3], $match_dto);
-            self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 0, $group_team_names[1],
-                $group_team_names[2], 0, 1, $group_team_names[3], $match_dto);
-            self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 1, $group_team_names[1],
-                $group_team_names[2], 1, 0, $group_team_names[3], $match_dto);
-            self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 1, $group_team_names[1],
-                $group_team_names[2], 0, 0, $group_team_names[3], $match_dto);
-            self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 1, $group_team_names[1],
-                $group_team_names[2], 0, 1, $group_team_names[3], $match_dto);
+            $scenario_array = array();
+            $tmp_scenarios1 = array();
+            $tmp_scenarios2 = array();
+            $tmp_scenarios3 = array();
+            $tmp_scenarios4 = array();
+            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 1, 0, $group_team_names[1],
+                $group_team_names[2], 1, 0, $group_team_names[3], $match_dto));
+            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 1, 0, $group_team_names[1],
+                $group_team_names[2], 0, 0, $group_team_names[3], $match_dto));
+            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 1, 0, $group_team_names[1],
+                $group_team_names[2], 0, 1, $group_team_names[3], $match_dto));
+            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 0, $group_team_names[1],
+                $group_team_names[2], 1, 0, $group_team_names[3], $match_dto));
+            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 0, $group_team_names[1],
+                $group_team_names[2], 0, 0, $group_team_names[3], $match_dto));
+            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 0, $group_team_names[1],
+                $group_team_names[2], 0, 1, $group_team_names[3], $match_dto));
+            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 1, $group_team_names[1],
+                $group_team_names[2], 1, 0, $group_team_names[3], $match_dto));
+            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 1, $group_team_names[1],
+                $group_team_names[2], 0, 0, $group_team_names[3], $match_dto));
+            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 1, $group_team_names[1],
+                $group_team_names[2], 0, 1, $group_team_names[3], $match_dto));
+            for ($i = 0; $i < 9; $i++) {
+                array_push($tmp_scenarios1, $scenario_array[$i]);
+            }
+            for ($i = 0; $i < 9; $i++) {
+                array_push($tmp_scenarios2, Scenario::CreateScenario($tmp_scenarios1[8 - $i]->getTeam2(), $tmp_scenarios1[8 - $i]->getTeam1Result(),
+                    $tmp_scenarios1[8 - $i]->getTeam1GoalAgainst(), $tmp_scenarios1[8 - $i]->getTeam1GoalFor(),
+                    $tmp_scenarios1[8 - $i]->getTeam2Status(), $tmp_scenarios1[8 - $i]->getTeam1(), $tmp_scenarios1[8 - $i]->getTeam1Status(),
+                    $tmp_scenarios1[8 - $i]->getTeam4(), $tmp_scenarios1[8 - $i]->getTeam3Result(), $tmp_scenarios1[8 - $i]->getTeam3GoalAgainst(), $tmp_scenarios1[8 - $i]->getTeam3GoalFor(),
+                    $tmp_scenarios1[8 - $i]->getTeam4Status(), $tmp_scenarios1[8 - $i]->getTeam3(), $tmp_scenarios1[8 - $i]->getTeam3Status()));
+            }
+            for ($i = 0; $i < 3; $i++) {
+                for ($j = 0; $j < 3; $j++) {
+                    array_push($tmp_scenarios3, Scenario::CreateScenario($tmp_scenarios1[$i + 3 * $j]->getTeam3(), $tmp_scenarios1[$i + 3 * $j]->getTeam3Result(),
+                        $tmp_scenarios1[$i + 3 * $j]->getTeam3GoalFor(), $tmp_scenarios1[$i + 3 * $j]->getTeam3GoalAgainst(),
+                        $tmp_scenarios1[$i + 3 * $j]->getTeam3Status(), $tmp_scenarios1[$i + 3 * $j]->getTeam4(), $tmp_scenarios1[$i + 3 * $j]->getTeam4Status(),
+                        $tmp_scenarios1[$i + 3 * $j]->getTeam1(), $tmp_scenarios1[$i + 3 * $j]->getTeam1Result(), $tmp_scenarios1[$i + 3 * $j]->getTeam1GoalFor(), $tmp_scenarios1[$i + 3 * $j]->getTeam1GoalAgainst(),
+                        $tmp_scenarios1[$i + 3 * $j]->getTeam1Status(), $tmp_scenarios1[$i + 3 * $j]->getTeam2(), $tmp_scenarios1[$i + 3 * $j]->getTeam2Status()));
+                }
+            }
+            for ($i = 0; $i < 3; $i++) {
+                for ($j = 0; $j < 3; $j++) {
+                    array_push($tmp_scenarios4, Scenario::CreateScenario($tmp_scenarios1[8 - $i - 3 * $j]->getTeam4(), $tmp_scenarios1[8 - $i - 3 * $j]->getTeam4Result(),
+                        $tmp_scenarios1[8 - $i - 3 * $j]->getTeam3GoalAgainst(), $tmp_scenarios1[8 - $i - 3 * $j]->getTeam3GoalFor(),
+                        $tmp_scenarios1[8 - $i - 3 * $j]->getTeam4Status(), $tmp_scenarios1[8 - $i - 3 * $j]->getTeam3(), $tmp_scenarios1[8 - $i - 3 * $j]->getTeam3Status(),
+                        $tmp_scenarios1[8 - $i - 3 * $j]->getTeam2(), $tmp_scenarios1[8 - $i - 3 * $j]->getTeam2Result(), $tmp_scenarios1[8 - $i - 3 * $j]->getTeam1GoalAgainst(), $tmp_scenarios1[8 - $i - 3 * $j]->getTeam1GoalFor(),
+                        $tmp_scenarios1[8 - $i - 3 * $j]->getTeam2Status(), $tmp_scenarios1[8 - $i - 3 * $j]->getTeam1(), $tmp_scenarios1[8 - $i - 3 * $j]->getTeam1Status()));
+                }
+            }
+            $group_teams[$group_team_names[0]]->setScenarios($tmp_scenarios1);
+            $group_teams[$group_team_names[1]]->setScenarios($tmp_scenarios2);
+            $group_teams[$group_team_names[2]]->setScenarios($tmp_scenarios3);
+            $group_teams[$group_team_names[3]]->setScenarios($tmp_scenarios4);
         }
 
         public static function calculateGroupStanding($group_teams, $t1, $t1_gf, $t1_ga, $t2, $t3, $t3_gf, $t3_ga, $t4, $match_dto) {
@@ -101,10 +134,6 @@
                     $team->getGroupOrder(), $team->getMatchPlay(), $team->getWin(), $team->getDraw(), $team->getLoss(),
                     $team->getGoalFor(), $team->getGoalAgainst(), $team->getGoalDiff(), $team->getPoint());
             }
-            $tmp_scenarios1 = $group_teams[$t1]->getScenarios();
-            $tmp_scenarios2 = $group_teams[$t2]->getScenarios();
-            $tmp_scenarios3 = $group_teams[$t3]->getScenarios();
-            $tmp_scenarios4 = $group_teams[$t4]->getScenarios();
             $matches = $match_dto->getMatches();
             $tmp_matches = array();
             for ($i = 0; $i < sizeof($matches); $i++) {
@@ -140,18 +169,18 @@
             $team_array = self::sortGroupStanding($team_array, $tmp_match_dto);
             $team_array2 = array();
             for ($i = 0; $i < sizeof($team_array); $i++) {
+                $team_array[$i]->setGroupOrder($i + 1);
                 $team_array2[$team_array[$i]->getName()] = $team_array[$i];
             }
-            $tmp_s = Scenario::CreateScenario($t1, 'Win', $t1_gf, $t1_ga, 'Rank '.$team_array2[$t1]->getPoint(), $t2,
-                                                $t3, 'Win', $t3_gf, $t3_ga, $t4);
-            array_push($tmp_scenarios1, $tmp_s);
-            array_push($tmp_scenarios2, $tmp_s);
-            array_push($tmp_scenarios3, $tmp_s);
-            array_push($tmp_scenarios4, $tmp_s);
-            $group_teams[$t1]->setScenarios($tmp_scenarios1);
-            $group_teams[$t2]->setScenarios($tmp_scenarios2);
-            $group_teams[$t3]->setScenarios($tmp_scenarios3);
-            $group_teams[$t4]->setScenarios($tmp_scenarios4);
+            $tmp_result1 = 'win';
+            if ($t1_gf == $t1_ga) $tmp_result1 = 'draw';
+            $tmp_result3 = 'win';
+            if ($t3_gf == $t3_ga) $tmp_result3 = 'draw';
+            $tmp_s = Scenario::CreateScenario($team_array2[$t1]->getCode(), $tmp_result1, $t1_gf, $t1_ga,
+                $team_array2[$t1]->getGroupOrder(), $team_array2[$t2]->getCode(), $team_array2[$t2]->getGroupOrder(),
+                $team_array2[$t3]->getCode(), $tmp_result3, $t3_gf, $t3_ga, $team_array2[$t3]->getGroupOrder(),
+                $team_array2[$t4]->getCode(), $team_array2[$t4]->getGroupOrder());
+            return $tmp_s;
         }
 
         public static function calculatePoint($team_array, $home_name, $away_name, $home_score, $away_score) {

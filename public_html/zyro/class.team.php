@@ -240,10 +240,10 @@
                     <div id="popover-content-'.$teams[$i]->getCode().'" class="hide">
                         <ul class="list-group">';
                 for ($j = 0; $j < 9; $j++) {
-                    $output .= '<li class="list-group-item">If '.$scenarios[$j]->getTeam1().' '.$scenarios[$j]->getTeam1Result().
-                        ' '.$scenarios[$j]->getTeam2().' '.$scenarios[$j]->getTeam1GoalFor().'-'.$scenarios[$j]->getTeam1GoalAgainst().
-                        ' and '.$scenarios[$j]->getTeam3().' '.$scenarios[$j]->getTeam3Result().
-                        ' '.$scenarios[$j]->getTeam4().' '.$scenarios[$j]->getTeam3GoalFor().'-'.$scenarios[$j]->getTeam3GoalAgainst().
+                    $output .= '<li class="list-group-item">If '.$scenarios[$j]->getTeam1().'-'.$scenarios[$j]->getTeam2().' '.
+                        $scenarios[$j]->getTeam1GoalFor().'-'.$scenarios[$j]->getTeam1GoalAgainst().
+                        ' and '.$scenarios[$j]->getTeam3().'-'.$scenarios[$j]->getTeam4().' '.
+                        $scenarios[$j]->getTeam3GoalFor().'-'.$scenarios[$j]->getTeam3GoalAgainst().
                         ', '.$scenarios[$j]->getTeam1().' will '.$scenarios[$j]->getTeam1Status().'</li>';
                 };
                 $output .= '</ul>
@@ -770,8 +770,8 @@
 
         protected function __construct(){ }
 
-        public static function CreateScenario($team1, $team1_result, $team1_goal_for, $team1_goal_against, $team1_status, $team2,
-                                               $team3, $team3_result, $team3_goal_for, $team3_goal_against, $team4) {
+        public static function CreateScenario($team1, $team1_result, $team1_goal_for, $team1_goal_against, $team1_status, $team2, $team2_status,
+                                              $team3, $team3_result, $team3_goal_for, $team3_goal_against, $team3_status, $team4, $team4_status) {
             $s = new Scenario();
             $s->team1 = $team1;
             $s->team1_result = $team1_result;
@@ -779,11 +779,14 @@
             $s->team1_goal_against = $team1_goal_against;
             $s->team1_status = $team1_status;
             $s->team2 = $team2;
+            $s->team2_status = $team2_status;
             $s->team3 = $team3;
             $s->team3_result = $team3_result;
             $s->team3_goal_for = $team3_goal_for;
             $s->team3_goal_against = $team3_goal_against;
+            $s->team3_status = $team3_status;
             $s->team4 = $team4;
+            $s->team4_status = $team4_status;
             return $s;
         }
 
