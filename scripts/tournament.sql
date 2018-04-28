@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS tournament (
 	name VARCHAR(255) NOT NULL UNIQUE,
 	start_date DATE,
 	end_date DATE,
+	logo_filename VARCHAR(255),
 	tournament_type_id INT,
 	parent_tournament_id INT,
 	FOREIGN KEY (tournament_type_id) REFERENCES tournament_type(id),
@@ -21,7 +22,7 @@ INSERT INTO tournament (name, start_date, end_date, tournament_type_id, parent_t
 VALUES ('2017 US Open Men''s Singles', '2018-06-14', '2018-07-15', 3, 3);
 
 ALTER TABLE tournament
-ADD COLUMN parent_tournament_id INT;
+ADD COLUMN logo_filename VARCHAR(255);
 
 ALTER TABLE tournament
 ADD CONSTRAINT `tournament_ibfk_2`

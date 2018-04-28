@@ -9,6 +9,7 @@
     $fantasy = '';
     if (isset($query_string['ftsy'])) $fantasy = $query_string['ftsy'];
     $tournament_dto = Tournament::getSoccerTournamentBySchedule($tournament_id, $fantasy);
+    $header = $tournament_dto->getProfile();
     $body_html = $tournament_dto->getBodyHtml();
     $modal_html = $tournament_dto->getModalHtml();
     $popover_html = $tournament_dto->getPopoverHtml();
@@ -31,9 +32,9 @@
 		<div class="vbox wb_container" id="wb_main">
 			<div class="wb_cont_inner">
                 <div>
-                    <span class="wb-stl-heading1 russia-2018">FIFA World Cup Russia 2018</span>
-                    <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018Groups/<?php echo $qs; ?>" target="_self">Groups</a></span>
-                    <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018Schedule/<?php echo $qs; ?>" target="_self">Schedule</a></span>
+                    <span class="wb-stl-heading1 russia-2018"><?php echo $header; ?></span>
+                    <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018Groups<?php echo $qs; ?>" target="_self">Groups</a></span>
+                    <span class="wb-stl-heading3 margin-left-lg"><a href="Russia2018Schedule<?php echo $qs; ?>" target="_self">Schedule</a></span>
                 </div>
                 <div>
                     <?php echo $body_html; ?>

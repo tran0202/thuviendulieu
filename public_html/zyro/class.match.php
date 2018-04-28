@@ -186,6 +186,8 @@
                     $ft = new FantasyType();
                     $home_team_score = -1;
                     $away_team_score = -1;
+                    if ($row['home_team_score'] != null) $home_team_score = $row['home_team_score'];
+                    if ($row['away_team_score'] != null) $away_team_score = $row['away_team_score'];
                     if ($fantasy == $ft->getFantasyType('AllMatches')) {
                         $row = self::randomMatchScore($row);
                         $home_team_score = $row['home_team_score'];
@@ -275,15 +277,17 @@
                             </div>
                             <div class="modal-body col-sm-12 padding-lr-lg" id="group'.$group_name.'MatchesModalBody">';
                     foreach ($_matches as $match_order => $_match) {
-                        $score = 'vs';
-                        if ($_match->getHomeTeamScore() != -1) $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
-                        $output .= '<div class="col-sm-12 h2-ff3 padding-tb-md padding-lr-xs border-bottom-gray5">
+                        if ($_match->getStage() == 'First Stage') {
+                            $score = 'vs';
+                            if ($_match->getHomeTeamScore() != -1) $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
+                            $output .= '<div class="col-sm-12 h2-ff3 padding-tb-md padding-lr-xs border-bottom-gray5">
                                 <div class="col-sm-2 padding-lr-xs"><img class="flag-md" src="/images/flags/'.$_match->getHomeFlag().'"></div>
                                 <div class="col-sm-3 padding-lr-xs" style="padding-top:3px;">'.$_match->getHomeTeamName().'</div>
                                 <div class="col-sm-2 padding-lr-xs text-center" style="padding-top:3px;">'.$score.'</div>
                                 <div class="col-sm-3 padding-lr-xs text-right" style="padding-top:3px;">'.$_match->getAwayTeamName().'</div>
                                 <div class="col-sm-2 padding-lr-xs text-right"><img class="flag-md" src="/images/flags/'.$_match->getAwayFlag().'"></div>
                             </div>';
+                        }
                     }
                     $output .= '
                             </div>
@@ -473,7 +477,7 @@
                             $home_flag_tmp = '';
                             $away_flag_tmp = '';
                         }
-                        if ($_match->getGroupName() != null) $group_text = '<a class="link-modal" data-toggle="modal" data-target="#group'.$_match->getGroupName().'StandingModal">
+                        if ($_match->getStage() == 'First Stage') $group_text = '<a class="link-modal" data-toggle="modal" data-target="#group'.$_match->getGroupName().'StandingModal">
                                                                                 Group '.$_match->getGroupName().'</a>' ;
                         $score = 'vs';
                         $penalty_score = '';
@@ -696,7 +700,7 @@
                         LEFT JOIN team t2 ON t2.id = m.away_team_id
                         LEFT JOIN `group` g ON g.id = m.round_id
                         LEFT JOIN `group` g2 ON g2.id = m.stage_id
-                        LEFT JOIN team_tournament tt ON (tt.team_id = m.home_team_id AND tt.tournament_id = '.$tournament_id.')
+                        LEFT JOIN team_tournament tt ON (tt.team_id = m.home_team_id AND tt.tournament_id = m.tournament_id)
                         LEFT JOIN `group` g3 ON g3.id = tt.group_id 
                         LEFT JOIN nation n ON n.id = t.nation_id  
                         LEFT JOIN nation n2 ON n2.id = t2.nation_id 
@@ -756,6 +760,9 @@
         public static function getMatchArraySecondStage($match_dto) {
             $matches = $match_dto->getMatches();
             $result = array();
+            $tmp_match = $matches[62];
+            $matches[62] = $matches[63];
+            $matches[63] = $tmp_match;
             for ($i = 48; $i < 64; $i++) {
                 $result[$matches[$i]->getRound()][$matches[$i]->getMatchOrder()] = $matches[$i];
             }

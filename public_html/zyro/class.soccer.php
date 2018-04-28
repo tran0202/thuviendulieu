@@ -10,9 +10,10 @@
             return $s;
         }
 
-        public static function getStanding($team_dto, $match_dto, $first2Matches = false) {
+        public static function getStanding($team_dto, $match_dto, $fantasy) {
+            $ft = new FantasyType();
             $numberOfMatches = 48;
-            if ($first2Matches) $numberOfMatches = 32;
+            if ($fantasy == $ft->getFantasyType('First2Matches')) $numberOfMatches = 32;
             $matches = $match_dto->getMatches();
             $team_array = Team::getTeamArrayByName($team_dto);
             $tmp_array = array();
@@ -40,14 +41,18 @@
                 }
             }
             $team_dto->setTeams($result);
-            if (!$first2Matches) {
-                self::round16Qualifiers($team_dto, $match_dto);
-                self::quarterfinalQualifiers($team_dto, $match_dto);
-                self::semifinalQualifiers($team_dto, $match_dto);
-                self::finalQualifiers($team_dto, $match_dto);
-            }
-            else {
-                self::calculateScenarios($team_dto, $match_dto);
+            $final_result = false;
+            if ($matches[48]->getHomeTeamName()) $final_result = true;
+            if (!$final_result) {
+                if ($fantasy == $ft->getFantasyType('AllMatches')) {
+                    self::round16Qualifiers($team_dto, $match_dto);
+                    self::quarterfinalQualifiers($team_dto, $match_dto);
+                    self::semifinalQualifiers($team_dto, $match_dto);
+                    self::finalQualifiers($team_dto, $match_dto);
+                }
+                elseif ($fantasy == $ft->getFantasyType('First2Matches')) {
+                    self::calculateScenarios($team_dto, $match_dto);
+                }
             }
         }
 
@@ -334,9 +339,6 @@
                 $matches[$i]->setHomeFlag($final_teams[$matches[$i]->getWaitingHomeTeam()]->getFlagFilename());
                 $matches[$i]->setAwayFlag($final_teams[$matches[$i]->getWaitingAwayTeam()]->getFlagFilename());
             }
-            $tmp_m = $matches[62];
-            $matches[62] = $matches[63];
-            $matches[63] = $tmp_m;
             $match_dto->setMatches($matches);
         }
 
@@ -430,6 +432,13 @@
             $tmp_t = $t1;
             $t1 = $t2;
             $t2 = $tmp_t;
+        }
+
+        public static function isTournamentFinal($match_dto) {
+            $matches = $match_dto->getMatches();
+            $final_result = false;
+            if ($matches[48]->getHomeTeamName()) $final_result = true;
+            return $final_result;
         }
 
         /**
