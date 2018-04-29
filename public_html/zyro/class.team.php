@@ -157,6 +157,8 @@
                                 <div class="col-sm-1">Pts</div>
                             </div>';
                 foreach ($_teams as $group_order => $_team) {
+                    $goal_diff = $_team->getGoalDiff();
+                    if ($_team->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
                     $output .= '<div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md">
                                 <div class="col-sm-1"><img class="flag-md" src="/images/flags/'.$_team->getFlagFilename().'"></div>
                                 <div class="col-sm-3" style="padding-top: 3px;">'.$_team->getName().'</div>
@@ -166,7 +168,7 @@
                                 <div class="col-sm-1">'.$_team->getLoss().'</div>
                                 <div class="col-sm-1">'.$_team->getGoalFor().'</div>
                                 <div class="col-sm-1">'.$_team->getGoalAgainst().'</div>
-                                <div class="col-sm-1">'.$_team->getGoalDiff().'</div>
+                                <div class="col-sm-1">'.$goal_diff.'</div>
                                 <div class="col-sm-1">'.$_team->getPoint().'</div>
                             </div>';
                 }
@@ -204,6 +206,8 @@
                                     <div class="col-sm-1">Pts</div>
                                 </div>';
                 foreach ($_teams as $group_order => $_team) {
+                    $goal_diff = $_team->getGoalDiff();
+                    if ($_team->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
                     $output .=     '<div class="col-sm-12 h3-ff3 row padding-tb-md">
                                     <div class="col-sm-1"><img class="flag-md" src="/images/flags/'.$_team->getFlagFilename().'"></div>
                                     <div class="col-sm-3" style="padding-top: 3px;">'.$_team->getName().'</div>
@@ -213,7 +217,7 @@
                                     <div class="col-sm-1">'.$_team->getLoss().'</div>
                                     <div class="col-sm-1">'.$_team->getGoalFor().'</div>
                                     <div class="col-sm-1">'.$_team->getGoalAgainst().'</div>
-                                    <div class="col-sm-1">'.$_team->getGoalDiff().'</div>
+                                    <div class="col-sm-1">'.$goal_diff.'</div>
                                     <div class="col-sm-1">'.$_team->getPoint().'</div>
                                 </div>';
                 }
@@ -249,6 +253,42 @@
                 $output .= '</ul>
                     </div>';
             }
+            return $output;
+        }
+
+        public static function getSoccerRankingHtml($team_dto) {
+            $teams = $team_dto->getTeams();
+            $output = '<div class="col-sm-12 h2-ff2 margin-top-lg">Tournament Rankings</div>
+                            <div class="col-sm-12 box-xl">
+                                <div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md font-bold">
+                                    <div class="col-sm-1"></div>
+                                    <div class="col-sm-3"></div>
+                                    <div class="col-sm-1">MP</div>
+                                    <div class="col-sm-1">W</div>
+                                    <div class="col-sm-1">D</div>
+                                    <div class="col-sm-1">L</div>
+                                    <div class="col-sm-1">GF</div>
+                                    <div class="col-sm-1">GA</div>
+                                    <div class="col-sm-1">+/-</div>
+                                    <div class="col-sm-1">Pts</div>
+                                </div>';
+            for ($i = 0; $i < sizeof($teams); $i++) {
+                $goal_diff = $teams[$i]->getGoalDiff();
+                if ($teams[$i]->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
+                    $output .= '<div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md">
+                                    <div class="col-sm-1"><img class="flag-md" src="/images/flags/'.$teams[$i]->getFlagFilename().'"></div>
+                                    <div class="col-sm-3" style="padding-top: 3px;">'.$teams[$i]->getName().'</div>
+                                    <div class="col-sm-1">'.$teams[$i]->getMatchPlay().'</div>
+                                    <div class="col-sm-1">'.$teams[$i]->getWin().'</div>
+                                    <div class="col-sm-1">'.$teams[$i]->getDraw().'</div>
+                                    <div class="col-sm-1">'.$teams[$i]->getLoss().'</div>
+                                    <div class="col-sm-1">'.$teams[$i]->getGoalFor().'</div>
+                                    <div class="col-sm-1">'.$teams[$i]->getGoalAgainst().'</div>
+                                    <div class="col-sm-1">'.$goal_diff.'</div>
+                                    <div class="col-sm-1">'.$teams[$i]->getPoint().'</div>
+                                </div>';
+            }
+            $output .= '</div>';
             return $output;
         }
 
@@ -363,6 +403,25 @@
                         [$teams[$i]->getGroupOrder()] = $teams[$i];
             }
             return $result;
+        }
+
+        public static function copySoccerTeam($team) {
+            $t = new Team();
+            $t->id = $team->getId();
+            $t->name = $team->getName();
+            $t->code = $team->getCode();
+            $t->group_name = $team->getGroupName();
+            $t->group_order = $team->getGroupOrder();
+            $t->flag_filename = $team->getFlagFilename();
+            $t->match_play = $team->getMatchPlay();
+            $t->win = $team->getWin();
+            $t->draw = $team->getDraw();
+            $t->loss = $team->getLoss();
+            $t->goal_for = $team->getGoalFor();
+            $t->goal_against = $team->getGoalAgainst();
+            $t->goal_diff = $team->getGoalDiff();
+            $t->point = $team->getPoint();
+            return $t;
         }
 
         /**

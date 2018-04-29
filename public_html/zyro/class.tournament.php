@@ -86,9 +86,7 @@
 
         public static function getArchiveSoccerTournament($tournament_id) {
 
-            $ft = new FantasyType();
-            $fantasy = $ft->getFantasyType('Final');
-            $tournament_dto = TournamentDTO::CreateTournamentDTO($tournament_id, $fantasy);
+            $tournament_dto = TournamentDTO::CreateTournamentDTO($tournament_id, null);
 
             $profile = self::getTournamentProfile($tournament_id)->getHtml();
             $team_dto = Team::getSoccerTeams($tournament_dto);
@@ -97,10 +95,13 @@
             $modal_html = $match_dto->getHtml();
             $popover_html = '';
 
-            Soccer::getStanding($team_dto, $match_dto, $fantasy);
+            Soccer::getTournamentRanking($team_dto, $match_dto);
             $body_html .= Match::getSoccerScheduleHtml($match_dto);
-
             $modal_html .= Team::getSoccerModalHtml($team_dto);
+
+            Soccer::getTournamentRanking($team_dto, $match_dto, Stage::Second);
+            $body_html .= Team::getSoccerRankingHtml($team_dto);
+
 
             return TournamentDTO::CreateSoccerTournamentDTO($body_html, $modal_html, $popover_html, $profile);
         }
@@ -135,7 +136,6 @@
             $query = $GLOBALS['connection']->prepare($sql);
             $query->execute();
             $count = $query->rowCount();
-//            $teams = array();
             $output = '<!-- Tournament Count = '.$count.' -->';
 
             if ($count == 0) {
@@ -143,11 +143,6 @@
                 return TournamentProfile::CreateTournamentProfile(null, $count, $output);
             }
             else {
-//                while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-//                    $tp = TournamentProfile::CreateSoccerTeam($row['team_id'], $row['name'], $row['code'],
-//                        $row['group_name'], $row['group_order'], $row['flag_filename']);
-//                    array_push($teams, $team);
-//                }
                 $row = $query->fetch(PDO::FETCH_ASSOC);
                 $output .= self::getTournamentProfileHtml($row);
                 return TournamentProfile::CreateTournamentProfile($row['name'], $row['logo_filename'], $output);
@@ -423,9 +418,4 @@
             if ($type == '') return null;
             return $this->fantasy_type[$type];
         }
-    }
-
-    abstract class Fantasy {
-        const AllMatches = 1;
-        const First2Matches = 2;
     }

@@ -57,7 +57,7 @@ body {
     min-height: 1200px;
 }
 .bg-home { background: transparent url("../gallery_gen/b396f70709ed591ad75e5349aad40e3f.jpg") no-repeat scroll center top; }
-.bg-soccer { background: transparent url("../gallery_gen/2e2b5ed481378571fee71d28f855c5fc.jpg") no-repeat scroll center top; }
+.bg-soccer { background: transparent url("../gallery_gen/2e2b5ed481378571fee71d28f855c5fc.jpg") repeat scroll center top; }
 .root { overflow: visible; }
 #wb_header { height: 270px; }
 #wb_main { height: 890px; padding-bottom: 50px; }

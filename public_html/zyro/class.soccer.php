@@ -19,11 +19,7 @@
             $tmp_array = array();
             $result = array();
             for ($i = 0; $i < $numberOfMatches; $i++ ) {
-                $home_name = $matches[$i]->getHomeTeamName();
-                $away_name = $matches[$i]->getAwayTeamName();
-                $home_score = $matches[$i]->getHomeTeamScore();
-                $away_score = $matches[$i]->getAwayTeamScore();
-                self::calculatePoint($team_array, $home_name, $away_name, $home_score, $away_score);
+                self::calculatePoint($team_array, $matches[$i]);
             }
             foreach ($team_array as $name => $_team) {
                 $tmp_array[$_team->getGroupName()][$_team->getName()] = $_team;
@@ -41,19 +37,39 @@
                 }
             }
             $team_dto->setTeams($result);
-            $final_result = false;
-            if ($matches[48]->getHomeTeamName()) $final_result = true;
-            if (!$final_result) {
-                if ($fantasy == $ft->getFantasyType('AllMatches')) {
-                    self::round16Qualifiers($team_dto, $match_dto);
-                    self::quarterfinalQualifiers($team_dto, $match_dto);
-                    self::semifinalQualifiers($team_dto, $match_dto);
-                    self::finalQualifiers($team_dto, $match_dto);
-                }
-                elseif ($fantasy == $ft->getFantasyType('First2Matches')) {
-                    self::calculateScenarios($team_dto, $match_dto);
-                }
+            if ($fantasy == $ft->getFantasyType('AllMatches')) {
+                self::round16Qualifiers($team_dto, $match_dto);
+                self::quarterfinalQualifiers($team_dto, $match_dto);
+                self::semifinalQualifiers($team_dto, $match_dto);
+                self::finalQualifiers($team_dto, $match_dto);
             }
+            elseif ($fantasy == $ft->getFantasyType('First2Matches')) {
+                self::calculateScenarios($team_dto, $match_dto);
+            }
+        }
+
+        public static function getTournamentRanking($team_dto, $match_dto, $stage = Stage::First) {
+            $matches = $match_dto->getMatches();
+            $team_array = Team::getTeamArrayByName($team_dto);
+            $tmp_array = array();
+            foreach ($team_array as $name => $_team) {
+                $tmp_array[$_team->getName()] = Team::copySoccerTeam($_team);
+            }
+            $result = array();
+            $start_index = 0;
+            $end_index = 48;
+            if ($stage == Stage::Second) {
+                $start_index = 48;
+                $end_index = 64;
+            }
+            for ($i = $start_index; $i < $end_index; $i++ ) {
+                self::calculatePoint($tmp_array, $matches[$i], $stage);
+            }
+            foreach ($tmp_array as $name => $_team) {
+                array_push($result, $_team);
+            }
+            $result = self::sortTournamentStanding($result, $match_dto, $stage);
+            $team_dto->setTeams($result);
         }
 
         public static function calculateScenarios($team_dto, $match_dto) {
@@ -164,8 +180,10 @@
                     $tmp_matches[$i]->setAwayTeamScore($t3_gf);
                 }
             }
-            self::calculatePoint($tmp_group_teams, $t1, $t2, $t1_gf, $t1_ga);
-            self::calculatePoint($tmp_group_teams, $t3, $t4, $t3_gf, $t3_ga);
+            $tmp_m1 = Match::NewSoccerMatch(0, $t1, 'T1', 0, $t2, 'T2', $t1_gf, $t1_ga);
+            $tmp_m3 = Match::NewSoccerMatch(0, $t3, 'T3', 0, $t4, 'T4', $t3_gf, $t3_ga);
+            self::calculatePoint($tmp_group_teams, $tmp_m1);
+            self::calculatePoint($tmp_group_teams, $tmp_m3);
             $team_array = array();
             foreach ($tmp_group_teams as $team_name => $team) {
                 array_push($team_array, $team);
@@ -188,7 +206,13 @@
             return $tmp_s;
         }
 
-        public static function calculatePoint($team_array, $home_name, $away_name, $home_score, $away_score) {
+        public static function calculatePoint($team_array, $match, $stage = Stage::First) {
+            $home_name = $match->getHomeTeamName();
+            $away_name = $match->getAwayTeamName();
+            $home_score = $match->getHomeTeamScore();
+            $away_score = $match->getAwayTeamScore();
+            $home_extra_time_score = $match->getHomeTeamExtraTimeScore();
+            $away_extra_time_score = $match->getAwayTeamExtraTimeScore();
             $team_array[$home_name]->setMatchPlay($team_array[$home_name]->getMatchPlay() + 1);
             $team_array[$away_name]->setMatchPlay($team_array[$away_name]->getMatchPlay() + 1);
             if ($home_score > $away_score) {
@@ -202,10 +226,30 @@
                 $team_array[$away_name]->setPoint($team_array[$away_name]->getPoint() + 3);
             }
             else {
-                $team_array[$home_name]->setDraw($team_array[$home_name]->getDraw() + 1);
-                $team_array[$home_name]->setPoint($team_array[$home_name]->getPoint() + 1);
-                $team_array[$away_name]->setDraw($team_array[$away_name]->getDraw() + 1);
-                $team_array[$away_name]->setPoint($team_array[$away_name]->getPoint() + 1);
+                if ($stage == Stage::First) {
+                    $team_array[$home_name]->setDraw($team_array[$home_name]->getDraw() + 1);
+                    $team_array[$home_name]->setPoint($team_array[$home_name]->getPoint() + 1);
+                    $team_array[$away_name]->setDraw($team_array[$away_name]->getDraw() + 1);
+                    $team_array[$away_name]->setPoint($team_array[$away_name]->getPoint() + 1);
+                }
+                else {
+                    if ($home_extra_time_score > $away_extra_time_score) {
+                        $team_array[$home_name]->setWin($team_array[$home_name]->getWin() + 1);
+                        $team_array[$home_name]->setPoint($team_array[$home_name]->getPoint() + 3);
+                        $team_array[$away_name]->setLoss($team_array[$away_name]->getLoss() + 1);
+                    }
+                    elseif ($home_extra_time_score < $away_extra_time_score) {
+                        $team_array[$home_name]->setLoss($team_array[$home_name]->getLoss() + 1);
+                        $team_array[$away_name]->setWin($team_array[$away_name]->getWin() + 1);
+                        $team_array[$away_name]->setPoint($team_array[$away_name]->getPoint() + 3);
+                    }
+                    else {
+                        $team_array[$home_name]->setDraw($team_array[$home_name]->getDraw() + 1);
+                        $team_array[$home_name]->setPoint($team_array[$home_name]->getPoint() + 1);
+                        $team_array[$away_name]->setDraw($team_array[$away_name]->getDraw() + 1);
+                        $team_array[$away_name]->setPoint($team_array[$away_name]->getPoint() + 1);
+                    }
+                }
             }
             $team_array[$home_name]->setGoalFor($team_array[$home_name]->getGoalFor() + $home_score);
             $team_array[$home_name]->setGoalAgainst($team_array[$home_name]->getGoalAgainst() + $away_score);
@@ -213,12 +257,90 @@
             $team_array[$away_name]->setGoalFor($team_array[$away_name]->getGoalFor() + $away_score);
             $team_array[$away_name]->setGoalAgainst($team_array[$away_name]->getGoalAgainst() + $home_score);
             $team_array[$away_name]->setGoalDiff($team_array[$away_name]->getGoalDiff() + $away_score - $home_score);
+            if ($stage == Stage::Second && $home_score == $away_score) {
+                $team_array[$home_name]->setGoalFor($team_array[$home_name]->getGoalFor() + $home_extra_time_score);
+                $team_array[$home_name]->setGoalAgainst($team_array[$home_name]->getGoalAgainst() + $away_extra_time_score);
+                $team_array[$home_name]->setGoalDiff($team_array[$home_name]->getGoalDiff() + $home_extra_time_score - $away_extra_time_score);
+                $team_array[$away_name]->setGoalFor($team_array[$away_name]->getGoalFor() + $away_extra_time_score);
+                $team_array[$away_name]->setGoalAgainst($team_array[$away_name]->getGoalAgainst() + $home_extra_time_score);
+                $team_array[$away_name]->setGoalDiff($team_array[$away_name]->getGoalDiff() + $away_extra_time_score - $home_extra_time_score);
+            }
+        }
+
+        public static function sortTournamentStanding($team_array, $match_dto, $stage = Stage::First) {
+            $tmp_array = array();
+            if ($stage == Stage::Second) {
+                $tmp_array[7] = array();
+                $tmp_array[5] = array();
+                $tmp_array[4] = array();
+            }
+            $tmp_array[3] = array();
+            $tmp_array2 = array();
+            for ($i = 0; $i < sizeof($team_array); $i++) {
+                $tmp_array[$team_array[$i]->getMatchPlay()][$team_array[$i]->getName()] = $team_array[$i];
+            }
+            foreach ($tmp_array as $mp => $teams) {
+                if ($mp < 7) {
+                    $tmp_array3 = array();
+                    foreach ($teams as $t_name => $team) {
+                        array_push($tmp_array3, $team);
+                    }
+                    $tmp_array3 = self::sortGroupStanding($tmp_array3, $match_dto);
+                    for ($i = 0; $i < sizeof($tmp_array3); $i++) {
+                        array_push($tmp_array2, $tmp_array3[$i]);
+                    }
+                }
+                else {
+                    $matches = $match_dto->getMatches();
+                    $champion_name = $matches[63]->getHomeTeamName();
+                    $runner_up_name = $matches[63]->getAwayTeamName();
+                    if ($matches[63]->getHomeTeamScore() < $matches[63]->getAwayTeamScore()) {
+                        $champion_name = $matches[63]->getAwayTeamName();
+                        $runner_up_name = $matches[63]->getHomeTeamName();
+                    }
+                    elseif ($matches[63]->getHomeTeamScore() == $matches[63]->getAwayTeamScore()) {
+                        if ($matches[63]->getHomeTeamExtraTimeScore() < $matches[63]->getAwayTeamExtraTimeScore()) {
+                            $champion_name = $matches[63]->getAwayTeamName();
+                            $runner_up_name = $matches[63]->getHomeTeamName();
+                        }
+                        elseif ($matches[63]->getHomeTeamExtraTimeScore() == $matches[63]->getAwayTeamExtraTimeScore()) {
+                            if ($matches[63]->getHomeTeamPenaltyScore() < $matches[63]->getAwayTeamPenaltyScore()) {
+                                $champion_name = $matches[63]->getAwayTeamName();
+                                $runner_up_name = $matches[63]->getHomeTeamName();
+                            }
+                        }
+                    }
+                    $third_place_name = $matches[62]->getHomeTeamName();
+                    $fourth_place_name = $matches[62]->getAwayTeamName();
+                    if ($matches[62]->getHomeTeamScore() < $matches[62]->getAwayTeamScore()) {
+                        $third_place_name = $matches[62]->getAwayTeamName();
+                        $fourth_place_name = $matches[62]->getHomeTeamName();
+                    }
+                    elseif ($matches[62]->getHomeTeamScore() == $matches[62]->getAwayTeamScore()) {
+                        if ($matches[62]->getHomeTeamExtraTimeScore() < $matches[62]->getAwayTeamExtraTimeScore()) {
+                            $third_place_name = $matches[62]->getAwayTeamName();
+                            $fourth_place_name = $matches[62]->getHomeTeamName();
+                        }
+                        elseif ($matches[62]->getHomeTeamExtraTimeScore() == $matches[62]->getAwayTeamExtraTimeScore()) {
+                            if ($matches[62]->getHomeTeamPenaltyScore() < $matches[62]->getAwayTeamPenaltyScore()) {
+                                $third_place_name = $matches[62]->getAwayTeamName();
+                                $fourth_place_name = $matches[62]->getHomeTeamName();
+                            }
+                        }
+                    }
+                    array_push($tmp_array2, $tmp_array[7][$champion_name]);
+                    array_push($tmp_array2, $tmp_array[7][$runner_up_name]);
+                    array_push($tmp_array2, $tmp_array[7][$third_place_name]);
+                    array_push($tmp_array2, $tmp_array[7][$fourth_place_name]);
+                }
+            }
+            return $tmp_array2;
         }
 
         public static function sortGroupStanding($team_array, $match_dto) {
             $tmp_array2 = $team_array;
-            for ($i = 0; $i <= 2; $i++) {
-                for ($j = $i+1; $j <= 3; $j++) {
+            for ($i = 0; $i < sizeof($team_array) - 1; $i++) {
+                for ($j = $i + 1; $j < sizeof($team_array); $j++) {
                     if (self::isEqualStanding($tmp_array2[$i], $tmp_array2[$j])) {
                         $still_tie = self::applyTiebreaker($tmp_array2[$i], $tmp_array2[$j], $match_dto);
                         if ($still_tie) self::coinToss($tmp_array2[$i], $tmp_array2[$j]);
@@ -456,4 +578,9 @@
         {
             $this->id = $id;
         }
+    }
+
+    abstract class Stage {
+        const First = 1;
+        const Second = 2;
     }
