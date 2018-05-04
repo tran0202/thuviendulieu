@@ -149,6 +149,8 @@ a:hover.hover-pointer { cursor: pointer; }
 
 .padding-top-logo { padding-top: 30px; }
 
+.scenario-striped { background-color: #e6e7e9 }
+
 /* ========== Colors ========== */
 
 .blue { color: #0040ff; }
