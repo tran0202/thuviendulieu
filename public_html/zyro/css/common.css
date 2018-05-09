@@ -9,8 +9,12 @@
 .wb-stl-subtitle ul { list-style-image: url(''); }
 .wb-stl-subtitle2 { font: normal normal 72px "Nanum Gothic",sans-serif; color: #16aa9e; text-decoration: none; text-align: left; margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; text-transform: none; }
 .wb-stl-subtitle2 a { font: normal normal 72px "Nanum Gothic",sans-serif; color: #ffffff; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }
-.wb-stl-subtitle2 a:hover { font: normal normal 72px "Nanum Gothic",sans-serif; color: #ffffff; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }
+.wb-stl-subtitle2 a:hover { font: normal normal 72px "Nanum Gothic",sans-serif; color: #d9f1ff; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }
 .wb-stl-subtitle2 ul { list-style-image: url(''); }
+.wb-stl-subtitle3 { font: normal normal 60px "Nanum Gothic",sans-serif; color: #16aa9e; text-decoration: none; text-align: left; margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; text-transform: none; }
+.wb-stl-subtitle3 a { font: normal normal 60px "Nanum Gothic",sans-serif; color: #0002a6; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }
+.wb-stl-subtitle3 a:hover { font: normal normal 60px "Nanum Gothic",sans-serif; color: #0003f3; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }
+.wb-stl-subtitle3 ul { list-style-image: url(''); }
 .wb-stl-heading1 { font: normal bold 40px "Merriweather",serif; color: #16aa9e; text-decoration: none; text-align: left; margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; text-transform: none; }
 .wb-stl-heading1 a { font: normal bold 40px "Merriweather",serif; color: #000000; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }
 .wb-stl-heading1 a:hover { font: normal bold 40px "Merriweather",serif; color: #000000; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }
@@ -32,8 +36,8 @@
 .wb-stl-normal a:hover { font: normal normal 14px 'PT Sans',sans-serif; color: #16aa9e; text-decoration: none; text-align: left; line-height: 22px; font-weight: normal; font-style: normal; }
 .wb-stl-normal ul { list-style-image: url(''); }
 .wb-stl-highlight { font: normal normal 72px "Capture it",sans-serif; color: #ffffff; text-decoration: none; text-align: left; margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; text-transform: capitalize; }
-.wb-stl-highlight a { font: normal normal 72px "Capture it",sans-serif; color: #ffffff; text-decoration: underline; text-align: left; font-weight: bold; font-style: normal; }
-.wb-stl-highlight a:hover { font: normal normal 72px "Capture it",sans-serif; color: #d9f1ff; text-decoration: none; text-align: left; font-weight: bold; font-style: normal; }
+.wb-stl-highlight a { font: normal normal 72px "Capture it",sans-serif; color: #ffffff; text-decoration: none; text-align: left; font-style: normal; }
+.wb-stl-highlight a:hover { font: normal normal 72px "Capture it",sans-serif; color: #d9f1ff; text-decoration: none; text-align: left; font-style: normal; }
 .wb-stl-highlight ul { list-style-image: url(''); }
 .wb-stl-special { font: normal bold 14px Arial,Helvetica,sans-serif; color: #000000; text-decoration: underline; text-align: left; margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; text-transform: capitalize; }
 .wb-stl-special a { font: normal bold 14px Arial,Helvetica,sans-serif; color: #000000; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }

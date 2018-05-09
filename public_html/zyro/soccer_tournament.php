@@ -7,14 +7,16 @@
     $tournament_id = 1;
     if (isset($query_string['tid'])) $tournament_id = $query_string['tid'];
     $tournament_dto = Tournament::getArchiveSoccerTournament($tournament_id);
-    $header = $tournament_dto->getProfile();
+    $profile = $tournament_dto->getProfile();
+    $header = $profile->getHtml();
+    $tournament_name = $profile->getName();
     $body_html = $tournament_dto->getBodyHtml();
     $modal_html = $tournament_dto->getModalHtml();
     $popover_html = $tournament_dto->getPopoverHtml();
 ?>
 <html lang="en">
 <head>
-    <title>TVDL - Russia 2018</title>
+    <title>TVDL - <?php echo $tournament_name; ?></title>
     <?php include_once('header_script.inc.php'); ?>
 </head>
 <body>

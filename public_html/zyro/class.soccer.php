@@ -673,8 +673,8 @@
                             // Cover both gd greater and equal
                             if ($team_array[2]->getName() == 'W' && $team_array[3]->getName() == 'W') {
                                 $qualify_status = QualifyStatus::Advanced;
-                                $note = '*** If '.$team_array[3]->getCode().' wins '.$passing_gd.'-0 (or equals goal-diff by '.($passing_gd - 1).') and scores '.($passing_gf + 1).' (or beats goal-for by '.$passing_gf.'), '.$team_array[2]->getCode().' will be eliminated. ***<br>';
-                                $note .= '*** If '.$team_array[3]->getCode().' wins '.($passing_gd + 1).'-0 (or wins goal-diff by '.$passing_gd.'), '.$team_array[2]->getCode().' will be eliminated. ***';
+                                $note = '*** If '.$team_array[3]->getCode().' wins '.$passing_gd.'-0 (or equals goal-diff by '.($passing_gd - 1).') and scores '.($passing_gf + 1).' (or wins goal-for by '.$passing_gf.'), '.$team_array[2]->getCode().' will be eliminated. ***<br>';
+                                $note .= '*** If '.$team_array[3]->getCode().' wins '.($passing_gd + 1).'-0 (or wins goal-diff by '.$passing_gd.'), '.$team_array[2]->getCode().' will be eliminated. *** <br>';
                             }
                             elseif ($team_array[2]->getName() == 'W' && $team_array[3]->getName() == 'D') {
                                 $qualify_status = QualifyStatus::Advanced;

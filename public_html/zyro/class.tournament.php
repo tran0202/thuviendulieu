@@ -88,7 +88,7 @@
 
             $tournament_dto = TournamentDTO::CreateTournamentDTO($tournament_id, null);
 
-            $profile = self::getTournamentProfile($tournament_id)->getHtml();
+            $profile = self::getTournamentProfile($tournament_id);
             $team_dto = Team::getSoccerTeams($tournament_dto);
             $match_dto = Match::getSoccerMatches($tournament_dto);
             $body_html = $team_dto->getHtml();
