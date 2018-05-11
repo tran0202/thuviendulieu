@@ -23,6 +23,7 @@ FOREIGN KEY (parent_group_id) REFERENCES `group`(id);
 ALTER TABLE team_tournament
 ADD COLUMN seed TINYINT UNSIGNED;
 
+# Russia 2018
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
 VALUES (3, 1, 4, 1),
 		(23, 1, 1, 1),
@@ -57,6 +58,7 @@ VALUES (3, 1, 4, 1),
 		(30, 1, 8, 3),
 		(15, 1, 8, 4);
 
+# Brazil 2014
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
 VALUES (1, 5, 1, 1),
 	(194, 5, 1, 2),
@@ -90,6 +92,41 @@ VALUES (1, 5, 1, 1),
 	(193, 5, 8, 2),
 	(16, 5, 8, 3),
 	(23, 5, 8, 4);
+
+# South Africa 2010
+INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
+VALUES (205, 6, 1, 1),
+	(28, 6, 1, 2),
+	(32, 6, 1, 3),
+	(21, 6, 1, 4),
+	(3, 6, 2, 1),
+	(10, 6, 2, 2),
+	(16, 6, 2, 3),
+	(202, 6, 2, 4),
+	(20, 6, 3, 1),
+	(198, 6, 3, 2),
+	(193, 6, 3, 3),
+	(206, 6, 3, 4),
+	(2, 6, 4, 1),
+	(13, 6, 4, 2),
+	(24, 6, 4, 3),
+	(195, 6, 4, 4),
+	(204, 6, 5, 1),
+	(19, 6, 5, 2),
+	(15, 6, 5, 3),
+	(194, 6, 5, 4),
+	(203, 6, 6, 1),
+	(207, 6, 6, 2),
+	(208, 6, 6, 3),
+	(209, 6, 6, 4),
+	(1, 6, 7, 1),
+	(210, 6, 7, 2),
+	(196, 6, 7, 3),
+	(4, 6, 7, 4),
+	(6, 6, 8, 1),
+	(26, 6, 8, 2),
+	(197, 6, 8, 3),
+	(199, 6, 8, 4);
 
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES 	(53, 2, 31, 1, 29, 1),

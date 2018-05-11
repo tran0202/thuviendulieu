@@ -71,6 +71,8 @@ VALUES ('Yuichi Sugita', 7), ('Geoffrey Blancaneaux', 7), ('Dominic Thiem', 7),	
 INSERT INTO team (name, team_type_id, team.nation_id)
 VALUES ('Algeria', 1, 3), ('Cameroon', 1, 35), ('Ghana', 1, 77), ('Côte d''Ivoire', 1, 50),
 		('Honduras', 1, 87), ('United States', 1, 203), ('Chile', 1, 41), ('Ecuador', 1, 60),
-		('Bosnia and Herzegovina', 1, 26), ('Greece', 1, 79), ('Italy', 1, 96), ('Netherlands', 1, 135);
+		('Bosnia and Herzegovina', 1, 26), ('Greece', 1, 79), ('Italy', 1, 96), ('Netherlands', 1, 135),
+		('South Africa', 1, 173), ('Slovenia', 1, 170), ('Paraguay', 1, 148), ('New Zealand', 1, 137),
+		('Slovakia', 1, 169), ('Korea DPR', 1, 102);
 
 DROP TRIGGER before_insert_team;

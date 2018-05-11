@@ -155,6 +155,8 @@ a:hover.hover-pointer { cursor: pointer; }
 
 .scenario-striped { background-color: #e6e7e9 }
 
+.ranking-striped { background-color: #ebebeb }
+
 /* ========== Colors ========== */
 
 .blue { color: #0040ff; }

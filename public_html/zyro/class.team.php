@@ -282,7 +282,9 @@
             for ($i = 0; $i < sizeof($teams); $i++) {
                 $goal_diff = $teams[$i]->getGoalDiff();
                 if ($teams[$i]->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
-                    $output .= '<div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md">
+                $striped_row = '';
+                if ($teams[$i]->getMatchPlay() == 7 || $teams[$i]->getMatchPlay() == 4) $striped_row = 'ranking-striped';
+                    $output .= '<div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md '.$striped_row.'">
                                     <div class="col-sm-1"><img class="flag-md" src="/images/flags/'.$teams[$i]->getFlagFilename().'"></div>
                                     <div class="col-sm-3" style="padding-top: 3px;">'.$teams[$i]->getName().'</div>
                                     <div class="col-sm-1">'.$teams[$i]->getMatchPlay().'</div>
