@@ -16,7 +16,11 @@ VALUES ('2018 FIFA World Cup Russia', '2018-06-14', '2018-07-15', 1),
 		('2014 FIFA World Cup Brazil', '2014-06-12', '2014-07-13', 1);
 
 INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_filename)
-VALUES ('2010 FIFA World Cup South Africa', '2010-06-11', '2010-07-11', 1, '2010.png');
+VALUES ('2010 FIFA World Cup South Africa', '2010-06-11', '2010-07-11', 1, '2010.png'),
+	('2006 FIFA World Cup Germany', '2006-06-09', '2006-07-09', 1, '2006.png');
+
+INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_filename)
+VALUES ('2006 FIFA World Cup Germany', '2006-06-09', '2006-07-09', 1, '2006.png');
 
 INSERT INTO tournament (name, start_date, end_date)
 VALUES ('2017 US Open', '2017-08-28', '2017-09-10');

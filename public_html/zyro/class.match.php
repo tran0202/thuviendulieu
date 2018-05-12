@@ -57,7 +57,7 @@
         public static function CreateSoccerMatch(
             $home_team_id, $home_team_name, $home_team_code, $away_team_id, $away_team_name, $away_team_code,
             $match_date, $match_date_fmt, $match_time, $match_time_fmt,
-            $match_order, $bracket_order, $round, $stage, $group_name,
+            $match_order, $bracket_order, $round, $stage, $group_name, $tournament_id,
             $waiting_home_team, $waiting_away_team,
             $home_team_score, $away_team_score,
             $home_team_extra_time_score, $away_team_extra_time_score,
@@ -86,6 +86,7 @@
             $m->round = $round;
             $m->stage = $stage;
             $m->group_name = $group_name;
+            $m->tournament_id = $tournament_id;
             $m->waiting_home_team = $waiting_home_team;
             $m->waiting_away_team = $waiting_away_team;
             $m->home_flag = $home_flag;
@@ -203,7 +204,7 @@
                     }
                     $match = Match::CreateSoccerMatch($row['home_team_id'], $row['home_team_name'], $row['home_team_code'], $row['away_team_id'], $row['away_team_name'], $row['away_team_code'],
                         $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_time_fmt'],
-                        $row['match_order'], $row['bracket_order'], $row['round'], $row['stage'], $row['group_name'], $row['waiting_home_team'], $row['waiting_away_team'],
+                        $row['match_order'], $row['bracket_order'], $row['round'], $row['stage'], $row['group_name'], $row['tournament_id'], $row['waiting_home_team'], $row['waiting_away_team'],
                         $home_team_score, $away_team_score,
                         $row['home_team_extra_time_score'], $row['away_team_extra_time_score'],
                         $row['home_team_penalty_score'], $row['away_team_penalty_score'],
@@ -498,8 +499,10 @@
                             $advance_popover2 = '<a id="popover_'.$_match->getAwayTeamCode().'" data-toggle="popover" data-container="body" data-placement="left" type="button" 
                                 data-html="true" tabindex="0" data-trigger="focus"><span class="fa fa-futbol-o" style="font-size:medium;vertical-align:middle;"></span></a> ';
                         }
+                        $time_zone = 'CST';
+                        if ($_match->getTournamentId() <> 1) $time_zone = 'Local time';
                         $output2 .= '<div class="col-sm-12 padding-tb-md border-bottom-gray5">
-                                        <div class="col-sm-2 padding-lr-xs">'.$_match->getMatchTimeFmt().' CST<br>'.$group_text.'</div>
+                                        <div class="col-sm-2 padding-lr-xs">'.$_match->getMatchTimeFmt().' '.$time_zone.'<br>'.$group_text.'</div>
                                         <div class="col-sm-1 padding-lr-xs text-right" style="padding-top:6px;">'.
                                             $home_flag_tmp.
                                         '</div>

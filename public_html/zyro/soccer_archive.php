@@ -22,8 +22,9 @@
                 </div>
                 <div class="col-sm-7 col-sm-offset-2">
                     <h5 class="wb-stl-subtitle3">
-                        <p class="border-bottom-gray5"><img src="images/wc_logos/2014.png"/><a href="WorldCup?tid=5">Brazil 2014</a></p>
-                        <p class="border-bottom-gray5"><img src="images/wc_logos/2010.png"/><a href="WorldCup?tid=5">South Africa 2010</a></p>
+                        <p class="border-bottom-gray5"><img src="images/wc_logos/2014.png"/> <a href="WorldCup?tid=5">Brazil 2014</a></p>
+                        <p class="border-bottom-gray5"><img src="images/wc_logos/2010.png"/> <a href="WorldCup?tid=6">South Africa 2010</a></p>
+                        <p class="border-bottom-gray5"><img src="images/wc_logos/2006.png"/> <a href="WorldCup?tid=7">Germany 2006</a></p>
                     </h5>
                 </div>
                 <div class="col-sm-12 margin-tb-lg">

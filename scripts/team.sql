@@ -6,15 +6,16 @@ CREATE TABLE IF NOT EXISTS team (
 	team_type_id INT,
 	nation_id INT,
 	FOREIGN KEY (team_type_id) REFERENCES team_type(id),
-	FOREIGN KEY (nation_id) REFERENCES nation(id)
+	FOREIGN KEY (nation_id) REFERENCES nation(id),
+	FOREIGN KEY (parent_team_id) REFERENCES team(id)
 );
 
 ALTER TABLE team
-	ADD COLUMN nation_id INT;
+	ADD COLUMN parent_team_id INT;
 
 ALTER TABLE team
-	ADD CONSTRAINT team_ibfk_2
-	FOREIGN KEY (nation_id) REFERENCES nation(id);
+	ADD CONSTRAINT team_ibfk_3
+	FOREIGN KEY (parent_team_id) REFERENCES team(id);
 
 INSERT INTO team (name, team_type_id)
 VALUES ('Brazil', 1), ('Germany', 1), ('Argentina', 1),	('Portugal', 1),
@@ -68,11 +69,16 @@ VALUES ('Yuichi Sugita', 7), ('Geoffrey Blancaneaux', 7), ('Dominic Thiem', 7),	
 		('Jack Sock', 7), ('Jordan Thompson', 7), ('Alexander Zverev', 7), ('Darian King', 7),
 		('Borna Coric', 7), ('Jiri Vesely', 7), ('Thomas Fabbiano', 7), ('John-Patrick Smith', 7);
 
-INSERT INTO team (name, team_type_id, team.nation_id)
+INSERT INTO team (name, team_type_id, nation_id)
 VALUES ('Algeria', 1, 3), ('Cameroon', 1, 35), ('Ghana', 1, 77), ('Côte d''Ivoire', 1, 50),
 		('Honduras', 1, 87), ('United States', 1, 203), ('Chile', 1, 41), ('Ecuador', 1, 60),
 		('Bosnia and Herzegovina', 1, 26), ('Greece', 1, 79), ('Italy', 1, 96), ('Netherlands', 1, 135),
 		('South Africa', 1, 173), ('Slovenia', 1, 170), ('Paraguay', 1, 148), ('New Zealand', 1, 137),
-		('Slovakia', 1, 169), ('Korea DPR', 1, 102);
+		('Slovakia', 1, 169), ('Korea DPR', 1, 102),
+	('Trinidad and Tobago', 1, 193), ('Angola', 1, 6), ('Czech Republic', 1, 55), ('Togo', 1, 191),
+	('Ukraine', 1, 199);
+
+INSERT INTO team (name, team_type_id, nation_id)
+VALUES ('Serbia and Montenegro', 1, 213);
 
 DROP TRIGGER before_insert_team;
