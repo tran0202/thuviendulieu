@@ -106,6 +106,21 @@
             return TournamentDTO::CreateSoccerTournamentDTO($body_html, $modal_html, $popover_html, $profile);
         }
 
+        public static function getAllTimeSoccerTournament($tournament_id) {
+
+            $tournament_dto = TournamentDTO::CreateTournamentDTO($tournament_id, null);
+
+            $team_dto = Team::getAllTimeSoccerTeams();
+            $match_dto = Match::getAllTimeSoccerMatches($tournament_dto);
+            $body_html = $team_dto->getHtml();
+            $body_html .= $match_dto->getHtml();
+
+            Soccer::getTournamentRanking($team_dto, $match_dto, Stage::AllStages);
+            $body_html .= Team::getSoccerRankingHtml($team_dto, 'All Time Rankings');
+
+            return TournamentDTO::CreateSoccerTournamentDTO($body_html, '', '', null);
+        }
+
         public static function getFootballTournament($tournament_id, $fantasy = false) {
 
             $tournament_dto = TournamentDTO::CreateTournamentDTO($tournament_id, $fantasy);

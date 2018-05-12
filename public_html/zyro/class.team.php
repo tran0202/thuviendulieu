@@ -82,6 +82,13 @@
             return self::getSoccerTeamDTO($sql);
         }
 
+        public static function getAllTimeSoccerTeams() {
+
+            $sql = Team::getAllTimeSoccerTeamSql();
+
+            return self::getAllTimeSoccerTeamDTO($sql);
+        }
+
         public static function getFootballTeams($tournament_dto) {
 
             $sql = Team::getFootballTeamSql($tournament_dto->getTournamentId());
@@ -105,6 +112,28 @@
                 while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
                     $team = Team::CreateSoccerTeam($row['team_id'], $row['name'], $row['code'],
                         $row['group_name'], $row['group_order'], $row['flag_filename']);
+                    array_push($teams, $team);
+                }
+                return TeamDTO::CreateSoccerTeamDTO($teams, $count, $output);
+            }
+        }
+
+        public static function getAllTimeSoccerTeamDTO($sql) {
+
+            $query = $GLOBALS['connection']->prepare($sql);
+            $query->execute();
+            $count = $query->rowCount();
+            $teams = array();
+            $output = '<!-- Team Count = '.$count.' -->';
+
+            if ($count == 0) {
+                $output = '<h2>No result found!</h2>';
+                return TeamDTO::CreateSoccerTeamDTO(null, $count, $output);
+            }
+            else {
+                while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                    $team = Team::CreateSoccerTeam($row['team_id'], $row['name'], $row['code'],
+                        '', '', $row['flag_filename']);
                     array_push($teams, $team);
                 }
                 return TeamDTO::CreateSoccerTeamDTO($teams, $count, $output);
@@ -263,9 +292,9 @@
             return $output;
         }
 
-        public static function getSoccerRankingHtml($team_dto) {
+        public static function getSoccerRankingHtml($team_dto, $header = 'Tournament Rankings') {
             $teams = $team_dto->getTeams();
-            $output = '<div class="col-sm-12 h2-ff2 margin-top-lg">Tournament Rankings</div>
+            $output = '<div class="col-sm-12 h2-ff2 margin-top-lg">'.$header.'</div>
                             <div class="col-sm-12 box-xl">
                                 <div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md font-bold">
                                     <div class="col-sm-1"></div>
@@ -284,6 +313,7 @@
                 if ($teams[$i]->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
                 $striped_row = '';
                 if ($teams[$i]->getMatchPlay() == 7 || $teams[$i]->getMatchPlay() == 4) $striped_row = 'ranking-striped';
+                if ($header == 'All Time Rankings') $striped_row = '';
                     $output .= '<div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md '.$striped_row.'">
                                     <div class="col-sm-1"><img class="flag-md" src="/images/flags/'.$teams[$i]->getFlagFilename().'"></div>
                                     <div class="col-sm-3" style="padding-top: 3px;">'.$teams[$i]->getName().'</div>
@@ -359,6 +389,19 @@
                     LEFT JOIN nation n ON n.id = t.nation_id 
                     WHERE tt.tournament_id = '.$tournament_id.' 
                     ORDER BY group_id, group_order';
+            return $sql;
+        }
+
+        public static function getAllTimeSoccerTeamSql() {
+            $sql = 'SELECT DISTINCT UCASE(t.name) AS name, team_id, 
+                        n.flag_filename, n.code 
+                    FROM team_tournament tt  
+                    LEFT JOIN tournament tou ON tou.id = tt.tournament_id 
+                    LEFT JOIN team t ON t.id = tt.team_id 
+                    LEFT JOIN `group` g ON g.id = tt.group_id  
+                    LEFT JOIN nation n ON n.id = t.nation_id 
+                    WHERE tou.tournament_type_id = 1
+                    AND tt.tournament_id <> 1';
             return $sql;
         }
 

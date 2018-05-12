@@ -62,13 +62,21 @@
                 $start_index = 48;
                 $end_index = 64;
             }
+            elseif ($stage == Stage::AllStages) {
+                $end_index = sizeof($matches);
+            }
             for ($i = $start_index; $i < $end_index; $i++ ) {
                 self::calculatePoint($tmp_array, $matches[$i], $stage);
             }
             foreach ($tmp_array as $name => $_team) {
                 array_push($result, $_team);
             }
-            $result = self::sortTournamentStanding($result, $match_dto, $stage);
+            if ($stage <> Stage::AllStages) {
+                $result = self::sortTournamentStanding($result, $match_dto, $stage);
+            }
+            else {
+                $result = self::sortGroupStanding($result, $match_dto);
+            }
             $team_dto->setTeams($result);
         }
 
@@ -891,7 +899,7 @@
             $team_array[$away_name]->setGoalFor($team_array[$away_name]->getGoalFor() + $away_score);
             $team_array[$away_name]->setGoalAgainst($team_array[$away_name]->getGoalAgainst() + $home_score);
             $team_array[$away_name]->setGoalDiff($team_array[$away_name]->getGoalDiff() + $away_score - $home_score);
-            if ($stage == Stage::Second && $home_score == $away_score) {
+            if ($stage <> Stage::First && $home_score == $away_score) {
                 $team_array[$home_name]->setGoalFor($team_array[$home_name]->getGoalFor() + $home_extra_time_score);
                 $team_array[$home_name]->setGoalAgainst($team_array[$home_name]->getGoalAgainst() + $away_extra_time_score);
                 $team_array[$home_name]->setGoalDiff($team_array[$home_name]->getGoalDiff() + $home_extra_time_score - $away_extra_time_score);
@@ -903,7 +911,7 @@
 
         public static function sortTournamentStanding($team_array, $match_dto, $stage = Stage::First) {
             $tmp_array = array();
-            if ($stage == Stage::Second) {
+            if ($stage <> Stage::First) {
                 $tmp_array[7] = array();
                 $tmp_array[5] = array();
                 $tmp_array[4] = array();
@@ -1217,6 +1225,7 @@
     abstract class Stage {
         const First = 1;
         const Second = 2;
+        const AllStages = 3;
     }
 
     abstract class QualifyStatus {

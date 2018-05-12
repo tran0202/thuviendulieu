@@ -162,6 +162,13 @@
             return self::getSoccerMatchDTO($sql, $tournament_dto->getFantasy());
         }
 
+        public static function getAllTimeSoccerMatches($tournament_dto) {
+
+            $sql = Match::getAllTimeSoccerMatchSql();
+
+            return self::getSoccerMatchDTO($sql, $tournament_dto->getFantasy());
+        }
+
         public static function getTennisMatches($tournament_dto) {
 
             $sql = Match::getTennisMatchSql($tournament_dto->getTournamentId());
@@ -699,16 +706,40 @@
                         g.name AS round, g2.name AS stage,
                         g3.name AS group_name, m.tournament_id
                     FROM `match` m
-                        LEFT JOIN team t ON t.id = m.home_team_id
-                        LEFT JOIN team t2 ON t2.id = m.away_team_id
-                        LEFT JOIN `group` g ON g.id = m.round_id
-                        LEFT JOIN `group` g2 ON g2.id = m.stage_id
-                        LEFT JOIN team_tournament tt ON (tt.team_id = m.home_team_id AND tt.tournament_id = m.tournament_id)
-                        LEFT JOIN `group` g3 ON g3.id = tt.group_id 
-                        LEFT JOIN nation n ON n.id = t.nation_id  
-                        LEFT JOIN nation n2 ON n2.id = t2.nation_id 
+                    LEFT JOIN team t ON t.id = m.home_team_id
+                    LEFT JOIN team t2 ON t2.id = m.away_team_id
+                    LEFT JOIN `group` g ON g.id = m.round_id
+                    LEFT JOIN `group` g2 ON g2.id = m.stage_id
+                    LEFT JOIN team_tournament tt ON (tt.team_id = m.home_team_id AND tt.tournament_id = m.tournament_id)
+                    LEFT JOIN `group` g3 ON g3.id = tt.group_id 
+                    LEFT JOIN nation n ON n.id = t.nation_id  
+                    LEFT JOIN nation n2 ON n2.id = t2.nation_id 
                     WHERE m.tournament_id = '.$tournament_id.'
                     ORDER BY stage_id, round_id, match_date, match_time;';
+            return $sql;
+        }
+
+        public static function getAllTimeSoccerMatchSql() {
+            $sql = 'SELECT t.id AS home_team_id, UCASE(t.name) AS home_team_name, home_team_score, n.flag_filename AS home_flag, n.code AS home_team_code,
+                        t2.id AS away_team_id, UCASE(t2.name) AS away_team_name, away_team_score, n2.flag_filename AS away_flag, n2.code AS away_team_code, 
+                        home_team_extra_time_score, away_team_extra_time_score, home_team_penalty_score, away_team_penalty_score, 
+                        DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date, 
+                        TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order, bracket_order,
+                        waiting_home_team, waiting_away_team,
+                        g.name AS round, g2.name AS stage,
+                        g3.name AS group_name, m.tournament_id
+                    FROM `match` m  
+                    LEFT JOIN tournament tou ON tou.id = m.tournament_id 
+                    LEFT JOIN team t ON t.id = m.home_team_id
+                    LEFT JOIN team t2 ON t2.id = m.away_team_id
+                    LEFT JOIN `group` g ON g.id = m.round_id
+                    LEFT JOIN `group` g2 ON g2.id = m.stage_id
+                    LEFT JOIN team_tournament tt ON (tt.team_id = m.home_team_id AND tt.tournament_id = m.tournament_id)
+                    LEFT JOIN `group` g3 ON g3.id = tt.group_id 
+                    LEFT JOIN nation n ON n.id = t.nation_id  
+                    LEFT JOIN nation n2 ON n2.id = t2.nation_id 
+                    WHERE tou.tournament_type_id = 1
+                    AND m.tournament_id <> 1';
             return $sql;
         }
 

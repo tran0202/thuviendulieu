@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<?php
+    include_once('class.tournament.php');
+    $tournament_id = 7;
+    $tournament_dto = Tournament::getAllTimeSoccerTournament($tournament_id);
+    $body_html = $tournament_dto->getBodyHtml();
+?>
 <html lang="en">
 <head>
     <title>TVDL - Russia 2018</title>
@@ -26,6 +32,10 @@
                         <p class="border-bottom-gray5"><img src="images/wc_logos/2010.png"/> <a href="WorldCup?tid=6">South Africa 2010</a></p>
                         <p class="border-bottom-gray5"><img src="images/wc_logos/2006.png"/> <a href="WorldCup?tid=7">Germany 2006</a></p>
                     </h5>
+                </div>
+                <div>
+                    <?php echo $body_html; ?>
+                    <p class="wb-stl-normal"> </p>
                 </div>
                 <div class="col-sm-12 margin-tb-lg">
                     <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
