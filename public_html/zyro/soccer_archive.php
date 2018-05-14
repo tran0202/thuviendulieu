@@ -31,6 +31,7 @@
                         <p class="border-bottom-gray5"><img src="images/wc_logos/2014.png"/> <a href="WorldCup?tid=5">Brazil 2014</a></p>
                         <p class="border-bottom-gray5"><img src="images/wc_logos/2010.png"/> <a href="WorldCup?tid=6">South Africa 2010</a></p>
                         <p class="border-bottom-gray5"><img src="images/wc_logos/2006.png"/> <a href="WorldCup?tid=7">Germany 2006</a></p>
+                        <p class="border-bottom-gray5"><img src="images/wc_logos/2002.png"/> <a href="WorldCup?tid=8">Korea/Japan 2002</a></p>
                     </h5>
                 </div>
                 <div>
