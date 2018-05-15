@@ -122,4 +122,4 @@ VALUES ('Afghanistan', 'Afghanistan.png', 6, 'AFG'), ('Albania', 'Albania.png', 
 	('Great Britain', 'Great_Britain.png', 6, 'GBR'), ('Serbia and Montenegro', 'Serbia_and_Montenegro.svg', 6, 'SCG');
 
 INSERT INTO nation (name, flag_filename, nation_type_id, code)
-VALUES ('Serbia and Montenegro', 'Serbia_and_Montenegro.svg', 6, 'SCG');
+VALUES ('Yugoslavia', 'yug.png', 6, 'YUG');
