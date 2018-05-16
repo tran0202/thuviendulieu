@@ -50,6 +50,7 @@
 
         public static function getTournamentRanking($team_dto, $match_dto, $stage = Stage::First) {
             $matches = $match_dto->getMatches();
+            $match_count = sizeof($matches);
             $team_array = Team::getTeamArrayByName($team_dto);
             $tmp_array = array();
             foreach ($team_array as $name => $_team) {
@@ -57,10 +58,10 @@
             }
             $result = array();
             $start_index = 0;
-            $end_index = 48;
+            $end_index = $match_count-16;
             if ($stage == Stage::Second) {
-                $start_index = 48;
-                $end_index = 64;
+                $start_index = $match_count-16;
+                $end_index = $match_count;
             }
             elseif ($stage == Stage::AllStages) {
                 $end_index = sizeof($matches);
@@ -910,6 +911,7 @@
         }
 
         public static function sortTournamentStanding($team_array, $match_dto, $stage = Stage::First) {
+            $match_count = sizeof($match_dto->getMatches());
             $tmp_array = array();
             if ($stage <> Stage::First) {
                 $tmp_array[7] = array();
@@ -934,39 +936,39 @@
                 }
                 else {
                     $matches = $match_dto->getMatches();
-                    $champion_name = $matches[63]->getHomeTeamName();
-                    $runner_up_name = $matches[63]->getAwayTeamName();
-                    if ($matches[63]->getHomeTeamScore() < $matches[63]->getAwayTeamScore()) {
-                        $champion_name = $matches[63]->getAwayTeamName();
-                        $runner_up_name = $matches[63]->getHomeTeamName();
+                    $champion_name = $matches[$match_count-1]->getHomeTeamName();
+                    $runner_up_name = $matches[$match_count-1]->getAwayTeamName();
+                    if ($matches[$match_count-1]->getHomeTeamScore() < $matches[$match_count-1]->getAwayTeamScore()) {
+                        $champion_name = $matches[$match_count-1]->getAwayTeamName();
+                        $runner_up_name = $matches[$match_count-1]->getHomeTeamName();
                     }
-                    elseif ($matches[63]->getHomeTeamScore() == $matches[63]->getAwayTeamScore()) {
-                        if ($matches[63]->getHomeTeamExtraTimeScore() < $matches[63]->getAwayTeamExtraTimeScore()) {
-                            $champion_name = $matches[63]->getAwayTeamName();
-                            $runner_up_name = $matches[63]->getHomeTeamName();
+                    elseif ($matches[$match_count-1]->getHomeTeamScore() == $matches[$match_count-1]->getAwayTeamScore()) {
+                        if ($matches[$match_count-1]->getHomeTeamExtraTimeScore() < $matches[$match_count-1]->getAwayTeamExtraTimeScore()) {
+                            $champion_name = $matches[$match_count-1]->getAwayTeamName();
+                            $runner_up_name = $matches[$match_count-1]->getHomeTeamName();
                         }
-                        elseif ($matches[63]->getHomeTeamExtraTimeScore() == $matches[63]->getAwayTeamExtraTimeScore()) {
-                            if ($matches[63]->getHomeTeamPenaltyScore() < $matches[63]->getAwayTeamPenaltyScore()) {
-                                $champion_name = $matches[63]->getAwayTeamName();
-                                $runner_up_name = $matches[63]->getHomeTeamName();
+                        elseif ($matches[$match_count-1]->getHomeTeamExtraTimeScore() == $matches[$match_count-1]->getAwayTeamExtraTimeScore()) {
+                            if ($matches[$match_count-1]->getHomeTeamPenaltyScore() < $matches[$match_count-1]->getAwayTeamPenaltyScore()) {
+                                $champion_name = $matches[$match_count-1]->getAwayTeamName();
+                                $runner_up_name = $matches[$match_count-1]->getHomeTeamName();
                             }
                         }
                     }
-                    $third_place_name = $matches[62]->getHomeTeamName();
-                    $fourth_place_name = $matches[62]->getAwayTeamName();
-                    if ($matches[62]->getHomeTeamScore() < $matches[62]->getAwayTeamScore()) {
-                        $third_place_name = $matches[62]->getAwayTeamName();
-                        $fourth_place_name = $matches[62]->getHomeTeamName();
+                    $third_place_name = $matches[$match_count-2]->getHomeTeamName();
+                    $fourth_place_name = $matches[$match_count-2]->getAwayTeamName();
+                    if ($matches[$match_count-2]->getHomeTeamScore() < $matches[$match_count-2]->getAwayTeamScore()) {
+                        $third_place_name = $matches[$match_count-2]->getAwayTeamName();
+                        $fourth_place_name = $matches[$match_count-2]->getHomeTeamName();
                     }
-                    elseif ($matches[62]->getHomeTeamScore() == $matches[62]->getAwayTeamScore()) {
-                        if ($matches[62]->getHomeTeamExtraTimeScore() < $matches[62]->getAwayTeamExtraTimeScore()) {
-                            $third_place_name = $matches[62]->getAwayTeamName();
-                            $fourth_place_name = $matches[62]->getHomeTeamName();
+                    elseif ($matches[$match_count-2]->getHomeTeamScore() == $matches[$match_count-2]->getAwayTeamScore()) {
+                        if ($matches[$match_count-2]->getHomeTeamExtraTimeScore() < $matches[$match_count-2]->getAwayTeamExtraTimeScore()) {
+                            $third_place_name = $matches[$match_count-2]->getAwayTeamName();
+                            $fourth_place_name = $matches[$match_count-2]->getHomeTeamName();
                         }
-                        elseif ($matches[62]->getHomeTeamExtraTimeScore() == $matches[62]->getAwayTeamExtraTimeScore()) {
-                            if ($matches[62]->getHomeTeamPenaltyScore() < $matches[62]->getAwayTeamPenaltyScore()) {
-                                $third_place_name = $matches[62]->getAwayTeamName();
-                                $fourth_place_name = $matches[62]->getHomeTeamName();
+                        elseif ($matches[$match_count-2]->getHomeTeamExtraTimeScore() == $matches[$match_count-2]->getAwayTeamExtraTimeScore()) {
+                            if ($matches[$match_count-2]->getHomeTeamPenaltyScore() < $matches[$match_count-2]->getAwayTeamPenaltyScore()) {
+                                $third_place_name = $matches[$match_count-2]->getAwayTeamName();
+                                $fourth_place_name = $matches[$match_count-2]->getHomeTeamName();
                             }
                         }
                     }

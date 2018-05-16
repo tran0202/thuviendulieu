@@ -799,11 +799,12 @@
 
         public static function getMatchArraySecondStage($match_dto) {
             $matches = $match_dto->getMatches();
+            $match_count = sizeof($matches);
             $result = array();
-            $tmp_match = $matches[62];
-            $matches[62] = $matches[63];
-            $matches[63] = $tmp_match;
-            for ($i = 48; $i < 64; $i++) {
+            $tmp_match = $matches[$match_count-2];
+            $matches[$match_count-2] = $matches[$match_count-1];
+            $matches[$match_count-1] = $tmp_match;
+            for ($i = $match_count-16; $i < $match_count; $i++) {
                 $result[$matches[$i]->getRound()][$matches[$i]->getMatchOrder()] = $matches[$i];
             }
             return $result;

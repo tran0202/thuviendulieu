@@ -40,12 +40,18 @@ VALUES 	(1, 41, 1, 39, 1),
 	(8, 43, 2, 40, 2),
 	(8, 44, 3, 40, 3),
 	(8, 45, 4, 40, 4),
-	(8, 46, 5, 40, 5);
-
-INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
-VALUES 	(9, 41, 1, 39, 1),
+	(8, 46, 5, 40, 5),
+	(9, 41, 1, 39, 1),
 	(9, 42, 1, 40, 1),
 	(9, 43, 2, 40, 2),
 	(9, 44, 3, 40, 3),
 	(9, 45, 4, 40, 4),
 	(9, 46, 5, 40, 5);
+
+INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
+VALUES 	(10, 41, 1, 39, 1),
+	(10, 42, 1, 40, 1),
+	(10, 43, 2, 40, 2),
+	(10, 44, 3, 40, 3),
+	(10, 45, 4, 40, 4),
+	(10, 46, 5, 40, 5);
