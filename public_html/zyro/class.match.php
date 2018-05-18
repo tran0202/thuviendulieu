@@ -7,12 +7,16 @@
         private $home_team_score;
         private $home_team_extra_time_score;
         private $home_team_penalty_score;
+        private $home_parent_team_id;
+        private $home_parent_team_name;
         private $away_team_name;
         private $away_team_code;
         private $away_team_id;
         private $away_team_score;
         private $away_team_extra_time_score;
         private $away_team_penalty_score;
+        private $away_parent_team_id;
+        private $away_parent_team_name;
         private $match_date;
         private $match_date_fmt;
         private $match_time;
@@ -24,6 +28,8 @@
         private $round;
         private $stage;
         private $tournament_id;
+        private $points_for_win;
+        private $golden_goal_rule;
         private $group_name;
         private $home_team_seed;
         private $away_team_seed;
@@ -56,8 +62,9 @@
 
         public static function CreateSoccerMatch(
             $home_team_id, $home_team_name, $home_team_code, $away_team_id, $away_team_name, $away_team_code,
+            $home_parent_team_id, $home_parent_team_name, $away_parent_team_id, $away_parent_team_name,
             $match_date, $match_date_fmt, $match_time, $match_time_fmt,
-            $match_order, $bracket_order, $round, $stage, $group_name, $tournament_id,
+            $match_order, $bracket_order, $round, $stage, $group_name, $tournament_id, $points_for_win, $golden_goal_rule,
             $waiting_home_team, $waiting_away_team,
             $home_team_score, $away_team_score,
             $home_team_extra_time_score, $away_team_extra_time_score,
@@ -77,6 +84,10 @@
             $m->away_team_extra_time_score = $away_team_extra_time_score;
             $m->home_team_penalty_score = $home_team_penalty_score;
             $m->away_team_penalty_score = $away_team_penalty_score;
+            $m->home_parent_team_id = $home_parent_team_id;
+            $m->home_parent_team_name = $home_parent_team_name;
+            $m->away_parent_team_id = $away_parent_team_id;
+            $m->away_parent_team_name = $away_parent_team_name;
             $m->match_date = $match_date;
             $m->match_date_fmt = $match_date_fmt;
             $m->match_time = $match_time;
@@ -87,6 +98,8 @@
             $m->stage = $stage;
             $m->group_name = $group_name;
             $m->tournament_id = $tournament_id;
+            $m->points_for_win = $points_for_win;
+            $m->golden_goal_rule = $golden_goal_rule;
             $m->waiting_home_team = $waiting_home_team;
             $m->waiting_away_team = $waiting_away_team;
             $m->home_flag = $home_flag;
@@ -210,8 +223,10 @@
                         $i = $i + 1;
                     }
                     $match = Match::CreateSoccerMatch($row['home_team_id'], $row['home_team_name'], $row['home_team_code'], $row['away_team_id'], $row['away_team_name'], $row['away_team_code'],
+                        $row['home_parent_team_id'], $row['home_parent_team_name'], $row['away_parent_team_id'], $row['away_parent_team_name'],
                         $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_time_fmt'],
-                        $row['match_order'], $row['bracket_order'], $row['round'], $row['stage'], $row['group_name'], $row['tournament_id'], $row['waiting_home_team'], $row['waiting_away_team'],
+                        $row['match_order'], $row['bracket_order'], $row['round'], $row['stage'], $row['group_name'], $row['tournament_id'],
+                        $row['points_for_win'], $row['golden_goal_rule'], $row['waiting_home_team'], $row['waiting_away_team'],
                         $home_team_score, $away_team_score,
                         $row['home_team_extra_time_score'], $row['away_team_extra_time_score'],
                         $row['home_team_penalty_score'], $row['away_team_penalty_score'],
@@ -338,7 +353,7 @@
                     $home_flag = '';
                     $away_flag = '';
                     $aet = ' aet';
-                    if (self::isGoldenGoalRule($_match->getTournamentId()) && $_match->getHomeTeamPenaltyScore() == '') $aet = ' gg';
+                    if (self::isGoldenGoalRule($_match->getGoldenGoalRule()) && $_match->getHomeTeamPenaltyScore() == '') $aet = ' gg';
                     if ($_match->getHomeTeamCode() != '') {
                         $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
                         if ($_match->getHomeTeamScore() == $_match->getAwayTeamScore()) {
@@ -437,7 +452,7 @@
                     $score = 'vs';
                     $penalty_score = '';
                     $aet = ' aet';
-                    if (self::isGoldenGoalRule($_bracket_match->getTournamentId()) && $_bracket_match->getHomeTeamPenaltyScore() == '') $aet = ' gg';
+                    if (self::isGoldenGoalRule($_bracket_match->getGoldenGoalRule()) && $_bracket_match->getHomeTeamPenaltyScore() == '') $aet = ' gg';
                     if ($_bracket_match->getHomeTeamScore() != -1) {
                         $score = $_bracket_match->getHomeTeamScore().'-'.$_bracket_match->getAwayTeamScore();
                         if ($_bracket_match->getHomeTeamScore() == $_bracket_match->getAwayTeamScore()) {
@@ -494,7 +509,7 @@
                         $score = 'vs';
                         $penalty_score = '';
                         $aet = ' aet';
-                        if (self::isGoldenGoalRule($_match->getTournamentId()) && $_match->getHomeTeamPenaltyScore() == '') $aet = ' gg';
+                        if (self::isGoldenGoalRule($_match->getGoldenGoalRule()) && $_match->getHomeTeamPenaltyScore() == '') $aet = ' gg';
                         if ($_match->getHomeTeamScore() != -1) {
                             $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
                             if ($rounds != 'Group Matches' && $_match->getHomeTeamScore() == $_match->getAwayTeamScore()) {
@@ -705,35 +720,13 @@
         public static function getSoccerMatchSql($tournament_id) {
             $sql = 'SELECT t.id AS home_team_id, UCASE(t.name) AS home_team_name, home_team_score, n.flag_filename AS home_flag, n.code AS home_team_code,
                         t2.id AS away_team_id, UCASE(t2.name) AS away_team_name, away_team_score, n2.flag_filename AS away_flag, n2.code AS away_team_code, 
+                        pt.id AS home_parent_team_id, UCASE(pt.name) AS home_parent_team_name, pt2.id AS away_parent_team_id, UCASE(pt2.name) AS away_parent_team_name, 
                         home_team_extra_time_score, away_team_extra_time_score, home_team_penalty_score, away_team_penalty_score, 
                         DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date, 
                         TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order, bracket_order,
                         waiting_home_team, waiting_away_team,
                         g.name AS round, g2.name AS stage,
-                        g3.name AS group_name, m.tournament_id
-                    FROM `match` m
-                    LEFT JOIN team t ON t.id = m.home_team_id
-                    LEFT JOIN team t2 ON t2.id = m.away_team_id
-                    LEFT JOIN `group` g ON g.id = m.round_id
-                    LEFT JOIN `group` g2 ON g2.id = m.stage_id
-                    LEFT JOIN team_tournament tt ON (tt.team_id = m.home_team_id AND tt.tournament_id = m.tournament_id)
-                    LEFT JOIN `group` g3 ON g3.id = tt.group_id 
-                    LEFT JOIN nation n ON n.id = t.nation_id  
-                    LEFT JOIN nation n2 ON n2.id = t2.nation_id 
-                    WHERE m.tournament_id = '.$tournament_id.'
-                    ORDER BY stage_id, round_id, match_date, match_time;';
-            return $sql;
-        }
-
-        public static function getAllTimeSoccerMatchSql() {
-            $sql = 'SELECT t.id AS home_team_id, UCASE(t.name) AS home_team_name, home_team_score, n.flag_filename AS home_flag, n.code AS home_team_code,
-                        t2.id AS away_team_id, UCASE(t2.name) AS away_team_name, away_team_score, n2.flag_filename AS away_flag, n2.code AS away_team_code, 
-                        home_team_extra_time_score, away_team_extra_time_score, home_team_penalty_score, away_team_penalty_score, 
-                        DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date, 
-                        TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order, bracket_order,
-                        waiting_home_team, waiting_away_team,
-                        g.name AS round, g2.name AS stage,
-                        g3.name AS group_name, m.tournament_id
+                        g3.name AS group_name, m.tournament_id, tou.points_for_win, tou.golden_goal_rule
                     FROM `match` m  
                     LEFT JOIN tournament tou ON tou.id = m.tournament_id 
                     LEFT JOIN team t ON t.id = m.home_team_id
@@ -743,7 +736,36 @@
                     LEFT JOIN team_tournament tt ON (tt.team_id = m.home_team_id AND tt.tournament_id = m.tournament_id)
                     LEFT JOIN `group` g3 ON g3.id = tt.group_id 
                     LEFT JOIN nation n ON n.id = t.nation_id  
-                    LEFT JOIN nation n2 ON n2.id = t2.nation_id 
+                    LEFT JOIN nation n2 ON n2.id = t2.nation_id  
+                    LEFT JOIN team pt ON pt.id = t.parent_team_id 
+                    LEFT JOIN team pt2 ON pt2.id = t2.parent_team_id
+                    WHERE m.tournament_id = '.$tournament_id.'
+                    ORDER BY stage_id, round_id, match_date, match_time;';
+            return $sql;
+        }
+
+        public static function getAllTimeSoccerMatchSql() {
+            $sql = 'SELECT t.id AS home_team_id, UCASE(t.name) AS home_team_name, home_team_score, n.flag_filename AS home_flag, n.code AS home_team_code,
+                        t2.id AS away_team_id, UCASE(t2.name) AS away_team_name, away_team_score, n2.flag_filename AS away_flag, n2.code AS away_team_code, 
+                        pt.id AS home_parent_team_id, UCASE(pt.name) AS home_parent_team_name, pt2.id AS away_parent_team_id, UCASE(pt2.name) AS away_parent_team_name, 
+                        home_team_extra_time_score, away_team_extra_time_score, home_team_penalty_score, away_team_penalty_score, 
+                        DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date, 
+                        TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order, bracket_order,
+                        waiting_home_team, waiting_away_team,
+                        g.name AS round, g2.name AS stage,
+                        g3.name AS group_name, m.tournament_id, tou.points_for_win, tou.golden_goal_rule
+                    FROM `match` m  
+                    LEFT JOIN tournament tou ON tou.id = m.tournament_id 
+                    LEFT JOIN team t ON t.id = m.home_team_id
+                    LEFT JOIN team t2 ON t2.id = m.away_team_id
+                    LEFT JOIN `group` g ON g.id = m.round_id
+                    LEFT JOIN `group` g2 ON g2.id = m.stage_id
+                    LEFT JOIN team_tournament tt ON (tt.team_id = m.home_team_id AND tt.tournament_id = m.tournament_id)
+                    LEFT JOIN `group` g3 ON g3.id = tt.group_id 
+                    LEFT JOIN nation n ON n.id = t.nation_id  
+                    LEFT JOIN nation n2 ON n2.id = t2.nation_id  
+                    LEFT JOIN team pt ON pt.id = t.parent_team_id 
+                    LEFT JOIN team pt2 ON pt2.id = t2.parent_team_id
                     WHERE tou.tournament_type_id = 1
                     AND m.tournament_id <> 1';
             return $sql;
@@ -922,9 +944,8 @@
             return $tmp_row;
         }
 
-        public static function isGoldenGoalRule($tournament_id) {
-            $tournament_profile = Tournament::getTournamentProfile($tournament_id);
-            return $tournament_profile->getGoldenGoalRule() == 1;
+        public static function isGoldenGoalRule($golden_goal_rule) {
+            return $golden_goal_rule == 1;
         }
 
         /**
@@ -1026,6 +1047,38 @@
         /**
          * @return mixed
          */
+        public function getHomeParentTeamId()
+        {
+            return $this->home_parent_team_id;
+        }
+
+        /**
+         * @param mixed $home_parent_team_id
+         */
+        public function setHomeParentTeamId($home_parent_team_id)
+        {
+            $this->home_parent_team_id = $home_parent_team_id;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getHomeParentTeamName()
+        {
+            return $this->home_parent_team_name;
+        }
+
+        /**
+         * @param mixed $home_parent_team_name
+         */
+        public function setHomeParentTeamName($home_parent_team_name)
+        {
+            $this->home_parent_team_name = $home_parent_team_name;
+        }
+
+        /**
+         * @return mixed
+         */
         public function getAwayTeamId()
         {
             return $this->away_team_id;
@@ -1117,6 +1170,38 @@
         public function setAwayTeamPenaltyScore($away_team_penalty_score)
         {
             $this->away_team_penalty_score = $away_team_penalty_score;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getAwayParentTeamId()
+        {
+            return $this->away_parent_team_id;
+        }
+
+        /**
+         * @param mixed $away_parent_team_id
+         */
+        public function setAwayParentTeamId($away_parent_team_id)
+        {
+            $this->away_parent_team_id = $away_parent_team_id;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getAwayParentTeamName()
+        {
+            return $this->away_parent_team_name;
+        }
+
+        /**
+         * @param mixed $away_parent_team_name
+         */
+        public function setAwayParentTeamName($away_parent_team_name)
+        {
+            $this->away_parent_team_name = $away_parent_team_name;
         }
 
         /**
@@ -1293,6 +1378,38 @@
         public function setTournamentId($tournament_id)
         {
             $this->tournament_id = $tournament_id;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getPointsForWin()
+        {
+            return $this->points_for_win;
+        }
+
+        /**
+         * @param mixed $points_for_win
+         */
+        public function setPointsForWin($points_for_win)
+        {
+            $this->points_for_win = $points_for_win;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getGoldenGoalRule()
+        {
+            return $this->golden_goal_rule;
+        }
+
+        /**
+         * @param mixed $golden_goal_rule
+         */
+        public function setGoldenGoalRule($golden_goal_rule)
+        {
+            $this->golden_goal_rule = $golden_goal_rule;
         }
 
         /**

@@ -849,67 +849,76 @@
             return $tmp_s;
         }
 
-        public static function calculatePoint($team_array, $match, $stage = Stage::First, $all_time_ranking = false) {
-            $tournament_profile = Tournament::getTournamentProfile($match->getTournamentId());
+        public static function calculatePoint(&$team_array, $match, $stage = Stage::First, $all_time_ranking = false) {
             $points_for_win = 3;
-            if ($tournament_profile->getPointsForWin() == 2 && !$all_time_ranking) $points_for_win = 2;
+            if ($match->getPointsForWin() == 2 && !$all_time_ranking) $points_for_win = 2;
             $home_name = $match->getHomeTeamName();
             $away_name = $match->getAwayTeamName();
+            if ($all_time_ranking && $match->getHomeParentTeamName() != null) {
+                $home_name = $match->getHomeParentTeamName();
+                unset($team_array[$match->getHomeTeamName()]);
+            }
+            if ($all_time_ranking && $match->getAwayParentTeamName() != null) {
+                $away_name = $match->getAwayParentTeamName();
+                unset($team_array[$match->getAwayTeamName()]);
+            }
+            $home_team = $team_array[$home_name];
+            $away_team = $team_array[$away_name];
             $home_score = $match->getHomeTeamScore();
             $away_score = $match->getAwayTeamScore();
             $home_extra_time_score = $match->getHomeTeamExtraTimeScore();
             $away_extra_time_score = $match->getAwayTeamExtraTimeScore();
-            $team_array[$home_name]->setMatchPlay($team_array[$home_name]->getMatchPlay() + 1);
-            $team_array[$away_name]->setMatchPlay($team_array[$away_name]->getMatchPlay() + 1);
+            $home_team->setMatchPlay($home_team->getMatchPlay() + 1);
+            $away_team->setMatchPlay($away_team->getMatchPlay() + 1);
             if ($home_score > $away_score) {
-                $team_array[$home_name]->setWin($team_array[$home_name]->getWin() + 1);
-                $team_array[$home_name]->setPoint($team_array[$home_name]->getPoint() + $points_for_win);
-                $team_array[$away_name]->setLoss($team_array[$away_name]->getLoss() + 1);
+                $home_team->setWin($home_team->getWin() + 1);
+                $home_team->setPoint($home_team->getPoint() + $points_for_win);
+                $away_team->setLoss($away_team->getLoss() + 1);
             }
             elseif ($home_score < $away_score) {
-                $team_array[$home_name]->setLoss($team_array[$home_name]->getLoss() + 1);
-                $team_array[$away_name]->setWin($team_array[$away_name]->getWin() + 1);
-                $team_array[$away_name]->setPoint($team_array[$away_name]->getPoint() + $points_for_win);
+                $home_team->setLoss($home_team->getLoss() + 1);
+                $away_team->setWin($away_team->getWin() + 1);
+                $away_team->setPoint($away_team->getPoint() + $points_for_win);
             }
             else {
                 if ($stage == Stage::First) {
-                    $team_array[$home_name]->setDraw($team_array[$home_name]->getDraw() + 1);
-                    $team_array[$home_name]->setPoint($team_array[$home_name]->getPoint() + 1);
-                    $team_array[$away_name]->setDraw($team_array[$away_name]->getDraw() + 1);
-                    $team_array[$away_name]->setPoint($team_array[$away_name]->getPoint() + 1);
+                    $home_team->setDraw($home_team->getDraw() + 1);
+                    $home_team->setPoint($home_team->getPoint() + 1);
+                    $away_team->setDraw($away_team->getDraw() + 1);
+                    $away_team->setPoint($away_team->getPoint() + 1);
                 }
                 else {
                     if ($home_extra_time_score > $away_extra_time_score) {
-                        $team_array[$home_name]->setWin($team_array[$home_name]->getWin() + 1);
-                        $team_array[$home_name]->setPoint($team_array[$home_name]->getPoint() + $points_for_win);
-                        $team_array[$away_name]->setLoss($team_array[$away_name]->getLoss() + 1);
+                        $home_team->setWin($home_team->getWin() + 1);
+                        $home_team->setPoint($home_team->getPoint() + $points_for_win);
+                        $away_team->setLoss($away_team->getLoss() + 1);
                     }
                     elseif ($home_extra_time_score < $away_extra_time_score) {
-                        $team_array[$home_name]->setLoss($team_array[$home_name]->getLoss() + 1);
-                        $team_array[$away_name]->setWin($team_array[$away_name]->getWin() + 1);
-                        $team_array[$away_name]->setPoint($team_array[$away_name]->getPoint() + $points_for_win);
+                        $home_team->setLoss($home_team->getLoss() + 1);
+                        $away_team->setWin($away_team->getWin() + 1);
+                        $away_team->setPoint($away_team->getPoint() + $points_for_win);
                     }
                     else {
-                        $team_array[$home_name]->setDraw($team_array[$home_name]->getDraw() + 1);
-                        $team_array[$home_name]->setPoint($team_array[$home_name]->getPoint() + 1);
-                        $team_array[$away_name]->setDraw($team_array[$away_name]->getDraw() + 1);
-                        $team_array[$away_name]->setPoint($team_array[$away_name]->getPoint() + 1);
+                        $home_team->setDraw($home_team->getDraw() + 1);
+                        $home_team->setPoint($home_team->getPoint() + 1);
+                        $away_team->setDraw($away_team->getDraw() + 1);
+                        $away_team->setPoint($away_team->getPoint() + 1);
                     }
                 }
             }
-            $team_array[$home_name]->setGoalFor($team_array[$home_name]->getGoalFor() + $home_score);
-            $team_array[$home_name]->setGoalAgainst($team_array[$home_name]->getGoalAgainst() + $away_score);
-            $team_array[$home_name]->setGoalDiff($team_array[$home_name]->getGoalDiff() + $home_score - $away_score);
-            $team_array[$away_name]->setGoalFor($team_array[$away_name]->getGoalFor() + $away_score);
-            $team_array[$away_name]->setGoalAgainst($team_array[$away_name]->getGoalAgainst() + $home_score);
-            $team_array[$away_name]->setGoalDiff($team_array[$away_name]->getGoalDiff() + $away_score - $home_score);
+            $home_team->setGoalFor($home_team->getGoalFor() + $home_score);
+            $home_team->setGoalAgainst($home_team->getGoalAgainst() + $away_score);
+            $home_team->setGoalDiff($home_team->getGoalDiff() + $home_score - $away_score);
+            $away_team->setGoalFor($away_team->getGoalFor() + $away_score);
+            $away_team->setGoalAgainst($away_team->getGoalAgainst() + $home_score);
+            $away_team->setGoalDiff($away_team->getGoalDiff() + $away_score - $home_score);
             if ($stage <> Stage::First && $home_score == $away_score) {
-                $team_array[$home_name]->setGoalFor($team_array[$home_name]->getGoalFor() + $home_extra_time_score);
-                $team_array[$home_name]->setGoalAgainst($team_array[$home_name]->getGoalAgainst() + $away_extra_time_score);
-                $team_array[$home_name]->setGoalDiff($team_array[$home_name]->getGoalDiff() + $home_extra_time_score - $away_extra_time_score);
-                $team_array[$away_name]->setGoalFor($team_array[$away_name]->getGoalFor() + $away_extra_time_score);
-                $team_array[$away_name]->setGoalAgainst($team_array[$away_name]->getGoalAgainst() + $home_extra_time_score);
-                $team_array[$away_name]->setGoalDiff($team_array[$away_name]->getGoalDiff() + $away_extra_time_score - $home_extra_time_score);
+                $home_team->setGoalFor($home_team->getGoalFor() + $home_extra_time_score);
+                $home_team->setGoalAgainst($home_team->getGoalAgainst() + $away_extra_time_score);
+                $home_team->setGoalDiff($home_team->getGoalDiff() + $home_extra_time_score - $away_extra_time_score);
+                $away_team->setGoalFor($away_team->getGoalFor() + $away_extra_time_score);
+                $away_team->setGoalAgainst($away_team->getGoalAgainst() + $home_extra_time_score);
+                $away_team->setGoalDiff($away_team->getGoalDiff() + $away_extra_time_score - $home_extra_time_score);
             }
         }
 
