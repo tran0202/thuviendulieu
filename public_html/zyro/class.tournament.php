@@ -115,7 +115,7 @@
             $body_html = $team_dto->getHtml();
             $body_html .= $match_dto->getHtml();
 
-            Soccer::getTournamentRanking($team_dto, $match_dto, Stage::AllStages);
+            Soccer::getTournamentRanking($team_dto, $match_dto, Stage::AllStages, true);
             $body_html .= Team::getSoccerRankingHtml($team_dto, 'All Time Rankings');
 
             return TournamentDTO::CreateSoccerTournamentDTO($body_html, '', '', null);
@@ -155,12 +155,12 @@
 
             if ($count == 0) {
                 $output = '<h2>No result found!</h2>';
-                return TournamentProfile::CreateTournamentProfile(null, $count, $output);
+                return TournamentProfile::CreateTournamentProfile(null, $count, 0, 0, $output);
             }
             else {
                 $row = $query->fetch(PDO::FETCH_ASSOC);
                 $output .= self::getTournamentProfileHtml($row);
-                return TournamentProfile::CreateTournamentProfile($row['name'], $row['logo_filename'], $output);
+                return TournamentProfile::CreateTournamentProfile($row['name'], $row['logo_filename'], $row['points_for_win'], $row['golden_goal_rule'], $output);
             }
         }
 
@@ -172,7 +172,8 @@
         public static function getTournamentProfileSql($tournament_id) {
             $sql = 'SELECT name, id, logo_filename,
                         start_date, end_date, 
-                        tournament_type_id, parent_tournament_id 
+                        tournament_type_id, parent_tournament_id,
+                        points_for_win, golden_goal_rule 
                     FROM tournament t 
                     WHERE t.id = '.$tournament_id;
             return $sql;
@@ -356,15 +357,19 @@
 
         private $name;
         private $logo_filename;
+        private $points_for_win;
+        private $golden_goal_rule;
         private $html;
 
         protected function __construct() { }
 
-        public static function CreateTournamentProfile($name, $logo_filename, $html)
+        public static function CreateTournamentProfile($name, $logo_filename, $points_for_win, $golden_goal_rule, $html)
         {
             $tp = new TournamentProfile();
             $tp->name = $name;
             $tp->logo_filename = $logo_filename;
+            $tp->points_for_win = $points_for_win;
+            $tp->golden_goal_rule = $golden_goal_rule;
             $tp->html = $html;
             return $tp;
         }
@@ -415,6 +420,38 @@
         public function setHtml($html)
         {
             $this->html = $html;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getPointsForWin()
+        {
+            return $this->points_for_win;
+        }
+
+        /**
+         * @param mixed $points_for_win
+         */
+        public function setPointsForWin($points_for_win)
+        {
+            $this->points_for_win = $points_for_win;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getGoldenGoalRule()
+        {
+            return $this->golden_goal_rule;
+        }
+
+        /**
+         * @param mixed $golden_goal_rule
+         */
+        public function setGoldenGoalRule($golden_goal_rule)
+        {
+            $this->golden_goal_rule = $golden_goal_rule;
         }
     }
 

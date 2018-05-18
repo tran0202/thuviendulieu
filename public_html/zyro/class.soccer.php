@@ -48,7 +48,7 @@
             }
         }
 
-        public static function getTournamentRanking($team_dto, $match_dto, $stage = Stage::First) {
+        public static function getTournamentRanking($team_dto, $match_dto, $stage = Stage::First, $all_time_ranking = false) {
             $matches = $match_dto->getMatches();
             $match_count = sizeof($matches);
             $team_array = Team::getTeamArrayByName($team_dto);
@@ -67,7 +67,7 @@
                 $end_index = sizeof($matches);
             }
             for ($i = $start_index; $i < $end_index; $i++ ) {
-                self::calculatePoint($tmp_array, $matches[$i], $stage);
+                self::calculatePoint($tmp_array, $matches[$i], $stage, $all_time_ranking);
             }
             foreach ($tmp_array as $name => $_team) {
                 array_push($result, $_team);
@@ -849,7 +849,10 @@
             return $tmp_s;
         }
 
-        public static function calculatePoint($team_array, $match, $stage = Stage::First) {
+        public static function calculatePoint($team_array, $match, $stage = Stage::First, $all_time_ranking = false) {
+            $tournament_profile = Tournament::getTournamentProfile($match->getTournamentId());
+            $points_for_win = 3;
+            if ($tournament_profile->getPointsForWin() == 2 && !$all_time_ranking) $points_for_win = 2;
             $home_name = $match->getHomeTeamName();
             $away_name = $match->getAwayTeamName();
             $home_score = $match->getHomeTeamScore();
@@ -860,13 +863,13 @@
             $team_array[$away_name]->setMatchPlay($team_array[$away_name]->getMatchPlay() + 1);
             if ($home_score > $away_score) {
                 $team_array[$home_name]->setWin($team_array[$home_name]->getWin() + 1);
-                $team_array[$home_name]->setPoint($team_array[$home_name]->getPoint() + 3);
+                $team_array[$home_name]->setPoint($team_array[$home_name]->getPoint() + $points_for_win);
                 $team_array[$away_name]->setLoss($team_array[$away_name]->getLoss() + 1);
             }
             elseif ($home_score < $away_score) {
                 $team_array[$home_name]->setLoss($team_array[$home_name]->getLoss() + 1);
                 $team_array[$away_name]->setWin($team_array[$away_name]->getWin() + 1);
-                $team_array[$away_name]->setPoint($team_array[$away_name]->getPoint() + 3);
+                $team_array[$away_name]->setPoint($team_array[$away_name]->getPoint() + $points_for_win);
             }
             else {
                 if ($stage == Stage::First) {
@@ -878,13 +881,13 @@
                 else {
                     if ($home_extra_time_score > $away_extra_time_score) {
                         $team_array[$home_name]->setWin($team_array[$home_name]->getWin() + 1);
-                        $team_array[$home_name]->setPoint($team_array[$home_name]->getPoint() + 3);
+                        $team_array[$home_name]->setPoint($team_array[$home_name]->getPoint() + $points_for_win);
                         $team_array[$away_name]->setLoss($team_array[$away_name]->getLoss() + 1);
                     }
                     elseif ($home_extra_time_score < $away_extra_time_score) {
                         $team_array[$home_name]->setLoss($team_array[$home_name]->getLoss() + 1);
                         $team_array[$away_name]->setWin($team_array[$away_name]->getWin() + 1);
-                        $team_array[$away_name]->setPoint($team_array[$away_name]->getPoint() + 3);
+                        $team_array[$away_name]->setPoint($team_array[$away_name]->getPoint() + $points_for_win);
                     }
                     else {
                         $team_array[$home_name]->setDraw($team_array[$home_name]->getDraw() + 1);

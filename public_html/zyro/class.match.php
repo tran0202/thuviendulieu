@@ -923,7 +923,8 @@
         }
 
         public static function isGoldenGoalRule($tournament_id) {
-            return $tournament_id == 8 || $tournament_id == 9;
+            $tournament_profile = Tournament::getTournamentProfile($tournament_id);
+            return $tournament_profile->getGoldenGoalRule() == 1;
         }
 
         /**
