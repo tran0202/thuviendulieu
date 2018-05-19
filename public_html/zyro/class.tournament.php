@@ -165,7 +165,7 @@
         }
 
         public static function getTournamentProfileHtml($tp) {
-            $output = '<img src="/images/wc_logos/'.$tp['logo_filename'].'">'.$tp['name'];
+            $output = '<img src="/images/wc_logos/'.$tp['logo_filename'].'">&nbsp;&nbsp;'.$tp['name'];
             return $output;
         }
 

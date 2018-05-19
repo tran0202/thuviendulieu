@@ -35,6 +35,7 @@
                         <p class="border-bottom-gray5"><img src="images/wc_logos/1998.png"/> <a href="WorldCup?tid=9">France 1998</a></p>
                         <p class="border-bottom-gray5"><img src="images/wc_logos/1994.png"/> <a href="WorldCup?tid=10">USA 1994</a></p>
                         <p class="border-bottom-gray5"><img src="images/wc_logos/1990.png"/> <a href="WorldCup?tid=11">Italy 1990</a></p>
+                        <p class="border-bottom-gray5"><img src="images/wc_logos/1986.png"/> <a href="WorldCup?tid=12">Mexico 1986</a></p>
                     </h5>
                 </div>
                 <div>
