@@ -51,6 +51,12 @@
         public static function getTournamentRanking($team_dto, $match_dto, $stage = Stage::First, $all_time_ranking = false) {
             $matches = $match_dto->getMatches();
             $match_count = sizeof($matches);
+            $group_match_count = 0;
+            for ($i = 0; $i < $match_count; $i++ ) {
+                if ($matches[$i]->getRound() == 'Group Matches') {
+                    $group_match_count++;
+                }
+            }
             $team_array = Team::getTeamArrayByName($team_dto);
             $tmp_array = array();
             foreach ($team_array as $name => $_team) {
@@ -58,9 +64,9 @@
             }
             $result = array();
             $start_index = 0;
-            $end_index = $match_count - 16;
+            $end_index = $group_match_count;
             if ($stage == Stage::Second) {
-                $start_index = $match_count - 16;
+                $start_index = $group_match_count;
                 $end_index = $match_count;
             }
             elseif ($stage == Stage::AllStages) {
@@ -83,6 +89,19 @@
 
         public static function getTournamentSecondRoundRanking($team_dto, $match_dto) {
             $matches = $match_dto->getMatches();
+            $match_count = sizeof($matches);
+            $group_match_count = 0;
+            for ($i = 0; $i < $match_count; $i++ ) {
+                if ($matches[$i]->getRound() == 'Group Matches') {
+                    $group_match_count++;
+                }
+            }
+            $second_round_match_count = 0;
+            for ($i = 0; $i < $match_count; $i++ ) {
+                if ($matches[$i]->getRound() == 'Second Round') {
+                    $second_round_match_count++;
+                }
+            }
             $team_array = Team::getSecondRoundTeamArrayByName($team_dto);
             $tmp_array = array();
             foreach ($team_array as $name => $_team) {
@@ -90,8 +109,8 @@
                 $tmp_array[$_team->getName()] = $tmp_team;
             }
             $result = array();
-            $start_index = 36;
-            $end_index = 48;
+            $start_index = $group_match_count;
+            $end_index = $group_match_count + $second_round_match_count;
 
             for ($i = $start_index; $i < $end_index; $i++ ) {
                 $tmp_array[$matches[$i]->getHomeTeamName()]->setGroupName($matches[$i]->getSecondRoundGroupName());
@@ -102,12 +121,7 @@
                 array_push($result, $_team);
             }
             $result = self::sortGroupStanding($result, $match_dto);
-//            if ($stage <> Stage::AllStages) {
-//                $result = self::sortTournamentStanding($result, $match_dto, $stage);
-//            }
-//            else {
-//                $result = self::sortGroupStanding($result, $match_dto);
-//            }
+
             $team_dto->setSecondRoundTeams($result);
         }
 
@@ -957,6 +971,7 @@
             $tmp_array = array();
             if ($stage <> Stage::First) {
                 $tmp_array[7] = array();
+                $tmp_array[6] = array();
                 $tmp_array[5] = array();
                 $tmp_array[4] = array();
             }

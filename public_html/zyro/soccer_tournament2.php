@@ -6,7 +6,7 @@
     parse_str($_SERVER['QUERY_STRING'], $query_string);
     $tournament_id = 1;
     if (isset($query_string['tid'])) $tournament_id = $query_string['tid'];
-    $tournament_dto = Tournament::getArchiveSoccerTournament2(13);
+    $tournament_dto = Tournament::getArchiveSoccerTournament2($tournament_id);
     $profile = $tournament_dto->getProfile();
     $header = $profile->getHtml();
     $tournament_name = $profile->getName();

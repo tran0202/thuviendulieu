@@ -341,6 +341,25 @@ VALUES (203, 13, 51, 1),
 	(220, 13, 56, 3),
 	(208, 13, 56, 4);
 
+# Argentina 1978
+INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
+VALUES (3, 14, 51, 1),
+	(233, 14, 51, 2),
+	(203, 14, 51, 3),
+	(21, 14, 51, 4),
+	(231, 14, 52, 1),
+	(7, 14, 52, 2),
+	(12, 14, 52, 3),
+	(28, 14, 52, 4),
+	(1, 14, 53, 1),
+	(25, 14, 53, 2),
+	(222, 14, 53, 3),
+	(6, 14, 53, 4),
+	(204, 14, 54, 1),
+	(14, 14, 54, 2),
+	(31, 14, 54, 3),
+	(220, 14, 54, 4);
+
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES 	(53, 2, 31, 1, 29, 1),
 		(36, 2, 31, 2, 29, 2),

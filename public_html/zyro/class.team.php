@@ -312,11 +312,19 @@
                                     <div class="col-sm-1">+/-</div>
                                     <div class="col-sm-1">Pts</div>
                                 </div>';
+            $tmp_match_play = $teams[0]->getMatchPlay();
+            $striped_row = 'ranking-striped';
             for ($i = 0; $i < sizeof($teams); $i++) {
                 $goal_diff = $teams[$i]->getGoalDiff();
                 if ($teams[$i]->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
-                $striped_row = '';
-                if ($teams[$i]->getMatchPlay() == 7 || $teams[$i]->getMatchPlay() == 4) $striped_row = 'ranking-striped';
+                if ($tmp_match_play != $teams[$i]->getMatchPlay()) {
+                    if ($striped_row == 'ranking-striped') {
+                        $striped_row = '';
+                    } else {
+                        $striped_row = 'ranking-striped';
+                    }
+                    $tmp_match_play = $teams[$i]->getMatchPlay();
+                }
                 if ($header == 'All Time Rankings') $striped_row = '';
                     $output .= '<div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md '.$striped_row.'">
                                     <div class="col-sm-1"><img class="flag-md" src="/images/flags/'.$teams[$i]->getFlagFilename().'"></div>
