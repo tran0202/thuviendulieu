@@ -119,7 +119,8 @@ VALUES ('Afghanistan', 'Afghanistan.png', 6, 'AFG'), ('Albania', 'Albania.png', 
 	('Vanuatu', 'Vanuatu.png', 6, 'VAN'), ('Venezuela', 'Venezuela.png', 6, 'VEN'),
 	('Vietnam', 'Vietnam.png', 6, 'VIE'), ('Wales', 'Wales.png', 6, 'WAL'),
 	('Yemen', 'Yemen.png', 6, 'YEM'), ('Zambia', 'Zambia.png', 6, 'ZAM'), ('Zimbabwe', 'Zimbabwe.png', 6, 'ZIM'),
-	('Great Britain', 'Great_Britain.png', 6, 'GBR'), ('Serbia and Montenegro', 'Serbia_and_Montenegro.svg', 6, 'SCG'), ('Yugoslavia', 'yug.png', 6, 'YUG');
+	('Great Britain', 'Great_Britain.png', 6, 'GBR'), ('Serbia and Montenegro', 'Serbia_and_Montenegro.svg', 6, 'SCG'), ('Yugoslavia', 'yug.png', 6, 'YUG'),
+	('Germany FR', 'Germany.png', 6, 'GER'),	('Soviet Union', 'urs.png', 6, 'URS'), ('Czechoslovakia', 'tch.png', 6, 'TCH');
 
 INSERT INTO nation (name, flag_filename, nation_type_id, code)
-VALUES ('Germany FR', 'Germany.png', 6, 'GER'),	('Soviet Union', 'urs.png', 6, 'URS'), ('Czechoslovakia', 'tch.png', 6, 'TCH');
+VALUES ('Germany DR', 'gdr.png', 6, 'GDR'),	('Zaire', 'zai.png', 6, 'ZAI');

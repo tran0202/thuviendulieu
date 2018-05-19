@@ -360,6 +360,25 @@ VALUES (3, 14, 51, 1),
 	(31, 14, 54, 3),
 	(220, 14, 54, 4);
 
+# Germany 1974
+INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
+VALUES (231, 15, 51, 1),
+	(199, 15, 51, 2),
+	(238, 15, 51, 3),
+	(13, 15, 51, 4),
+	(1, 15, 52, 1),
+	(224, 15, 52, 2),
+	(239, 15, 52, 3),
+	(220, 15, 52, 4),
+	(32, 15, 53, 1),
+	(204, 15, 53, 2),
+	(25, 15, 53, 3),
+	(223, 15, 53, 4),
+	(203, 15, 54, 1),
+	(240, 15, 54, 2),
+	(7, 15, 54, 3),
+	(3, 15, 54, 4);
+
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES 	(53, 2, 31, 1, 29, 1),
 		(36, 2, 31, 2, 29, 2),
