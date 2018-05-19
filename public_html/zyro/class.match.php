@@ -31,6 +31,7 @@
         private $points_for_win;
         private $golden_goal_rule;
         private $group_name;
+        private $second_round_group_name;
         private $home_team_seed;
         private $away_team_seed;
         private $home_set1_score;
@@ -64,7 +65,7 @@
             $home_team_id, $home_team_name, $home_team_code, $away_team_id, $away_team_name, $away_team_code,
             $home_parent_team_id, $home_parent_team_name, $away_parent_team_id, $away_parent_team_name,
             $match_date, $match_date_fmt, $match_time, $match_time_fmt,
-            $match_order, $bracket_order, $round, $stage, $group_name, $tournament_id, $points_for_win, $golden_goal_rule,
+            $match_order, $bracket_order, $round, $stage, $group_name, $second_round_group_name, $tournament_id, $points_for_win, $golden_goal_rule,
             $waiting_home_team, $waiting_away_team,
             $home_team_score, $away_team_score,
             $home_team_extra_time_score, $away_team_extra_time_score,
@@ -97,6 +98,7 @@
             $m->round = $round;
             $m->stage = $stage;
             $m->group_name = $group_name;
+            $m->second_round_group_name = $second_round_group_name;
             $m->tournament_id = $tournament_id;
             $m->points_for_win = $points_for_win;
             $m->golden_goal_rule = $golden_goal_rule;
@@ -225,7 +227,7 @@
                     $match = Match::CreateSoccerMatch($row['home_team_id'], $row['home_team_name'], $row['home_team_code'], $row['away_team_id'], $row['away_team_name'], $row['away_team_code'],
                         $row['home_parent_team_id'], $row['home_parent_team_name'], $row['away_parent_team_id'], $row['away_parent_team_name'],
                         $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_time_fmt'],
-                        $row['match_order'], $row['bracket_order'], $row['round'], $row['stage'], $row['group_name'], $row['tournament_id'],
+                        $row['match_order'], $row['bracket_order'], $row['round'], $row['stage'], $row['group_name'], $row['second_round_group_name'], $row['tournament_id'],
                         $row['points_for_win'], $row['golden_goal_rule'], $row['waiting_home_team'], $row['waiting_away_team'],
                         $home_team_score, $away_team_score,
                         $row['home_team_extra_time_score'], $row['away_team_extra_time_score'],
@@ -389,6 +391,7 @@
         }
 
         public static function getSoccerScheduleHtml($match_dto, $first2Matches = false) {
+            $showBracket = self::showBracket($match_dto);
             $bracket_matches = self::getMatchArraySecondStage($match_dto);
             $output = '';
             $output2 = '';
@@ -406,7 +409,7 @@
                                     <div class="card-body">
                                         ';
             $box_height = 120;
-            $gap_heights = array(array(10, 20), array(80, 160), array(220, 440), array(410, 1000), array(10, 2120));
+            $gap_heights = array(array(10, 20), array(80, 160), array(220, 440), array(410, 1000), array(610, 2120));
             $tmp_array = array();
             $tmp_array2 = array();
             foreach ($bracket_matches as $bracket_round => $_bracket_matches) {
@@ -414,8 +417,8 @@
                     array_push($tmp_array, $_bracket_match);
                 }
             }
-            for ($i = 0; $i < 15; $i++) {
-                for ($j = $i+1; $j < 16; $j++) {
+            for ($i = 0; $i < sizeof($tmp_array) - 1; $i++) {
+                for ($j = $i + 1; $j < sizeof($tmp_array); $j++) {
                     if ($tmp_array[$i]->getBracketOrder() >= $tmp_array[$j]->getBracketOrder()) {
                         $tmp_match = $tmp_array[$i];
                         $tmp_array[$i] = $tmp_array[$j];
@@ -423,7 +426,7 @@
                     }
                 }
             }
-            for ($i = 0; $i < 16; $i++) {
+            for ($i = 0; $i < sizeof($tmp_array); $i++) {
                 $tmp_array2[$tmp_array[$i]->getRound()][$tmp_array[$i]->getBracketOrder()] = $tmp_array[$i];
             }
             $bracket_matches = $tmp_array2;
@@ -431,7 +434,12 @@
             $j = 0;
             foreach ($bracket_matches as $bracket_round => $_bracket_matches) {
                 $gap_height = $gap_heights[$i][0];
-                $output .= '<div class="col-sm-3">
+                $third_place_moving = '';
+                if ($bracket_round == 'Third place') {
+                    $third_place_moving = 'style="margin-left:-25%"';
+                    if ($showBracket == 'Semifinals') $third_place_moving = 'style="margin-left:-25%;margin-top:60px;"';
+                }
+                $output .= '<div class="col-sm-3" '.$third_place_moving.'>
                             <div class="col-sm-12" style="height:'.$gap_height.'px;"></div>
                             <div class="col-sm-12 margin-top-sm">
                                 <span class="h2-ff1">'.$bracket_round.'</span>
@@ -487,7 +495,7 @@
                         </div>';
             $matches = self::getMatchArrayByDate($match_dto);
             foreach ($matches as $rounds => $_round) {
-                if ($rounds == 'Round of 16') $output2 .= $output;
+                if ($rounds == $showBracket) $output2 .= $output;
                 $output2 .= '<div class="col-sm-12 h2-ff1 margin-top-md">'.$rounds.'</div>';
                 foreach ($_round as $match_dates => $_matches) {
                     $output2 .= '<div class="col-sm-12 h3-ff3 border-bottom-gray2 margin-top-md">'
@@ -504,15 +512,19 @@
                             $home_flag_tmp = '';
                             $away_flag_tmp = '';
                         }
-                        if ($_match->getStage() == 'First Stage') $group_text = '<a class="link-modal" data-toggle="modal" data-target="#group'.$_match->getGroupName().'StandingModal">
-                                                                                Group '.$_match->getGroupName().'</a>' ;
+                        if ($_match->getStage() == 'First Stage') {
+                            $group_name = $_match->getGroupName();
+                            if ($_match->getRound() == 'Second Round') $group_name = $_match->getSecondRoundGroupName();
+                            $group_text = '<a class="link-modal" data-toggle="modal" data-target="#group'.$group_name.'StandingModal">
+                                                                                Group '.$group_name.'</a>' ;
+                        }
                         $score = 'vs';
                         $penalty_score = '';
                         $aet = ' aet';
                         if (self::isGoldenGoalRule($_match->getGoldenGoalRule()) && $_match->getHomeTeamPenaltyScore() == '') $aet = ' gg';
                         if ($_match->getHomeTeamScore() != -1) {
                             $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
-                            if ($rounds != 'Group Matches' && $_match->getHomeTeamScore() == $_match->getAwayTeamScore()) {
+                            if ($rounds != 'Group Matches' && $rounds != 'Second Round' && $_match->getHomeTeamScore() == $_match->getAwayTeamScore()) {
                                 $score = ($_match->getHomeTeamScore()+$_match->getHomeTeamExtraTimeScore()).'-'.($_match->getAwayTeamScore()+$_match->getAwayTeamExtraTimeScore()).$aet;
                                 if ($_match->getHomeTeamExtraTimeScore() == $_match->getAwayTeamExtraTimeScore()) {
                                     $penalty_score = ' '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore().' pen';
@@ -726,7 +738,7 @@
                         TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order, bracket_order,
                         waiting_home_team, waiting_away_team,
                         g.name AS round, g2.name AS stage,
-                        g3.name AS group_name, m.tournament_id, tou.points_for_win, tou.golden_goal_rule
+                        g3.name AS group_name, g4.name AS second_round_group_name, m.tournament_id, tou.points_for_win, tou.golden_goal_rule
                     FROM `match` m  
                     LEFT JOIN tournament tou ON tou.id = m.tournament_id 
                     LEFT JOIN team t ON t.id = m.home_team_id
@@ -735,6 +747,7 @@
                     LEFT JOIN `group` g2 ON g2.id = m.stage_id
                     LEFT JOIN team_tournament tt ON (tt.team_id = m.home_team_id AND tt.tournament_id = m.tournament_id)
                     LEFT JOIN `group` g3 ON g3.id = tt.group_id 
+                    LEFT JOIN `group` g4 ON g4.id = m.group_id
                     LEFT JOIN nation n ON n.id = t.nation_id  
                     LEFT JOIN nation n2 ON n2.id = t2.nation_id  
                     LEFT JOIN team pt ON pt.id = t.parent_team_id 
@@ -753,7 +766,7 @@
                         TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order, bracket_order,
                         waiting_home_team, waiting_away_team,
                         g.name AS round, g2.name AS stage,
-                        g3.name AS group_name, m.tournament_id, tou.points_for_win, tou.golden_goal_rule
+                        g3.name AS group_name, g4.name AS second_round_group_name, m.tournament_id, tou.points_for_win, tou.golden_goal_rule
                     FROM `match` m  
                     LEFT JOIN tournament tou ON tou.id = m.tournament_id 
                     LEFT JOIN team t ON t.id = m.home_team_id
@@ -762,12 +775,13 @@
                     LEFT JOIN `group` g2 ON g2.id = m.stage_id
                     LEFT JOIN team_tournament tt ON (tt.team_id = m.home_team_id AND tt.tournament_id = m.tournament_id)
                     LEFT JOIN `group` g3 ON g3.id = tt.group_id 
+                    LEFT JOIN `group` g4 ON g4.id = m.group_id
                     LEFT JOIN nation n ON n.id = t.nation_id  
                     LEFT JOIN nation n2 ON n2.id = t2.nation_id  
                     LEFT JOIN team pt ON pt.id = t.parent_team_id 
                     LEFT JOIN team pt2 ON pt2.id = t2.parent_team_id
                     WHERE tou.tournament_type_id = 1
-                    AND m.tournament_id <> 1';
+                    AND m.tournament_id <> 1;';
             return $sql;
         }
 
@@ -823,11 +837,13 @@
             $matches = $match_dto->getMatches();
             $match_count = sizeof($matches);
             $result = array();
-            $tmp_match = $matches[$match_count-2];
-            $matches[$match_count-2] = $matches[$match_count-1];
-            $matches[$match_count-1] = $tmp_match;
-            for ($i = $match_count-16; $i < $match_count; $i++) {
-                $result[$matches[$i]->getRound()][$matches[$i]->getMatchOrder()] = $matches[$i];
+            $tmp_match = $matches[$match_count - 2];
+            $matches[$match_count - 2] = $matches[$match_count - 1];
+            $matches[$match_count - 1] = $tmp_match;
+            for ($i = $match_count - 16; $i < $match_count; $i++) {
+                if ($matches[$i]->getStage() == 'Second Stage') {
+                    $result[$matches[$i]->getRound()][$matches[$i]->getMatchOrder()] = $matches[$i];
+                }
             }
             return $result;
         }
@@ -946,6 +962,13 @@
 
         public static function isGoldenGoalRule($golden_goal_rule) {
             return $golden_goal_rule == 1;
+        }
+
+        public static function showBracket($match_dto) {
+            $matches = $match_dto->getMatches();
+            $where = 'Round of 16';
+            if ($matches[0]->getTournamentId() == 13) $where = 'Semifinals';
+            return $where;
         }
 
         /**
@@ -1426,6 +1449,22 @@
         public function setGroupName($group_name)
         {
             $this->group_name = $group_name;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getSecondRoundGroupName()
+        {
+            return $this->second_round_group_name;
+        }
+
+        /**
+         * @param mixed $second_round_group_name
+         */
+        public function setSecondRoundGroupName($second_round_group_name)
+        {
+            $this->second_round_group_name = $second_round_group_name;
         }
 
         /**

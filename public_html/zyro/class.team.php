@@ -102,19 +102,23 @@
             $query->execute();
             $count = $query->rowCount();
             $teams = array();
+            $second_round_teams = array();
             $output = '<!-- Team Count = '.$count.' -->';
 
             if ($count == 0) {
                 $output = '<h2>No result found!</h2>';
-                return TeamDTO::CreateSoccerTeamDTO(null, $count, $output);
+                return TeamDTO::CreateSoccerTeamDTO(null, null, $count, $output);
             }
             else {
                 while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
                     $team = Team::CreateSoccerTeam($row['team_id'], $row['name'], $row['code'],
                         $row['group_name'], $row['group_order'], $row['flag_filename']);
                     array_push($teams, $team);
+                    $second_round_team = Team::CreateSoccerTeam($row['team_id'], $row['name'], $row['code'],
+                        null, $row['group_order'], $row['flag_filename']);
+                    array_push($second_round_teams, $second_round_team);
                 }
-                return TeamDTO::CreateSoccerTeamDTO($teams, $count, $output);
+                return TeamDTO::CreateSoccerTeamDTO($teams, $second_round_teams, $count, $output);
             }
         }
 
@@ -128,7 +132,7 @@
 
             if ($count == 0) {
                 $output = '<h2>No result found!</h2>';
-                return TeamDTO::CreateSoccerTeamDTO(null, $count, $output);
+                return TeamDTO::CreateSoccerTeamDTO(null, null, $count, $output);
             }
             else {
                 while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
@@ -136,7 +140,7 @@
                         '', '', $row['flag_filename']);
                     array_push($teams, $team);
                 }
-                return TeamDTO::CreateSoccerTeamDTO($teams, $count, $output);
+                return TeamDTO::CreateSoccerTeamDTO($teams, null, $count, $output);
             }
         }
 
@@ -437,11 +441,24 @@
             return $result;
         }
 
+        public static function getSecondRoundTeamArrayByName($team_dto) {
+            $teams = $team_dto->getSecondRoundTeams();
+            $result = array();
+            for ($i = 0; $i < sizeof($teams); $i++) {
+                $result[$teams[$i]->getName()] = $teams[$i];
+            }
+            return $result;
+        }
+
         public static function getTeamArrayByGroup($team_dto) {
             $teams = $team_dto->getTeams();
             $result = array();
             for ($i = 0; $i < sizeof($teams); $i++) {
                 $result[$teams[$i]->getGroupName()][$teams[$i]->getGroupOrder()] = $teams[$i];
+            }
+            $second_round_teams = $team_dto->getSecondRoundTeams();
+            for ($i = 0; $i < sizeof($second_round_teams); $i++) {
+                $result[$second_round_teams[$i]->getGroupName()][$second_round_teams[$i]->getName()] = $second_round_teams[$i];
             }
             return $result;
         }
@@ -783,14 +800,16 @@
 
     class TeamDTO {
         private $teams;
+        private $second_round_teams;
         private $count;
         private $html;
 
         protected function __construct(){ }
 
-        public static function CreateSoccerTeamDTO($teams, $count, $html) {
+        public static function CreateSoccerTeamDTO($teams, $second_round_teams, $count, $html) {
             $team_dto = new TeamDTO();
             $team_dto->teams = $teams;
+            $team_dto->second_round_teams = $second_round_teams;
             $team_dto->count = $count;
             $team_dto->html = $html;
             return $team_dto;
@@ -818,6 +837,22 @@
         public function setTeams($teams)
         {
             $this->teams = $teams;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getSecondRoundTeams()
+        {
+            return $this->second_round_teams;
+        }
+
+        /**
+         * @param mixed $second_round_teams
+         */
+        public function setSecondRoundTeams($second_round_teams)
+        {
+            $this->second_round_teams = $second_round_teams;
         }
 
         /**

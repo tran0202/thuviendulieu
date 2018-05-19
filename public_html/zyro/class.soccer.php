@@ -58,9 +58,9 @@
             }
             $result = array();
             $start_index = 0;
-            $end_index = $match_count-16;
+            $end_index = $match_count - 16;
             if ($stage == Stage::Second) {
-                $start_index = $match_count-16;
+                $start_index = $match_count - 16;
                 $end_index = $match_count;
             }
             elseif ($stage == Stage::AllStages) {
@@ -79,6 +79,36 @@
                 $result = self::sortGroupStanding($result, $match_dto);
             }
             $team_dto->setTeams($result);
+        }
+
+        public static function getTournamentSecondRoundRanking($team_dto, $match_dto) {
+            $matches = $match_dto->getMatches();
+            $team_array = Team::getSecondRoundTeamArrayByName($team_dto);
+            $tmp_array = array();
+            foreach ($team_array as $name => $_team) {
+                $tmp_team = Team::copySoccerTeam($_team);
+                $tmp_array[$_team->getName()] = $tmp_team;
+            }
+            $result = array();
+            $start_index = 36;
+            $end_index = 48;
+
+            for ($i = $start_index; $i < $end_index; $i++ ) {
+                $tmp_array[$matches[$i]->getHomeTeamName()]->setGroupName($matches[$i]->getSecondRoundGroupName());
+                $tmp_array[$matches[$i]->getAwayTeamName()]->setGroupName($matches[$i]->getSecondRoundGroupName());
+                self::calculatePoint($tmp_array, $matches[$i]);
+            }
+            foreach ($tmp_array as $name => $_team) {
+                array_push($result, $_team);
+            }
+            $result = self::sortGroupStanding($result, $match_dto);
+//            if ($stage <> Stage::AllStages) {
+//                $result = self::sortTournamentStanding($result, $match_dto, $stage);
+//            }
+//            else {
+//                $result = self::sortGroupStanding($result, $match_dto);
+//            }
+            $team_dto->setSecondRoundTeams($result);
         }
 
         public static function calculateScenarios($team_dto, $match_dto) {
