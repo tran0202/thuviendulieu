@@ -973,6 +973,9 @@
                 case 16:
                     $where = 'Quarterfinals';
                     break;
+                case 17:
+                    $where = 'Quarterfinals';
+                    break;
                 default:
                     $where = 'Round of 16';
             }

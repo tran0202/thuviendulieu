@@ -398,6 +398,25 @@ VALUES (28, 16, 51, 1),
 	(231, 16, 54, 3),
 	(9, 16, 54, 4);
 
+# England 1966
+INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
+VALUES (20, 17, 51, 1),
+	(32, 17, 51, 2),
+	(21, 17, 51, 3),
+	(28, 17, 51, 4),
+	(231, 17, 52, 1),
+	(26, 17, 52, 2),
+	(3, 17, 52, 3),
+	(6, 17, 52, 4),
+	(1, 17, 53, 1),
+	(223, 17, 53, 2),
+	(4, 17, 53, 3),
+	(233, 17, 53, 4),
+	(228, 17, 54, 1),
+	(210, 17, 54, 2),
+	(203, 17, 54, 3),
+	(199, 17, 54, 4);
+
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES 	(53, 2, 31, 1, 29, 1),
 		(36, 2, 31, 2, 29, 2),
