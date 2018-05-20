@@ -42,6 +42,7 @@
                         <p class="border-bottom-gray5"><img src="images/wc_logos/1970.png"/> <a href="WorldCup?tid=16">Mexico 1970</a></p>
                         <p class="border-bottom-gray5"><img src="images/wc_logos/1966.png"/> <a href="WorldCup?tid=17">England 1966</a></p>
                         <p class="border-bottom-gray5"><img src="images/wc_logos/1962.png"/> <a href="WorldCup?tid=18">Chile 1962</a></p>
+                        <p class="border-bottom-gray5"><img src="images/wc_logos/1958.png"/> <a href="WorldCup2?tid=19">Sweden 1958</a></p>
                     </h5>
                 </div>
                 <div>

@@ -436,6 +436,25 @@ VALUES (32, 18, 51, 1),
 	(3, 18, 54, 3),
 	(223, 18, 54, 4);
 
+# Sweden 1958
+INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
+VALUES (3, 19, 51, 1),
+	(231, 19, 51, 2),
+	(234, 19, 51, 3),
+	(230, 19, 51, 4),
+	(21, 19, 52, 1),
+	(207, 19, 52, 2),
+	(224, 19, 52, 3),
+	(220, 19, 52, 4),
+	(25, 19, 53, 1),
+	(28, 19, 53, 2),
+	(233, 19, 53, 3),
+	(243, 19, 53, 4),
+	(228, 19, 54, 1),
+	(20, 19, 54, 2),
+	(1, 19, 54, 3),
+	(222, 19, 54, 4);
+
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES 	(53, 2, 31, 1, 29, 1),
 		(36, 2, 31, 2, 29, 2),
