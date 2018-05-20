@@ -967,10 +967,12 @@
         }
 
         public static function sortTournamentStanding($team_array, $match_dto, $stage = Stage::First) {
+            $max_team_match = 7;
+            if ($match_dto->getMatches()[0]->getTournamentId() >= 15) $max_team_match = 6;
             $match_count = sizeof($match_dto->getMatches());
             $tmp_array = array();
             if ($stage <> Stage::First) {
-                $tmp_array[7] = array();
+                $tmp_array[$max_team_match] = array();
                 $tmp_array[6] = array();
                 $tmp_array[5] = array();
                 $tmp_array[4] = array();
@@ -981,7 +983,7 @@
                 $tmp_array[$team_array[$i]->getMatchPlay()][$team_array[$i]->getName()] = $team_array[$i];
             }
             foreach ($tmp_array as $mp => $teams) {
-                if ($mp < 7) {
+                if ($mp < $max_team_match) {
                     $tmp_array3 = array();
                     foreach ($teams as $t_name => $team) {
                         array_push($tmp_array3, $team);
@@ -1029,10 +1031,10 @@
                             }
                         }
                     }
-                    array_push($tmp_array2, $tmp_array[7][$champion_name]);
-                    array_push($tmp_array2, $tmp_array[7][$runner_up_name]);
-                    array_push($tmp_array2, $tmp_array[7][$third_place_name]);
-                    array_push($tmp_array2, $tmp_array[7][$fourth_place_name]);
+                    array_push($tmp_array2, $tmp_array[$max_team_match][$champion_name]);
+                    array_push($tmp_array2, $tmp_array[$max_team_match][$runner_up_name]);
+                    array_push($tmp_array2, $tmp_array[$max_team_match][$third_place_name]);
+                    array_push($tmp_array2, $tmp_array[$max_team_match][$fourth_place_name]);
                 }
             }
             return $tmp_array2;

@@ -966,8 +966,16 @@
 
         public static function showBracket($match_dto) {
             $matches = $match_dto->getMatches();
-            $where = 'Round of 16';
-            if ($matches[0]->getTournamentId() == 13) $where = 'Semifinals';
+            switch ($matches[0]->getTournamentId()) {
+                case 13:
+                    $where = 'Semifinals';
+                    break;
+                case 16:
+                    $where = 'Quarterfinals';
+                    break;
+                default:
+                    $where = 'Round of 16';
+            }
             return $where;
         }
 

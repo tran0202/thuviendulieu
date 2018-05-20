@@ -379,6 +379,25 @@ VALUES (231, 15, 51, 1),
 	(7, 15, 54, 3),
 	(3, 15, 54, 4);
 
+# Mexico 1970
+INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
+VALUES (28, 16, 51, 1),
+	(228, 16, 51, 2),
+	(5, 16, 51, 3),
+	(236, 16, 51, 4),
+	(32, 16, 52, 1),
+	(242, 16, 52, 2),
+	(203, 16, 52, 3),
+	(25, 16, 52, 4),
+	(20, 16, 53, 1),
+	(226, 16, 53, 2),
+	(1, 16, 53, 3),
+	(230, 16, 53, 4),
+	(31, 16, 54, 1),
+	(223, 16, 54, 2),
+	(231, 16, 54, 3),
+	(9, 16, 54, 4);
+
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES 	(53, 2, 31, 1, 29, 1),
 		(36, 2, 31, 2, 29, 2),

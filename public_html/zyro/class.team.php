@@ -136,7 +136,7 @@
             }
             else {
                 while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                    $team = Team::CreateSoccerTeam($row['team_id'], $row['name'], $row['code'],
+                    $team = Team::CreateSoccerTeam($row['id'], $row['name'], $row['code'],
                         '', '', $row['flag_filename']);
                     array_push($teams, $team);
                 }
@@ -405,11 +405,22 @@
         }
 
         public static function getAllTimeSoccerTeamSql() {
-            $sql = 'SELECT DISTINCT UCASE(t.name) AS name, team_id, 
+            $sql = 'SELECT DISTINCT UCASE(t.name) AS name, t.id,
+                        n.flag_filename, n.code
+                    FROM team t
+                    LEFT JOIN team_tournament tt ON tt.team_id = t.id
+                    LEFT JOIN tournament tou ON tou.id = tt.tournament_id
+                    LEFT JOIN `group` g ON g.id = tt.group_id
+                    LEFT JOIN nation n ON n.id = t.nation_id
+                    WHERE tou.tournament_type_id = 1
+                    AND tt.tournament_id <> 1
+                    UNION
+                    SELECT DISTINCT UCASE(t.name) AS name, t.id, 
                         n.flag_filename, n.code 
-                    FROM team_tournament tt  
+                    FROM team t  
+                    LEFT OUTER JOIN team t2 ON t2.parent_team_id = t.id
+                    LEFT JOIN team_tournament tt ON tt.team_id = t2.id
                     LEFT JOIN tournament tou ON tou.id = tt.tournament_id 
-                    LEFT JOIN team t ON t.id = tt.team_id 
                     LEFT JOIN `group` g ON g.id = tt.group_id  
                     LEFT JOIN nation n ON n.id = t.nation_id 
                     WHERE tou.tournament_type_id = 1
