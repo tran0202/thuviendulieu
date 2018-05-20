@@ -417,6 +417,25 @@ VALUES (20, 17, 51, 1),
 	(203, 17, 54, 3),
 	(199, 17, 54, 4);
 
+# Chile 1962
+INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
+VALUES (32, 18, 51, 1),
+	(30, 18, 51, 2),
+	(228, 18, 51, 3),
+	(224, 18, 51, 4),
+	(203, 18, 52, 1),
+	(231, 18, 52, 2),
+	(199, 18, 52, 3),
+	(26, 18, 52, 4),
+	(1, 18, 53, 1),
+	(28, 18, 53, 2),
+	(230, 18, 53, 3),
+	(6, 18, 53, 4),
+	(20, 18, 54, 1),
+	(233, 18, 54, 2),
+	(3, 18, 54, 3),
+	(223, 18, 54, 4);
+
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES 	(53, 2, 31, 1, 29, 1),
 		(36, 2, 31, 2, 29, 2),
