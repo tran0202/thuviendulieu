@@ -1390,6 +1390,9 @@
                 case ($matches[0]->getTournamentId() == 20):
                     $max = 5;
                     break;
+                case ($matches[0]->getTournamentId() == 21):
+                    $max = 6;
+                    break;
                 default:
                     $max = 7;
                     break;

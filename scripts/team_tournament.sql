@@ -474,6 +474,22 @@ VALUES (1, 20, 51, 1),
 	(26, 20, 54, 3),
 	(203, 20, 54, 4);
 
+# Brazil 1950
+INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
+VALUES (1, 21, 51, 1),
+	(224, 21, 51, 2),
+	(26, 21, 51, 3),
+	(28, 21, 51, 4),
+	(6, 21, 52, 1),
+	(199, 21, 52, 2),
+	(20, 21, 52, 3),
+	(198, 21, 52, 4),
+	(25, 21, 53, 1),
+	(203, 21, 53, 2),
+	(207, 21, 53, 3),
+	(32, 21, 54, 1),
+	(227, 21, 54, 2);
+
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES 	(53, 2, 31, 1, 29, 1),
 		(36, 2, 31, 2, 29, 2),

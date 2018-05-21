@@ -524,7 +524,7 @@
                         if (self::isGoldenGoalRule($_match->getGoldenGoalRule()) && $_match->getHomeTeamPenaltyScore() == '') $aet = ' gg';
                         if ($_match->getHomeTeamScore() != -1) {
                             $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
-                            if ($rounds != 'Group Matches' && $rounds != 'Second Round' && $_match->getHomeTeamScore() == $_match->getAwayTeamScore()) {
+                            if ($rounds != 'Group Matches' && $rounds != 'Second Round' && $rounds != 'Final Round' && $_match->getHomeTeamScore() == $_match->getAwayTeamScore()) {
                                 $score = ($_match->getHomeTeamScore()+$_match->getHomeTeamExtraTimeScore()).'-'.($_match->getAwayTeamScore()+$_match->getAwayTeamExtraTimeScore()).$aet;
                                 if ($_match->getHomeTeamExtraTimeScore() == $_match->getAwayTeamExtraTimeScore()) {
                                     $penalty_score = ' '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore().' pen';

@@ -44,10 +44,11 @@ VALUES ('First Stage', 4),
 	('Quarterfinals', 5),
 	('Semifinals', 5),
 	('Third place', 5),
-	('Final', 5);
+	('Final', 5),
+	('Play-off', 5);
 
 INSERT INTO `group` (name, group_type_id)
-VALUES ('Play-off', 5);
+VALUES ('Final Round', 5);
 
 INSERT INTO `group` (name, long_name, group_type_id)
 VALUES ('First Round', 'Round of 128', 5),
