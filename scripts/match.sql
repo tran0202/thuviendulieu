@@ -974,6 +974,39 @@ VALUES	(228, 1, null, null, 20, 0, null, null, 19, '1958-06-17', '190000', 25, 5
 	(21, 6, null, null, 231, 3, null, null, 19, '1958-06-28', '170000', 34, 45, 40, 32),
 	(1, 5, null, null, 25, 2, null, null, 19, '1958-06-29', '150000', 35, 46, 40, 31);
 
+# Switzerland 1954
+INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id)
+VALUES (32, 2, 230, 0, 20, '1954-06-16', '180000', 1, 41, 39),
+	(222, 1, 220, 0, 20, '1954-06-16', '180000', 2, 41, 39),
+	(1, 5, 28, 0, 20, '1954-06-16', '180000', 3, 41, 39),
+	(224, 1, 21, 0, 20, '1954-06-16', '180000', 4, 41, 39),
+	(231, 4, 218, 1, 20, '1954-06-17', '180000', 5, 41, 39),
+	(233, 9, 16, 0, 20, '1954-06-17', '180000', 6, 41, 39),
+	(20, 4, 5, 4, 20, '1954-06-17', '180000', 7, 41, 39),
+	(26, 2, 203, 1, 20, '1954-06-17', '180000', 8, 41, 39),
+	(32, 7, 220, 0, 20, '1954-06-19', '165000', 9, 41, 39),
+	(222, 5, 230, 0, 20, '1954-06-19', '170000', 10, 41, 39),
+	(21, 3, 28, 2, 20, '1954-06-19', '170000', 11, 41, 39),
+	(1, 1, 224, 1, 20, '1954-06-19', '170000', 12, 41, 39),
+	(233, 8, 231, 3, 20, '1954-06-20', '165000', 13, 41, 39),
+	(218, 7, 16, 0, 20, '1954-06-20', '170000', 14, 41, 39),
+	(20, 2, 26, 0, 20, '1954-06-20', '170000', 15, 41, 39),
+	(203, 4, 5, 1, 20, '1954-06-20', '170000', 16, 41, 39);
+
+INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
+					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
+					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
+VALUES	(231, 7, null, null, 218, 2, null, null, 20, '1954-06-23', '180000', 17, 57, 39, null),
+	(26, 4, null, null, 203, 1, null, null, 20, '1954-06-23', '180000', 18, 57, 39, null),
+	(32, 4, null, null, 20, 2, null, null, 20, '1954-06-26', '170000', 19, 43, 40, 22),
+	(222, 7, null, null, 26, 5, null, null, 20, '1954-06-26', '170000', 20, 43, 40, 20),
+	(231, 2, null, null, 224, 0, null, null, 20, '1954-06-27', '170000', 21, 43, 40, 19),
+	(233, 4, null, null, 1, 2, null, null, 20, '1954-06-27', '170000', 22, 43, 40, 21),
+	(231, 6, null, null, 222, 1, null, null, 20, '1954-06-30', '180000', 23, 44, 40, 23),
+	(233, 2, 2, null, 32, 2, 0, null, 20, '1954-06-30', '180000', 24, 44, 40, 24),
+	(222, 3, null, null, 32, 1, null, null, 20, '1954-07-03', '170000', 25, 45, 40, 26),
+	(231, 3, null, null, 233, 2, null, null, 20, '1954-07-04', '170000', 26, 46, 40, 25);
+
 INSERT INTO `match` (home_team_id, away_team_id, tournament_id, match_date, match_order, round_id,
 	home_set1_score, away_set1_score, home_set1_tiebreak, away_set1_tiebreak,
 	home_set2_score, away_set2_score, home_set2_tiebreak, away_set2_tiebreak,

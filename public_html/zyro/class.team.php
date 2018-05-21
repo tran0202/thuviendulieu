@@ -11,6 +11,7 @@
         private $parent_group_order;
         private $flag_filename;
         private $logo_filename;
+        private $best_finish;
         private $match_play;
         private $win;
         private $draw;
@@ -312,18 +313,18 @@
                                     <div class="col-sm-1">+/-</div>
                                     <div class="col-sm-1">Pts</div>
                                 </div>';
-            $tmp_match_play = $teams[0]->getMatchPlay();
+            $tmp_x = $teams[0]->getMatchPlay();
             $striped_row = 'ranking-striped';
             for ($i = 0; $i < sizeof($teams); $i++) {
                 $goal_diff = $teams[$i]->getGoalDiff();
-                if ($teams[$i]->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
-                if ($tmp_match_play != $teams[$i]->getMatchPlay()) {
+                if ($teams[$i]->getMatchPlay() > 0) $goal_diff = '+'.$goal_diff;
+                if ($tmp_x != $teams[$i]->getMatchPlay()) { //} && $teams[$i]->getMatchPlay() < Finish::Semifinal) {
                     if ($striped_row == 'ranking-striped') {
                         $striped_row = '';
                     } else {
                         $striped_row = 'ranking-striped';
                     }
-                    $tmp_match_play = $teams[$i]->getMatchPlay();
+                    $tmp_x = $teams[$i]->getMatchPlay();
                 }
                 if ($header == 'All Time Rankings') $striped_row = '';
                     $output .= '<div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md '.$striped_row.'">
@@ -670,6 +671,22 @@
         public function setLogoFilename($logo_filename)
         {
             $this->logo_filename = $logo_filename;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getBestFinish()
+        {
+            return $this->best_finish;
+        }
+
+        /**
+         * @param mixed $best_finish
+         */
+        public function setBestFinish($best_finish)
+        {
+            $this->best_finish = $best_finish;
         }
 
         /**
@@ -1580,4 +1597,15 @@
         {
             $this->note = $note;
         }
+    }
+
+    abstract class Finish {
+        const Group = 1;
+        const SecondRound = 2;
+        const Round16 = 3;
+        const Quarterfinal = 4;
+        const Semifinal = 5;
+        const ThirdPlace = 6;
+        const RunnerUp = 7;
+        const Champion = 8;
     }

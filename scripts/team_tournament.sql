@@ -455,6 +455,25 @@ VALUES (3, 19, 51, 1),
 	(1, 19, 54, 3),
 	(222, 19, 54, 4);
 
+# Switzerland 1954
+INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
+VALUES (1, 20, 51, 1),
+	(28, 20, 51, 2),
+	(224, 20, 51, 3),
+	(21, 20, 51, 4),
+	(231, 20, 52, 1),
+	(218, 20, 52, 2),
+	(233, 20, 52, 3),
+	(16, 20, 52, 4),
+	(32, 20, 53, 1),
+	(230, 20, 53, 2),
+	(222, 20, 53, 3),
+	(220, 20, 53, 4),
+	(20, 20, 54, 1),
+	(5, 20, 54, 2),
+	(26, 20, 54, 3),
+	(203, 20, 54, 4);
+
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES 	(53, 2, 31, 1, 29, 1),
 		(36, 2, 31, 2, 29, 2),

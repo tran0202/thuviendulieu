@@ -833,6 +833,15 @@
             return $result;
         }
 
+        public static function getMatchArrayByStageRound($match_dto) {
+            $matches = $match_dto->getMatches();
+            $result = array();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                $result[$matches[$i]->getStage()][$matches[$i]->getRound()][$matches[$i]->getMatchOrder()] = $matches[$i];
+            }
+            return $result;
+        }
+
         public static function getMatchArraySecondStage($match_dto) {
             $matches = $match_dto->getMatches();
             $match_count = sizeof($matches);
@@ -971,7 +980,7 @@
                 case ($matches[0]->getTournamentId() == 13):
                     $where = 'Semifinals';
                     break;
-                case ($matches[0]->getTournamentId() >= 16 && $matches[0]->getTournamentId() <= 19):
+                case ($matches[0]->getTournamentId() >= 16 && $matches[0]->getTournamentId() <= 20):
                     $where = 'Quarterfinals';
                     break;
                 default:
