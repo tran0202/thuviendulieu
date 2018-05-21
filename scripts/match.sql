@@ -1034,6 +1034,29 @@ VALUES (32, 2, 6, 2, 21, '1950-07-09', '150000', 17, 58, 39, 56),
 	(25, 3, 6, 1, 21, '1950-07-16', '150000', 21, 58, 39, 56),
 	(32, 2, 1, 1, 21, '1950-07-16', '150000', 22, 58, 39, 56);
 
+# France 1938
+INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
+					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
+					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
+VALUES	(26, 1, null, null, 2, 1, null, null, 22, '1938-06-04', '170000', 1, 47, 40, 6),
+	(233, 6, null, null, 244, 0, null, null, 22, '1938-06-05', '170000', 2, 47, 40, 5),
+	(21, 3, null, null, 5, 1, null, null, 22, '1938-06-05', '170000', 3, 47, 40, 2),
+	(246, 3, null, null, 226, 3, null, null, 22, '1938-06-05', '170000', 4, 47, 40, 8),
+	(203, 1, 1, null, 221, 1, 0, null, 22, '1938-06-05', '170000', 5, 47, 40, 1),
+	(1, 4, 2, null, 7, 2, 1, null, 22, '1938-06-05', '173000', 6, 47, 40, 3),
+	(230, 0, 3, null, 204, 0, 0, null, 22, '1938-06-05', '183000', 7, 47, 40, 4),
+	(246, 2, null, null, 226, 1, null, null, 22, '1938-06-09', '180000', 8, 59, 40, 9),
+	(26, 4, null, null, 2, 2, null, null, 22, '1938-06-09', '180000', 9, 59, 40, 7),
+	(1, 1, null, null, 230, 1, null, null, 22, '1938-06-12', '170000', 10, 43, 40, 11),
+	(233, 2, null, null, 26, 0, null, null, 22, '1938-06-12', '170000', 11, 43, 40, 13),
+	(25, 8, null, null, 246, 0, null, null, 22, '1938-06-12', '170000', 12, 43, 40, 14),
+	(203, 3, null, null, 21, 1, null, null, 22, '1938-06-12', '170000', 13, 43, 40, 10),
+	(1, 2, null, null, 230, 1, null, null, 22, '1938-06-14', '180000', 14, 59, 40, 12),
+	(233, 5, null, null, 25, 0, null, null, 22, '1938-06-16', '180000', 15, 44, 40, 16),
+	(203, 2, null, null, 1, 1, null, null, 22, '1938-06-18', '180000', 16, 44, 40, 15),
+	(1, 4, null, null, 25, 2, null, null, 22, '1938-06-19', '170000', 17, 45, 40, 18),
+	(203, 4, null, null, 233, 2, null, null, 22, '1938-06-19', '170000', 18, 46, 40, 17);
+
 INSERT INTO `match` (home_team_id, away_team_id, tournament_id, match_date, match_order, round_id,
 	home_set1_score, away_set1_score, home_set1_tiebreak, away_set1_tiebreak,
 	home_set2_score, away_set2_score, home_set2_tiebreak, away_set2_tiebreak,

@@ -83,9 +83,10 @@ VALUES ('Algeria', 1, 3), ('Cameroon', 1, 35), ('Ghana', 1, 77), ('Côte d''Ivoi
 	('Soviet Union', 1, 216), ('United Arab Emirates', 1, 200), ('Czechoslovakia', 1, 217), ('Germany FR', 1, 215),
 	('Canada', 1, 36), ('Hungary', 1, 89), ('Northern Ireland', 1, 141), ('Iraq', 1, 94),
 	('El Salvador', 1, 62), ('Kuwait', 1, 105),
-	('Germany DR', 1, 218), ('Zaire', 1, 219), ('Haiti', 1, 86), ('Congo DR', 1, 47), ('Israel', 1, 95);
+	('Germany DR', 1, 218), ('Zaire', 1, 219), ('Haiti', 1, 86), ('Congo DR', 1, 47), ('Israel', 1, 95), ('Wales', 1, 208),
+	('Dutch East Indies', 1, 220), ('Indonesia', 1, 92);
 
 INSERT INTO team (name, team_type_id, nation_id)
-VALUES ('Wales', 1, 208);
+VALUES ('Cuba', 1, 52);
 
 DROP TRIGGER before_insert_team;
