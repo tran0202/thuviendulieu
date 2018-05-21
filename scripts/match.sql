@@ -1057,6 +1057,51 @@ VALUES	(26, 1, null, null, 2, 1, null, null, 22, '1938-06-04', '170000', 1, 47, 
 	(1, 4, null, null, 25, 2, null, null, 22, '1938-06-19', '170000', 17, 45, 40, 18),
 	(203, 4, null, null, 233, 2, null, null, 22, '1938-06-19', '170000', 18, 46, 40, 17);
 
+# Italy 1934
+INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
+					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
+					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
+VALUES	(222, 1, 2, null, 21, 1, 1, null, 23, '1934-05-27', '163000', 1, 60, 40, 6),
+	(233, 4, null, null, 8, 2, null, null, 23, '1934-05-27', '163000', 2, 60, 40, 5),
+	(26, 3, null, null, 204, 2, null, null, 23, '1934-05-27', '163000', 3, 60, 40, 2),
+	(25, 3, null, null, 3, 2, null, null, 23, '1934-05-27', '163000', 4, 60, 40, 8),
+	(2, 5, null, null, 5, 2, null, null, 23, '1934-05-27', '163000', 5, 60, 40, 1),
+	(6, 3, null, null, 1, 1, null, null, 23, '1934-05-27', '163000', 6, 60, 40, 3),
+	(203, 7, null, null, 198, 1, null, null, 23, '1934-05-27', '163000', 7, 60, 40, 4),
+	(230, 2, null, null, 226, 1, null, null, 23, '1934-05-27', '163000', 8, 60, 40, 9),
+	(230, 3, null, null, 26, 2, null, null, 23, '1934-05-31', '163000', 9, 43, 40, 7),
+	(2, 2, null, null, 25, 1, null, null, 23, '1934-05-31', '163000', 10, 43, 40, 11),
+	(203, 1, null, null, 6, 1, null, null, 23, '1934-05-31', '163000', 11, 43, 40, 13),
+	(222, 2, null, null, 233, 1, null, null, 23, '1934-05-31', '163000', 12, 43, 40, 14),
+	(203, 1, null, null, 6, 0, null, null, 23, '1934-06-01', '163000', 13, 59, 40, 10),
+	(203, 1, null, null, 222, 0, null, null, 23, '1934-06-03', '163000', 14, 44, 40, 12),
+	(230, 3, null, null, 2, 1, null, null, 23, '1934-06-03', '163000', 15, 44, 40, 16);
+
+# Uruguay 1930
+INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id)
+VALUES (21, 4, 28, 1, 24, '1930-07-13', '150000', 1, 41, 39),
+	(198, 3, 5, 0, 24, '1930-07-13', '150000', 2, 41, 39),
+	(224, 2, 1, 1, 24, '1930-07-14', '124500', 3, 41, 39),
+	(226, 3, 31, 1, 24, '1930-07-14', '145000', 4, 41, 39),
+	(3, 1, 21, 0, 24, '1930-07-15', '160000', 5, 41, 39),
+	(199, 3, 28, 0, 24, '1930-07-16', '144500', 6, 41, 39),
+	(224, 4, 227, 0, 24, '1930-07-17', '124500', 7, 41, 39),
+	(198, 3, 207, 0, 24, '1930-07-17', '144500', 8, 41, 39),
+	(32, 1, 31, 0, 24, '1930-07-18', '143000', 9, 41, 39),
+	(199, 0, 21, 0, 24, '1930-07-19', '125000', 10, 41, 39),
+	(3, 6, 28, 3, 24, '1930-07-19', '150000', 11, 41, 39),
+	(1, 4, 227, 0, 24, '1930-07-20', '130000', 12, 41, 39),
+	(207, 1, 5, 0, 24, '1930-07-20', '150000', 13, 41, 39),
+	(32, 4, 226, 0, 24, '1930-07-21', '145000', 14, 41, 39),
+	(3, 3, 199, 1, 24, '1930-07-22', '144500', 15, 41, 39);
+
+INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
+					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
+					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
+VALUES	(3, 6, null, null, 198, 1, null, null, 24, '1930-07-26', '144500', 23, 44, 40, 23),
+	(32, 6, null, null, 224, 1, null, null, 24, '1930-07-27', '144500', 24, 44, 40, 24),
+	(32, 4, null, null, 3, 2, null, null, 24, '1930-07-30', '141500', 26, 46, 40, 25);
+
 INSERT INTO `match` (home_team_id, away_team_id, tournament_id, match_date, match_order, round_id,
 	home_set1_score, away_set1_score, home_set1_tiebreak, away_set1_tiebreak,
 	home_set2_score, away_set2_score, home_set2_tiebreak, away_set2_tiebreak,
