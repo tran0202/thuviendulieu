@@ -50,6 +50,7 @@
 
         public static function getTournamentRanking($team_dto, $match_dto, $stage = Stage::First, $all_time_ranking = false) {
             $matches = $match_dto->getMatches();
+            $tournament_id = $matches[0]->getTournamentId();
             $match_count = sizeof($matches);
             $group_match_count = 0;
             for ($i = 0; $i < $match_count; $i++ ) {
@@ -79,7 +80,15 @@
                 array_push($result, $_team);
             }
             if ($stage <> Stage::AllStages) {
-                $result = self::sortTournamentStanding($result, $match_dto, $stage);
+                if ($tournament_id <= 20) {
+                    $result = self::sortTournamentStanding($result, $match_dto, $stage);
+                }
+                elseif ($tournament_id == 21) {
+                    $result = self::sortTournamentStanding3($result, $team_dto, $match_dto, $stage);
+                }
+                elseif ($tournament_id >= 22 || $tournament_id <= 24) {
+                    $result = self::sortTournamentStanding2($result, $match_dto, $stage);
+                }
             }
             else {
                 $result = self::sortGroupStanding($result, $match_dto);
@@ -98,7 +107,7 @@
             }
             $second_round_match_count = 0;
             for ($i = 0; $i < $match_count; $i++ ) {
-                if ($matches[$i]->getRound() == 'Second Round') {
+                if ($matches[$i]->getRound() == 'Second Round' || $matches[$i]->getRound() == 'Final Round') {
                     $second_round_match_count++;
                 }
             }
@@ -121,7 +130,6 @@
                 array_push($result, $_team);
             }
             $result = self::sortGroupStanding($result, $match_dto);
-
             $team_dto->setSecondRoundTeams($result);
         }
 
@@ -894,6 +902,8 @@
         }
 
         public static function calculatePoint(&$team_array, $match, $stage = Stage::First, $all_time_ranking = false) {
+            if ($match->getSecondRoundGroupName() == 'Withdrew') return;
+//            if (!$all_time_ranking && strpos($match->getRound(), 'Replay') !== false) { echo 'yes';return;}
             $points_for_win = 3;
             if ($match->getPointsForWin() == 2 && !$all_time_ranking) $points_for_win = 2;
             $home_name = $match->getHomeTeamName();
@@ -968,7 +978,8 @@
 
         public static function sortTournamentStanding($team_array, $match_dto, $stage = Stage::First) {
             $max_match_play = self::getMaxMatchPlay($match_dto);
-            $match_count = sizeof($match_dto->getMatches());
+            $matches = $match_dto->getMatches();
+            $match_count = sizeof($matches);
             $tmp_array = array();
             if ($stage <> Stage::First) {
                 $tmp_array[$max_match_play] = array();
@@ -981,12 +992,9 @@
             for ($i = 0; $i < sizeof($team_array); $i++) {
                 $tmp_array[$team_array[$i]->getMatchPlay()][$team_array[$i]->getName()] = $team_array[$i];
             }
-//            $tmp_array4 = array();
-//            for ($i = 0; $i < sizeof($team_array); $i++) {
-//                $tmp_array4[$team_array[$i]->getName()] = $team_array[$i];
-//            }
+            $flag = false;
             foreach ($tmp_array as $mp => $teams) {
-                if ($mp < 7) {
+                if ($mp < $max_match_play) {
                     $tmp_array3 = array();
                     foreach ($teams as $t_name => $team) {
                         array_push($tmp_array3, $team);
@@ -997,6 +1005,9 @@
                     }
                 }
                 else {
+                    for ($i = 0; $i < sizeof($team_array); $i++) {
+                        $tmp_array4[$team_array[$i]->getName()] = $team_array[$i];
+                    }
                     $matches = $match_dto->getMatches();
                     $champion_name = $matches[$match_count-1]->getHomeTeamName();
                     $runner_up_name = $matches[$match_count-1]->getAwayTeamName();
@@ -1034,125 +1045,306 @@
                             }
                         }
                     }
-//                    array_push($tmp_array2, $tmp_array[$tmp_array4[$champion_name]->getMatchPlay()][$champion_name]);
-                    array_push($tmp_array2, $tmp_array[$max_match_play][$champion_name]);
-                    array_push($tmp_array2, $tmp_array[$max_match_play][$runner_up_name]);
-                    array_push($tmp_array2, $tmp_array[$max_match_play][$third_place_name]);
-                    array_push($tmp_array2, $tmp_array[$max_match_play][$fourth_place_name]);
+                    if (!$flag) {
+                        array_push($tmp_array2, $tmp_array[$tmp_array4[$champion_name]->getMatchPlay()][$champion_name]);
+                        array_push($tmp_array2, $tmp_array[$max_match_play][$runner_up_name]);
+                        array_push($tmp_array2, $tmp_array[$max_match_play][$third_place_name]);
+                        array_push($tmp_array2, $tmp_array[$max_match_play][$fourth_place_name]);
+                    }
+                    if ($matches[0]->getTournamentId() == 20) $flag = true;
                 }
             }
+            if ($matches[0]->getTournamentId() == 19 || $matches[0]->getTournamentId() == 20) self::convertBestFinish($tmp_array2);
             return $tmp_array2;
         }
 
-//        public static function sortTournamentStanding($team_array, $match_dto, $stage = Stage::First) {
-//                        $matches = $match_dto->getMatches();
-//            $tmp_array3 = array();
-//            $tmp_array4 = array();
-//            $tmp_array5 = array();
-//            $tmp_array6 = array();
-//            for ($i = 0; $i < sizeof($team_array); $i++) {
-//                $tmp_array3[$team_array[$i]->getName()] = $team_array[$i];
-//            }
-//            for ($i = 0; $i < sizeof($matches); $i++) {
-//                if ($matches[$i]->getStage() == 'Second Stage') {
-//                    if ($matches[$i]->getRound() == 'Final') {
-//                        self::getWinnerName($matches[$i],$champion_name,$runner_up_name);
-//                        $tmp_array3[$champion_name]->setBestFinish(Finish::Champion);
-//                        $tmp_array3[$runner_up_name]->setBestFinish(Finish::RunnerUp);
-//                    }
-//                    elseif ($matches[$i]->getRound() == 'Third place') {
-//                        self::getWinnerName($matches[$i],$third_place_name,$fourth_place_name);
-//                        $tmp_array3[$third_place_name]->setBestFinish(Finish::ThirdPlace);
-//                        $tmp_array3[$fourth_place_name]->setBestFinish(Finish::Semifinal);
-//                    }
-//                    elseif ($matches[$i]->getRound() == 'Quarterfinals') {
-//                        self::getWinnerName($matches[$i],$winner_name,$loser_name);
-//                        $tmp_array3[$loser_name]->setBestFinish(Finish::Quarterfinal);
-//                    }
-//                    elseif ($matches[$i]->getRound() == 'Round of 16') {
-//                        self::getWinnerName($matches[$i],$winner_name,$loser_name);
-//                        $tmp_array3[$loser_name]->setBestFinish(Finish::Round16);
-//                    }
-//                }
-//                else {
-//                    if ($matches[$i]->getRound() == 'Second Round') {
-//                        self::getWinnerName($matches[$i],$winner_name,$loser_name);
-//                        $tmp_array3[$loser_name]->setBestFinish(Finish::SecondRound);
-//                    }
-//                    else {
-//                        if ($tmp_array3[$matches[$i]->getHomeTeamName()]->getBestFinish() == '') {
-//                            $tmp_array3[$matches[$i]->getHomeTeamName()]->setBestFinish(Finish::Group);
-//                        }
-//                        if ($tmp_array3[$matches[$i]->getAwayTeamName()]->getBestFinish() == '') {
-//                            $tmp_array3[$matches[$i]->getAwayTeamName()]->setBestFinish(Finish::Group);
-//                        }
-//                        $tmp_array3[$matches[$i]->getHomeTeamName()]->setBestFinish(Finish::Group);
-//                        $tmp_array3[$matches[$i]->getAwayTeamName()]->setBestFinish(Finish::Group);
-//                    }
-//                }
-//            }
-//            foreach ($tmp_array3 as $name => $team) {
-//                array_push($tmp_array4, $team);
-//            }
-//            for ($i = 0; $i < sizeof($tmp_array4); $i++) {
-//                $tmp_array5[$tmp_array4[$i]->getBestFinish()][$tmp_array4[$i]->getName()] = $tmp_array4[$i];
-//            }
-//            $tmp_array7 = array();
-//            $tmp_array8 = array();
-//            if (array_key_exists(Finish::Quarterfinal, $tmp_array5)) {
-//                foreach ($tmp_array5[Finish::Quarterfinal] as $name => $team) {
-//                    array_push($tmp_array7, $team);
-//                }
-//                $tmp_array7 = self::sortGroupStanding($tmp_array7, $match_dto);
-//                for ($i = 0; $i < sizeof($tmp_array7); $i++) {
-//                    $tmp_array8[$tmp_array7[$i]->getName()] = $tmp_array7[$i];
-//                }
-//                $tmp_array5[Finish::Quarterfinal] = $tmp_array8;
-//            }
-//
-//            $tmp_array7 = array();
-//            $tmp_array8 = array();
-//            foreach ($tmp_array5[Finish::Group] as $name => $team) {
-//                array_push($tmp_array7, $team);
-//            }
-//            $tmp_array7 = self::sortGroupStanding($tmp_array7, $match_dto);
-//            for ($i = 0; $i < sizeof($tmp_array7); $i++) {
-//                $tmp_array8[$tmp_array7[$i]->getName()] = $tmp_array7[$i];
-//            }
-//            $tmp_array5[Finish::Group] = $tmp_array8;
-//
-//            foreach ($tmp_array5[Finish::Champion] as $name => $team) {
-//                array_push($tmp_array6, $team);
-//            }
-//            foreach ($tmp_array5[Finish::RunnerUp] as $name => $team) {
-//                array_push($tmp_array6, $team);
-//            }
-//            foreach ($tmp_array5[Finish::ThirdPlace] as $name => $team) {
-//                array_push($tmp_array6, $team);
-//            }
-//            foreach ($tmp_array5[Finish::Semifinal] as $name => $team) {
-//                array_push($tmp_array6, $team);
-//            }
-//            if (array_key_exists(Finish::Quarterfinal, $tmp_array5)) {
-//                foreach ($tmp_array5[Finish::Quarterfinal] as $name => $team) {
-//                    array_push($tmp_array6, $team);
-//                }
-//            }
-//            if (array_key_exists(Finish::Round16, $tmp_array5)) {
-//                foreach ($tmp_array5[Finish::Round16] as $name => $team) {
-//                    array_push($tmp_array6, $team);
-//                }
-//            }
-//            if (array_key_exists(Finish::SecondRound, $tmp_array5)) {
-//                foreach ($tmp_array5[Finish::SecondRound] as $name => $team) {
-//                    array_push($tmp_array6, $team);
-//                }
-//            }
-//            foreach ($tmp_array5[Finish::Group] as $name => $team) {
-//                array_push($tmp_array6, $team);
-//            }
-//            return $tmp_array6;
-//        }
+        public static function sortTournamentStanding2($team_array, $match_dto, $stage = Stage::First) {
+            $matches = $match_dto->getMatches();
+            $tmp_array3 = array();
+            $tmp_array4 = array();
+            $tmp_array5 = array();
+            $tmp_array6 = array();
+            for ($i = 0; $i < sizeof($team_array); $i++) {
+                $tmp_array3[$team_array[$i]->getName()] = $team_array[$i];
+            }
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                if ($matches[$i]->getStage() == 'Second Stage') {
+                    if ($matches[$i]->getRound() == 'Final') {
+                        self::getWinnerName($matches[$i],$champion_name,$runner_up_name);
+                        $tmp_array3[$champion_name]->setBestFinish(Finish::Champion);
+                        $tmp_array3[$runner_up_name]->setBestFinish(Finish::RunnerUp);
+                    }
+                    elseif ($matches[$i]->getRound() == 'Third place') {
+                        self::getWinnerName($matches[$i],$third_place_name,$fourth_place_name);
+                        $tmp_array3[$third_place_name]->setBestFinish(Finish::ThirdPlace);
+                        $tmp_array3[$fourth_place_name]->setBestFinish(Finish::Semifinal);
+                    }
+                    elseif ($matches[$i]->getRound() == 'Semifinals') {
+                        self::getWinnerName($matches[$i],$winner_name,$loser_name);
+                        $tmp_array3[$loser_name]->setBestFinish(Finish::Semifinal);
+                    }
+                    elseif ($matches[$i]->getRound() == 'Quarterfinals') {
+                        self::getWinnerName($matches[$i],$winner_name,$loser_name);
+                        $tmp_array3[$loser_name]->setBestFinish(Finish::Quarterfinal);
+                    }
+                    elseif ($matches[$i]->getRound() == 'Round of 16') {
+                        self::getWinnerName($matches[$i],$winner_name,$loser_name);
+                        $tmp_array3[$loser_name]->setBestFinish(Finish::Round16);
+                    }
+                    elseif ($matches[$i]->getRound() == 'First Round') {
+                        self::getWinnerName($matches[$i],$winner_name,$loser_name);
+                        $tmp_array3[$loser_name]->setBestFinish(Finish::FirstRound);
+                    }
+                    elseif ($matches[$i]->getRound() == 'Preliminary Round') {
+                        self::getWinnerName($matches[$i],$winner_name,$loser_name);
+                        $tmp_array3[$loser_name]->setBestFinish(Finish::PreliminaryRound);
+                    }
+                }
+                else {
+                    if ($matches[$i]->getRound() == 'Second Round') {
+                        self::getWinnerName($matches[$i],$winner_name,$loser_name);
+                        $tmp_array3[$loser_name]->setBestFinish(Finish::SecondRound);
+                    }
+                    elseif ($matches[$i]->getRound() == 'Final Round') {
+                            self::getWinnerName($matches[$i],$winner_name,$loser_name);
+                            $tmp_array3[$winner_name]->setBestFinish(Finish::FinalRound);
+                            $tmp_array3[$loser_name]->setBestFinish(Finish::FinalRound);
+                        }
+                    elseif ($matches[$i]->getRound() == 'Group Matches') {
+                        if ($tmp_array3[$matches[$i]->getHomeTeamName()]->getBestFinish() == '') {
+                            $tmp_array3[$matches[$i]->getHomeTeamName()]->setBestFinish(Finish::Group);
+                        }
+                        if ($tmp_array3[$matches[$i]->getAwayTeamName()]->getBestFinish() == '') {
+                            $tmp_array3[$matches[$i]->getAwayTeamName()]->setBestFinish(Finish::Group);
+                        }
+                    }
+                }
+            }
+            foreach ($tmp_array3 as $name => $team) {
+                array_push($tmp_array4, $team);
+            }
+            for ($i = 0; $i < sizeof($tmp_array4); $i++) {
+                $tmp_array5[$tmp_array4[$i]->getBestFinish()][$tmp_array4[$i]->getName()] = $tmp_array4[$i];
+            }
+
+            if (array_key_exists(Finish::PreliminaryRound, $tmp_array5)) {
+
+                $tmp_array7 = array();
+                $tmp_array8 = array();
+                foreach ($tmp_array5[Finish::PreliminaryRound] as $name => $team) {
+                    array_push($tmp_array7, $team);
+                }
+                $tmp_array7 = self::sortGroupStanding($tmp_array7, $match_dto);
+                for ($i = 0; $i < sizeof($tmp_array7); $i++) {
+                    $tmp_array8[$tmp_array7[$i]->getName()] = $tmp_array7[$i];
+                }
+                $tmp_array5[Finish::PreliminaryRound] = $tmp_array8;
+            }
+
+            if (array_key_exists(Finish::FirstRound, $tmp_array5)) {
+
+                $tmp_array7 = array();
+                $tmp_array8 = array();
+                foreach ($tmp_array5[Finish::FirstRound] as $name => $team) {
+                    array_push($tmp_array7, $team);
+                }
+                $tmp_array7 = self::sortGroupStanding($tmp_array7, $match_dto);
+                for ($i = 0; $i < sizeof($tmp_array7); $i++) {
+                    $tmp_array8[$tmp_array7[$i]->getName()] = $tmp_array7[$i];
+                }
+                $tmp_array5[Finish::FirstRound] = $tmp_array8;
+            }
+
+            $tmp_array7 = array();
+            $tmp_array8 = array();
+            if (array_key_exists(Finish::Quarterfinal, $tmp_array5)) {
+                foreach ($tmp_array5[Finish::Quarterfinal] as $name => $team) {
+                    array_push($tmp_array7, $team);
+                }
+                $tmp_array7 = self::sortGroupStanding($tmp_array7, $match_dto);
+                for ($i = 0; $i < sizeof($tmp_array7); $i++) {
+                    $tmp_array8[$tmp_array7[$i]->getName()] = $tmp_array7[$i];
+                }
+                $tmp_array5[Finish::Quarterfinal] = $tmp_array8;
+            }
+
+            if (array_key_exists(Finish::Semifinal, $tmp_array5)) {
+
+                $tmp_array7 = array();
+                $tmp_array8 = array();
+                foreach ($tmp_array5[Finish::Semifinal] as $name => $team) {
+                    array_push($tmp_array7, $team);
+                }
+                $tmp_array7 = self::sortGroupStanding($tmp_array7, $match_dto);
+                for ($i = 0; $i < sizeof($tmp_array7); $i++) {
+                    $tmp_array8[$tmp_array7[$i]->getName()] = $tmp_array7[$i];
+                }
+                $tmp_array5[Finish::Semifinal] = $tmp_array8;
+            }
+
+            if (array_key_exists(Finish::Group, $tmp_array5)) {
+                $tmp_array7 = array();
+                $tmp_array8 = array();
+                foreach ($tmp_array5[Finish::Group] as $name => $team) {
+                    array_push($tmp_array7, $team);
+                }
+                $tmp_array7 = self::sortGroupStanding($tmp_array7, $match_dto);
+                for ($i = 0; $i < sizeof($tmp_array7); $i++) {
+                    $tmp_array8[$tmp_array7[$i]->getName()] = $tmp_array7[$i];
+                }
+                $tmp_array5[Finish::Group] = $tmp_array8;
+            }
+
+            if (array_key_exists(Finish::FinalRound, $tmp_array5)) {
+
+                $tmp_array7 = array();
+                $tmp_array8 = array();
+                foreach ($tmp_array5[Finish::FinalRound] as $name => $team) {
+                    array_push($tmp_array7, $team);
+                }
+                $tmp_array7 = self::sortGroupStanding($tmp_array7, $match_dto);
+                for ($i = 0; $i < sizeof($tmp_array7); $i++) {
+                    $tmp_array8[$tmp_array7[$i]->getName()] = $tmp_array7[$i];
+                }
+                $tmp_array5[Finish::FinalRound] = $tmp_array8;
+            }
+
+            if (array_key_exists(Finish::Champion, $tmp_array5)) {
+                foreach ($tmp_array5[Finish::Champion] as $name => $team) {
+                    array_push($tmp_array6, $team);
+                }
+            }
+            if (array_key_exists(Finish::RunnerUp, $tmp_array5)) {
+                foreach ($tmp_array5[Finish::RunnerUp] as $name => $team) {
+                    array_push($tmp_array6, $team);
+                }
+            }
+            if (array_key_exists(Finish::ThirdPlace, $tmp_array5)) {
+                foreach ($tmp_array5[Finish::ThirdPlace] as $name => $team) {
+                    array_push($tmp_array6, $team);
+                }
+            }
+            if (array_key_exists(Finish::Semifinal, $tmp_array5)) {
+                foreach ($tmp_array5[Finish::Semifinal] as $name => $team) {
+                    array_push($tmp_array6, $team);
+                }
+            }
+            if (array_key_exists(Finish::Quarterfinal, $tmp_array5)) {
+                foreach ($tmp_array5[Finish::Quarterfinal] as $name => $team) {
+                    array_push($tmp_array6, $team);
+                }
+            }
+            if (array_key_exists(Finish::Round16, $tmp_array5)) {
+                foreach ($tmp_array5[Finish::Round16] as $name => $team) {
+                    array_push($tmp_array6, $team);
+                }
+            }
+            if (array_key_exists(Finish::PreliminaryRound, $tmp_array5)) {
+                foreach ($tmp_array5[Finish::PreliminaryRound] as $name => $team) {
+                    array_push($tmp_array6, $team);
+                }
+            }
+            if (array_key_exists(Finish::FirstRound, $tmp_array5)) {
+                foreach ($tmp_array5[Finish::FirstRound] as $name => $team) {
+                    array_push($tmp_array6, $team);
+                }
+            }
+            if (array_key_exists(Finish::FinalRound, $tmp_array5)) {
+                foreach ($tmp_array5[Finish::FinalRound] as $name => $team) {
+                    array_push($tmp_array6, $team);
+                }
+            }
+            if (array_key_exists(Finish::SecondRound, $tmp_array5)) {
+                foreach ($tmp_array5[Finish::SecondRound] as $name => $team) {
+                    array_push($tmp_array6, $team);
+                }
+            }
+            if (array_key_exists(Finish::Group, $tmp_array5)) {
+                foreach ($tmp_array5[Finish::Group] as $name => $team) {
+                    array_push($tmp_array6, $team);
+                }
+            }
+            return $tmp_array6;
+        }
+
+        public static function sortTournamentStanding3($team_array, $team_dto, $match_dto, $stage = Stage::First) {
+            $second_round_teams = Team::getSecondRoundTeamArrayByName($team_dto);
+            $matches = $match_dto->getMatches();
+            $tmp_array3 = array();
+            $tmp_array4 = array();
+            $tmp_array5 = array();
+            $tmp_array6 = array();
+            for ($i = 0; $i < sizeof($team_array); $i++) {
+                $tmp_array3[$team_array[$i]->getName()] = $team_array[$i];
+            }
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                if ($matches[$i]->getRound() == 'Final Round') {
+                    self::getWinnerName($matches[$i],$winner_name,$loser_name);
+                    $tmp_array3[$winner_name]->setBestFinish(Finish::FinalRound);
+                    $tmp_array3[$loser_name]->setBestFinish(Finish::FinalRound);
+                }
+                else {
+                    if ($tmp_array3[$matches[$i]->getHomeTeamName()]->getBestFinish() == '') {
+                        $tmp_array3[$matches[$i]->getHomeTeamName()]->setBestFinish(Finish::Group);
+                    }
+                    if ($tmp_array3[$matches[$i]->getAwayTeamName()]->getBestFinish() == '') {
+                        $tmp_array3[$matches[$i]->getAwayTeamName()]->setBestFinish(Finish::Group);
+                    }
+                }
+            }
+            foreach ($tmp_array3 as $name => $team) {
+                array_push($tmp_array4, $team);
+            }
+            for ($i = 0; $i < sizeof($tmp_array4); $i++) {
+                $tmp_array5[$tmp_array4[$i]->getBestFinish()][$tmp_array4[$i]->getName()] = $tmp_array4[$i];
+            }
+
+            $tmp_array7 = array();
+            $tmp_array8 = array();
+            foreach ($tmp_array5[Finish::Group] as $name => $team) {
+                array_push($tmp_array7, $team);
+            }
+            $tmp_array7 = self::sortGroupStanding($tmp_array7, $match_dto);
+            for ($i = 0; $i < sizeof($tmp_array7); $i++) {
+                $tmp_array8[$tmp_array7[$i]->getName()] = $tmp_array7[$i];
+            }
+            $tmp_array5[Finish::Group] = $tmp_array8;
+
+            if ($stage == Stage::First) {
+
+                $tmp_array7 = array();
+                $tmp_array8 = array();
+                foreach ($tmp_array5[Finish::FinalRound] as $name => $team) {
+                    array_push($tmp_array7, $team);
+                }
+                $tmp_array7 = self::sortGroupStanding($tmp_array7, $match_dto);
+                for ($i = 0; $i < sizeof($tmp_array7); $i++) {
+                    $tmp_array8[$tmp_array7[$i]->getName()] = $tmp_array7[$i];
+                }
+                $tmp_array5[Finish::FinalRound] = $tmp_array8;
+
+                if (array_key_exists(Finish::FinalRound, $tmp_array5)) {
+                    foreach ($tmp_array5[Finish::FinalRound] as $name => $team) {
+                        array_push($tmp_array6, $team);
+                    }
+                }
+            }
+            else {
+                if (array_key_exists(Finish::FinalRound, $tmp_array5)) {
+                    $j = 0;
+                    foreach ($second_round_teams as $name => $team) {
+                        if ($j < 4) {
+                            array_push($tmp_array6, $tmp_array5[Finish::FinalRound][$name]);
+                        }
+                        $j++;
+                    }
+                }
+            }
+            foreach ($tmp_array5[Finish::Group] as $name => $team) {
+                array_push($tmp_array6, $team);
+            }
+            return $tmp_array6;
+        }
 
         public static function sortGroupStanding($team_array, $match_dto) {
             $tmp_array2 = $team_array;
@@ -1168,6 +1360,20 @@
                 }
             }
             return $tmp_array2;
+        }
+
+        public static function convertBestFinish($team_array) {
+            $tmp_array = array();
+            $team_array[0]->setBestFinish(Finish::Champion);
+            $team_array[1]->setBestFinish(Finish::RunnerUp);
+            $team_array[2]->setBestFinish(Finish::ThirdPlace);
+            $team_array[3]->setBestFinish(Finish::Semifinal);
+            for ($i = 4; $i < 8; $i++) {
+                $team_array[$i]->setBestFinish(Finish::Quarterfinal);
+            }
+            for ($i = 8; $i < 16; $i++) {
+                $team_array[$i]->setBestFinish(Finish::Group);
+            }
         }
 
         public static function round16Qualifiers($team_dto, $match_dto) {
@@ -1392,6 +1598,9 @@
                     break;
                 case ($matches[0]->getTournamentId() == 21):
                     $max = 6;
+                    break;
+                case ($matches[0]->getTournamentId() >= 22 && $matches[0]->getTournamentId() <= 24):
+                    $max = 4;
                     break;
                 default:
                     $max = 7;

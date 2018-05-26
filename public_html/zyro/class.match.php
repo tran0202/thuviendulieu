@@ -7,6 +7,7 @@
         private $home_team_score;
         private $home_team_extra_time_score;
         private $home_team_penalty_score;
+        private $home_team_replay_score;
         private $home_parent_team_id;
         private $home_parent_team_name;
         private $away_team_name;
@@ -15,6 +16,7 @@
         private $away_team_score;
         private $away_team_extra_time_score;
         private $away_team_penalty_score;
+        private $away_team_replay_score;
         private $away_parent_team_id;
         private $away_parent_team_name;
         private $match_date;
@@ -361,7 +363,9 @@
                         if ($_match->getHomeTeamScore() == $_match->getAwayTeamScore()) {
                             $score = ($_match->getHomeTeamScore()+$_match->getHomeTeamExtraTimeScore()).'-'.($_match->getAwayTeamScore()+$_match->getAwayTeamExtraTimeScore()).$aet;
                             if ($_match->getHomeTeamExtraTimeScore() == $_match->getAwayTeamExtraTimeScore()) {
-                                $penalty_score = ' '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore().' pen';
+                                if ($_match->getHomeTeamPenaltyScore() != null) {
+                                    $penalty_score = ' '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore().' pen';
+                                }
                             }
                         }
                         $home_flag = '<img class="flag-md" src="/images/flags/'.$_match->getHomeFlag().'">';
@@ -409,7 +413,7 @@
                                     <div class="card-body">
                                         ';
             $box_height = 120;
-            $gap_heights = array(array(10, 20), array(80, 160), array(220, 440), array(410, 1000), array(610, 2120));
+            $gap_heights = array(array(10, 20), array(80, 160), array(220, 440), array(410, 1000), array(610, 2120), array(610, 2120));
             $tmp_array = array();
             $tmp_array2 = array();
             foreach ($bracket_matches as $bracket_round => $_bracket_matches) {
@@ -439,9 +443,11 @@
                     $third_place_moving = 'style="margin-left:-25%"';
                     if ($showBracket == 'Semifinals') $third_place_moving = 'style="margin-left:-25%;margin-top:60px;"';
                 }
+                $prelim_style = '';
+                if ($bracket_round == 'Preliminary Round') $prelim_style = 'style="padding-left:10px;padding-right:0;"';
                 $output .= '<div class="col-sm-3" '.$third_place_moving.'>
                             <div class="col-sm-12" style="height:'.$gap_height.'px;"></div>
-                            <div class="col-sm-12 margin-top-sm">
+                            <div class="col-sm-12 margin-top-sm" '.$prelim_style.'>
                                 <span class="h2-ff1">'.$bracket_round.'</span>
                             </div>';
                 foreach ($_bracket_matches as $bracket_match_order => $_bracket_match) {
@@ -460,23 +466,30 @@
                     $score = 'vs';
                     $penalty_score = '';
                     $aet = ' aet';
+                    $replay_score = '';
                     if (self::isGoldenGoalRule($_bracket_match->getGoldenGoalRule()) && $_bracket_match->getHomeTeamPenaltyScore() == '') $aet = ' gg';
                     if ($_bracket_match->getHomeTeamScore() != -1) {
                         $score = $_bracket_match->getHomeTeamScore().'-'.$_bracket_match->getAwayTeamScore();
                         if ($_bracket_match->getHomeTeamScore() == $_bracket_match->getAwayTeamScore()) {
                             $score = ($_bracket_match->getHomeTeamScore()+$_bracket_match->getHomeTeamExtraTimeScore()).'-'.($_bracket_match->getAwayTeamScore()+$_bracket_match->getAwayTeamExtraTimeScore()).$aet;
                             if ($_bracket_match->getHomeTeamExtraTimeScore() == $_bracket_match->getAwayTeamExtraTimeScore()) {
-                                $penalty_score = ' '.$_bracket_match->getHomeTeamPenaltyScore().'-'.$_bracket_match->getAwayTeamPenaltyScore().' pen';
+                                if ($_bracket_match->getHomeTeamPenaltyScore() != null) {
+                                    $penalty_score = '<br>'.$_bracket_match->getHomeTeamPenaltyScore().'-'.$_bracket_match->getAwayTeamPenaltyScore().' pen';
+                                }
+                                if ($_bracket_match->getHomeTeamReplayScore() != null) {
+                                    $replay_score = '<br>'.$_bracket_match->getHomeTeamReplayScore().'-'.$_bracket_match->getAwayTeamReplayScore().' rep';
+                                }
                             }
                         }
                     }
+                    if ($_bracket_match->getSecondRoundGroupName() == 'Withdrew') $score = 'w/o';
                     $output .= '<div class="col-sm-12" style="height:'.$gap_height.'px;"></div>
                                 <div class="col-sm-12 box-sm" style="height:'.$box_height.'px;">
                                     <div class="col-sm-4 h4-ff3 margin-tb-sm text-center">'.$home_flag_tmp.
                                         $home_team_name.
                                     '</div>
                                     <div class="col-sm-4 h4-ff3 margin-tb-sm text-center">'.
-                                        $score.'<br>'.$penalty_score.
+                                        $score.$penalty_score.$replay_score.
                                     '</div>
                                     <div class="col-sm-4 h4-ff3 margin-tb-sm text-center">'.$away_flag_tmp.
                                         $away_team_name.
@@ -514,9 +527,13 @@
                         }
                         if ($_match->getStage() == 'First Stage') {
                             $group_name = $_match->getGroupName();
-                            if ($_match->getRound() == 'Second Round') $group_name = $_match->getSecondRoundGroupName();
-                            $group_text = '<a class="link-modal" data-toggle="modal" data-target="#group'.$group_name.'StandingModal">
-                                                                                Group '.$group_name.'</a>' ;
+                            if ($_match->getRound() == 'Second Round' || $_match->getRound() == 'Final Round') $group_name = $_match->getSecondRoundGroupName();
+                            $group_anchor = 'Group '.$group_name;
+                            if ($_match->getRound() == 'Final Round') $group_anchor = $_match->getSecondRoundGroupName();
+                            if ($_match->getRound() == 'Final Round') $group_name = $_match->getSecondRoundGroupName();
+                            $group_id = $group_name;
+                            if ($group_name == 'Final Round') $group_id = 'FinalRound';
+                            $group_text = '<a class="link-modal" data-toggle="modal" data-target="#group'.$group_id.'StandingModal">'.$group_anchor.'</a>' ;
                         }
                         $score = 'vs';
                         $penalty_score = '';
@@ -527,10 +544,13 @@
                             if ($rounds != 'Group Matches' && $rounds != 'Second Round' && $rounds != 'Final Round' && $_match->getHomeTeamScore() == $_match->getAwayTeamScore()) {
                                 $score = ($_match->getHomeTeamScore()+$_match->getHomeTeamExtraTimeScore()).'-'.($_match->getAwayTeamScore()+$_match->getAwayTeamExtraTimeScore()).$aet;
                                 if ($_match->getHomeTeamExtraTimeScore() == $_match->getAwayTeamExtraTimeScore()) {
-                                    $penalty_score = ' '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore().' pen';
+                                    if ($_match->getHomeTeamPenaltyScore() != null) {
+                                        $penalty_score = ' '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore().' pen';
+                                    }
                                 }
                             }
                         }
+                        if ($_match->getSecondRoundGroupName() == 'Withdrew') $score = 'w/o';
                         $advance_popover = '';
                         $advance_popover2 = '';
                         if ($first2Matches && $match_order > 32 && $match_order <= 48) {
@@ -753,7 +773,7 @@
                     LEFT JOIN team pt ON pt.id = t.parent_team_id 
                     LEFT JOIN team pt2 ON pt2.id = t2.parent_team_id
                     WHERE m.tournament_id = '.$tournament_id.'
-                    ORDER BY stage_id, round_id, match_date, match_time;';
+                    ORDER BY stage_id, match_order, match_date, match_time;';
             return $sql;
         }
 
@@ -846,12 +866,35 @@
             $matches = $match_dto->getMatches();
             $match_count = sizeof($matches);
             $result = array();
+            $replay_matches = array();
             $tmp_match = $matches[$match_count - 2];
             $matches[$match_count - 2] = $matches[$match_count - 1];
             $matches[$match_count - 1] = $tmp_match;
-            for ($i = $match_count - 16; $i < $match_count; $i++) {
+            $start_index = $match_count - 16;
+            if ($matches[0]->getTournamentId() == 22 || $matches[0]->getTournamentId() == 23) $start_index = 0;
+            $end_index = $match_count;
+            for ($i = $start_index; $i < $end_index; $i++) {
+                if (strpos($matches[$i]->getRound(), 'Replay') !== false) {
+                    array_push($replay_matches, $matches[$i]);
+                }
+            }
+            for ($i = $start_index; $i < $end_index; $i++) {
                 if ($matches[$i]->getStage() == 'Second Stage') {
-                    $result[$matches[$i]->getRound()][$matches[$i]->getMatchOrder()] = $matches[$i];
+                    $replayed = false;
+                    for ($j = 0; $j < sizeof($replay_matches); $j++) {
+                        if ($matches[$i]->getHomeTeamName() == $replay_matches[$j]->getHomeTeamName()) {
+                            $replayed = true;
+                            $matches[$i]->setHomeTeamReplayScore($replay_matches[$j]->getHomeTeamScore());
+                            $matches[$i]->setAwayTeamReplayScore($replay_matches[$j]->getAwayTeamScore());
+                            break;
+                        }
+                    }
+                    if (strpos($matches[$i]->getRound(), 'Replay') === false) {
+                        $result[$matches[$i]->getRound()][$matches[$i]->getMatchOrder()] = $matches[$i];
+//                        if ($replayed) {
+//                            $result[$matches[$i]->getRound()][$matches[$i]->getMatchOrder()]->setHomeTeamReplayScore();
+//                        }
+                    }
                 }
             }
             return $result;
@@ -977,11 +1020,17 @@
             $matches = $match_dto->getMatches();
             switch(true)
             {
-                case ($matches[0]->getTournamentId() == 13):
+                case ($matches[0]->getTournamentId() == 13 || $matches[0]->getTournamentId() == 24):
                     $where = 'Semifinals';
                     break;
                 case ($matches[0]->getTournamentId() >= 16 && $matches[0]->getTournamentId() <= 20):
                     $where = 'Quarterfinals';
+                    break;
+                case ($matches[0]->getTournamentId() == 22):
+                    $where = 'First Round';
+                    break;
+                case ($matches[0]->getTournamentId() == 23):
+                    $where = 'Preliminary Round';
                     break;
                 default:
                     $where = 'Round of 16';
@@ -1084,6 +1133,22 @@
         public function setHomeTeamPenaltyScore($home_team_penalty_score)
         {
             $this->home_team_penalty_score = $home_team_penalty_score;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getHomeTeamReplayScore()
+        {
+            return $this->home_team_replay_score;
+        }
+
+        /**
+         * @param mixed $home_team_replay_score
+         */
+        public function setHomeTeamReplayScore($home_team_replay_score)
+        {
+            $this->home_team_replay_score = $home_team_replay_score;
         }
 
         /**
@@ -1212,6 +1277,22 @@
         public function setAwayTeamPenaltyScore($away_team_penalty_score)
         {
             $this->away_team_penalty_score = $away_team_penalty_score;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getAwayTeamReplayScore()
+        {
+            return $this->away_team_replay_score;
+        }
+
+        /**
+         * @param mixed $away_team_replay_score
+         */
+        public function setAwayTeamReplayScore($away_team_replay_score)
+        {
+            $this->away_team_replay_score = $away_team_replay_score;
         }
 
         /**

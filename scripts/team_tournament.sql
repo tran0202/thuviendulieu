@@ -490,6 +490,30 @@ VALUES (1, 21, 51, 1),
 	(32, 21, 54, 1),
 	(227, 21, 54, 2);
 
+#France 1938
+INSERT INTO team_tournament (team_id, tournament_id)
+VALUES (26, 22), (2, 22), (233, 22), (244, 22),
+	(21, 22), (5, 22), (246, 22), (226, 22),
+	(203, 22), (221, 22), (1, 22), (7, 22),
+	(230, 22), (204, 22), (25, 22);
+
+INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
+VALUES (222, 22, 63, 1);
+
+#Italy 1934
+INSERT INTO team_tournament (team_id, tournament_id)
+VALUES (222, 23), (21, 23), (233, 23), (8, 23),
+	(26, 23), (204, 23), (25, 23), (3, 23),
+	(2, 23), (5, 23), (6, 23), (1, 23),
+	(203, 23), (198, 23), (230, 23), (226, 23);
+
+#Uruguay 1930
+INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
+VALUES (21, 24, 51, 1), (28, 24, 51, 2), (198, 24, 54, 1), (5, 24, 54, 2),
+	(224, 24, 52, 1), (1, 24, 52, 2), (226, 24, 53, 2), (31, 24, 53, 3),
+	(3, 24, 51, 3), (199, 24, 51, 4), (227, 24, 52, 3), (207, 24, 54, 3),
+	(32, 24, 53, 1);
+
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES 	(53, 2, 31, 1, 29, 1),
 		(36, 2, 31, 2, 29, 2),

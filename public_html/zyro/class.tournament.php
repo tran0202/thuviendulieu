@@ -100,7 +100,7 @@
             $modal_html .= Team::getSoccerModalHtml($team_dto);
 
             Soccer::getTournamentRanking($team_dto, $match_dto, Stage::Second);
-            $body_html .= Team::getSoccerRankingHtml($team_dto);
+            $body_html .= Team::getSoccerRankingHtml($team_dto, $tournament_id);
 
 
             return TournamentDTO::CreateSoccerTournamentDTO($body_html, $modal_html, $popover_html, $profile);
@@ -123,7 +123,7 @@
             $modal_html .= Team::getSoccerModalHtml($team_dto);
 
             Soccer::getTournamentRanking($team_dto, $match_dto, Stage::Second);
-            $body_html .= Team::getSoccerRankingHtml($team_dto);
+            $body_html .= Team::getSoccerRankingHtml($team_dto, $tournament_id);
 
             return TournamentDTO::CreateSoccerTournamentDTO($body_html, $modal_html, $popover_html, $profile);
         }
@@ -138,7 +138,7 @@
             $body_html .= $match_dto->getHtml();
 
             Soccer::getTournamentRanking($team_dto, $match_dto, Stage::AllStages, true);
-            $body_html .= Team::getSoccerRankingHtml($team_dto, 'All Time Rankings');
+            $body_html .= Team::getSoccerRankingHtml($team_dto, $tournament_id, 'All Time Rankings');
 
             return TournamentDTO::CreateSoccerTournamentDTO($body_html, '', '', null);
         }

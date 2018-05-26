@@ -44,7 +44,7 @@
                         <p class="border-bottom-gray5"><img src="images/wc_logos/1962.png"/> <a href="WorldCup?tid=18">Chile 1962</a></p>
                         <p class="border-bottom-gray5"><img src="images/wc_logos/1958.png"/> <a href="WorldCup?tid=19">Sweden 1958</a></p>
                         <p class="border-bottom-gray5"><img src="images/wc_logos/1954.png"/> <a href="WorldCup?tid=20">Switzerland 1954</a></p>
-                        <p class="border-bottom-gray5"><img src="images/wc_logos/1950.png"/> <a href="WorldCup?tid=21">Brazil 1950</a></p>
+                        <p class="border-bottom-gray5"><img src="images/wc_logos/1950.png"/> <a href="WorldCup2?tid=21">Brazil 1950</a></p>
                         <p class="border-bottom-gray5"><img src="images/wc_logos/1938.png"/> <a href="WorldCup?tid=22">France 1938</a></p>
                         <p class="border-bottom-gray5"><img src="images/wc_logos/1934.png"/> <a href="WorldCup?tid=23">Italy 1934</a></p>
                         <p class="border-bottom-gray5"><img src="images/wc_logos/1930.png"/> <a href="WorldCup?tid=24">Uruguay 1930</a></p>

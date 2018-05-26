@@ -215,7 +215,9 @@
             $teams = Team::getTeamArrayByGroup($team_dto);
             $output = '';
             foreach ($teams as $group_name => $_teams) {
-                $output .= '<div class="modal fade" id="group'.$group_name.'StandingModal" tabindex="-1" role="dialog" aria-labelledby="group'.$group_name.'StandingModalLabel" aria-hidden="true">
+                $group_id = $group_name;
+                if ($group_name == 'Final Round') $group_id = 'FinalRound';
+                $output .= '<div class="modal fade" id="group'.$group_id.'StandingModal" tabindex="-1" role="dialog" aria-labelledby="group'.$group_id.'StandingModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document" style="width:800px;">
                         <div class="modal-content">
                             <div class="col-sm-12">
@@ -224,9 +226,9 @@
                                 </button>
                             </div>
                             <div class="modal-header col-sm-12 padding-lr-lg" style="border-bottom:none;">
-                                <div class="col-sm-12 h3-ff3 border-bottom-gray2" id="group'.$group_name.'StandingModalLabel">Group '.$group_name.'</div>
+                                <div class="col-sm-12 h3-ff3 border-bottom-gray2" id="group'.$group_id.'StandingModalLabel">Group '.$group_name.'</div>
                             </div>
-                            <div class="modal-body col-sm-12 padding-lr-lg" id="group'.$group_name.'StandingModalBody">
+                            <div class="modal-body col-sm-12 padding-lr-lg" id="group'.$group_id.'StandingModalBody">
                                 <div class="col-sm-12 h3-ff3 row padding-tb-md font-bold">
                                     <div class="col-sm-1"></div>
                                     <div class="col-sm-3"></div>
@@ -297,7 +299,17 @@
             return $output;
         }
 
-        public static function getSoccerRankingHtml($team_dto, $header = 'Tournament Rankings') {
+        public static function getSoccerRankingHtml($team_dto, $tournament_id, $header = 'Tournament Rankings') {
+            if ($header == 'All Time Rankings') return self::getSoccerRankingMatchPlayHtml($team_dto, $tournament_id, $header);
+            if ($tournament_id <= 18) {
+                return self::getSoccerRankingMatchPlayHtml($team_dto, $tournament_id, $header);
+            }
+            else {
+                return self::getSoccerRankingBestFinishHtml($team_dto, $tournament_id, $header);
+            }
+        }
+
+        public static function getSoccerRankingMatchPlayHtml($team_dto, $tournament_id, $header = 'Tournament Rankings') {
             $teams = $team_dto->getTeams();
             $output = '<div class="col-sm-12 h2-ff2 margin-top-lg">'.$header.'</div>
                             <div class="col-sm-12 box-xl">
@@ -316,17 +328,18 @@
             $tmp_x = $teams[0]->getMatchPlay();
             $striped_row = 'ranking-striped';
             for ($i = 0; $i < sizeof($teams); $i++) {
-                $goal_diff = $teams[$i]->getGoalDiff();
-                if ($teams[$i]->getMatchPlay() > 0) $goal_diff = '+'.$goal_diff;
-                if ($tmp_x != $teams[$i]->getMatchPlay()) { //} && $teams[$i]->getMatchPlay() < Finish::Semifinal) {
-                    if ($striped_row == 'ranking-striped') {
-                        $striped_row = '';
-                    } else {
-                        $striped_row = 'ranking-striped';
+                if ($teams[$i]->getMatchPlay() != 0) {
+                    $goal_diff = $teams[$i]->getGoalDiff();
+                    if ($teams[$i]->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
+                    if ($tmp_x != $teams[$i]->getMatchPlay()) {
+                        if ($striped_row == 'ranking-striped') {
+                            $striped_row = '';
+                        } else {
+                            $striped_row = 'ranking-striped';
+                        }
+                        $tmp_x = $teams[$i]->getMatchPlay();
                     }
-                    $tmp_x = $teams[$i]->getMatchPlay();
-                }
-                if ($header == 'All Time Rankings') $striped_row = '';
+                    if ($header == 'All Time Rankings') $striped_row = '';
                     $output .= '<div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md '.$striped_row.'">
                                     <div class="col-sm-1"><img class="flag-md" src="/images/flags/'.$teams[$i]->getFlagFilename().'"></div>
                                     <div class="col-sm-3" style="padding-top: 3px;">'.$teams[$i]->getName().'</div>
@@ -339,6 +352,57 @@
                                     <div class="col-sm-1">'.$goal_diff.'</div>
                                     <div class="col-sm-1">'.$teams[$i]->getPoint().'</div>
                                 </div>';
+                }
+            }
+            $output .= '</div>';
+            return $output;
+        }
+
+        public static function getSoccerRankingBestFinishHtml($team_dto, $tournament_id, $header = 'Tournament Rankings') {
+            $teams = $team_dto->getTeams();
+            $output = '<div class="col-sm-12 h2-ff2 margin-top-lg">'.$header.'</div>
+                            <div class="col-sm-12 box-xl">
+                                <div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md font-bold">
+                                    <div class="col-sm-1"></div>
+                                    <div class="col-sm-3"></div>
+                                    <div class="col-sm-1">MP</div>
+                                    <div class="col-sm-1">W</div>
+                                    <div class="col-sm-1">D</div>
+                                    <div class="col-sm-1">L</div>
+                                    <div class="col-sm-1">GF</div>
+                                    <div class="col-sm-1">GA</div>
+                                    <div class="col-sm-1">+/-</div>
+                                    <div class="col-sm-1">Pts</div>
+                                </div>';
+            $tmp_x = $teams[0]->getBestFinish();
+            $striped_row = 'ranking-striped';
+            for ($i = 0; $i < sizeof($teams); $i++) {
+                if ($teams[$i]->getMatchPlay() != 0) {
+                    $goal_diff = $teams[$i]->getGoalDiff();
+                    if ($teams[$i]->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
+                    if ($tmp_x != $teams[$i]->getBestFinish() && $teams[$i]->getBestFinish() != Finish::RunnerUp
+                        && $teams[$i]->getBestFinish() != Finish::ThirdPlace && $teams[$i]->getBestFinish() != Finish::Semifinal) {
+                        if ($striped_row == 'ranking-striped') {
+                            $striped_row = '';
+                        } else {
+                            $striped_row = 'ranking-striped';
+                        }
+                        $tmp_x = $teams[$i]->getBestFinish();
+                    }
+                    if ($header == 'All Time Rankings') $striped_row = '';
+                    $output .= '<div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md '.$striped_row.'">
+                                    <div class="col-sm-1"><img class="flag-md" src="/images/flags/'.$teams[$i]->getFlagFilename().'"></div>
+                                    <div class="col-sm-3" style="padding-top: 3px;">'.$teams[$i]->getName().'</div>
+                                    <div class="col-sm-1">'.$teams[$i]->getMatchPlay().'</div>
+                                    <div class="col-sm-1">'.$teams[$i]->getWin().'</div>
+                                    <div class="col-sm-1">'.$teams[$i]->getDraw().'</div>
+                                    <div class="col-sm-1">'.$teams[$i]->getLoss().'</div>
+                                    <div class="col-sm-1">'.$teams[$i]->getGoalFor().'</div>
+                                    <div class="col-sm-1">'.$teams[$i]->getGoalAgainst().'</div>
+                                    <div class="col-sm-1">'.$goal_diff.'</div>
+                                    <div class="col-sm-1">'.$teams[$i]->getPoint().'</div>
+                                </div>';
+                }
             }
             $output .= '</div>';
             return $output;
@@ -1601,11 +1665,14 @@
 
     abstract class Finish {
         const Group = 1;
-        const SecondRound = 2;
-        const Round16 = 3;
-        const Quarterfinal = 4;
-        const Semifinal = 5;
-        const ThirdPlace = 6;
-        const RunnerUp = 7;
-        const Champion = 8;
+        const PreliminaryRound = 2;
+        const FirstRound = 3;
+        const SecondRound = 4;
+        const FinalRound = 5;
+        const Round16 = 6;
+        const Quarterfinal = 7;
+        const Semifinal = 8;
+        const ThirdPlace = 9;
+        const RunnerUp = 10;
+        const Champion = 11;
     }

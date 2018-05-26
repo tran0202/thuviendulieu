@@ -14,15 +14,17 @@ VALUES ('A', 'Group A', 1),
 		('E', 'Group E', 1),
 		('F', 'Group F', 1),
 		('G', 'Group G', 1),
-		('H', 'Group H', 1);
-
-INSERT INTO `group` (name, long_name, group_type_id)
-VALUES ('1', 'Group 1', 1),
+		('H', 'Group H', 1),
+	('1', 'Group 1', 1),
 	('2', 'Group 2', 1),
 	('3', 'Group 3', 1),
 	('4', 'Group 4', 1),
 	('5', 'Group 5', 1),
-	('6', 'Group 6', 1);
+	('6', 'Group 6', 1),
+	('Withdrew', null, 1);
+
+INSERT INTO `group` (name, long_name, group_type_id)
+VALUES ('Final Round', null, 1);
 
 INSERT INTO `group` (name, tournament_id, group_type_id)
 VALUES ('AFC', 2, 2),
@@ -47,10 +49,12 @@ VALUES ('First Stage', 4),
 	('Final', 5),
 	('Play-off', 5),
 	('Final Round', 5),
-	('Replay', 5);
+	('Replay First Round', 5),
+	('Preliminary Round', 5),
+	('Replay Second Round', 5);
 
 INSERT INTO `group` (name, group_type_id)
-VALUES ('Preliminary Round', 5);
+VALUES ('Replay Quarterfinals', 5);
 
 INSERT INTO `group` (name, long_name, group_type_id)
 VALUES ('First Round', 'Round of 128', 5),
