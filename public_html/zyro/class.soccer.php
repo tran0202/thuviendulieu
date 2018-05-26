@@ -48,6 +48,17 @@
             }
         }
 
+        public static function getTournamentCount($team_dto) {
+            $tmp_array = Team::getTeamArrayByName($team_dto);
+            $teams = $team_dto->getTeams();
+            for ($i = 0; $i < sizeof($teams); $i++ ) {
+                if ($teams[$i]->getParentName() != null) {
+                    $tc = $tmp_array[$teams[$i]->getParentName()]->getTournamentCount();
+                    $tmp_array[$teams[$i]->getParentName()]->setTournamentCount($tc + $teams[$i]->getTournamentCount());
+                }
+            }
+        }
+
         public static function getTournamentRanking($team_dto, $match_dto, $stage = Stage::First, $all_time_ranking = false) {
             $matches = $match_dto->getMatches();
             $tournament_id = $matches[0]->getTournamentId();
@@ -908,13 +919,15 @@
             if ($match->getPointsForWin() == 2 && !$all_time_ranking) $points_for_win = 2;
             $home_name = $match->getHomeTeamName();
             $away_name = $match->getAwayTeamName();
+            $home_tournament_count = 0;
+            $away_tournament_count = 0;
             if ($all_time_ranking && $match->getHomeParentTeamName() != null) {
                 $home_name = $match->getHomeParentTeamName();
-                unset($team_array[$match->getHomeTeamName()]);
+//                unset($team_array[$match->getHomeTeamName()]);
             }
             if ($all_time_ranking && $match->getAwayParentTeamName() != null) {
                 $away_name = $match->getAwayParentTeamName();
-                unset($team_array[$match->getAwayTeamName()]);
+//                unset($team_array[$match->getAwayTeamName()]);
             }
             $home_team = $team_array[$home_name];
             $away_team = $team_array[$away_name];

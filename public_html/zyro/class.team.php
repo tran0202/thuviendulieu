@@ -6,6 +6,8 @@
         private $code;
         private $group_name;
         private $group_order;
+        private $parent_id;
+        private $parent_name;
         private $parent_group_name;
         private $parent_group_long_name;
         private $parent_group_order;
@@ -20,18 +22,22 @@
         private $goal_against;
         private $goal_diff;
         private $point;
+        private $tournament_count;
         private $scenarios;
 
         protected function __construct(){ }
 
-        public static function CreateSoccerTeam($id, $name, $code, $group_name, $group_order, $flag_filename) {
+        public static function CreateSoccerTeam($id, $name, $code, $parent_id, $parent_name, $group_name, $group_order, $flag_filename, $tournament_count) {
             $t = new Team();
             $t->id = $id;
             $t->name = $name;
             $t->code = $code;
+            $t->parent_id = $parent_id;
+            $t->parent_name = $parent_name;
             $t->group_name = $group_name;
             $t->group_order = $group_order;
             $t->flag_filename = $flag_filename;
+            $t->tournament_count = $tournament_count;
             $t->match_play = 0;
             $t->win = 0;
             $t->draw = 0;
@@ -112,11 +118,11 @@
             }
             else {
                 while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                    $team = Team::CreateSoccerTeam($row['team_id'], $row['name'], $row['code'],
-                        $row['group_name'], $row['group_order'], $row['flag_filename']);
+                    $team = Team::CreateSoccerTeam($row['team_id'], $row['name'], $row['code'], $row['parent_team_id'], $row['parent_team_name'],
+                        $row['group_name'], $row['group_order'], $row['flag_filename'], 1);
                     array_push($teams, $team);
-                    $second_round_team = Team::CreateSoccerTeam($row['team_id'], $row['name'], $row['code'],
-                        null, $row['group_order'], $row['flag_filename']);
+                    $second_round_team = Team::CreateSoccerTeam($row['team_id'], $row['name'], $row['code'], $row['parent_team_id'], $row['parent_team_name'],
+                        null, $row['group_order'], $row['flag_filename'], 1);
                     array_push($second_round_teams, $second_round_team);
                 }
                 return TeamDTO::CreateSoccerTeamDTO($teams, $second_round_teams, $count, $output);
@@ -137,8 +143,8 @@
             }
             else {
                 while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                    $team = Team::CreateSoccerTeam($row['id'], $row['name'], $row['code'],
-                        '', '', $row['flag_filename']);
+                    $team = Team::CreateSoccerTeam($row['id'], $row['name'], $row['code'], $row['parent_team_id'], $row['parent_team_name'],
+                        '', '', $row['flag_filename'], $row['tournament_count']);
                     array_push($teams, $team);
                 }
                 return TeamDTO::CreateSoccerTeamDTO($teams, null, $count, $output);
@@ -311,11 +317,13 @@
 
         public static function getSoccerRankingMatchPlayHtml($team_dto, $tournament_id, $header = 'Tournament Rankings') {
             $teams = $team_dto->getTeams();
+            $tc_header = '';
+            if ($header == 'All Time Rankings') $tc_header = '<div class="col-sm-1">T</div>';
             $output = '<div class="col-sm-12 h2-ff2 margin-top-lg">'.$header.'</div>
                             <div class="col-sm-12 box-xl">
                                 <div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md font-bold">
                                     <div class="col-sm-1"></div>
-                                    <div class="col-sm-3"></div>
+                                    <div class="col-sm-2"></div>'.$tc_header.'
                                     <div class="col-sm-1">MP</div>
                                     <div class="col-sm-1">W</div>
                                     <div class="col-sm-1">D</div>
@@ -325,10 +333,12 @@
                                     <div class="col-sm-1">+/-</div>
                                     <div class="col-sm-1">Pts</div>
                                 </div>';
+            $tc_col = '';
             $tmp_x = $teams[0]->getMatchPlay();
             $striped_row = 'ranking-striped';
             for ($i = 0; $i < sizeof($teams); $i++) {
                 if ($teams[$i]->getMatchPlay() != 0) {
+                    if ($header == 'All Time Rankings') $tc_col = '<div class="col-sm-1">'.$teams[$i]->getTournamentCount().'</div>';
                     $goal_diff = $teams[$i]->getGoalDiff();
                     if ($teams[$i]->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
                     if ($tmp_x != $teams[$i]->getMatchPlay()) {
@@ -342,7 +352,7 @@
                     if ($header == 'All Time Rankings') $striped_row = '';
                     $output .= '<div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md '.$striped_row.'">
                                     <div class="col-sm-1"><img class="flag-md" src="/images/flags/'.$teams[$i]->getFlagFilename().'"></div>
-                                    <div class="col-sm-3" style="padding-top: 3px;">'.$teams[$i]->getName().'</div>
+                                    <div class="col-sm-2" style="padding-top: 3px;">'.$teams[$i]->getName().'</div>'.$tc_col.'
                                     <div class="col-sm-1">'.$teams[$i]->getMatchPlay().'</div>
                                     <div class="col-sm-1">'.$teams[$i]->getWin().'</div>
                                     <div class="col-sm-1">'.$teams[$i]->getDraw().'</div>
@@ -457,11 +467,12 @@
         }
 
         public static function getSoccerTeamSql($tournament_id) {
-            $sql = 'SELECT UCASE(t.name) AS name, team_id, 
+            $sql = 'SELECT UCASE(t.name) AS name, team_id, t.parent_team_id, UCASE(t2.name) AS parent_team_name,
                         group_id, UCASE(g.name) AS group_name, group_order, 
                         n.flag_filename, n.code, tt.tournament_id 
                     FROM team_tournament tt 
-                    LEFT JOIN team t ON t.id = tt.team_id 
+                    LEFT JOIN team t ON t.id = tt.team_id  
+                    LEFT JOIN team t2 ON t2.id = t.parent_team_id 
                     LEFT JOIN `group` g ON g.id = tt.group_id  
                     LEFT JOIN nation n ON n.id = t.nation_id 
                     WHERE tt.tournament_id = '.$tournament_id.' 
@@ -470,24 +481,35 @@
         }
 
         public static function getAllTimeSoccerTeamSql() {
-            $sql = 'SELECT DISTINCT UCASE(t.name) AS name, t.id,
-                        n.flag_filename, n.code
+            $sql = 'SELECT DISTINCT UCASE(t.name) AS name, t.id, t.parent_team_id, UCASE(t2.name) AS parent_team_name,
+                        n.flag_filename, n.code, tc.tournament_count
                     FROM team t
                     LEFT JOIN team_tournament tt ON tt.team_id = t.id
-                    LEFT JOIN tournament tou ON tou.id = tt.tournament_id
+                    LEFT JOIN tournament tou ON tou.id = tt.tournament_id  
+                    LEFT JOIN team t2 ON t2.id = t.parent_team_id 
                     LEFT JOIN `group` g ON g.id = tt.group_id
                     LEFT JOIN nation n ON n.id = t.nation_id
+                    LEFT JOIN (SELECT team_id, COUNT(team_id) AS tournament_count
+                                FROM team_tournament 
+                                WHERE tournament_id <> 1
+                                AND (group_id <> 63 OR group_id is null)
+                                GROUP BY team_id) tc ON tc.team_id = t.id
                     WHERE tou.tournament_type_id = 1
                     AND tt.tournament_id <> 1
                     UNION
-                    SELECT DISTINCT UCASE(t.name) AS name, t.id, 
-                        n.flag_filename, n.code 
+                    SELECT DISTINCT UCASE(t.name) AS name, t.id, null, null,
+                        n.flag_filename, n.code, tc.tournament_count
                     FROM team t  
                     LEFT OUTER JOIN team t2 ON t2.parent_team_id = t.id
                     LEFT JOIN team_tournament tt ON tt.team_id = t2.id
-                    LEFT JOIN tournament tou ON tou.id = tt.tournament_id 
+                    LEFT JOIN tournament tou ON tou.id = tt.tournament_id
                     LEFT JOIN `group` g ON g.id = tt.group_id  
                     LEFT JOIN nation n ON n.id = t.nation_id 
+                    LEFT JOIN (SELECT team_id, COUNT(team_id) AS tournament_count
+                                FROM team_tournament 
+                                WHERE tournament_id <> 1
+                                AND (group_id <> 63 OR group_id is null)
+                                GROUP BY team_id) tc ON tc.team_id = t.id
                     WHERE tou.tournament_type_id = 1
                     AND tt.tournament_id <> 1';
             return $sql;
@@ -574,6 +596,7 @@
             $t->goal_against = $team->getGoalAgainst();
             $t->goal_diff = $team->getGoalDiff();
             $t->point = $team->getPoint();
+            $t->tournament_count = $team->getTournamentCount();
             return $t;
         }
 
@@ -655,6 +678,38 @@
         public function setGroupOrder($group_order)
         {
             $this->group_order = $group_order;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getParentId()
+        {
+            return $this->parent_id;
+        }
+
+        /**
+         * @param mixed $parent_id
+         */
+        public function setParentId($parent_id)
+        {
+            $this->parent_id = $parent_id;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getParentName()
+        {
+            return $this->parent_name;
+        }
+
+        /**
+         * @param mixed $parent_name
+         */
+        public function setParentName($parent_name)
+        {
+            $this->parent_name = $parent_name;
         }
 
         /**
@@ -879,6 +934,22 @@
         public function setPoint($point)
         {
             $this->point = $point;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getTournamentCount()
+        {
+            return $this->tournament_count;
+        }
+
+        /**
+         * @param mixed $tournament_count
+         */
+        public function setTournamentCount($tournament_count)
+        {
+            $this->tournament_count = $tournament_count;
         }
 
         /**

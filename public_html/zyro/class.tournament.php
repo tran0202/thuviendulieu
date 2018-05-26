@@ -137,6 +137,7 @@
             $body_html = $team_dto->getHtml();
             $body_html .= $match_dto->getHtml();
 
+            Soccer::getTournamentCount($team_dto);
             Soccer::getTournamentRanking($team_dto, $match_dto, Stage::AllStages, true);
             $body_html .= Team::getSoccerRankingHtml($team_dto, $tournament_id, 'All Time Rankings');
 
