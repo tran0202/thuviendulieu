@@ -317,13 +317,12 @@
 
         public static function getSoccerRankingMatchPlayHtml($team_dto, $tournament_id, $header = 'Tournament Rankings') {
             $teams = $team_dto->getTeams();
-            $tc_header = '';
-            if ($header == 'All Time Rankings') $tc_header = '<div class="col-sm-1">T</div>';
+            $tc_header = '<div class="col-sm-1"></div><div class="col-sm-3"></div>';
+            if ($header == 'All Time Rankings') $tc_header = '<div class="col-sm-1"></div><div class="col-sm-2"></div><div class="col-sm-1">T</div>';
             $output = '<div class="col-sm-12 h2-ff2 margin-top-lg">'.$header.'</div>
                             <div class="col-sm-12 box-xl">
                                 <div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md font-bold">
-                                    <div class="col-sm-1"></div>
-                                    <div class="col-sm-2"></div>'.$tc_header.'
+                                    '.$tc_header.'
                                     <div class="col-sm-1">MP</div>
                                     <div class="col-sm-1">W</div>
                                     <div class="col-sm-1">D</div>
@@ -333,12 +332,14 @@
                                     <div class="col-sm-1">+/-</div>
                                     <div class="col-sm-1">Pts</div>
                                 </div>';
-            $tc_col = '';
             $tmp_x = $teams[0]->getMatchPlay();
             $striped_row = 'ranking-striped';
             for ($i = 0; $i < sizeof($teams); $i++) {
+                $tc_col = '<div class="col-sm-1"><img class="flag-md" src="/images/flags/'.$teams[$i]->getFlagFilename().'"></div>
+                                    <div class="col-sm-3" style="padding-top: 3px;">'.$teams[$i]->getName().'</div>';
                 if ($teams[$i]->getMatchPlay() != 0) {
-                    if ($header == 'All Time Rankings') $tc_col = '<div class="col-sm-1">'.$teams[$i]->getTournamentCount().'</div>';
+                    if ($header == 'All Time Rankings') $tc_col = '<div class="col-sm-1"><img class="flag-md" src="/images/flags/'.$teams[$i]->getFlagFilename().'"></div>
+                                    <div class="col-sm-2" style="padding-top: 3px;">'.$teams[$i]->getName().'</div><div class="col-sm-1">'.$teams[$i]->getTournamentCount().'</div>';
                     $goal_diff = $teams[$i]->getGoalDiff();
                     if ($teams[$i]->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
                     if ($tmp_x != $teams[$i]->getMatchPlay()) {
@@ -351,8 +352,7 @@
                     }
                     if ($header == 'All Time Rankings') $striped_row = '';
                     $output .= '<div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md '.$striped_row.'">
-                                    <div class="col-sm-1"><img class="flag-md" src="/images/flags/'.$teams[$i]->getFlagFilename().'"></div>
-                                    <div class="col-sm-2" style="padding-top: 3px;">'.$teams[$i]->getName().'</div>'.$tc_col.'
+                                    '.$tc_col.'
                                     <div class="col-sm-1">'.$teams[$i]->getMatchPlay().'</div>
                                     <div class="col-sm-1">'.$teams[$i]->getWin().'</div>
                                     <div class="col-sm-1">'.$teams[$i]->getDraw().'</div>

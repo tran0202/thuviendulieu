@@ -7,7 +7,7 @@
 ?>
 <html lang="en">
 <head>
-    <title>TVDL - Russia 2018</title>
+    <title>TVDL - World Cup Archive</title>
     <?php include_once('header_script.inc.php'); ?>
 </head>
 <body>
