@@ -1,10 +1,10 @@
-<!DOCTYPE html>
 <?php
-    include_once('class.tournament.php');
-    $tournament_id = 7;
-    $tournament_dto = Tournament::getAllTimeSoccerTournament($tournament_id);
-    $body_html = $tournament_dto->getBodyHtml();
+    namespace v2;
+    include_once('class.tournament2.php');
+    $tournament = Tournament::getAllTimeSoccerTournament();
+    $body_html = $tournament->getBodyHtml();
 ?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>TVDL - World Cup Archive</title>
