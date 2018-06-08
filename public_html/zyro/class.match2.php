@@ -128,6 +128,12 @@
 //                '', '', null, $count, $html);
 //        }
 
+        public static function getSoccerMatches($tournament) {
+
+            $sql = Match::getSoccerMatchSql($tournament->getTournamentId());
+            self::getSoccerMatchDb($tournament, $sql);
+        }
+
         public static function getAllTimeSoccerMatches($tournament) {
 
             $sql = Match::getAllTimeSoccerMatchSql();
@@ -169,6 +175,203 @@
             }
         }
 
+        public static function getArchiveSoccerScheduleHtml($tournament) {
+            self::getSoccerScheduleHtml($tournament, false);
+        }
+
+        public static function getSoccerScheduleHtml($tournament, $lookAheadPopover) {
+            $matches = $tournament->getMatches();
+            $bracket_spot = self::getBracketSpot($matches);
+            $bracket_matches = self::getBracketMatches($matches);
+            $output2 = '';
+            $output = '
+                        <div id="accordion" class="">
+                            <div class="card col-sm-12 padding-tb-md border-bottom-gray5">
+                                <div class="card-header" id="heading-bracket" style="width:100%;padding-left:0;">
+                                    <button class="btn btn-link collapsed h2-ff1 no-padding-left" data-toggle="collapse"
+                                        data-target="#collapse-bracket" aria-expanded="false" aria-controls="collapse-bracket">
+                                            Bracket <i id="bracket-down-arrow" class="fa fa-angle-double-down font-custom1"></i>
+                                            <i id="bracket-up-arrow" class="fa fa-angle-double-up font-custom1 no-display"></i>
+                                    </button>
+                                </div>
+                                <div id="collapse-bracket" class="collapse" aria-labelledby="heading-bracket" data-parent="#accordion">
+                                    <div class="card-body">
+                                        ';
+            $output .= self::getSoccerBracketHtml($bracket_matches, $bracket_spot);
+            $output .=         '
+                                    </div>
+                                </div>
+                            </div>
+                        </div>';
+            $matches = self::getMatchArrayByDate($matches);
+            foreach ($matches as $rounds => $_round) {
+                if ($rounds == $bracket_spot) $output2 .= $output;
+                $output2 .= '<div class="col-sm-12 h2-ff1 margin-top-md">'.$rounds.'</div>';
+                foreach ($_round as $match_dates => $_matches) {
+                    $output2 .= '<div class="col-sm-12 h3-ff3 border-bottom-gray2 margin-top-md">'
+                        .$_matches[array_keys($_matches)[0]]->getMatchDateFmt().'</div>';
+                    foreach ($_matches as $match_order => $_match) {
+                        $home_team_tmp = $_match->getHomeTeamName();
+                        $away_team_tmp = $_match->getAwayTeamName();
+                        $group_text = '';
+                        $home_flag_tmp = '<img class="flag-md" src="/images/flags/'.$_match->getHomeFlag().'">';
+                        $away_flag_tmp = '<img class="flag-md" src="/images/flags/'.$_match->getAwayFlag().'">';
+                        if ($_match->getHomeTeamName() == '') {
+                            $home_team_tmp = '['.$_match->getWaitingHomeTeam().']';
+                            $away_team_tmp = '['.$_match->getWaitingAwayTeam().']';
+                            $home_flag_tmp = '';
+                            $away_flag_tmp = '';
+                        }
+                        if ($_match->getStage() == 'First Stage') {
+                            $group_name = $_match->getGroupName();
+                            if ($_match->getRound() == 'Second Round' || $_match->getRound() == 'Final Round') $group_name = $_match->getSecondRoundGroupName();
+                            $group_anchor = 'Group '.$group_name;
+                            if ($_match->getRound() == 'Final Round') $group_anchor = $_match->getSecondRoundGroupName();
+                            if ($_match->getRound() == 'Final Round') $group_name = $_match->getSecondRoundGroupName();
+                            $group_id = $group_name;
+                            if ($group_name == 'Final Round') $group_id = 'FinalRound';
+                            $group_text = '<a class="link-modal" data-toggle="modal" data-target="#group'.$group_id.'StandingModal">'.$group_anchor.'</a>' ;
+                        }
+                        $score = 'vs';
+                        $penalty_score = '';
+                        $aet = ' aet';
+                        if (self::isGoldenGoalRule($_match->getGoldenGoalRule()) && $_match->getHomeTeamPenaltyScore() == '') $aet = ' gg';
+                        if ($_match->getHomeTeamScore() != -1) {
+                            $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
+                            if ($rounds != 'Group Matches' && $rounds != 'Second Round' && $rounds != 'Final Round' && $_match->getHomeTeamScore() == $_match->getAwayTeamScore()) {
+                                $score = ($_match->getHomeTeamScore()+$_match->getHomeTeamExtraTimeScore()).
+                                    '-'.($_match->getAwayTeamScore()+$_match->getAwayTeamExtraTimeScore()).$aet;
+                                if ($_match->getHomeTeamExtraTimeScore() == $_match->getAwayTeamExtraTimeScore()) {
+                                    if ($_match->getHomeTeamPenaltyScore() != null) {
+                                        $penalty_score = ' '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore().' pen';
+                                    }
+                                }
+                            }
+                        }
+                        if ($_match->getSecondRoundGroupName() == 'Withdrew') $score = 'w/o';
+                        $advance_popover = '';
+                        $advance_popover2 = '';
+                        if ($lookAheadPopover && $match_order > 32 && $match_order <= 48) {
+                            $advance_popover = ' <a id="popover_'.$_match->getHomeTeamCode().'" data-toggle="popover" data-container="body" data-placement="right" type="button" 
+                                data-html="true" tabindex="0" data-trigger="focus"><span class="fa fa-futbol-o" style="font-size:medium;vertical-align:middle;"></span></a>';
+                            $advance_popover2 = '<a id="popover_'.$_match->getAwayTeamCode().'" data-toggle="popover" data-container="body" data-placement="left" type="button" 
+                                data-html="true" tabindex="0" data-trigger="focus"><span class="fa fa-futbol-o" style="font-size:medium;vertical-align:middle;"></span></a> ';
+                        }
+                        $time_zone = 'CST';
+                        if ($_match->getTournamentId() <> 1) $time_zone = 'Local time';
+                        $output2 .= '<div class="col-sm-12 padding-tb-md border-bottom-gray5">
+                                        <div class="col-sm-2 padding-lr-xs">'.$_match->getMatchTimeFmt().' '.$time_zone.'<br>'.$group_text.'</div>
+                                        <div class="col-sm-1 padding-lr-xs text-right" style="padding-top:6px;">'.$home_flag_tmp.'</div>
+                                        <div class="col-sm-3 h2-ff3 padding-left-lg padding-right-xs">'.$home_team_tmp.$advance_popover.'</div>
+                                        <div class="col-sm-1 h2-ff3 padding-lr-xs">'.$score.'<br>'.$penalty_score.'</div>
+                                        <div class="col-sm-3 h2-ff3 padding-lr-xs text-right">'.$advance_popover2.$away_team_tmp.'</div>
+                                        <div class="col-sm-1 padding-lr-xs text-right" style="padding-top:6px;">'.$away_flag_tmp.'</div>
+                                    </div>';
+                    }
+                }
+            }
+            $tournament->concatBodyHtml($output2);
+        }
+
+        public static function getSoccerBracketHtml($bracket_matches, $bracket_spot) {
+            $output = '';
+            $box_height = 120;
+            $gap_heights = array(array(10, 20), array(80, 160), array(220, 440), array(410, 1000), array(610, 2120), array(610, 2120));
+            $i = 0;
+            $j = 0;
+            foreach ($bracket_matches as $bracket_round => $_bracket_matches) {
+                $gap_height = $gap_heights[$i][0];
+                $third_place_moving = '';
+                if ($bracket_round == 'Third place') {
+                    $third_place_moving = 'style="margin-left:-25%"';
+                    if ($bracket_spot == 'Semifinals') $third_place_moving = 'style="margin-left:-25%;margin-top:60px;"';
+                }
+                $prelim_style = '';
+                if ($bracket_round == 'Preliminary Round') $prelim_style = 'style="padding-left:10px;padding-right:0;"';
+
+                $output .= '<div class="col-sm-3" '.$third_place_moving.'>
+                            <div class="col-sm-12" style="height:'.$gap_height.'px;"></div>
+                            <div class="col-sm-12 margin-top-sm" '.$prelim_style.'>
+                                <span class="h2-ff1">'.$bracket_round.'</span>
+                            </div>';
+                foreach ($_bracket_matches as $bracket_match_order => $_bracket_match) {
+                    $gap_height = 10;
+                    if ($j != 0) $gap_height = $gap_heights[$i][1];
+                    $home_team_name = $_bracket_match->getHomeTeamCode();
+                    $away_team_name = $_bracket_match->getAwayTeamCode();
+                    $home_flag_tmp = '<img class="flag-md" src="/images/flags/'.$_bracket_match->getHomeFlag().'">';
+                    $away_flag_tmp = '<img class="flag-md" src="/images/flags/'.$_bracket_match->getAwayFlag().'">';
+                    if ($_bracket_match->getHomeTeamCode() == '') {
+                        $home_team_name = '['.$_bracket_match->getWaitingHomeTeam().']';
+                        $away_team_name = '['.$_bracket_match->getWaitingAwayTeam().']';
+                        $home_flag_tmp = '';
+                        $away_flag_tmp = '';
+                    }
+                    $score = 'vs';
+                    $penalty_score = '';
+                    $aet = ' aet';
+                    $replay_score = '';
+                    if (self::isGoldenGoalRule($_bracket_match->getGoldenGoalRule()) && $_bracket_match->getHomeTeamPenaltyScore() == '') $aet = ' gg';
+                    if ($_bracket_match->getHomeTeamScore() != -1) {
+                        $score = $_bracket_match->getHomeTeamScore().'-'.$_bracket_match->getAwayTeamScore();
+                        if ($_bracket_match->getHomeTeamScore() == $_bracket_match->getAwayTeamScore()) {
+                            $score = ($_bracket_match->getHomeTeamScore()+$_bracket_match->getHomeTeamExtraTimeScore()).
+                                '-'.($_bracket_match->getAwayTeamScore()+$_bracket_match->getAwayTeamExtraTimeScore()).$aet;
+                            if ($_bracket_match->getHomeTeamExtraTimeScore() == $_bracket_match->getAwayTeamExtraTimeScore()) {
+                                if ($_bracket_match->getHomeTeamPenaltyScore() != null) {
+                                    $penalty_score = '<br>'.$_bracket_match->getHomeTeamPenaltyScore().'-'.$_bracket_match->getAwayTeamPenaltyScore().' pen';
+                                }
+                                if ($_bracket_match->getHomeTeamReplayScore() != null) {
+                                    $replay_score = '<br>'.$_bracket_match->getHomeTeamReplayScore().'-'.$_bracket_match->getAwayTeamReplayScore().' rep';
+                                }
+                            }
+                        }
+                    }
+                    if ($_bracket_match->getSecondRoundGroupName() == 'Withdrew') $score = 'w/o';
+
+                    $output .= '<div class="col-sm-12" style="height:'.$gap_height.'px;"></div>
+                                <div class="col-sm-12 box-sm" style="height:'.$box_height.'px;">
+                                    <div class="col-sm-4 h4-ff3 margin-tb-sm text-center">'.$home_flag_tmp.$home_team_name.'</div>
+                                    <div class="col-sm-4 h4-ff3 margin-tb-sm text-center">'.$score.$penalty_score.$replay_score.'</div>
+                                    <div class="col-sm-4 h4-ff3 margin-tb-sm text-center">'.$away_flag_tmp.$away_team_name.'</div>
+                                </div>';
+                    $j = $j + 1;
+                }
+                $output .= '</div>';
+                $i = $i + 1;
+                $j = 0;
+            }
+            return $output;
+        }
+
+        public static function getSoccerMatchSql($tournament_id) {
+            $sql = 'SELECT t.id AS home_team_id, UCASE(t.name) AS home_team_name, home_team_score, n.flag_filename AS home_flag, n.code AS home_team_code,
+                        t2.id AS away_team_id, UCASE(t2.name) AS away_team_name, away_team_score, n2.flag_filename AS away_flag, n2.code AS away_team_code, 
+                        pt.id AS home_parent_team_id, UCASE(pt.name) AS home_parent_team_name, pt2.id AS away_parent_team_id, UCASE(pt2.name) AS away_parent_team_name, 
+                        home_team_extra_time_score, away_team_extra_time_score, home_team_penalty_score, away_team_penalty_score, 
+                        DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date, 
+                        TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order, bracket_order,
+                        waiting_home_team, waiting_away_team,
+                        g.name AS round, g2.name AS stage,
+                        g3.name AS group_name, g4.name AS second_round_group_name, m.tournament_id, tou.points_for_win, tou.golden_goal_rule
+                    FROM `match` m  
+                    LEFT JOIN tournament tou ON tou.id = m.tournament_id 
+                    LEFT JOIN team t ON t.id = m.home_team_id
+                    LEFT JOIN team t2 ON t2.id = m.away_team_id
+                    LEFT JOIN `group` g ON g.id = m.round_id
+                    LEFT JOIN `group` g2 ON g2.id = m.stage_id
+                    LEFT JOIN team_tournament tt ON (tt.team_id = m.home_team_id AND tt.tournament_id = m.tournament_id)
+                    LEFT JOIN `group` g3 ON g3.id = tt.group_id 
+                    LEFT JOIN `group` g4 ON g4.id = m.group_id
+                    LEFT JOIN nation n ON n.id = t.nation_id  
+                    LEFT JOIN nation n2 ON n2.id = t2.nation_id  
+                    LEFT JOIN team pt ON pt.id = t.parent_team_id 
+                    LEFT JOIN team pt2 ON pt2.id = t2.parent_team_id
+                    WHERE m.tournament_id = '.$tournament_id.'
+                    ORDER BY stage_id, match_order, match_date, match_time;';
+            return $sql;
+        }
+
         public static function getAllTimeSoccerMatchSql() {
             $sql = 'SELECT t.id AS home_team_id, UCASE(t.name) AS home_team_name, home_team_score, n.flag_filename AS home_flag, n.code AS home_team_code,
                         t2.id AS away_team_id, UCASE(t2.name) AS away_team_name, away_team_score, n2.flag_filename AS away_flag, n2.code AS away_team_code, 
@@ -195,6 +398,118 @@
                     WHERE tou.tournament_type_id = 1
                     AND m.tournament_id <> 1;';
             return $sql;
+        }
+
+        public static function getGroupMatches($matches) {
+            return self::getRoundMatches($matches, 'Group Matches');
+        }
+
+        public static function getRound16Matches($matches) {
+            return self::getRoundMatches($matches, 'Round of 16');
+        }
+
+        public static function getQuarterfinalMatches($matches) {
+            return self::getRoundMatches($matches, 'Quarterfinals');
+        }
+
+        public static function getSemifinalMatches($matches) {
+            return self::getRoundMatches($matches, 'Semifinals');
+        }
+
+        public static function getThirdPlaceMatch($matches) {
+            $matches_tmp = self::getRoundMatches($matches, 'Third place');
+            if (sizeof($matches_tmp) == 0) return null;
+            return $matches_tmp[0];
+        }
+
+        public static function getFinalMatch($matches) {
+            $matches_tmp = self::getRoundMatches($matches, 'Final');
+            if (sizeof($matches_tmp) == 0) return null;
+            return $matches_tmp[0];
+        }
+
+        public static function getRoundMatches($matches, $round) {
+            $result = array();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                if ($matches[$i]->getRound() == $round) {
+                    array_push($result, $matches[$i]);
+                }
+            }
+            return $result;
+        }
+
+        public static function getBracketMatches($matches) {
+            self::switchLast2Matches($matches);
+            $match_count = sizeof($matches);
+            $result = array();
+            $replay_matches = array();
+            $tmp_matches = array();
+            for ($i = 0; $i < $match_count; $i++) {
+                if (self::isMatchReplay($matches[$i])) {
+                    array_push($replay_matches, $matches[$i]);
+                }
+            }
+            for ($i = 0; $i < $match_count; $i++) {
+                if ($matches[$i]->getStage() == 'Second Stage') {
+                    for ($j = 0; $j < sizeof($replay_matches); $j++) {
+                        if ($matches[$i]->getHomeTeamName() == $replay_matches[$j]->getHomeTeamName()) {
+                            $matches[$i]->setHomeTeamReplayScore($replay_matches[$j]->getHomeTeamScore());
+                            $matches[$i]->setAwayTeamReplayScore($replay_matches[$j]->getAwayTeamScore());
+                            break;
+                        }
+                    }
+                    if (!self::isMatchReplay($matches[$i])) {
+                        array_push($tmp_matches, $matches[$i]);
+                    }
+                }
+            }
+            for ($i = 0; $i < sizeof($tmp_matches) - 1; $i++) {
+                for ($j = $i + 1; $j < sizeof($tmp_matches); $j++) {
+                    if ($tmp_matches[$i]->getBracketOrder() >= $tmp_matches[$j]->getBracketOrder()) {
+                        $tmp_match = $tmp_matches[$i];
+                        $tmp_matches[$i] = $tmp_matches[$j];
+                        $tmp_matches[$j] = $tmp_match;
+                    }
+                }
+            }
+            for ($i = 0; $i < sizeof($tmp_matches); $i++) {
+                $result[$tmp_matches[$i]->getRound()][$tmp_matches[$i]->getBracketOrder()] = $tmp_matches[$i];
+            }
+            return $result;
+        }
+
+        public static function switchLast2Matches($matches) {
+            $match_count = sizeof($matches);
+            $tmp_match = $matches[$match_count - 2];
+            $matches[$match_count - 2] = $matches[$match_count - 1];
+            $matches[$match_count - 1] = $tmp_match;
+        }
+
+        public static function isMatchReplay($match) {
+            return strpos($match->getRound(), 'Replay') !== false;
+        }
+
+        public static function isGoldenGoalRule($golden_goal_rule) {
+            return $golden_goal_rule == 1;
+        }
+
+        public static function getMatchArrayByDate($matches) {
+            $result = array();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                $result[$matches[$i]->getRound()][$matches[$i]->getMatchDate()][$matches[$i]->getMatchOrder()] = $matches[$i];
+            }
+            return $result;
+        }
+
+        public static function getBracketSpot($matches) {
+            $spot = '';
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                if ($matches[$i]->getStage() == 'Second Stage') {
+                    $spot = $matches[$i]->getRound();
+                    break;
+                }
+            }
+            return $spot;
         }
 
         /**

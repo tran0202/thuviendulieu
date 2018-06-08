@@ -35,6 +35,11 @@
                 '', '', '', null);
         }
 
+        public static function CreateSoccerTournamentById($tournament_id) {
+            return self::CreateTournament(null, null, $tournament_id, null,
+                '', '', '', null);
+        }
+
         public static function getAllTimeSoccerTournament() {
 
             $tournament = Tournament::CreateSoccerTournament();
@@ -47,6 +52,61 @@
             Team::getAllTimeSoccerRankingHtml($tournament);
 
             return $tournament;
+        }
+
+        public static function getArchiveSoccerTournament($tournament_id) {
+
+            $tournament = Tournament::CreateSoccerTournamentById($tournament_id);
+
+            self::getTournamentProfile($tournament);
+            Team::getSoccerTeams($tournament);
+            Match::getSoccerMatches($tournament);
+
+            Soccer::getFirstStageMatchesRanking($tournament);
+            Match::getArchiveSoccerScheduleHtml($tournament);
+            Team::getSoccerGroupModalHtml($tournament);
+
+            Soccer::getSecondStageMatchesRanking($tournament);
+            Team::getTournamentSoccerRankingHtml($tournament);
+
+            return $tournament;
+        }
+
+        public static function getTournamentProfile($tournament) {
+
+            $sql = Tournament::getTournamentProfileSql($tournament->getTournamentId());
+            self::getTournamentProfileDb($tournament, $sql);
+        }
+
+        public static function getTournamentProfileDb($tournament, $sql) {
+
+            $query = $GLOBALS['connection']->prepare($sql);
+            $query->execute();
+            $count = $query->rowCount();
+            $output = '<!-- Tournament Count = '.$count.' -->';
+
+            if ($count == 0) {
+                $output = '<h2>No result found!</h2>';
+                $tournament->concatBodyHtml($output);
+            }
+            else {
+                $row = $query->fetch(\PDO::FETCH_ASSOC);
+                $tournament_profile = TournamentProfile::CreateTournamentProfile(
+                    $row['id'], $row['name'], $row['logo_filename'], $row['start_date'], $row['end_date'],
+                    $row['tournament_type_id'], $row['parent_tournament_id'], $row['points_for_win'], $row['golden_goal_rule']);
+                $tournament->setProfile($tournament_profile);
+                $tournament->concatBodyHtml($output);
+            }
+        }
+
+        public static function getTournamentProfileSql($tournament_id) {
+            $sql = 'SELECT name, id, logo_filename,
+                        start_date, end_date, 
+                        tournament_type_id, parent_tournament_id,
+                        points_for_win, golden_goal_rule 
+                    FROM tournament t 
+                    WHERE t.id = '.$tournament_id;
+            return $sql;
         }
 
         public function concatBodyHtml($body_html)
@@ -201,23 +261,53 @@
 
     class TournamentProfile {
 
+        private $id;
         private $name;
         private $logo_filename;
+        private $start_date;
+        private $end_date;
+        private $tournament_type_id;
+        private $parent_tournament_id;
         private $points_for_win;
         private $golden_goal_rule;
-        private $html;
 
         protected function __construct() { }
 
-        public static function CreateTournamentProfile($name, $logo_filename, $points_for_win, $golden_goal_rule, $html)
+        public static function CreateTournamentProfile($id, $name, $logo_filename, $start_date, $end_date,
+            $tournament_type_id, $parent_tournament_id, $points_for_win, $golden_goal_rule)
         {
             $tp = new TournamentProfile();
+            $tp->id = $id;
             $tp->name = $name;
             $tp->logo_filename = $logo_filename;
+            $tp->start_date = $start_date;
+            $tp->end_date = $end_date;
+            $tp->tournament_type_id = $tournament_type_id;
+            $tp->parent_tournament_id = $parent_tournament_id;
             $tp->points_for_win = $points_for_win;
             $tp->golden_goal_rule = $golden_goal_rule;
-            $tp->html = $html;
             return $tp;
+        }
+
+        public function getTournamentHeader() {
+            $output = '<img src="/images/wc_logos/'.self::getLogoFilename().'">&nbsp;&nbsp;'.self::getName();
+            return $output;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getId()
+        {
+            return $this->id;
+        }
+
+        /**
+         * @param mixed $id
+         */
+        public function setId($id)
+        {
+            $this->id = $id;
         }
 
         /**
@@ -255,6 +345,70 @@
         /**
          * @return mixed
          */
+        public function getStartDate()
+        {
+            return $this->start_date;
+        }
+
+        /**
+         * @param mixed $start_date
+         */
+        public function setStartDate($start_date)
+        {
+            $this->start_date = $start_date;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getEndDate()
+        {
+            return $this->end_date;
+        }
+
+        /**
+         * @param mixed $end_date
+         */
+        public function setEndDate($end_date)
+        {
+            $this->end_date = $end_date;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getTournamentTypeId()
+        {
+            return $this->tournament_type_id;
+        }
+
+        /**
+         * @param mixed $tournament_type_id
+         */
+        public function setTournamentTypeId($tournament_type_id)
+        {
+            $this->tournament_type_id = $tournament_type_id;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getParentTournamentId()
+        {
+            return $this->parent_tournament_id;
+        }
+
+        /**
+         * @param mixed $parent_tournament_id
+         */
+        public function setParentTournamentId($parent_tournament_id)
+        {
+            $this->parent_tournament_id = $parent_tournament_id;
+        }
+
+        /**
+         * @return mixed
+         */
         public function getPointsForWin()
         {
             return $this->points_for_win;
@@ -282,22 +436,6 @@
         public function setGoldenGoalRule($golden_goal_rule)
         {
             $this->golden_goal_rule = $golden_goal_rule;
-        }
-
-        /**
-         * @return mixed
-         */
-        public function getHtml()
-        {
-            return $this->html;
-        }
-
-        /**
-         * @param mixed $html
-         */
-        public function setHtml($html)
-        {
-            $this->html = $html;
         }
     }
 

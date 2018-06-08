@@ -9,7 +9,8 @@
         '5'	=> array('id' => '6', 'alias' => 'Russia2018Schedule', 'file' => 'soccer_schedule.php','controllers' => array()),
         '6'	=> array('id' => '7', 'alias' => 'WorldCup', 'file' => 'soccer_tournament.php','controllers' => array()),
         '7'	=> array('id' => '8', 'alias' => 'WorldCupArchive', 'file' => 'soccer_archive.php','controllers' => array()),
-        '8'	=> array('id' => '9', 'alias' => 'WorldCup2', 'file' => 'soccer_tournament2.php','controllers' => array())
+        '8'	=> array('id' => '9', 'alias' => 'WorldCup2', 'file' => 'soccer_tournament2.php','controllers' => array()),
+        '9'	=> array('id' => '10', 'alias' => 'WorldCup3', 'file' => 'soccer_tournament3.php','controllers' => array())
 //		'4'	=> array('id' => '4', 'alias' => 'New-Link', 'file' => 'tennis.php','controllers' => array())
 	);
 	$forms = array(
