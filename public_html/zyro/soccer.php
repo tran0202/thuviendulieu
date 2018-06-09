@@ -37,8 +37,8 @@
                 </div>
                 <div class="col-sm-12">
                     <h5 class="wb-stl-subtitle2 text-center">
-                        All Matches: <a href="Russia2018Groups?tid=1&ftsy=AllMatches">Groups</a> | <a href="Russia2018Schedule?tid=1&ftsy=AllMatches">Schedule</a><br>
-                        First 2 Matches: <a href="Russia2018Groups?tid=1&ftsy=First2Matches">Groups</a> | <a href="Russia2018Schedule?tid=1&ftsy=First2Matches">Schedule</a>
+                        All Matches: <a href="Russia2018Groups?fid=3">Groups</a> | <a href="Russia2018Schedule?fid=3">Schedule</a><br>
+                        First 2 Matches: <a href="Russia2018Groups?fid=2">Groups</a> | <a href="Russia2018Schedule?fid=2">Schedule</a>
                     </h5>
                 </div>
                 <div class="col-sm-12 margin-top-lg padding-top-lg border-top-gray5">
@@ -47,11 +47,6 @@
                     </p>
                     <p class="wb-stl-normal"> </p>
                 </div>
-<!--                <div class="col-sm-12">-->
-<!--                    <h5 class="wb-stl-subtitle2 text-center">-->
-<!--                        <a href="WorldCup?tid=5">Brazil 2014</a>-->
-<!--                    </h5>-->
-<!--                </div>-->
                 <div class="col-sm-12 margin-tb-lg">
                     <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
                 </div>

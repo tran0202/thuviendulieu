@@ -1,9 +1,9 @@
-<!DOCTYPE html>
 <?php
     include_once('class.tournament.php');
-    $tournament_dto = Tournament::getFootballTournament(2);
-    $body_html = $tournament_dto->getBodyHtml();
+    $tournament = Tournament::getFootballTournament(2);
+    $body_html = $tournament->getBodyHtml();
 ?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>TVDL - NFL</title>

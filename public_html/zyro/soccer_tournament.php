@@ -1,6 +1,5 @@
 <?php
-    namespace v2;
-    include_once('class.tournament2.php');
+    include_once('class.tournament.php');
     parse_str($_SERVER['QUERY_STRING'], $query_string);
     $tournament_id = 1;
     if (isset($query_string['tid'])) $tournament_id = $query_string['tid'];

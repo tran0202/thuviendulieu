@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
     include_once('class.tournament.php');
     $qs = '';
@@ -6,17 +5,20 @@
     parse_str($_SERVER['QUERY_STRING'], $query_string);
     $tournament_id = 1;
     if (isset($query_string['tid'])) $tournament_id = $query_string['tid'];
-    $fantasy = '';
-    if (isset($query_string['ftsy'])) $fantasy = $query_string['ftsy'];
-    $tournament_dto = Tournament::getSoccerTournamentBySchedule($tournament_id, $fantasy);
-    $header = $tournament_dto->getProfile();
-    $body_html = $tournament_dto->getBodyHtml();
-    $modal_html = $tournament_dto->getModalHtml();
-    $popover_html = $tournament_dto->getPopoverHtml();
+    $fantasy = Fantasy::None;
+    if (isset($query_string['fid'])) $fantasy = Soccer::getFantasy($query_string['fid']);
+    $tournament = Tournament::getSoccerTournamentBySchedule($tournament_id, $fantasy);
+    $profile = $tournament->getProfile();
+    $header = $profile->getTournamentHeader();
+    $tournament_name = $profile->getName();
+    $body_html = $tournament->getBodyHtml();
+    $modal_html = $tournament->getModalHtml();
+    $popover_html = $tournament->getPopoverHtml();
 ?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>TVDL - Russia 2018</title>
+    <title>TVDL - <?php echo $tournament_name; ?></title>
     <?php include_once('header_script.inc.php'); ?>
 </head>
 <body>

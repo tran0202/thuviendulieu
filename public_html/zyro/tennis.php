@@ -1,9 +1,9 @@
-<!DOCTYPE html>
 <?php
     include_once('class.tournament.php');
-    $tournament_dto = Tournament::getTennisTournament(4);
-    $body_html = $tournament_dto->getBodyHtml();
+    $tournament = Tournament::getTennisTournament(4);
+    $body_html = $tournament->getBodyHtml();
 ?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>TVDL - 2017 US Open Men's Singles</title>

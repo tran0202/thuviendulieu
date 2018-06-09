@@ -1,6 +1,5 @@
 <?php
-    namespace v2;
-    include_once('class.tournament2.php');
+    include_once('class.tournament.php');
     $tournament = Tournament::getAllTimeSoccerTournament();
     $body_html = $tournament->getBodyHtml();
 ?>
