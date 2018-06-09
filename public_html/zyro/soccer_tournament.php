@@ -1,19 +1,17 @@
-<!DOCTYPE html>
 <?php
-    include_once('class.tournament.php');
-    $qs = '';
-    if ($_SERVER['QUERY_STRING'] != '') $qs = '?'.$_SERVER['QUERY_STRING'];
+    namespace v2;
+    include_once('class.tournament2.php');
     parse_str($_SERVER['QUERY_STRING'], $query_string);
     $tournament_id = 1;
     if (isset($query_string['tid'])) $tournament_id = $query_string['tid'];
-    $tournament_dto = Tournament::getArchiveSoccerTournament($tournament_id);
-    $profile = $tournament_dto->getProfile();
-    $header = $profile->getHtml();
+    $tournament = Tournament::getArchiveSoccerTournament($tournament_id);
+    $profile = $tournament->getProfile();
+    $header = $profile->getTournamentHeader();
     $tournament_name = $profile->getName();
-    $body_html = $tournament_dto->getBodyHtml();
-    $modal_html = $tournament_dto->getModalHtml();
-    $popover_html = $tournament_dto->getPopoverHtml();
+    $body_html = $tournament->getBodyHtml();
+    $modal_html = $tournament->getModalHtml();
 ?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>TVDL - <?php echo $tournament_name; ?></title>
@@ -36,7 +34,6 @@
                 </div>
                 <div>
                     <?php echo $body_html; ?>
-                    <?php echo $popover_html; ?>
                     <p class="wb-stl-normal"> </p>
                 </div>
                 <div class="col-sm-12 margin-tb-lg">

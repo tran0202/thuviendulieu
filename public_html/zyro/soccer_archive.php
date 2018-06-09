@@ -36,15 +36,15 @@
                         <p class="border-bottom-gray5"><img src="images/wc_logos/1994.png"/> <a href="WorldCup?tid=10">USA 1994</a></p>
                         <p class="border-bottom-gray5"><img src="images/wc_logos/1990.png"/> <a href="WorldCup?tid=11">Italy 1990</a></p>
                         <p class="border-bottom-gray5"><img src="images/wc_logos/1986.png"/> <a href="WorldCup?tid=12">Mexico 1986</a></p>
-                        <p class="border-bottom-gray5"><img src="images/wc_logos/1982.png"/> <a href="WorldCup2?tid=13">Spain 1982</a></p>
-                        <p class="border-bottom-gray5"><img src="images/wc_logos/1978.png"/> <a href="WorldCup2?tid=14">Argentina 1978</a></p>
-                        <p class="border-bottom-gray5"><img src="images/wc_logos/1974.png"/> <a href="WorldCup2?tid=15">Germany 1974</a></p>
+                        <p class="border-bottom-gray5"><img src="images/wc_logos/1982.png"/> <a href="WorldCup?tid=13">Spain 1982</a></p>
+                        <p class="border-bottom-gray5"><img src="images/wc_logos/1978.png"/> <a href="WorldCup?tid=14">Argentina 1978</a></p>
+                        <p class="border-bottom-gray5"><img src="images/wc_logos/1974.png"/> <a href="WorldCup?tid=15">Germany 1974</a></p>
                         <p class="border-bottom-gray5"><img src="images/wc_logos/1970.png"/> <a href="WorldCup?tid=16">Mexico 1970</a></p>
                         <p class="border-bottom-gray5"><img src="images/wc_logos/1966.png"/> <a href="WorldCup?tid=17">England 1966</a></p>
                         <p class="border-bottom-gray5"><img src="images/wc_logos/1962.png"/> <a href="WorldCup?tid=18">Chile 1962</a></p>
                         <p class="border-bottom-gray5"><img src="images/wc_logos/1958.png"/> <a href="WorldCup?tid=19">Sweden 1958</a></p>
                         <p class="border-bottom-gray5"><img src="images/wc_logos/1954.png"/> <a href="WorldCup?tid=20">Switzerland 1954</a></p>
-                        <p class="border-bottom-gray5"><img src="images/wc_logos/1950.png"/> <a href="WorldCup2?tid=21">Brazil 1950</a></p>
+                        <p class="border-bottom-gray5"><img src="images/wc_logos/1950.png"/> <a href="WorldCup?tid=21">Brazil 1950</a></p>
                         <p class="border-bottom-gray5"><img src="images/wc_logos/1938.png"/> <a href="WorldCup?tid=22">France 1938</a></p>
                         <p class="border-bottom-gray5"><img src="images/wc_logos/1934.png"/> <a href="WorldCup?tid=23">Italy 1934</a></p>
                         <p class="border-bottom-gray5"><img src="images/wc_logos/1930.png"/> <a href="WorldCup?tid=24">Uruguay 1930</a></p>

@@ -1,7 +1,6 @@
 <?php
     namespace v2;
-    include_once('class.match2.php');
-    include_once('class.team2.php');
+    include_once('config.php');
     include_once('class.soccer2.php');
 
     class Tournament {
@@ -44,12 +43,12 @@
 
             $tournament = Tournament::CreateSoccerTournament();
 
-            Team::getAllTimeSoccerTeams($tournament);
-            Match::getAllTimeSoccerMatches($tournament);
+            Soccer::getAllTimeSoccerTeams($tournament);
+            Soccer::getAllTimeSoccerMatches($tournament);
 
-            Soccer::getTournamentCount($tournament->getTeams());
+            Soccer::getTournamentCount($tournament);
             Soccer::getAllTimeRanking($tournament);
-            Team::getAllTimeSoccerRankingHtml($tournament);
+            Soccer::getAllTimeSoccerRankingHtml($tournament);
 
             return $tournament;
         }
@@ -59,15 +58,16 @@
             $tournament = Tournament::CreateSoccerTournamentById($tournament_id);
 
             self::getTournamentProfile($tournament);
-            Team::getSoccerTeams($tournament);
-            Match::getSoccerMatches($tournament);
+            Soccer::getSoccerTeams($tournament);
+            Soccer::getSoccerMatches($tournament);
 
             Soccer::getFirstStageMatchesRanking($tournament);
-            Match::getArchiveSoccerScheduleHtml($tournament);
-            Team::getSoccerGroupModalHtml($tournament);
+            Soccer::getArchiveSoccerScheduleHtml($tournament);
+            Soccer::getSoccerModalHtml($tournament);
+            Soccer::updateFirstStageMatchesRanking($tournament);
 
             Soccer::getSecondStageMatchesRanking($tournament);
-            Team::getTournamentSoccerRankingHtml($tournament);
+            Soccer::getTournamentSoccerRankingHtml($tournament);
 
             return $tournament;
         }
@@ -112,6 +112,11 @@
         public function concatBodyHtml($body_html)
         {
             $this->body_html = $this->body_html.$body_html;
+        }
+
+        public function concatModalHtml($modal_html)
+        {
+            $this->modal_html = $this->modal_html.$modal_html;
         }
 
         /**
@@ -436,22 +441,5 @@
         public function setGoldenGoalRule($golden_goal_rule)
         {
             $this->golden_goal_rule = $golden_goal_rule;
-        }
-    }
-
-    class FantasyType {
-
-        public $fantasy_type = array(
-            'AllMatches'=>1,
-            'First2Matches'=>2,
-            'Final'=>3
-        );
-
-        public function __construct() { }
-
-        public function getFantasyType($type) {
-            if ($type == null) return null;
-            if ($type == '') return null;
-            return $this->fantasy_type[$type];
         }
     }
