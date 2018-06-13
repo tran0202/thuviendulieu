@@ -2,6 +2,7 @@
     include_once('class.tournament.php');
     $tournament = Tournament::getAllTimeSoccerTournament();
     $body_html = $tournament->getBodyHtml();
+    $popover_html = $tournament->getPopoverHtml();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,6 +52,7 @@
                 </div>
                 <div>
                     <?php echo $body_html; ?>
+                    <?php echo $popover_html; ?>
                     <p class="wb-stl-normal"> </p>
                 </div>
                 <div class="col-sm-12 margin-tb-lg">

@@ -3,6 +3,7 @@
 
     class Team {
         private $id;
+        private $tournament_name;
         private $name;
         private $code;
         private $group_name;
@@ -28,7 +29,7 @@
 
         protected function __construct() { }
 
-        public static function CreateTeam($id, $name, $code, $group_name, $group_order,
+        public static function CreateTeam($id, $tournament_name, $name, $code, $group_name, $group_order,
             $parent_id, $parent_name, $parent_group_name, $parent_group_long_name, $parent_group_order,
             $flag_filename, $logo_filename,
             $tournament_count, $match_play, $win, $draw, $loss,
@@ -36,6 +37,7 @@
         {
             $t = new Team();
             $t->id = $id;
+            $t->tournament_name = $tournament_name;
             $t->name = $name;
             $t->code = $code;
             $t->group_name = $group_name;
@@ -61,15 +63,15 @@
             return $t;
         }
 
-        public static function CreateSoccerTeam($id, $name, $code, $parent_id, $parent_name, $group_name, $group_order, $flag_filename, $tournament_count) {
-            return self::CreateTeam($id, $name, $code, $group_name, $group_order,
+        public static function CreateSoccerTeam($id, $tournament_name, $name, $code, $parent_id, $parent_name, $group_name, $group_order, $flag_filename, $tournament_count) {
+            return self::CreateTeam($id, $tournament_name, $name, $code, $group_name, $group_order,
                 $parent_id, $parent_name, '', '', 0, $flag_filename, '',
                 $tournament_count, 0, 0, 0, 0, 0, 0, 0, 0, null, null);
         }
 
         public static function CloneSoccerTeam($id, $name, $code, $group_name, $group_order,
                                              $match_play, $win, $draw, $loss, $goal_for, $goal_against, $goal_diff, $point) {
-            return self::CreateTeam($id, $name, $code, $group_name, $group_order,
+            return self::CreateTeam($id, '', $name, $code, $group_name, $group_order,
                 0, '', '', '', 0, '', '',
                 0, $match_play, $win, $draw, $loss, $goal_for, $goal_against, $goal_diff, $point, null, null);
         }
@@ -102,6 +104,22 @@
         public function setId($id)
         {
             $this->id = $id;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getTournamentName()
+        {
+            return $this->tournament_name;
+        }
+
+        /**
+         * @param mixed $tournament_name
+         */
+        public function setTournamentName($tournament_name)
+        {
+            $this->tournament_name = $tournament_name;
         }
 
         /**

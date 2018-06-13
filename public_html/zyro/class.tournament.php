@@ -7,6 +7,8 @@
     class Tournament {
         private $teams;
         private $second_round_teams;
+        private $tournament_teams;
+        private $second_round_tournament_teams;
         private $matches;
         private $tournament_id;
         private $fantasy;
@@ -17,9 +19,11 @@
 
         protected function __construct() { }
 
-        public static function CreateTournament($teams, $matches, $tournament_id, $fantasy, $body_html, $modal_html, $popover_html, $profile) {
+        public static function CreateTournament($teams, $second_round_teams, $tournament_teams, $matches, $tournament_id, $fantasy, $body_html, $modal_html, $popover_html, $profile) {
             $t = new Tournament();
             $t->teams = $teams;
+            $t->second_round_teams = $second_round_teams;
+            $t->tournament_teams = $tournament_teams;
             $t->matches = $matches;
             $t->tournament_id = $tournament_id;
             $t->fantasy = $fantasy;
@@ -31,27 +35,32 @@
         }
 
         public static function CreateSoccerTournament() {
-            return self::CreateTournament(null, null, 0, null,
+            return self::CreateTournament(null, null, null, null, 0, null,
                 '', '', '', null);
         }
 
         public static function CreateSoccerTournamentById($tournament_id) {
-            return self::CreateTournament(null, null, $tournament_id, null,
+            return self::CreateTournament(null, null, null, null, $tournament_id, null,
                 '', '', '', null);
         }
 
         public static function CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy) {
-            return self::CreateTournament(null, null, $tournament_id, $fantasy,
+            return self::CreateTournament(null, null, null, null, $tournament_id, $fantasy,
+                '', '', '', null);
+        }
+
+        public static function CreateSoccerTournamentByTeams($teams, $second_round_teams, $matches) {
+            return self::CreateTournament($teams, $second_round_teams, null, $matches, 0, null,
                 '', '', '', null);
         }
 
         public static function CreateTennisTournamentById($tournament_id) {
-            return self::CreateTournament(null, null, $tournament_id, null,
+            return self::CreateTournament(null, null, null, null, $tournament_id, null,
                 '', '', '', null);
         }
 
         public static function CreateFootballTournamentById($tournament_id) {
-            return self::CreateTournament(null, null, $tournament_id, null,
+            return self::CreateTournament(null, null, null, null, $tournament_id, null,
                 '', '', '', null);
         }
 
@@ -106,10 +115,13 @@
 
             Soccer::getAllTimeSoccerTeams($tournament);
             Soccer::getAllTimeSoccerMatches($tournament);
+            Soccer::getAllTimeSoccerTeamTournaments($tournament);
 
             Soccer::getTournamentCount($tournament);
             Soccer::getAllTimeRanking($tournament);
             Soccer::getAllTimeSoccerRankingHtml($tournament);
+            Soccer::getAllTimeTournamentRanking($tournament);
+            Soccer::getAllTimeSoccerPopoverHtml($tournament);
 
             return $tournament;
         }
@@ -200,6 +212,11 @@
             $this->modal_html = $this->modal_html.$modal_html;
         }
 
+        public function concatPopoverHtml($popover_html)
+        {
+            $this->popover_html = $this->popover_html.$popover_html;
+        }
+
         /**
          * @return mixed
          */
@@ -230,6 +247,38 @@
         public function setSecondRoundTeams($second_round_teams)
         {
             $this->second_round_teams = $second_round_teams;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getTournamentTeams()
+        {
+            return $this->tournament_teams;
+        }
+
+        /**
+         * @param mixed $tournament_teams
+         */
+        public function setTournamentTeams($tournament_teams)
+        {
+            $this->tournament_teams = $tournament_teams;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getSecondRoundTournamentTeams()
+        {
+            return $this->second_round_tournament_teams;
+        }
+
+        /**
+         * @param mixed $second_round_tournament_teams
+         */
+        public function setSecondRoundTournamentTeams($second_round_tournament_teams)
+        {
+            $this->second_round_tournament_teams = $second_round_tournament_teams;
         }
 
         /**

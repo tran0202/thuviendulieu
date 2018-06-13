@@ -1140,6 +1140,47 @@
             $tournament->setTeams($teams);
         }
 
+        public static function getAllTimeTournamentRanking($tournament) {
+            $tt = array();
+            $srtt = array();
+            $tm = array();
+            $result = array();
+            $tournament_teams = $tournament->getTournamentTeams();
+            $second_round_tournament_teams = $tournament->getSecondRoundTournamentTeams();
+            $tournament_matches = $tournament->getMatches();
+            for ($i = 0; $i < sizeof($tournament_teams); $i++ ) {
+                $tt[$tournament_teams[$i]->getTournamentName()] = array();
+            }
+            for ($i = 0; $i < sizeof($second_round_tournament_teams); $i++ ) {
+                $srtt[$second_round_tournament_teams[$i]->getTournamentName()] = array();
+            }
+            for ($i = 0; $i < sizeof($tournament_matches); $i++ ) {
+                $tm[$tournament_matches[$i]->getTournamentName()] = array();
+            }
+            for ($i = 0; $i < sizeof($tournament_teams); $i++ ) {
+                array_push($tt[$tournament_teams[$i]->getTournamentName()], $tournament_teams[$i]);
+            }
+            for ($i = 0; $i < sizeof($second_round_tournament_teams); $i++ ) {
+                array_push($srtt[$second_round_tournament_teams[$i]->getTournamentName()], $second_round_tournament_teams[$i]);
+            }
+            for ($i = 0; $i < sizeof($tournament_matches); $i++ ) {
+                array_push($tm[$tournament_matches[$i]->getTournamentName()], $tournament_matches[$i]);
+            }
+            foreach ($tt as $tournament_name => $_teams) {
+                $t = Tournament::CreateSoccerTournamentByTeams($tt[$tournament_name], $srtt[$tournament_name], $tm[$tournament_name]);
+                self::getFirstStageMatchesRanking($t);
+                Soccer::updateFirstStageMatchesRanking($t);
+                Soccer::getSecondStageMatchesRanking($t);
+                $tt[$tournament_name] = $t->getTeams();
+            }
+            foreach ($tt as $tournament_name => $_teams) {
+                for ($i = 0; $i < sizeof($_teams); $i++ ) {
+                    array_push($result, $_teams[$i]);
+                }
+            }
+            $tournament->setTournamentTeams($result);
+        }
+
         public static function getGroupRanking($teams, $matches, $stage) {
             $teams_tmp = self::getTeamArrayByName($teams);
             $result = array();
@@ -1403,6 +1444,55 @@
                     break;
                 default:
                     $best_finish = Finish::Champion;
+                    break;
+            }
+            return $best_finish;
+        }
+
+        public static function getFinishLiteral($finish) {
+            switch($finish)
+            {
+                case Finish::Group:
+                    $best_finish = 'First Round';
+                    break;
+                case Finish::Playoff:
+                    $best_finish = 'First Round';
+                    break;
+                case Finish::SecondRound:
+                    $best_finish = 'First Round';
+                    break;
+                case Finish::FinalRound:
+                    $best_finish = 'First Round';
+                    break;
+                case Finish::PreliminaryRound:
+                    $best_finish = 'Second Round';
+                    break;
+                case Finish::FirstRound:
+                    $best_finish = 'Second Round';
+                    break;
+                case Finish::ReplayFirstRound:
+                    $best_finish = 'Second Round';
+                    break;
+                case Finish::Round16:
+                    $best_finish = 'Second Round';
+                    break;
+                case Finish::Quarterfinal:
+                    $best_finish = 'Quarterfinals';
+                    break;
+                case Finish::ReplayQuarterfinal:
+                    $best_finish = 'Quarterfinals';
+                    break;
+                case Finish::Semifinal:
+                    $best_finish = 'Fourth place';
+                    break;
+                case Finish::ThirdPlace:
+                    $best_finish = 'Third place';
+                    break;
+                case Finish::RunnerUp:
+                    $best_finish = 'Runner-up';
+                    break;
+                default:
+                    $best_finish = 'Champion';
                     break;
             }
             return $best_finish;
@@ -1871,7 +1961,9 @@
                                 $score = ($_match->getHomeTeamScore()+$_match->getHomeTeamExtraTimeScore()).
                                     '-'.($_match->getAwayTeamScore()+$_match->getAwayTeamExtraTimeScore()).$aet;
                                 if ($_match->getHomeTeamExtraTimeScore() == $_match->getAwayTeamExtraTimeScore()) {
-                                    $penalty_score = ' '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore().' pen';
+                                    if ($_match->getHomeTeamPenaltyScore() != 0 || $_match->getAwayTeamPenaltyScore() != 0) {
+                                        $penalty_score = ' '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore().' pen';
+                                    }
                                 }
                             }
                         }
@@ -2156,7 +2248,37 @@
                 $output .= '</ul>
                     </div>';
             }
-            $tournament->setPopoverHtml($output);
+            $tournament->concatPopoverHtml($output);
+        }
+
+        public static function getAllTimeSoccerPopoverHtml($tournament) {
+            $tt = array();
+            $tournament_teams = $tournament->getTournamentTeams();
+            $teams = $tournament->getTeams();
+            $output = '';
+            for ($i = 0; $i < sizeof($tournament_teams); $i++) {
+                $team_name = $tournament_teams[$i]->getName();
+                if ($tournament_teams[$i]->getParentName() != null) {
+                    $team_name =  $tournament_teams[$i]->getParentName();
+                }
+                $tt[$team_name][$tournament_teams[$i]->getTournamentName()] = $tournament_teams[$i];
+            }
+            for ($i = 0; $i < sizeof($teams); $i++) {
+                $output .= '
+                    <div id="popover-content-'.$teams[$i]->getCode().'" class="hide">
+                        <p><b>'.$teams[$i]->getName().'\'s Tournaments:</b> '.$teams[$i]->getTournamentCount().'</p>
+                        <p><b>Best Finish:</b></p>';
+                $team_name = $teams[$i]->getName();
+                if ($teams[$i]->getParentName() != null) {
+                    $team_name =  $teams[$i]->getParentName();
+                }
+                foreach ($tt[$team_name] as $tournament_names => $_team) {
+                    $output .= '<p><b>'.$tournament_names.':</b> '.self::getFinishLiteral($_team->getBestFinish()).'</p>';
+                }
+                $output .= '
+                    </div>';
+            }
+            $tournament->concatPopoverHtml($output);
         }
 
         public static function getAllTimeSoccerRankingHtml($tournament) {
@@ -2198,7 +2320,9 @@
                 $tc_col = '<div class="col-sm-3" style="padding-top: 3px;">'.$teams[$i]->getName().'</div>';
                 if ($teams[$i]->getMatchPlay() != 0) {
                     if ($all_time) $tc_col = '<div class="col-sm-2" style="padding-top: 3px;">'.$teams[$i]->getName().'</div>
-                                                <div class="col-sm-1">'.$teams[$i]->getTournamentCount().'</div>';
+                                                <div class="col-sm-1"><a id="popover_'.$teams[$i]->getCode().'" data-toggle="popover" 
+                                                    data-container="body" data-placement="right" type="button" data-html="true" 
+                                                    tabindex="0" data-trigger="focus" style="cursor:pointer;">'.$teams[$i]->getTournamentCount().'</a></div>';
 
                     $goal_diff = $teams[$i]->getGoalDiff();
                     if ($teams[$i]->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
@@ -2279,7 +2403,8 @@
                         $row['home_team_id'], $row['home_team_name'], $row['home_team_code'], $row['away_team_id'], $row['away_team_name'], $row['away_team_code'],
                         $row['home_parent_team_id'], $row['home_parent_team_name'], $row['away_parent_team_id'], $row['away_parent_team_name'],
                         $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_time_fmt'],
-                        $row['match_order'], $row['bracket_order'], $row['round'], $row['stage'], $row['group_name'], $row['second_round_group_name'], $row['tournament_id'],
+                        $row['match_order'], $row['bracket_order'], $row['round'], $row['stage'], $row['group_name'], $row['second_round_group_name'],
+                        $row['tournament_id'], $row['tournament_name'],
                         $row['points_for_win'], $row['golden_goal_rule'], $row['waiting_home_team'], $row['waiting_away_team'],
                         $home_team_score, $away_team_score,
                         $row['home_team_extra_time_score'], $row['away_team_extra_time_score'],
@@ -2303,7 +2428,7 @@
                         TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order, bracket_order,
                         waiting_home_team, waiting_away_team,
                         g.name AS round, g2.name AS stage,
-                        g3.name AS group_name, g4.name AS second_round_group_name, m.tournament_id, tou.points_for_win, tou.golden_goal_rule
+                        g3.name AS group_name, g4.name AS second_round_group_name, m.tournament_id, tou.name AS tournament_name, tou.points_for_win, tou.golden_goal_rule
                     FROM `match` m  
                     LEFT JOIN tournament tou ON tou.id = m.tournament_id 
                     LEFT JOIN team t ON t.id = m.home_team_id
@@ -2339,6 +2464,12 @@
             self::getAllTimeSoccerTeamDb($tournament, $sql);
         }
 
+        public static function getAllTimeSoccerTeamTournaments($tournament) {
+
+            $sql = self::getAllTimeSoccerTeamTournamentSql();
+            self::getAllTimeSoccerTeamTournamentDb($tournament, $sql);
+        }
+
         public static function getSoccerTeamDb($tournament, $sql) {
 
             $query = $GLOBALS['connection']->prepare($sql);
@@ -2355,12 +2486,12 @@
             else {
                 while ($row = $query->fetch(\PDO::FETCH_ASSOC)) {
                     $team = Team::CreateSoccerTeam(
-                        $row['team_id'], $row['name'], $row['code'], $row['parent_team_id'], $row['parent_team_name'],
+                        $row['team_id'], 0, $row['name'], $row['code'], $row['parent_team_id'], $row['parent_team_name'],
                         $row['group_name'], $row['group_order'], $row['flag_filename'], 1);
                     array_push($teams, $team);
 
                     $second_round_team = Team::CreateSoccerTeam(
-                        $row['team_id'], $row['name'], $row['code'], $row['parent_team_id'], $row['parent_team_name'],
+                        $row['team_id'], 0, $row['name'], $row['code'], $row['parent_team_id'], $row['parent_team_name'],
                         '', $row['group_order'], $row['flag_filename'], 1);
                     array_push($second_round_teams, $second_round_team);
                 }
@@ -2385,11 +2516,42 @@
             else {
                 while ($row = $query->fetch(\PDO::FETCH_ASSOC)) {
                     $team = Team::CreateSoccerTeam(
-                        $row['id'], $row['name'], $row['code'], $row['parent_team_id'], $row['parent_team_name'],
+                        $row['id'], 0, $row['name'], $row['code'], $row['parent_team_id'], $row['parent_team_name'],
                         '', '', $row['flag_filename'], $row['tournament_count']);
                     array_push($teams, $team);
                 }
                 $tournament->setTeams($teams);
+                $tournament->concatBodyHtml($output);
+            }
+        }
+
+        public static function getAllTimeSoccerTeamTournamentDb($tournament, $sql) {
+
+            $query = $GLOBALS['connection']->prepare($sql);
+            $query->execute();
+            $count = $query->rowCount();
+            $output = '<!-- TeamTournament Count = '.$count.' -->';
+            $teams = array();
+            $second_round_teams = array();
+
+            if ($count == 0) {
+                $output = '<h2>No result found!</h2>';
+                $tournament->concatBodyHtml($output);
+            }
+            else {
+                while ($row = $query->fetch(\PDO::FETCH_ASSOC)) {
+                    $team = Team::CreateSoccerTeam(
+                        $row['id'], $row['tournament_name'], $row['name'], $row['code'], $row['parent_team_id'], $row['parent_team_name'],
+                        '', '', $row['flag_filename'], 0);
+                    array_push($teams, $team);
+
+                    $second_round_team = Team::CreateSoccerTeam(
+                        $row['id'], $row['tournament_name'], $row['name'], $row['code'], $row['parent_team_id'], $row['parent_team_name'],
+                        '', '', $row['flag_filename'], 0);
+                    array_push($second_round_teams, $second_round_team);
+                }
+                $tournament->setTournamentTeams($teams);
+                $tournament->setSecondRoundTournamentTeams($second_round_teams);
                 $tournament->concatBodyHtml($output);
             }
         }
@@ -2438,6 +2600,20 @@
                                 WHERE tournament_id <> 1
                                 AND (group_id <> 63 OR group_id is null)
                                 GROUP BY team_id) tc ON tc.team_id = t.id
+                    WHERE tou.tournament_type_id = 1
+                    AND tt.tournament_id <> 1';
+            return $sql;
+        }
+
+        public static function getAllTimeSoccerTeamTournamentSql() {
+            $sql = 'SELECT UCASE(t.name) AS name, t.id, tou.name AS tournament_name, t.parent_team_id, UCASE(t2.name) AS parent_team_name,
+                        n.flag_filename, n.code
+                    FROM team t
+                    LEFT JOIN team_tournament tt ON tt.team_id = t.id
+                    LEFT JOIN tournament tou ON tou.id = tt.tournament_id  
+                    LEFT JOIN team t2 ON t2.id = t.parent_team_id 
+                    LEFT JOIN `group` g ON g.id = tt.group_id
+                    LEFT JOIN nation n ON n.id = t.nation_id
                     WHERE tou.tournament_type_id = 1
                     AND tt.tournament_id <> 1';
             return $sql;

@@ -31,6 +31,7 @@
         private $round;
         private $stage;
         private $tournament_id;
+        private $tournament_name;
         private $points_for_win;
         private $golden_goal_rule;
         private $group_name;
@@ -69,7 +70,7 @@
             $home_parent_team_id, $home_parent_team_name, $away_parent_team_id, $away_parent_team_name,
             $match_date, $match_date_fmt, $match_time, $match_time_fmt,
             $match_order, $bracket_order, $round, $stage, $group_name, $second_round_group_name,
-            $tournament_id, $points_for_win, $golden_goal_rule,
+            $tournament_id, $tournament_name, $points_for_win, $golden_goal_rule,
             $waiting_home_team, $waiting_away_team,
             $home_team_score, $away_team_score,
             $home_team_extra_time_score, $away_team_extra_time_score,
@@ -104,6 +105,7 @@
             $m->group_name = $group_name;
             $m->second_round_group_name = $second_round_group_name;
             $m->tournament_id = $tournament_id;
+            $m->tournament_name = $tournament_name;
             $m->points_for_win = $points_for_win;
             $m->golden_goal_rule = $golden_goal_rule;
             $m->waiting_home_team = $waiting_home_team;
@@ -122,7 +124,7 @@
                 0, '', 0, '',
                 '', '', '', '',
                 0, 0, '', '', '', '',
-                0, 0, '',
+                0, '', 0,'',
                 '', '',
                 $home_team_score, $away_team_score,
                 0, 0,
@@ -637,6 +639,22 @@
         public function setTournamentId($tournament_id)
         {
             $this->tournament_id = $tournament_id;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getTournamentName()
+        {
+            return $this->tournament_name;
+        }
+
+        /**
+         * @param mixed $tournament_name
+         */
+        public function setTournamentName($tournament_name)
+        {
+            $this->tournament_name = $tournament_name;
         }
 
         /**
