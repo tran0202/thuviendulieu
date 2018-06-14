@@ -1321,6 +1321,9 @@
                 }
             }
             foreach ($teams_tmp[Finish::Semifinal] as $name => $_team) {
+                if ($name == 'USA') {
+                   $_team->setBestFinish(Finish::ThirdPlace);
+                }
                 array_push($result, $_team);
             }
             if (array_key_exists(Finish::ReplayQuarterfinal, $teams_tmp)) {
@@ -1459,19 +1462,19 @@
                     $best_finish = 'First Round';
                     break;
                 case Finish::SecondRound:
-                    $best_finish = 'First Round';
+                    $best_finish = 'Second Round';
                     break;
                 case Finish::FinalRound:
-                    $best_finish = 'First Round';
+                    $best_finish = 'Second Round';
                     break;
                 case Finish::PreliminaryRound:
-                    $best_finish = 'Second Round';
+                    $best_finish = 'First Round';
                     break;
                 case Finish::FirstRound:
-                    $best_finish = 'Second Round';
+                    $best_finish = 'First Round';
                     break;
                 case Finish::ReplayFirstRound:
-                    $best_finish = 'Second Round';
+                    $best_finish = 'First Round';
                     break;
                 case Finish::Round16:
                     $best_finish = 'Second Round';
@@ -1483,13 +1486,13 @@
                     $best_finish = 'Quarterfinals';
                     break;
                 case Finish::Semifinal:
-                    $best_finish = 'Fourth place';
+                    $best_finish = 'Fourth Place';
                     break;
                 case Finish::ThirdPlace:
-                    $best_finish = 'Third place';
+                    $best_finish = 'Third Place';
                     break;
                 case Finish::RunnerUp:
-                    $best_finish = 'Runner-up';
+                    $best_finish = 'Runner-Up';
                     break;
                 default:
                     $best_finish = 'Champion';
@@ -1892,6 +1895,12 @@
 //            $matches[33]->setAwayTeamScore(3);
         }
 
+        public static function getShortTournamentName($name) {
+            $result = str_replace(' FIFA World Cup ', '', $name);
+            $result = substr($result, -(strlen($result) - 4)).' '.substr($result, 0, 4);
+            return $result;
+        }
+
         public static function getArchiveSoccerScheduleHtml($tournament) {
             self::getSoccerScheduleHtml($tournament, false);
         }
@@ -2264,18 +2273,37 @@
                 $tt[$team_name][$tournament_teams[$i]->getTournamentName()] = $tournament_teams[$i];
             }
             for ($i = 0; $i < sizeof($teams); $i++) {
+                $tournament_text = 'tournaments';
+                if ($teams[$i]->getTournamentCount() == 1) $tournament_text = 'tournament';
                 $output .= '
                     <div id="popover-content-'.$teams[$i]->getCode().'" class="hide">
-                        <p><b>'.$teams[$i]->getName().'\'s Tournaments:</b> '.$teams[$i]->getTournamentCount().'</p>
-                        <p><b>Best Finish:</b></p>';
+                        <div>
+                            <div class="col-sm-4" style="padding-top:5px"><img class="flag-md" src="/images/flags/'.$teams[$i]->getFlagFilename().'"></div>
+                            <div class="col-sm-8"><span class="h2-ff1"><b>'.$teams[$i]->getName().'</b></span></div>
+                        </div>
+                        <p><span class="wb-stl-heading1 russia-2018">'.$teams[$i]->getTournamentCount().'</span> '.$tournament_text.'</p>';
                 $team_name = $teams[$i]->getName();
                 if ($teams[$i]->getParentName() != null) {
                     $team_name =  $teams[$i]->getParentName();
                 }
+                $tmp_finish = Finish::Group;
+                $champ_count = 0;
+                $output2 = self::getFinishLiteral($tmp_finish);
+                $output3 = '';
                 foreach ($tt[$team_name] as $tournament_names => $_team) {
-                    $output .= '<p><b>'.$tournament_names.':</b> '.self::getFinishLiteral($_team->getBestFinish()).'</p>';
+                    if ($tmp_finish < $_team->getBestFinish()) {
+                        $tmp_finish = $_team->getBestFinish();
+                        $output2 = self::getFinishLiteral($_team->getBestFinish());
+                    }
+                    if ($_team->getBestFinish() == Finish::Champion) $champ_count++;
+                    $output3 .= '<p><b>'.self::getShortTournamentName($tournament_names).':</b> <i>'.self::getFinishLiteral($_team->getBestFinish()).'</i></p>';
                 }
+                $champ_count_text = '';
+                if ($champ_count > 1) $champ_count_text = '('.$champ_count.')';
                 $output .= '
+                        <p><b>Best Finish:</b> <span class="h3-ff1 blue">'.$output2.$champ_count_text.'</span></p>
+                        <p><hr></p>
+                        '.$output3.'
                     </div>';
             }
             $tournament->concatPopoverHtml($output);
@@ -2322,7 +2350,7 @@
                     if ($all_time) $tc_col = '<div class="col-sm-2" style="padding-top: 3px;">'.$teams[$i]->getName().'</div>
                                                 <div class="col-sm-1"><a id="popover_'.$teams[$i]->getCode().'" data-toggle="popover" 
                                                     data-container="body" data-placement="right" type="button" data-html="true" 
-                                                    tabindex="0" data-trigger="focus" style="cursor:pointer;">'.$teams[$i]->getTournamentCount().'</a></div>';
+                                                    data-trigger="focus" tabindex="0" style="cursor:pointer;">'.$teams[$i]->getTournamentCount().'</a></div>';
 
                     $goal_diff = $teams[$i]->getGoalDiff();
                     if ($teams[$i]->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
