@@ -157,6 +157,8 @@ a:hover.hover-pointer { cursor: pointer; }
 
 .ranking-striped { background-color: #ebebeb }
 
+.advanced-second-round-striped { background-color: #e3fae3 }
+
 /* ========== Colors ========== */
 
 .blue { color: #0040ff; }

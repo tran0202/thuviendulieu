@@ -1901,6 +1901,72 @@
             return $result;
         }
 
+        public static function isTeamAdvancedSecondRound($tournament, $team, $stage) {
+            $result = false;
+            if ($stage == Stage::First) {
+                $second_round_matches = self::getSecondRoundMatches($tournament->getMatches());
+                for ($i = 0; $i < sizeof($second_round_matches); $i++) {
+                    if ($second_round_matches[$i]->getHomeTeamName() == $team->getName() || $second_round_matches[$i]->getAwayTeamName() == $team->getName()) {
+                        $result = true;
+                        break;
+                    }
+                }
+                $final_round_matches = self::getFinalRoundMatches($tournament->getMatches());
+                for ($i = 0; $i < sizeof($final_round_matches); $i++) {
+                    if ($final_round_matches[$i]->getHomeTeamName() == $team->getName() || $final_round_matches[$i]->getAwayTeamName() == $team->getName()) {
+                        $result = true;
+                        break;
+                    }
+                }
+                $round16_matches = self::getRound16Matches($tournament->getMatches());
+                for ($i = 0; $i < sizeof($round16_matches); $i++) {
+                    if ($round16_matches[$i]->getHomeTeamName() == $team->getName() || $round16_matches[$i]->getAwayTeamName() == $team->getName()) {
+                        $result = true;
+                        break;
+                    }
+                }
+                if (!$result) {
+                    $quarterfinal_matches = self::getQuarterfinalMatches($tournament->getMatches());
+                    for ($i = 0; $i < sizeof($quarterfinal_matches); $i++) {
+                        if ($quarterfinal_matches[$i]->getHomeTeamName() == $team->getName() || $quarterfinal_matches[$i]->getAwayTeamName() == $team->getName()) {
+                            $result = true;
+                            break;
+                        }
+                    }
+                    if (!$result) {
+                        $semifinal_matches = self::getSemifinalMatches($tournament->getMatches());
+                        for ($i = 0; $i < sizeof($semifinal_matches); $i++) {
+                            if ($semifinal_matches[$i]->getHomeTeamName() == $team->getName() || $semifinal_matches[$i]->getAwayTeamName() == $team->getName()) {
+                                $result = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                $semifinal_matches = self::getSemifinalMatches($tournament->getMatches());
+                for ($i = 0; $i < sizeof($semifinal_matches); $i++) {
+                    if ($semifinal_matches[$i]->getHomeTeamName() == $team->getName() || $semifinal_matches[$i]->getAwayTeamName() == $team->getName()) {
+                        $result = true;
+                        break;
+                    }
+                }
+                if (!$result) {
+                    $third_place_match = self::getThirdPlaceMatch($tournament->getMatches());
+                    $final_match = self::getFinalMatch($tournament->getMatches());
+                    if ($third_place_match != null && $final_match != null) {
+                        if ($third_place_match->getHomeTeamName() == $team->getName() || $third_place_match->getAwayTeamName() == $team->getName() ||
+                            $final_match->getHomeTeamName() == $team->getName() || $final_match->getAwayTeamName() == $team->getName()) {
+                            $result = true;
+                        }
+                    }
+                }
+            }
+            return $result;
+        }
+
+
         public static function getArchiveSoccerScheduleHtml($tournament) {
             self::getSoccerScheduleHtml($tournament, false);
         }
@@ -2167,16 +2233,20 @@
         }
 
         public static function getSoccerGroupModalHtml($tournament) {
-            self::getGroupModalHtml($tournament, $tournament->getTeams());
-            self::getGroupModalHtml($tournament, $tournament->getSecondRoundTeams());
+            self::getGroupModalHtml($tournament, $tournament->getTeams(), Stage::First);
+            self::getGroupModalHtml($tournament, $tournament->getSecondRoundTeams(), Stage::Second);
         }
 
-        public static function getGroupModalHtml($tournament, $teams) {
+        public static function getGroupModalHtml($tournament, $teams, $stage) {
             $teams = self::getTeamArrayByGroup($teams);
             $output = '';
             foreach ($teams as $group_name => $_teams) {
                 $group_id = $group_name;
-                if ($group_name == self::FINAL_ROUND) $group_id = 'FinalRound';
+                $table_name = 'Group '.$group_name;
+                if ($group_name == self::FINAL_ROUND) {
+                    $group_id = 'FinalRound';
+                    $table_name = $group_name;
+                }
                 $output .= '<div class="modal fade" id="group'.$group_id.'StandingModal" tabindex="-1" role="dialog" 
                     aria-labelledby="group'.$group_id.'StandingModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document" style="width:800px;">
@@ -2187,7 +2257,7 @@
                                 </button>
                             </div>
                             <div class="modal-header col-sm-12 padding-lr-lg" style="border-bottom:none;">
-                                <div class="col-sm-12 h3-ff3 border-bottom-gray2" id="group'.$group_id.'StandingModalLabel">Group '.$group_name.'</div>
+                                <div class="col-sm-12 h3-ff3 border-bottom-gray2" id="group'.$group_id.'StandingModalLabel">'.$table_name.'</div>
                             </div>
                             <div class="modal-body col-sm-12 padding-lr-lg" id="group'.$group_id.'StandingModalBody">
                                 <div class="col-sm-12 h3-ff3 row padding-tb-md font-bold">
@@ -2205,7 +2275,9 @@
                 foreach ($_teams as $name => $_team) {
                     $goal_diff = $_team->getGoalDiff();
                     if ($_team->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
-                    $output .=     '<div class="col-sm-12 h3-ff3 row padding-tb-md">
+                    $striped = '';
+                    if (self::isTeamAdvancedSecondRound($tournament, $_team, $stage)) $striped = 'advanced-second-round-striped';
+                    $output .=     '<div class="col-sm-12 h3-ff3 row padding-tb-md '.$striped.'">
                                     <div class="col-sm-1"><img class="flag-md" src="/images/flags/'.$_team->getFlagFilename().'"></div>
                                     <div class="col-sm-3" style="padding-top: 3px;">'.$_team->getName().'</div>
                                     <div class="col-sm-1">'.$_team->getMatchPlay().'</div>

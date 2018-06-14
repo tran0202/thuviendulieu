@@ -25,6 +25,7 @@
         private $goal_diff;
         private $point;
         private $best_finish;
+        private $advanced_second_round;
         private $scenarios;
 
         protected function __construct() { }
@@ -456,6 +457,22 @@
         public function setTournamentCount($tournament_count)
         {
             $this->tournament_count = $tournament_count;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getAdvancedSecondRound()
+        {
+            return $this->advanced_second_round;
+        }
+
+        /**
+         * @param mixed $advanced_second_round
+         */
+        public function setAdvancedSecondRound($advanced_second_round)
+        {
+            $this->advanced_second_round = $advanced_second_round;
         }
 
         /**
