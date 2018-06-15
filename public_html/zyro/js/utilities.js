@@ -11,6 +11,15 @@ $(function() {
         $('#bracket-up-arrow').hide();
     })
 
+    $('#collapse-summary').on('shown.bs.collapse', function () {
+        $('#summary-down-arrow').hide();
+        $('#summary-up-arrow').show();
+    })
+    $('#collapse-summary').on('hidden.bs.collapse', function () {
+        $('#summary-down-arrow').show();
+        $('#summary-up-arrow').hide();
+    })
+
     // Change View
 
     $(".link-change-view").click(function(){

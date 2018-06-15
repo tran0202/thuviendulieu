@@ -2018,26 +2018,9 @@
             $output = '';
             if ($bracket_spot != '') {
                 $output .= self::getThirdPlaceRankingHtml($tournament);
-                $output .= '
-                        <div id="accordion" class="">
-                            <div class="card col-sm-12 padding-tb-md border-bottom-gray5">
-                                <div class="card-header" id="heading-bracket" style="width:100%;padding-left:0;">
-                                    <button class="btn btn-link collapsed h2-ff1 no-padding-left" data-toggle="collapse"
-                                        data-target="#collapse-bracket" aria-expanded="false" aria-controls="collapse-bracket">
-                                            Bracket <i id="bracket-down-arrow" class="fa fa-angle-double-down font-custom1"></i>
-                                            <i id="bracket-up-arrow" class="fa fa-angle-double-up font-custom1 no-display"></i>
-                                    </button>
-                                </div>
-                                <div id="collapse-bracket" class="collapse" aria-labelledby="heading-bracket" data-parent="#accordion">
-                                    <div class="card-body">
-                                        ';
-                $output .= self::getBracketHtml($tournament, $bracket_spot);
-                $output .=         '
-                                    </div>
-                                </div>
-                            </div>
-                        </div>';
+                $output .= self::getCollapseHtml('bracket', 'Bracket', self::getBracketHtml($tournament, $bracket_spot));
             }
+            $output2 .= self::getCollapseHtml('summary', 'Summary', self::getTournamentSummaryHtml($tournament));
             $matches = self::getMatchArrayByDate($matches);
             foreach ($matches as $rounds => $_round) {
                 if ($rounds == $bracket_spot) $output2 .= $output;
@@ -2106,6 +2089,58 @@
                 }
             }
             $tournament->concatBodyHtml($output2);
+        }
+
+        public static function getTournamentSummaryHtml($tournament) {
+            $matches = $tournament->getMatches();
+            $output = '';
+            $count = 0;
+            $total_goals = 0;
+            for ($i = 0; $i < sizeof($matches); $i++ ) {
+                if ($matches[$i]->getHomeTeamScore() != -1) {
+                    $count++;
+                    $total_goals += $matches[$i]->getHomeTeamScore() + $matches[$i]->getAwayTeamScore();
+                }
+                else {
+                    break;
+                }
+            }
+            $gpg = round($total_goals / $count, 2, PHP_ROUND_HALF_UP);
+            $output .= '<div class="col-sm-12 padding-tb-sm">
+                            <div class="col-sm-3 h3-ff3 font-bold text-right" style="padding-top:15px">Total matches played:</div>
+                            <div class="col-sm-9 wb-stl-heading1 green">'.$count.'</div>
+                        </div>
+                        <div class="col-sm-12 padding-tb-sm">
+                            <div class="col-sm-3 h3-ff3 font-bold text-right" style="padding-top:15px">Total goals scored:</div>
+                            <div class="col-sm-9 wb-stl-heading1 green">'.$total_goals.'</div>
+                        </div>
+                        <div class="col-sm-12 padding-tb-sm">
+                            <div class="col-sm-3 h3-ff3 font-bold text-right" style="padding-top:15px">Average goals per game:</div>
+                            <div class="col-sm-9 wb-stl-heading1 green">'.$gpg.'</div>
+                        </div>';
+            return $output;
+        }
+
+        public static function getCollapseHtml($id, $name, $body) {
+            $output = '<div id="accordion-'.$id.'">
+                            <div class="card col-sm-12 padding-tb-md border-bottom-gray5">
+                                <div class="card-header" id="heading-'.$id.'" style="width:100%;padding-left:0;">
+                                    <button class="btn btn-link collapsed h2-ff1 no-padding-left" data-toggle="collapse"
+                                        data-target="#collapse-'.$id.'" aria-expanded="false" aria-controls="collapse-'.$id.'">
+                                            '.$name.' <i id="'.$id.'-down-arrow" class="fa fa-angle-double-down font-custom1"></i>
+                                            <i id="'.$id.'-up-arrow" class="fa fa-angle-double-up font-custom1 no-display"></i>
+                                    </button>
+                                </div>
+                                <div id="collapse-'.$id.'" class="collapse" aria-labelledby="heading-'.$id.'" data-parent="#accordion-'.$id.'">
+                                    <div class="card-body">
+                                        ';
+            $output .= $body;
+            $output .=         '
+                                    </div>
+                                </div>
+                            </div>
+                        </div>';
+            return $output;
         }
 
         public static function getThirdPlaceRankingHtml($tournament) {
@@ -2195,7 +2230,7 @@
 
         public static function getSoccerGroupHtml($tournament) {
             $teams = self::getTeamArrayByGroup($tournament->getTeams());
-            $output = '';
+            $output = self::getCollapseHtml('summary', 'Summary', self::getTournamentSummaryHtml($tournament));
             foreach ($teams as $group_name => $_teams) {
                 $output .= '<div class="col-sm-12 margin-top-sm">
                             <span class="col-sm-2 h2-ff2">Group '.$group_name.'</span>
