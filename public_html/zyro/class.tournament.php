@@ -82,6 +82,7 @@
                 Soccer::getSoccerPopoverHtml($tournament);
             }
             else {
+                Soccer::getStanding($tournament);
                 Soccer::getSoccerScheduleHtml($tournament, false);
             }
 
@@ -98,10 +99,7 @@
             Soccer::getSoccerTeams($tournament);
             Soccer::getSoccerMatches($tournament);
 
-            if ($fantasy == Fantasy::All || $fantasy == Fantasy::Half) {
-                Soccer::getStanding($tournament);
-            }
-
+            Soccer::getStanding($tournament);
             Soccer::getSoccerGroupHtml($tournament);
             Soccer::getSoccerBracketHtml($tournament);
             Soccer::getSoccerScheduleModalHtml($tournament);

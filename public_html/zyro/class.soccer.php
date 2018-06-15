@@ -34,6 +34,7 @@
         public static function getStanding($tournament) {
             $numberOfMatches = 48;
             if ($tournament->getFantasy() == Fantasy::Half) $numberOfMatches = 32;
+            elseif ($tournament->getFantasy() == Fantasy::None) $numberOfMatches = self::getNumberOfCompletedMatches($tournament);
             $matches = $tournament->getMatches();
             $team_array = self::getTeamArrayByName($tournament->getTeams());
             $tmp_array = array();
@@ -66,6 +67,20 @@
             elseif ($tournament->getFantasy() == Fantasy::Half) {
                 self::calculateScenarios($tournament);
             }
+        }
+
+        public static function getNumberOfCompletedMatches($tournament) {
+            $matches = $tournament->getMatches();
+            $count = 0;
+            for ($i = 0; $i < sizeof($matches); $i++ ) {
+                if ($matches[$i]->getHomeTeamScore() != -1) {
+                    $count++;
+                }
+                else {
+                    break;
+                }
+            }
+            return $count;
         }
 
         public static function round16Qualifiers($tournament) {
