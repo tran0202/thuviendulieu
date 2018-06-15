@@ -1966,6 +1966,31 @@
             return $result;
         }
 
+        public static function isThirdPlaceRankingTournament($tournament) {
+            return $tournament->getTournamentId() >= 10 && $tournament->getTournamentId() <= 12;
+        }
+
+        public static function getThirdPlaceTeams($tournament) {
+            $result = array();
+            $teams_tmp = array();
+            $teams = $tournament->getTeams();
+            for ($i = 0; $i < sizeof($teams); $i++) {
+                $team = Team::CloneSoccerTeam($teams[$i]->getId(), $teams[$i]->getName(), $teams[$i]->getCode(), 'ThirdPlace',
+                    $teams[$i]->getGroupOrder(), $teams[$i]->getMatchPlay(), $teams[$i]->getWin(), $teams[$i]->getDraw(), $teams[$i]->getLoss(),
+                    $teams[$i]->getGoalFor(), $teams[$i]->getGoalAgainst(), $teams[$i]->getGoalDiff(), $teams[$i]->getPoint());
+                $team->setFlagFilename($teams[$i]->getFlagFilename());
+                $teams_tmp[$teams[$i]->getGroupName()][$teams[$i]->getName()] = $team;
+            }
+            foreach ($teams_tmp as $group_name => $_teams) {
+                $i = 1;
+                foreach ($_teams as $name => $_team) {
+                    if ($i == 3) array_push( $result, $_team);
+                    $i++;
+                }
+            }
+
+            return self::sortGroupStanding($result, $tournament->getMatches());
+        }
 
         public static function getArchiveSoccerScheduleHtml($tournament) {
             self::getSoccerScheduleHtml($tournament, false);
@@ -1977,7 +2002,8 @@
             $output2 = '';
             $output = '';
             if ($bracket_spot != '') {
-                $output = '
+                $output .= self::getThirdPlaceRankingHtml($tournament);
+                $output .= '
                         <div id="accordion" class="">
                             <div class="card col-sm-12 padding-tb-md border-bottom-gray5">
                                 <div class="card-header" id="heading-bracket" style="width:100%;padding-left:0;">
@@ -2065,6 +2091,15 @@
                 }
             }
             $tournament->concatBodyHtml($output2);
+        }
+
+        public static function getThirdPlaceRankingHtml($tournament) {
+            $output = '';
+            if (!self::isThirdPlaceRankingTournament($tournament)) return $output;
+            $output .= '<div class="col-sm-12 padding-tb-md border-bottom-gray5">
+                            <a class="link-modal" data-toggle="modal" data-target="#groupThirdPlaceStandingModal">Ranking of third-placed teams</a>
+                        </div>';
+            return $output;
         }
 
         public static function getBracketHtml($tournament, $bracket_spot) {
@@ -2234,6 +2269,9 @@
 
         public static function getSoccerGroupModalHtml($tournament) {
             self::getGroupModalHtml($tournament, $tournament->getTeams(), Stage::First);
+            if (self::isThirdPlaceRankingTournament($tournament)) {
+                self::getGroupModalHtml($tournament, self::getThirdPlaceTeams($tournament), Stage::First);
+            }
             self::getGroupModalHtml($tournament, $tournament->getSecondRoundTeams(), Stage::Second);
         }
 
@@ -2246,6 +2284,9 @@
                 if ($group_name == self::FINAL_ROUND) {
                     $group_id = 'FinalRound';
                     $table_name = $group_name;
+                }
+                elseif ($group_name == 'ThirdPlace') {
+                    $table_name = 'Ranking of third-placed teams';
                 }
                 $output .= '<div class="modal fade" id="group'.$group_id.'StandingModal" tabindex="-1" role="dialog" 
                     aria-labelledby="group'.$group_id.'StandingModalLabel" aria-hidden="true">

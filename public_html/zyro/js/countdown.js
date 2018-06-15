@@ -34,7 +34,7 @@ var clock;
 $(document).ready(function() {
 
     var currentDate = new Date().getTime() / 1000;
-    var futureDate  = new Date("Jun 14, 2018 10:00:00").getTime() / 1000;
+    var futureDate  = new Date("Jul 15, 2018 10:00:00").getTime() / 1000;
     var diff = futureDate - currentDate;
 
     clock = $('.clock').FlipClock(diff, {
