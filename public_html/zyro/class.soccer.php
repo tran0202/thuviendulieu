@@ -76,9 +76,6 @@
                 if ($matches[$i]->getHomeTeamScore() != -1) {
                     $count++;
                 }
-                else {
-                    break;
-                }
             }
             return $count;
         }
@@ -2099,10 +2096,8 @@
             for ($i = 0; $i < sizeof($matches); $i++ ) {
                 if ($matches[$i]->getHomeTeamScore() != -1) {
                     $count++;
-                    $total_goals += $matches[$i]->getHomeTeamScore() + $matches[$i]->getAwayTeamScore();
-                }
-                else {
-                    break;
+                    $total_goals += $matches[$i]->getHomeTeamScore() + $matches[$i]->getAwayTeamScore() +
+                        $matches[$i]->getHomeTeamExtraTimeScore() + $matches[$i]->getAwayTeamExtraTimeScore();
                 }
             }
             $gpg = round($total_goals / $count, 2, PHP_ROUND_HALF_UP);
