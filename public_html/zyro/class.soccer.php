@@ -2102,15 +2102,15 @@
             }
             $gpg = round($total_goals / $count, 2, PHP_ROUND_HALF_UP);
             $output .= '<div class="col-sm-12 padding-tb-sm">
-                            <div class="col-sm-3 h3-ff3 font-bold text-right" style="padding-top:15px">Total matches played:</div>
+                            <div class="col-sm-3 h3-ff3 font-bold text-right" style="padding-top:9px">Total matches played:</div>
                             <div class="col-sm-9 wb-stl-heading1 green">'.$count.'</div>
                         </div>
                         <div class="col-sm-12 padding-tb-sm">
-                            <div class="col-sm-3 h3-ff3 font-bold text-right" style="padding-top:15px">Total goals scored:</div>
+                            <div class="col-sm-3 h3-ff3 font-bold text-right" style="padding-top:9px">Total goals scored:</div>
                             <div class="col-sm-9 wb-stl-heading1 green">'.$total_goals.'</div>
                         </div>
                         <div class="col-sm-12 padding-tb-sm">
-                            <div class="col-sm-3 h3-ff3 font-bold text-right" style="padding-top:15px">Average goals per game:</div>
+                            <div class="col-sm-3 h3-ff3 font-bold text-right" style="padding-top:9px">Average goals per game:</div>
                             <div class="col-sm-9 wb-stl-heading1 green">'.$gpg.'</div>
                         </div>';
             return $output;

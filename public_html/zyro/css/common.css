@@ -1,3 +1,7 @@
+@font-face {
+    font-family: 'Dusha';
+    src: url('fonts/Dusha_-_FIFA_World_Cup_2018.ttf');
+}
 
 .wb-stl-pagetitle { font: normal bold 50px "Merriweather",serif; color: #ffffff; text-decoration: none; text-align: left; line-height: 48px; margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; text-transform: none; }
 .wb-stl-pagetitle a { font: normal bold 50px "Merriweather",serif; color: #000000; text-decoration: none; text-align: left; line-height: 48px; font-weight: normal; font-style: normal; }
@@ -15,9 +19,9 @@
 .wb-stl-subtitle3 a { font: normal normal 60px "Nanum Gothic",sans-serif; color: #0002a6; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }
 .wb-stl-subtitle3 a:hover { font: normal normal 60px "Nanum Gothic",sans-serif; color: #0003f3; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }
 .wb-stl-subtitle3 ul { list-style-image: url(''); }
-.wb-stl-heading1 { font: normal bold 40px "Merriweather",serif; color: #16aa9e; text-decoration: none; text-align: left; margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; text-transform: none; }
-.wb-stl-heading1 a { font: normal bold 40px "Merriweather",serif; color: #000000; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }
-.wb-stl-heading1 a:hover { font: normal bold 40px "Merriweather",serif; color: #000000; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }
+.wb-stl-heading1 { font: normal bold 40px "Dusha",serif; color: #16aa9e; text-decoration: none; text-align: left; margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; text-transform: none; }
+.wb-stl-heading1 a { font: normal bold 40px "Dusha",serif; color: #000000; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }
+.wb-stl-heading1 a:hover { font: normal bold 40px "Dusha",serif; color: #000000; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }
 .wb-stl-heading1 ul { list-style-image: url(''); }
 .wb-stl-heading2 { font: normal bold 48px Arial,Helvetica,sans-serif; color: #000000; text-decoration: none; text-align: left; margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; text-transform: none; }
 .wb-stl-heading2 a { font: normal bold 48px Arial,Helvetica,sans-serif; color: #000000; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }
