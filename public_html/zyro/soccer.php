@@ -17,7 +17,7 @@
         <div class="vbox wb_container" id="wb_main">
             <div class="wb_cont_inner">
                 <div class="col-sm-12">
-                    <p class="wb-stl-highlight text-center">Russia 2018 Final</p>
+                    <p class="wb-stl-highlight text-center">UEFA Nations League</p>
                     <p class="wb-stl-normal"> </p>
                 </div>
                 <div class="col-sm-12">
@@ -26,21 +26,21 @@
                         <div class="clock"></div>
                     </div>
                 </div>
-                <div class="col-sm-12">
-                    <h5 class="wb-stl-subtitle2 text-center">
-                        <a href="Russia2018Groups">Groups</a> | <a href="Russia2018Schedule">Schedule</a>
-                    </h5>
-                </div>
-                <div class="col-sm-12 margin-top-lg padding-top-lg border-top-gray5">
-                    <p class="wb-stl-highlight text-center">Imagination</p>
-                    <p class="wb-stl-normal"> </p>
-                </div>
-                <div class="col-sm-12">
-                    <h5 class="wb-stl-subtitle2 text-center">
-                        All Matches: <a href="Russia2018Groups?fid=3">Groups</a> | <a href="Russia2018Schedule?fid=3">Schedule</a><br>
-                        First 2 Matches: <a href="Russia2018Groups?fid=2">Groups</a> | <a href="Russia2018Schedule?fid=2">Schedule</a>
-                    </h5>
-                </div>
+<!--                <div class="col-sm-12">-->
+<!--                    <h5 class="wb-stl-subtitle2 text-center">-->
+<!--                        <a href="Russia2018Groups">Groups</a> | <a href="Russia2018Schedule">Schedule</a>-->
+<!--                    </h5>-->
+<!--                </div>-->
+<!--                <div class="col-sm-12 margin-top-lg padding-top-lg border-top-gray5">-->
+<!--                    <p class="wb-stl-highlight text-center">Imagination</p>-->
+<!--                    <p class="wb-stl-normal"> </p>-->
+<!--                </div>-->
+<!--                <div class="col-sm-12">-->
+<!--                    <h5 class="wb-stl-subtitle2 text-center">-->
+<!--                        All Matches: <a href="Russia2018Groups?fid=3">Groups</a> | <a href="Russia2018Schedule?fid=3">Schedule</a><br>-->
+<!--                        First 2 Matches: <a href="Russia2018Groups?fid=2">Groups</a> | <a href="Russia2018Schedule?fid=2">Schedule</a>-->
+<!--                    </h5>-->
+<!--                </div>-->
                 <div class="col-sm-12 margin-top-lg padding-top-lg border-top-gray5">
                     <p class="wb-stl-highlight text-center">
                         <a href="WorldCupArchive">World Cup Archive <span class="fa fa-futbol-o"></span> <span class="fa fa-futbol-o"></span> <span class="fa fa-futbol-o"></span></a>

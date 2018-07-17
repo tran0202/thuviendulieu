@@ -77,6 +77,7 @@
                     $count++;
                 }
             }
+            if ($count > 48) $count = 48;
             return $count;
         }
 
@@ -1307,7 +1308,7 @@
         public static function compareTeams(&$team1, &$team2, $matches) {
             if (self::isEqualStanding($team1, $team2)) {
                 $still_tie = self::applyTiebreaker($team1, $team2, $matches);
-                if ($still_tie) self::coinToss($team1, $team2);
+                if ($still_tie) self::fairPlayRule($team1, $team2);
             }
             elseif (self::isHigherStanding($team2, $team1)) {
                 self::swapTeam($team1, $team2);
@@ -1566,6 +1567,15 @@
                 }
             }
             return $still_tie;
+        }
+
+        public static function fairPlayRule(&$t1, &$t2) {
+            if ($t2->getName() == 'JAPAN' && $t2->getTournamentName() == 1) {
+               self::swapTeam($t1, $t2);
+            }
+            else {
+                self::coinToss($t1, $t2);
+            }
         }
 
         public static function coinToss(&$t1, &$t2) {
@@ -2249,7 +2259,9 @@
                 foreach ($_teams as $name => $_team) {
                     $goal_diff = $_team->getGoalDiff();
                     if ($_team->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
-                    $output .= '<div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md">
+                    $striped = '';
+                    if (self::isTeamAdvancedSecondRound($tournament, $_team, Stage::First)) $striped = 'advanced-second-round-striped';
+                    $output .= '<div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md '.$striped.'">
                                 <div class="col-sm-1"><img class="flag-md" src="/images/flags/'.$_team->getFlagFilename().'"></div>
                                 <div class="col-sm-3" style="padding-top: 3px;">'.$_team->getName().'</div>
                                 <div class="col-sm-1">'.$_team->getMatchPlay().'</div>
@@ -2605,7 +2617,7 @@
 
         public static function getSoccerMatchSql($tournament_id) {
             $tournament_id_str = 'm.tournament_id = '.$tournament_id;
-            if ($tournament_id == null) $tournament_id_str = 'm.tournament_id <> 1';
+            if ($tournament_id == null) $tournament_id_str = '1 = 1';
             $sql = 'SELECT t.id AS home_team_id, UCASE(t.name) AS home_team_name, home_team_score, n.flag_filename AS home_flag, n.code AS home_team_code,
                         t2.id AS away_team_id, UCASE(t2.name) AS away_team_name, away_team_score, n2.flag_filename AS away_flag, n2.code AS away_team_code, 
                         pt.id AS home_parent_team_id, UCASE(pt.name) AS home_parent_team_name, pt2.id AS away_parent_team_id, UCASE(pt2.name) AS away_parent_team_name, 
@@ -2672,12 +2684,12 @@
             else {
                 while ($row = $query->fetch(\PDO::FETCH_ASSOC)) {
                     $team = Team::CreateSoccerTeam(
-                        $row['team_id'], 0, $row['name'], $row['code'], $row['parent_team_id'], $row['parent_team_name'],
+                        $row['team_id'], $row['tournament_id'], $row['name'], $row['code'], $row['parent_team_id'], $row['parent_team_name'],
                         $row['group_name'], $row['group_order'], $row['flag_filename'], 1);
                     array_push($teams, $team);
 
                     $second_round_team = Team::CreateSoccerTeam(
-                        $row['team_id'], 0, $row['name'], $row['code'], $row['parent_team_id'], $row['parent_team_name'],
+                        $row['team_id'], $row['tournament_id'], $row['name'], $row['code'], $row['parent_team_id'], $row['parent_team_name'],
                         '', $row['group_order'], $row['flag_filename'], 1);
                     array_push($second_round_teams, $second_round_team);
                 }
@@ -2767,11 +2779,9 @@
                     LEFT JOIN nation n ON n.id = t.nation_id
                     LEFT JOIN (SELECT team_id, COUNT(team_id) AS tournament_count
                                 FROM team_tournament 
-                                WHERE tournament_id <> 1
-                                AND (group_id <> 63 OR group_id is null)
+                                WHERE (group_id <> 63 OR group_id is null)
                                 GROUP BY team_id) tc ON tc.team_id = t.id
                     WHERE tou.tournament_type_id = 1
-                    AND tt.tournament_id <> 1
                     UNION
                     SELECT DISTINCT UCASE(t.name) AS name, t.id, null, null,
                         n.flag_filename, n.code, tc.tournament_count
@@ -2783,11 +2793,9 @@
                     LEFT JOIN nation n ON n.id = t.nation_id 
                     LEFT JOIN (SELECT team_id, COUNT(team_id) AS tournament_count
                                 FROM team_tournament 
-                                WHERE tournament_id <> 1
-                                AND (group_id <> 63 OR group_id is null)
+                                WHERE (group_id <> 63 OR group_id is null)
                                 GROUP BY team_id) tc ON tc.team_id = t.id
-                    WHERE tou.tournament_type_id = 1
-                    AND tt.tournament_id <> 1';
+                    WHERE tou.tournament_type_id = 1';
             return $sql;
         }
 
@@ -2800,8 +2808,7 @@
                     LEFT JOIN team t2 ON t2.id = t.parent_team_id 
                     LEFT JOIN `group` g ON g.id = tt.group_id
                     LEFT JOIN nation n ON n.id = t.nation_id
-                    WHERE tou.tournament_type_id = 1
-                    AND tt.tournament_id <> 1';
+                    WHERE tou.tournament_type_id = 1';
             return $sql;
         }
 

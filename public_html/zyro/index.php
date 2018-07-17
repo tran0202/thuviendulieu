@@ -2,7 +2,7 @@
 	error_reporting(E_ALL); @ini_set('display_errors', true);
 	$pages = array(
 		'0'	=> array('id' => '1', 'alias' => '', 'file' => 'home.php','controllers' => array()),
-		'1'	=> array('id' => '2', 'alias' => 'Russia2018', 'file' => 'soccer.php','controllers' => array()),
+		'1'	=> array('id' => '2', 'alias' => 'Soccer', 'file' => 'soccer.php','controllers' => array()),
 		'2'	=> array('id' => '3', 'alias' => 'NFL', 'file' => 'football.php','controllers' => array()),
 		'3'	=> array('id' => '4', 'alias' => 'Tennis', 'file' => 'tennis.php','controllers' => array()),
         '4'	=> array('id' => '5', 'alias' => 'Russia2018Groups', 'file' => 'soccer_groups.php','controllers' => array()),

@@ -17,7 +17,7 @@
 		<div class="vbox wb_container" id="wb_main">
 			<div class="wb_cont_inner">
                 <div class="col-sm-12">
-                    <p class="wb-stl-highlight text-center">Russia 2018 Final</p>
+                    <p class="wb-stl-highlight text-center">UEFA Nations League</p>
                     <p class="wb-stl-normal"> </p>
                 </div>
                 <div class="col-sm-12">
@@ -30,7 +30,7 @@
                     <h5 class="wb-stl-subtitle text-center">More than a game</h5>
                 </div>
                 <div class="col-sm-12 text-center padding-top-lg">
-                    <a class="front-page-button padding-top-lg margin-right-lg" href="Russia2018"><span>FIFA World Cup Russia 2018</span></a>
+                    <a class="front-page-button padding-top-lg margin-right-lg" href="Soccer"><span>Soccer</span></a>
                     <a class="front-page-button padding-top-lg margin-right-lg" href="NFL"><span>NFL</span></a>
                     <a class="front-page-button padding-top-lg margin-right-lg" href="Tennis"><span>2017 US Open Men's Singles</span></a>
                     <img alt="gallery/ball_1" src="gallery_gen/740438132c8336073d625b0136159e8e_300x310.png">
