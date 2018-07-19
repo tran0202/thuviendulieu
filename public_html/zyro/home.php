@@ -17,7 +17,7 @@
 		<div class="vbox wb_container" id="wb_main">
 			<div class="wb_cont_inner">
                 <div class="col-sm-12">
-                    <p class="wb-stl-highlight text-center">UEFA Nations League</p>
+                    <p class="wb-stl-highlight text-center">UEFA Nations League 2018/19</p>
                     <p class="wb-stl-normal"> </p>
                 </div>
                 <div class="col-sm-12">

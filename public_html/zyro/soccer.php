@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>TVDL - Russia 2018</title>
+    <title>TVDL - Soccer</title>
     <?php include_once('header_script.inc.php'); ?>
 </head>
 <body class="bg-soccer">
@@ -17,7 +17,7 @@
         <div class="vbox wb_container" id="wb_main">
             <div class="wb_cont_inner">
                 <div class="col-sm-12">
-                    <p class="wb-stl-highlight text-center">UEFA Nations League</p>
+                    <p class="wb-stl-highlight text-center">UEFA Nations League 2018/19</p>
                     <p class="wb-stl-normal"> </p>
                 </div>
                 <div class="col-sm-12">

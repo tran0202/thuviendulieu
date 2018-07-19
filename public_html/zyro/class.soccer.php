@@ -2617,7 +2617,7 @@
 
         public static function getSoccerMatchSql($tournament_id) {
             $tournament_id_str = 'm.tournament_id = '.$tournament_id;
-            if ($tournament_id == null) $tournament_id_str = '1 = 1';
+            if ($tournament_id == null) $tournament_id_str = '1 = 1'; // 'm.tournament_id <> 1'
             $sql = 'SELECT t.id AS home_team_id, UCASE(t.name) AS home_team_name, home_team_score, n.flag_filename AS home_flag, n.code AS home_team_code,
                         t2.id AS away_team_id, UCASE(t2.name) AS away_team_name, away_team_score, n2.flag_filename AS away_flag, n2.code AS away_team_code, 
                         pt.id AS home_parent_team_id, UCASE(pt.name) AS home_parent_team_name, pt2.id AS away_parent_team_id, UCASE(pt2.name) AS away_parent_team_name, 
@@ -2779,9 +2779,9 @@
                     LEFT JOIN nation n ON n.id = t.nation_id
                     LEFT JOIN (SELECT team_id, COUNT(team_id) AS tournament_count
                                 FROM team_tournament 
-                                WHERE (group_id <> 63 OR group_id is null)
+                                WHERE (group_id <> 63 OR group_id is null) -- AND tournament_id <> 1
                                 GROUP BY team_id) tc ON tc.team_id = t.id
-                    WHERE tou.tournament_type_id = 1
+                    WHERE tou.tournament_type_id = 1  -- AND tt.tournament_id <> 1
                     UNION
                     SELECT DISTINCT UCASE(t.name) AS name, t.id, null, null,
                         n.flag_filename, n.code, tc.tournament_count
@@ -2793,9 +2793,9 @@
                     LEFT JOIN nation n ON n.id = t.nation_id 
                     LEFT JOIN (SELECT team_id, COUNT(team_id) AS tournament_count
                                 FROM team_tournament 
-                                WHERE (group_id <> 63 OR group_id is null)
+                                WHERE (group_id <> 63 OR group_id is null) -- AND tournament_id <> 1
                                 GROUP BY team_id) tc ON tc.team_id = t.id
-                    WHERE tou.tournament_type_id = 1';
+                    WHERE tou.tournament_type_id = 1  -- AND tt.tournament_id <> 1';
             return $sql;
         }
 
@@ -2808,7 +2808,7 @@
                     LEFT JOIN team t2 ON t2.id = t.parent_team_id 
                     LEFT JOIN `group` g ON g.id = tt.group_id
                     LEFT JOIN nation n ON n.id = t.nation_id
-                    WHERE tou.tournament_type_id = 1';
+                    WHERE tou.tournament_type_id = 1'; // AND tt.tournament_id <> 1'
             return $sql;
         }
 
