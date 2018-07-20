@@ -107,6 +107,22 @@
             return $tournament;
         }
 
+        public static function getUNLTournamentStandings($tournament_id, $fantasy) {
+
+            $tournament = Tournament::CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy);
+
+            self::getTournamentProfile($tournament);
+//            Soccer::getSoccerTeams($tournament);
+//            Soccer::getSoccerMatches($tournament);
+//
+//            Soccer::getStanding($tournament);
+//            Soccer::getSoccerGroupHtml($tournament);
+//            Soccer::getSoccerBracketHtml($tournament);
+//            Soccer::getSoccerScheduleModalHtml($tournament);
+
+            return $tournament;
+        }
+
         public static function getAllTimeSoccerTournament() {
 
             $tournament = Tournament::CreateSoccerTournament();
@@ -424,6 +440,11 @@
 
         public function getTournamentHeader() {
             $output = '<img src="/images/wc_logos/'.self::getLogoFilename().'">&nbsp;&nbsp;'.self::getName();
+            return $output;
+        }
+
+        public function getUNLTournamentHeader() {
+            $output = '<img height="100" src="/images/unl_logos/'.self::getLogoFilename().'">&nbsp;&nbsp;'.self::getName();
             return $output;
         }
 

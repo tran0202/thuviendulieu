@@ -36,11 +36,12 @@ VALUES ('1986 FIFA World Cup Mexico', '1986-05-31', '1986-06-29', 1, '1986.png',
 	('1958 FIFA World Cup Sweden', '1958-06-08', '1958-06-29', 1, '1958.png', 2),
 	('1954 FIFA World Cup Switzerland', '1954-06-16', '1954-07-04', 1, '1954.png', 2),
 	('1950 FIFA World Cup Brazil', '1950-06-24', '1950-07-16', 1, '1950.png', 2),
-	('1938 FIFA World Cup France', '1938-06-04', '1938-06-19', 1, '1938.png', 2);
-
-INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_filename, points_for_win)
-VALUES ('1934 FIFA World Cup Italy', '1934-05-27', '1934-06-10', 1, '1934.png', 2),
+	('1938 FIFA World Cup France', '1938-06-04', '1938-06-19', 1, '1938.png', 2),
+	('1934 FIFA World Cup Italy', '1934-05-27', '1934-06-10', 1, '1934.png', 2),
 	('1930 FIFA World Cup Uruguay', '1930-07-13', '1930-07-30', 1, '1930.png', 2);
+
+INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_filename)
+VALUES ('2018/19 UEFA Nations League', '2018-09-06', '2019-06-09', 4, 'UEFA_Nations_League.png');
 
 INSERT INTO tournament (name, start_date, end_date)
 VALUES ('2017 US Open', '2017-08-28', '2017-09-10');
