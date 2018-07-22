@@ -5,6 +5,7 @@
         private $id;
         private $tournament_name;
         private $name;
+        private $l_name;
         private $code;
         private $group_name;
         private $group_order;
@@ -30,7 +31,7 @@
 
         protected function __construct() { }
 
-        public static function CreateTeam($id, $tournament_name, $name, $code, $group_name, $group_order,
+        public static function CreateTeam($id, $tournament_name, $name, $l_name, $code, $group_name, $group_order,
             $parent_id, $parent_name, $parent_group_name, $parent_group_long_name, $parent_group_order,
             $flag_filename, $logo_filename,
             $tournament_count, $match_play, $win, $draw, $loss,
@@ -40,6 +41,7 @@
             $t->id = $id;
             $t->tournament_name = $tournament_name;
             $t->name = $name;
+            $t->l_name = $l_name;
             $t->code = $code;
             $t->group_name = $group_name;
             $t->group_order = $group_order;
@@ -64,9 +66,11 @@
             return $t;
         }
 
-        public static function CreateSoccerTeam($id, $tournament_name, $name, $code, $parent_id, $parent_name, $group_name, $group_order, $flag_filename, $tournament_count) {
-            return self::CreateTeam($id, $tournament_name, $name, $code, $group_name, $group_order,
-                $parent_id, $parent_name, '', '', 0, $flag_filename, '',
+        public static function CreateSoccerTeam($id, $tournament_name, $name, $l_name, $code, $parent_id, $parent_name,
+                $group_name, $group_order, $parent_group_name, $parent_group_long_name, $parent_group_order,
+                $flag_filename, $tournament_count) {
+            return self::CreateTeam($id, $tournament_name, $name, $l_name, $code, $group_name, $group_order,
+                $parent_id, $parent_name, $parent_group_name, $parent_group_long_name, $parent_group_order, $flag_filename, '',
                 $tournament_count, 0, 0, 0, 0, 0, 0, 0, 0, null, null);
         }
 
@@ -137,6 +141,22 @@
         public function setName($name)
         {
             $this->name = $name;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getLName()
+        {
+            return $this->l_name;
+        }
+
+        /**
+         * @param mixed $l_name
+         */
+        public function setLName($l_name)
+        {
+            $this->l_name = $l_name;
         }
 
         /**

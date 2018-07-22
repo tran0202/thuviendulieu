@@ -112,7 +112,7 @@
             $tournament = Tournament::CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy);
 
             self::getTournamentProfile($tournament);
-//            Soccer::getSoccerTeams($tournament);
+            Soccer::getSoccerTeams($tournament);
 //            Soccer::getSoccerMatches($tournament);
 //
 //            Soccer::getStanding($tournament);

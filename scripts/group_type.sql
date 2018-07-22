@@ -5,11 +5,12 @@ CREATE TABLE IF NOT EXISTS group_type (
 
 INSERT INTO group_type (name)
 VALUES ('Group'),
-		('Conference'),
-		('Division'),
-		('Stage'),
-		('Round');
+	('Conference'),
+	('Division'),
+	('Stage'),
+	('Round'),
+	('Nation'),
+	('Association');
 
 INSERT INTO group_type (name)
-VALUES ('Nation'),
-	('Association');
+VALUES ('League');
