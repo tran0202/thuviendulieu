@@ -76,7 +76,7 @@
 
         public static function CloneSoccerTeam($id, $name, $code, $group_name, $group_order,
                                              $match_play, $win, $draw, $loss, $goal_for, $goal_against, $goal_diff, $point) {
-            return self::CreateTeam($id, '', $name, $code, $group_name, $group_order,
+            return self::CreateTeam($id, '', $name, '', $code, $group_name, $group_order,
                 0, '', '', '', 0, '', '',
                 0, $match_play, $win, $draw, $loss, $goal_for, $goal_against, $goal_diff, $point, null, null);
         }

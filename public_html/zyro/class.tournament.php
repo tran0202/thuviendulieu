@@ -116,7 +116,7 @@
 //            Soccer::getSoccerMatches($tournament);
 //
 //            Soccer::getStanding($tournament);
-//            Soccer::getSoccerGroupHtml($tournament);
+            Soccer::getUNLStandingsHtml($tournament);
 //            Soccer::getSoccerBracketHtml($tournament);
 //            Soccer::getSoccerScheduleModalHtml($tournament);
 

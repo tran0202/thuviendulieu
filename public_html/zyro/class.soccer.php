@@ -1902,6 +1902,14 @@
             return $result;
         }
 
+        public static function getTeamArrayByParentGroup($teams) {
+            $result = array();
+            for ($i = 0; $i < sizeof($teams); $i++) {
+                $result[$teams[$i]->getParentGroupName()][$teams[$i]->getGroupName()][$teams[$i]->getName()] = $teams[$i];
+            }
+            return $result;
+        }
+
         public static function mockGroupAScore($matches) {
             $matches[0]->setHomeTeamScore(1);
             $matches[0]->setAwayTeamScore(0);
@@ -2110,7 +2118,8 @@
                         $matches[$i]->getHomeTeamExtraTimeScore() + $matches[$i]->getAwayTeamExtraTimeScore();
                 }
             }
-            $gpg = round($total_goals / $count, 2, PHP_ROUND_HALF_UP);
+            $gpg = 'NA';
+            if ($count != 0) $gpg = round($total_goals / $count, 2, PHP_ROUND_HALF_UP);
             $output .= '<div class="col-sm-12 padding-tb-sm">
                             <div class="col-sm-3 h3-ff3 font-bold text-right" style="padding-top:9px">Total matches played:</div>
                             <div class="col-sm-9 wb-stl-heading1 green">'.$count.'</div>
@@ -2145,6 +2154,18 @@
                                 </div>
                             </div>
                         </div>';
+            $output .= '<script>
+                        $(function() {
+                            $("#collapse-'.$id.'").on("shown.bs.collapse", function () {
+                                $("#'.$id.'-down-arrow").hide();
+                                $("#'.$id.'-up-arrow").show();
+                            })
+                            $("#collapse-'.$id.'").on("hidden.bs.collapse", function () {
+                                $("#'.$id.'-down-arrow").show();
+                                $("#'.$id.'-up-arrow").hide();
+                            })
+                        });
+                        </script>';
             return $output;
         }
 
@@ -2551,6 +2572,70 @@
             }
             $output .= '</div>';
             return $output;
+        }
+
+        public static function getUNLStandingsHtml($tournament) {
+            $teams1 = self::getTeamArrayByGroup($tournament->getTeams());
+            $teams = self::getTeamArrayByParentGroup($tournament->getTeams());
+//            $output = self::getCollapseHtml('summary', 'Summary', self::getTournamentSummaryHtml($tournament));
+
+            $output = '<div class="col-sm-12 margin-top-sm">
+                        <ul class="nav nav-tabs nav-justified h2-ff4" id="UNLLeagueTab" role="tablist">';
+            foreach ($teams as $parent_group_name => $_teams) {
+                $league_name = str_replace(' ', '', $parent_group_name);
+                $output .= '<li class="nav-item">
+                                <a class="nav-link" id="'.$league_name.'-tab" data-toggle="tab" href="#'.$league_name.'_content" role="tab" aria-controls="'.$league_name.'_content" aria-selected="true">'.$parent_group_name.'</a>
+                            </li>';
+            }
+            $output .= '</ul>
+                        <div class="tab-content" id="myTabContent">';
+            foreach ($teams as $parent_group_name => $league_teams) {
+                $league_name = str_replace(' ', '', $parent_group_name);
+                $output .= '<div class="tab-pane fade" id="'.$league_name.'_content" role="tabpanel" aria-labelledby="'.$league_name.'-tab">';
+
+                foreach ($league_teams as $group_name => $_teams) {
+                    $output .= '<div class="col-sm-12 margin-top-sm">
+                            <span class="col-sm-2 h2-ff2">Group '.$group_name.'</span>
+                        </div>
+                        <div class="col-sm-12 box-xl">
+                            <div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md font-bold">
+                                <div class="col-sm-1"></div>
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-1">MP</div>
+                                <div class="col-sm-1">W</div>
+                                <div class="col-sm-1">D</div>
+                                <div class="col-sm-1">L</div>
+                                <div class="col-sm-1">GF</div>
+                                <div class="col-sm-1">GA</div>
+                                <div class="col-sm-1">+/-</div>
+                                <div class="col-sm-1">Pts</div>
+                            </div>';
+                    foreach ($_teams as $name => $_team) {
+                        $goal_diff = $_team->getGoalDiff();
+                        if ($_team->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
+                        $striped = '';
+                        if (self::isTeamAdvancedSecondRound($tournament, $_team, Stage::First)) $striped = 'advanced-second-round-striped';
+                        $output .= '<div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md '.$striped.'">
+                                <div class="col-sm-1"><img class="flag-md" src="/images/flags/'.$_team->getFlagFilename().'"></div>
+                                <div class="col-sm-3" style="padding-top: 3px;">'.$_team->getName().'</div>
+                                <div class="col-sm-1">'.$_team->getMatchPlay().'</div>
+                                <div class="col-sm-1">'.$_team->getWin().'</div>
+                                <div class="col-sm-1">'.$_team->getDraw().'</div>
+                                <div class="col-sm-1">'.$_team->getLoss().'</div>
+                                <div class="col-sm-1">'.$_team->getGoalFor().'</div>
+                                <div class="col-sm-1">'.$_team->getGoalAgainst().'</div>
+                                <div class="col-sm-1">'.$goal_diff.'</div>
+                                <div class="col-sm-1">'.$_team->getPoint().'</div>
+                            </div>';
+                    }
+                    $output .= '</div>';
+                    $output .= self::getCollapseHtml($league_name.$group_name.'matches', 'Matches', $parent_group_name.$group_name.' Matches');
+                }
+                $output .= '</div>';
+            }
+            $output .= '</div>';
+            $output .= '</div>';
+            $tournament->concatBodyHtml($output);
         }
 
         public static function getSoccerMatches($tournament) {

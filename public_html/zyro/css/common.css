@@ -170,6 +170,7 @@ a:hover.hover-pointer { cursor: pointer; }
 .red { color:#cc0000; }
 .green { color:#13730f; }
 .dark-red { color:#930c10; }
+.unl-red { color: #e30e1b }
 .russia-2018 { color:#930c10; }
 
 /*Tertiary*/
@@ -307,3 +308,15 @@ a:hover.hover-pointer { cursor: pointer; }
 .no-padding-right { padding-right: 0; }
 .no-padding-tb { padding-top: 0; padding-bottom: 0; }
 .no-padding-lr { padding-left: 0; padding-right: 0; }
+
+/* ========== Nav ========== */
+
+#UNLLeagueTab > li > a {
+    color: #afb6bc;
+}
+#UNLLeagueTab > li > a:hover {
+    color: #e30e1b;
+}
+#UNLLeagueTab > li.active > a {
+    color: #e30e1b;
+}
