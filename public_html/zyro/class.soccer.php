@@ -2575,7 +2575,6 @@
         }
 
         public static function getUNLStandingsHtml($tournament) {
-            $teams1 = self::getTeamArrayByGroup($tournament->getTeams());
             $teams = self::getTeamArrayByParentGroup($tournament->getTeams());
 //            $output = self::getCollapseHtml('summary', 'Summary', self::getTournamentSummaryHtml($tournament));
 
@@ -2638,9 +2637,17 @@
             $tournament->concatBodyHtml($output);
         }
 
-        public static function getSoccerMatches($tournament) {
+        public static function getWorldCupMatches($tournament) {
+            self::getSoccerMatches($tournament, 1);
+        }
 
-            $sql = self::getSoccerMatchSql($tournament->getTournamentId());
+        public static function getUNLMatches($tournament) {
+            self::getSoccerMatches($tournament, 4);
+        }
+
+        public static function getSoccerMatches($tournament, $tournament_type_id) {
+
+            $sql = self::getSoccerMatchSql($tournament->getTournamentId(), $tournament_type_id);
             self::getSoccerMatchDb($tournament, $sql);
         }
 
@@ -2700,7 +2707,7 @@
             }
         }
 
-        public static function getSoccerMatchSql($tournament_id) {
+        public static function getSoccerMatchSql($tournament_id, $tournament_type_id) {
             $tournament_id_str = 'm.tournament_id = '.$tournament_id;
             if ($tournament_id == null) $tournament_id_str = '1 = 1'; // 'm.tournament_id <> 1'
             $sql = 'SELECT t.id AS home_team_id, UCASE(t.name) AS home_team_name, home_team_score, n.flag_filename AS home_flag, n.code AS home_team_code,
@@ -2725,14 +2732,14 @@
                     LEFT JOIN nation n2 ON n2.id = t2.nation_id  
                     LEFT JOIN team pt ON pt.id = t.parent_team_id 
                     LEFT JOIN team pt2 ON pt2.id = t2.parent_team_id
-                    WHERE tou.tournament_type_id = 1
+                    WHERE tou.tournament_type_id = '.$tournament_type_id.'
                     AND '.$tournament_id_str.'
                     ORDER BY stage_id, match_order, match_date, match_time;';
             return $sql;
         }
 
         public static function getAllTimeSoccerMatchSql() {
-            return self::getSoccerMatchSql(null);
+            return self::getSoccerMatchSql(null, 1);
         }
 
         public static function getSoccerTeams($tournament) {

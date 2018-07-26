@@ -9,7 +9,8 @@
         '5'	=> array('id' => '6', 'alias' => 'WorldCupSchedule', 'file' => 'world_cup_schedule.php','controllers' => array()),
         '6'	=> array('id' => '7', 'alias' => 'WorldCup', 'file' => 'world_cup_tournament.php','controllers' => array()),
         '7'	=> array('id' => '8', 'alias' => 'WorldCupArchive', 'file' => 'world_cup_archive.php','controllers' => array()),
-        '8'	=> array('id' => '9', 'alias' => 'UEFANationsLeagueStandings', 'file' => 'uefa_nations_league_standings.php','controllers' => array())
+        '8'	=> array('id' => '9', 'alias' => 'UEFANationsLeagueStandings', 'file' => 'uefa_nations_league_standings.php','controllers' => array()),
+        '9'	=> array('id' => '10', 'alias' => 'UEFANationsLeagueMatches', 'file' => 'uefa_nations_league_matches.php','controllers' => array())
 //		'4'	=> array('id' => '4', 'alias' => 'New-Link', 'file' => 'tennis.php','controllers' => array())
 	);
 	$forms = array(

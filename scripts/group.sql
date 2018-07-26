@@ -55,10 +55,17 @@ VALUES ('First Stage', 4),
 	('Final Round', 5),
 	('Replay First Round', 5),
 	('Preliminary Round', 5),
-	('Replay Second Round', 5);
+	('Replay Second Round', 5),
+	('Replay Quarterfinals', 5);
 
 INSERT INTO `group` (name, group_type_id)
-VALUES ('Replay Quarterfinals', 5);
+VALUES ('Group Stage', 4),
+	('MatchDay 1', 5),
+	('MatchDay 2', 5),
+	('MatchDay 3', 5),
+	('MatchDay 4', 5),
+	('MatchDay 5', 5),
+	('MatchDay 6', 5);
 
 INSERT INTO `group` (name, long_name, group_type_id)
 VALUES ('First Round', 'Round of 128', 5),

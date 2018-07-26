@@ -70,7 +70,7 @@
 
             self::getTournamentProfile($tournament);
             Soccer::getSoccerTeams($tournament);
-            Soccer::getSoccerMatches($tournament);
+            Soccer::getWorldCupMatches($tournament);
 
             if ($fantasy == Fantasy::All) {
                 Soccer::getStanding($tournament);
@@ -97,7 +97,7 @@
 
             self::getTournamentProfile($tournament);
             Soccer::getSoccerTeams($tournament);
-            Soccer::getSoccerMatches($tournament);
+            Soccer::getWorldCupMatches($tournament);
 
             Soccer::getStanding($tournament);
             Soccer::getSoccerGroupHtml($tournament);
@@ -113,12 +113,39 @@
 
             self::getTournamentProfile($tournament);
             Soccer::getSoccerTeams($tournament);
-//            Soccer::getSoccerMatches($tournament);
-//
+            Soccer::getUNLMatches($tournament);
+
 //            Soccer::getStanding($tournament);
             Soccer::getUNLStandingsHtml($tournament);
 //            Soccer::getSoccerBracketHtml($tournament);
 //            Soccer::getSoccerScheduleModalHtml($tournament);
+
+            return $tournament;
+        }
+
+        public static function getUNLTournamentMatches($tournament_id, $fantasy) {
+
+            $tournament = Tournament::CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy);
+
+            self::getTournamentProfile($tournament);
+            Soccer::getSoccerTeams($tournament);
+            Soccer::getUNLMatches($tournament);
+
+//            if ($fantasy == Fantasy::All) {
+//                Soccer::getStanding($tournament);
+//                Soccer::getSoccerScheduleHtml($tournament, false);
+//            }
+//            elseif ($fantasy == Fantasy::Half) {
+//                Soccer::getStanding($tournament);
+//                Soccer::getSoccerScheduleHtml($tournament, true);
+//                Soccer::getSoccerPopoverHtml($tournament);
+//            }
+//            else {
+//                Soccer::getStanding($tournament);
+                Soccer::getSoccerScheduleHtml($tournament, false);
+//            }
+
+//            Soccer::getSoccerGroupModalHtml($tournament);
 
             return $tournament;
         }
@@ -146,7 +173,7 @@
 
             self::getTournamentProfile($tournament);
             Soccer::getSoccerTeams($tournament);
-            Soccer::getSoccerMatches($tournament);
+            Soccer::getWorldCupMatches($tournament);
 
             Soccer::getFirstStageMatchesRanking($tournament);
             Soccer::getArchiveSoccerScheduleHtml($tournament);
