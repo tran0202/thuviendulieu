@@ -12,8 +12,8 @@
     $header = $profile->getUNLTournamentHeader();
     $tournament_name = $profile->getName();
     $body_html = $tournament->getBodyHtml();
-//    $modal_html = $tournament->getModalHtml();
-//    $popover_html = $tournament->getPopoverHtml();
+    $modal_html = $tournament->getModalHtml();
+    $popover_html = $tournament->getPopoverHtml();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,7 +49,7 @@
 		</div>
 	</div>
     <!-- Modal -->
-    <?php //echo $modal_html; ?>
+    <?php echo $modal_html; ?>
 	{{hr_out}}
 </body>
 </html>

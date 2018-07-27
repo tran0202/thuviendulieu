@@ -168,10 +168,16 @@ a:hover.hover-pointer { cursor: pointer; }
 .blue { color: #0040ff; }
 .navy-blue-neon { color: #0002a6;}
 .red { color:#cc0000; }
-.green { color:#13730f; }
 .dark-red { color:#930c10; }
-.unl-red { color: #e30e1b }
+.green { color:#13730f; }
+
 .russia-2018 { color:#930c10; }
+
+.unl-red { color: #e30e1b; }
+.unl-league-A { color: #e30918;}
+.unl-league-B { color: #AC16E1;}
+.unl-league-C { color: #009e4d;}
+.unl-league-D { color: #f39205;}
 
 /*Tertiary*/
 .gray1 { color: #333333; }
@@ -247,6 +253,7 @@ a:hover.hover-pointer { cursor: pointer; }
 
 .border-top-gray5 { border-top: 1px solid #e6e7e9; }
 .border-bottom-gray5 { border-bottom: 1px solid #e6e7e9; }
+.border-bottom-gray5:last-child { border-bottom: none; }
 .border-left-gray5 { border-left: 1px solid #e6e7e9; }
 .border-right-gray5 { border-right: 1px solid #e6e7e9; }
 

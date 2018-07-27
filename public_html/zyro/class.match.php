@@ -35,6 +35,7 @@
         private $points_for_win;
         private $golden_goal_rule;
         private $group_name;
+        private $parent_group_name;
         private $second_round_group_name;
         private $home_team_seed;
         private $away_team_seed;
@@ -69,7 +70,7 @@
             $home_team_id, $home_team_name, $home_team_code, $away_team_id, $away_team_name, $away_team_code,
             $home_parent_team_id, $home_parent_team_name, $away_parent_team_id, $away_parent_team_name,
             $match_date, $match_date_fmt, $match_time, $match_time_fmt,
-            $match_order, $bracket_order, $round, $stage, $group_name, $second_round_group_name,
+            $match_order, $bracket_order, $round, $stage, $group_name, $parent_group_name, $second_round_group_name,
             $tournament_id, $tournament_name, $points_for_win, $golden_goal_rule,
             $waiting_home_team, $waiting_away_team,
             $home_team_score, $away_team_score,
@@ -103,6 +104,7 @@
             $m->round = $round;
             $m->stage = $stage;
             $m->group_name = $group_name;
+            $m->parent_group_name = $parent_group_name;
             $m->second_round_group_name = $second_round_group_name;
             $m->tournament_id = $tournament_id;
             $m->tournament_name = $tournament_name;
@@ -123,7 +125,8 @@
                 $home_team_id, $home_team_name, $home_team_code, $away_team_id, $away_team_name, $away_team_code,
                 0, '', 0, '',
                 '', '', '', '',
-                0, 0, '', '', '', '',
+                0, 0, '', '',
+                '', '', '',
                 0, '', 0,'',
                 '', '',
                 $home_team_score, $away_team_score,
@@ -703,6 +706,22 @@
         public function setGroupName($group_name)
         {
             $this->group_name = $group_name;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getParentGroupName()
+        {
+            return $this->parent_group_name;
+        }
+
+        /**
+         * @param mixed $parent_group_name
+         */
+        public function setParentGroupName($parent_group_name)
+        {
+            $this->parent_group_name = $parent_group_name;
         }
 
         /**

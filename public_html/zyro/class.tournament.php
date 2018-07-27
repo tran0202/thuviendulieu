@@ -115,10 +115,8 @@
             Soccer::getSoccerTeams($tournament);
             Soccer::getUNLMatches($tournament);
 
-//            Soccer::getStanding($tournament);
+            Soccer::getStanding($tournament);
             Soccer::getUNLStandingsHtml($tournament);
-//            Soccer::getSoccerBracketHtml($tournament);
-//            Soccer::getSoccerScheduleModalHtml($tournament);
 
             return $tournament;
         }
@@ -131,21 +129,21 @@
             Soccer::getSoccerTeams($tournament);
             Soccer::getUNLMatches($tournament);
 
-//            if ($fantasy == Fantasy::All) {
-//                Soccer::getStanding($tournament);
-//                Soccer::getSoccerScheduleHtml($tournament, false);
-//            }
-//            elseif ($fantasy == Fantasy::Half) {
-//                Soccer::getStanding($tournament);
-//                Soccer::getSoccerScheduleHtml($tournament, true);
-//                Soccer::getSoccerPopoverHtml($tournament);
-//            }
-//            else {
-//                Soccer::getStanding($tournament);
+            if ($fantasy == Fantasy::All) {
+                Soccer::getStanding($tournament);
                 Soccer::getUNLMatchesHtml($tournament, false);
-//            }
+            }
+            elseif ($fantasy == Fantasy::Half) {
+                Soccer::getStanding($tournament);
+                Soccer::getUNLMatchesHtml($tournament, false);
+                Soccer::getSoccerPopoverHtml($tournament);
+            }
+            else {
+                Soccer::getStanding($tournament);
+                Soccer::getUNLMatchesHtml($tournament, false);
+            }
 
-//            Soccer::getSoccerGroupModalHtml($tournament);
+            Soccer::getUNLGroupModalHtml($tournament);
 
             return $tournament;
         }
