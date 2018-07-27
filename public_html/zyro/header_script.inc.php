@@ -25,7 +25,7 @@
 <!--[if lt IE 9]>
 <script src="js/html5shiv.min.js"></script>
 <![endif]-->
-<link href="https://fonts.googleapis.com/css?family=Courgette|Merriweather|Monoton|Oswald:300,400|Roboto" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Courgette|Merriweather|Monoton|Oswald:300,400|Roboto|Roboto+Condensed" rel="stylesheet">
 <script src="js/utilities.js" type="text/javascript"></script>
 <script src="js/flipclock.min.js" type="text/javascript"></script>
 <script src="js/countdown.js" type="text/javascript"></script>

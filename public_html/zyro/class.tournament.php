@@ -142,7 +142,7 @@
 //            }
 //            else {
 //                Soccer::getStanding($tournament);
-                Soccer::getSoccerScheduleHtml($tournament, false);
+                Soccer::getUNLMatchesHtml($tournament, false);
 //            }
 
 //            Soccer::getSoccerGroupModalHtml($tournament);

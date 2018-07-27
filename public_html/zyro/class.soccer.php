@@ -2576,10 +2576,9 @@
 
         public static function getUNLStandingsHtml($tournament) {
             $teams = self::getTeamArrayByParentGroup($tournament->getTeams());
-//            $output = self::getCollapseHtml('summary', 'Summary', self::getTournamentSummaryHtml($tournament));
 
             $output = '<div class="col-sm-12 margin-top-sm">
-                        <ul class="nav nav-tabs nav-justified h2-ff4" id="UNLLeagueTab" role="tablist">';
+                        <ul class="nav nav-tabs nav-justified h2-ff6" id="UNLLeagueTab" role="tablist">';
             foreach ($teams as $parent_group_name => $_teams) {
                 $league_name = str_replace(' ', '', $parent_group_name);
                 $output .= '<li class="nav-item">
@@ -2629,6 +2628,92 @@
                     }
                     $output .= '</div>';
                     $output .= self::getCollapseHtml($league_name.$group_name.'matches', 'Matches', $parent_group_name.$group_name.' Matches');
+                }
+                $output .= '</div>';
+            }
+            $output .= '</div>';
+            $output .= '</div>';
+            $tournament->concatBodyHtml($output);
+        }
+
+        public static function getUNLMatchesHtml($tournament, $lookAheadPopover) {
+            $matches = $tournament->getMatches();
+            $matches = self::getMatchArrayByDate($matches);
+            $output = '<div class="col-sm-12 margin-top-sm">
+                        <ul class="nav nav-tabs nav-justified h2-ff6" id="UNLMatchDayTab" role="tablist">';
+            foreach ($matches as $rounds => $_round) {
+                $round_name = str_replace(' ', '', $rounds);
+                $output .= '<li class="nav-item">
+                                <a class="nav-link" id="'.$round_name.'-tab" data-toggle="tab" href="#'.$round_name.'_content" role="tab" aria-controls="'.$round_name.'_content" aria-selected="true">'.$rounds.'</a>
+                            </li>';
+            }
+            $output .= '</ul>
+                        <div class="tab-content" id="myTabContent">';
+            foreach ($matches as $rounds => $_round) {
+                $round_name = str_replace(' ', '', $rounds);
+                $output .= '<div class="tab-pane fade" id="'.$round_name.'_content" role="tabpanel" aria-labelledby="'.$round_name.'-tab">';
+
+                foreach ($_round as $match_dates => $_matches) {
+                    $output .= '<div class="col-sm-12 h3-ff3 border-bottom-gray2 margin-top-md">'
+                        .$_matches[array_keys($_matches)[0]]->getMatchDateFmt().'</div>';
+                    foreach ($_matches as $match_order => $_match) {
+                        $home_team_tmp = $_match->getHomeTeamName();
+                        $away_team_tmp = $_match->getAwayTeamName();
+                        $group_text = '';
+                        $home_flag_tmp = '<img class="flag-md" src="/images/flags/'.$_match->getHomeFlag().'">';
+                        $away_flag_tmp = '<img class="flag-md" src="/images/flags/'.$_match->getAwayFlag().'">';
+                        if ($_match->getHomeTeamName() == '') {
+                            $home_team_tmp = '['.$_match->getWaitingHomeTeam().']';
+                            $away_team_tmp = '['.$_match->getWaitingAwayTeam().']';
+                            $home_flag_tmp = '';
+                            $away_flag_tmp = '';
+                        }
+                        if ($_match->getStage() == self::FIRST_STAGE) {
+                            $group_name = $_match->getGroupName();
+                            if ($_match->getRound() == self::SECOND_ROUND || $_match->getRound() == self::FINAL_ROUND) $group_name = $_match->getSecondRoundGroupName();
+                            $group_anchor = 'Group '.$group_name;
+                            if ($_match->getRound() == self::FINAL_ROUND) $group_anchor = $_match->getSecondRoundGroupName();
+                            if ($_match->getRound() == self::FINAL_ROUND) $group_name = $_match->getSecondRoundGroupName();
+                            $group_id = $group_name;
+                            if ($group_name == self::FINAL_ROUND) $group_id = 'FinalRound';
+                            $group_text = '<a class="link-modal" data-toggle="modal" data-target="#group'.$group_id.'StandingModal">'.$group_anchor.'</a>' ;
+                        }
+                        $score = 'vs';
+                        $penalty_score = '';
+                        $aet = ' aet';
+                        if (self::isGoldenGoalRule($_match->getGoldenGoalRule()) && $_match->getHomeTeamPenaltyScore() == '') $aet = ' gg';
+                        if ($_match->getHomeTeamScore() != -1) {
+                            $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
+                            if ($rounds != self::GROUP_MATCHES && $rounds != self::SECOND_ROUND && $rounds != self::FINAL_ROUND && $_match->getHomeTeamScore() == $_match->getAwayTeamScore()) {
+                                $score = ($_match->getHomeTeamScore()+$_match->getHomeTeamExtraTimeScore()).
+                                    '-'.($_match->getAwayTeamScore()+$_match->getAwayTeamExtraTimeScore()).$aet;
+                                if ($_match->getHomeTeamExtraTimeScore() == $_match->getAwayTeamExtraTimeScore()) {
+                                    if ($_match->getHomeTeamPenaltyScore() != 0 || $_match->getAwayTeamPenaltyScore() != 0) {
+                                        $penalty_score = ' '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore().' pen';
+                                    }
+                                }
+                            }
+                        }
+                        if ($_match->getSecondRoundGroupName() == self::WITHDREW) $score = 'w/o';
+                        $advance_popover = '';
+                        $advance_popover2 = '';
+                        if ($lookAheadPopover && $match_order > 32 && $match_order <= 48) {
+                            $advance_popover = ' <a id="popover_'.$_match->getHomeTeamCode().'" data-toggle="popover" data-container="body" data-placement="right" type="button" 
+                                data-html="true" tabindex="0" data-trigger="focus"><span class="fa fa-futbol-o" style="font-size:medium;vertical-align:middle;"></span></a>';
+                            $advance_popover2 = '<a id="popover_'.$_match->getAwayTeamCode().'" data-toggle="popover" data-container="body" data-placement="left" type="button" 
+                                data-html="true" tabindex="0" data-trigger="focus"><span class="fa fa-futbol-o" style="font-size:medium;vertical-align:middle;"></span></a> ';
+                        }
+                        $time_zone = 'CST';
+                        if ($_match->getTournamentId() <> 1) $time_zone = 'Local time';
+                        $output .= '<div class="col-sm-12 padding-tb-md border-bottom-gray5">
+                                        <div class="col-sm-2 padding-lr-xs">'.$_match->getMatchTimeFmt().' '.$time_zone.'<br>'.$group_text.'</div>
+                                        <div class="col-sm-1 padding-lr-xs text-right" style="padding-top:6px;">'.$home_flag_tmp.'</div>
+                                        <div class="col-sm-3 h2-ff3 padding-left-lg padding-right-xs">'.$home_team_tmp.$advance_popover.'</div>
+                                        <div class="col-sm-1 h2-ff3 padding-lr-xs">'.$score.'<br>'.$penalty_score.'</div>
+                                        <div class="col-sm-3 h2-ff3 padding-lr-xs text-right">'.$advance_popover2.$away_team_tmp.'</div>
+                                        <div class="col-sm-1 padding-lr-xs text-right" style="padding-top:6px;">'.$away_flag_tmp.'</div>
+                                    </div>';
+                    }
                 }
                 $output .= '</div>';
             }
