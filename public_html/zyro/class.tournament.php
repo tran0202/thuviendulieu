@@ -184,11 +184,27 @@
             return $tournament;
         }
 
-        public static function getFootballTournament($tournament_id) {
+        public static function getFootballTournamentSchedule($tournament_id) {
 
             $tournament = Tournament::CreateFootballTournamentById($tournament_id);
 
+            self::getTournamentProfile($tournament);
             Football::getFootballTeams($tournament);
+            Football::getFootballMatches($tournament);
+
+//            Football::getFootballHtml($tournament);
+
+            return $tournament;
+        }
+
+        public static function getFootballTournamentStandings($tournament_id) {
+
+            $tournament = Tournament::CreateFootballTournamentById($tournament_id);
+
+            self::getTournamentProfile($tournament);
+            Football::getFootballTeams($tournament);
+            Football::getFootballMatches($tournament);
+
             Football::getFootballHtml($tournament);
 
             return $tournament;
@@ -470,6 +486,11 @@
 
         public function getUNLTournamentHeader() {
             $output = '<img height="100" src="/images/unl_logos/'.self::getLogoFilename().'">&nbsp;&nbsp;'.self::getName();
+            return $output;
+        }
+
+        public function getNFLTournamentHeader() {
+            $output = '<img height="100" src="/images/nfl_logos/NFL.svg">&nbsp;&nbsp;'.self::getName();
             return $output;
         }
 

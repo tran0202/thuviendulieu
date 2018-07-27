@@ -5,7 +5,7 @@
     parse_str($_SERVER['QUERY_STRING'], $query_string);
     $tournament_id = 2;
     if (isset($query_string['tid'])) $tournament_id = $query_string['tid'];
-    $tournament = Tournament::getFootballTournamentSchedule($tournament_id);
+    $tournament = Tournament::getFootballTournamentStandings($tournament_id);
     $profile = $tournament->getProfile();
     $header = $profile->getNFLTournamentHeader();
     $tournament_name = $profile->getName();

@@ -56,16 +56,42 @@ VALUES ('First Stage', 4),
 	('Replay First Round', 5),
 	('Preliminary Round', 5),
 	('Replay Second Round', 5),
-	('Replay Quarterfinals', 5);
-
-INSERT INTO `group` (name, group_type_id)
-VALUES ('Group Stage', 4),
+	('Replay Quarterfinals', 5),
+	('Group Stage', 4),
 	('MatchDay 1', 5),
 	('MatchDay 2', 5),
 	('MatchDay 3', 5),
 	('MatchDay 4', 5),
 	('MatchDay 5', 5),
 	('MatchDay 6', 5);
+
+INSERT INTO `group` (name, long_name, group_type_id)
+VALUES ('Preseason', null, 4),
+	('Regular Season', null, 4),
+	('Post Season', null, 4),
+	('HOF', 'Hall of Fame Week', 5),
+	('Week 1', 'Week 1', 5),
+	('Week 2', 'Week 2', 5),
+	('Week 3', 'Week 3', 5),
+	('Week 4', 'Week 4', 5),
+	('Week 5', 'Week 5', 5),
+	('Week 6', 'Week 6', 5),
+	('Week 7', 'Week 7', 5),
+	('Week 8', 'Week 8', 5),
+	('Week 9', 'Week 9', 5),
+	('Week 10', 'Week 10', 5),
+	('Week 11', 'Week 11', 5),
+	('Week 12', 'Week 12', 5),
+	('Week 13', 'Week 13', 5),
+	('Week 14', 'Week 14', 5),
+	('Week 15', 'Week 15', 5),
+	('Week 16', 'Week 16', 5),
+	('Week 17', 'Week 17', 5),
+	('Wild Card Weekend', 'Wild Card Weekend', 5),
+	('Divisional Playoffs', 'Divisional Playoffs', 5),
+	('Conference Championships', 'Conference Championships', 5),
+	('Pro Bowl', 'Pro Bowl', 5),
+	('Super Bowl', 'Super Bowl', 5);
 
 INSERT INTO `group` (name, long_name, group_type_id)
 VALUES ('First Round', 'Round of 128', 5),
