@@ -192,7 +192,7 @@
             Football::getFootballTeams($tournament);
             Football::getFootballMatches($tournament);
 
-//            Football::getFootballHtml($tournament);
+            Football::getFootballScheduleHtml($tournament);
 
             return $tournament;
         }
@@ -205,7 +205,7 @@
             Football::getFootballTeams($tournament);
             Football::getFootballMatches($tournament);
 
-            Football::getFootballHtml($tournament);
+            Football::getFootballStandingsHtml($tournament);
 
             return $tournament;
         }

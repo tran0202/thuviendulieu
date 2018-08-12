@@ -1267,8 +1267,102 @@ VALUES (38, 35, 2, '2018-08-02', '190000', 1, 83, 80),
 	(46, 61, 2, '2018-08-09', '210000', 13, 84, 80),
 	(34, 56, 2, '2018-08-10', '183000', 14, 84, 80),
 	(43, 57, 2, '2018-08-10', '213000', 15, 84, 80),
-	(52, 42, 2, '2018-08-11', '200000', 16, 84, 80),
+	(52, 42, 2, '2018-08-11', '200500', 16, 84, 80),
 	(49, 33, 2, '2018-08-11', '210000', 17, 84, 80);
+
+INSERT INTO `match` (home_team_id, away_team_id, tournament_id, match_date, match_time, match_order, round_id, stage_id)
+VALUES (58, 53, 2, '2018-08-16', '183000', 18, 85, 80),
+	(59, 44, 2, '2018-08-16', '190000', 19, 85, 80),
+	(56, 64, 2, '2018-08-16', '190000', 20, 85, 80),
+	(48, 34, 2, '2018-08-17', '180000', 21, 85, 80),
+	(55, 43, 2, '2018-08-17', '180000', 22, 85, 80),
+	(36, 40, 2, '2018-08-17', '183000', 23, 85, 80),
+	(51, 37, 2, '2018-08-17', '183000', 24, 85, 80),
+	(33, 54, 2, '2018-08-17', '190000', 25, 85, 80),
+	(47, 52, 2, '2018-08-18', '120000', 26, 85, 80),
+	(57, 50, 2, '2018-08-18', '150000', 27, 85, 80),
+	(39, 41, 2, '2018-08-18', '180000', 28, 85, 80),
+	(62, 63, 2, '2018-08-18', '190000', 29, 85, 80),
+	(60, 45, 2, '2018-08-18', '190000', 30, 85, 80),
+	(38, 42, 2, '2018-08-18', '200500', 31, 85, 80),
+	(61, 49, 2, '2018-08-18', '210000', 32, 85, 80),
+	(35, 46, 2, '2018-08-20', '190000', 33, 85, 80),
+	(58, 40, 2, '2018-08-23', '190000', 34, 86, 80),
+	(53, 37, 2, '2018-08-24', '183000', 35, 86, 80),
+	(55, 56, 2, '2018-08-24', '183000', 36, 86, 80),
+	(42, 64, 2, '2018-08-24', '183000', 37, 86, 80),
+	(61, 52, 2, '2018-08-24', '190000', 38, 86, 80),
+	(43, 62, 2, '2018-08-24', '190000', 39, 86, 80),
+	(44, 57, 2, '2018-08-24', '213000', 40, 86, 80),
+	(48, 38, 2, '2018-08-25', '120000', 41, 86, 80),
+	(45, 50, 2, '2018-08-25', '150000', 42, 86, 80),
+	(63, 59, 2, '2018-08-25', '150000', 43, 86, 80),
+	(60, 46, 2, '2018-08-25', '153000', 44, 86, 80),
+	(34, 47, 2, '2018-08-25', '180000', 45, 86, 80),
+	(35, 51, 2, '2018-08-25', '180000', 46, 86, 80),
+	(54, 49, 2, '2018-08-25', '190000', 47, 86, 80),
+	(39, 36, 2, '2018-08-26', '150000', 48, 86, 80),
+	(33, 41, 2, '2018-08-26', '190000', 49, 86, 80),
+	(40, 43, 2, '2018-08-30', '180000', 50, 87, 80),
+	(51, 34, 2, '2018-08-30', '180000', 51, 87, 80),
+	(56, 58, 2, '2018-08-30', '180000', 52, 87, 80),
+	(53, 55, 2, '2018-08-30', '180000', 53, 87, 80),
+	(46, 39, 2, '2018-08-30', '180000', 54, 87, 80),
+	(64, 35, 2, '2018-08-30', '183000', 55, 87, 80),
+	(47, 62, 2, '2018-08-30', '183000', 56, 87, 80),
+	(37, 59, 2, '2018-08-30', '183000', 57, 87, 80),
+	(50, 54, 2, '2018-08-30', '190000', 58, 87, 80),
+	(36, 38, 2, '2018-08-30', '190000', 59, 87, 80),
+	(52, 63, 2, '2018-08-30', '190000', 60, 87, 80),
+	(41, 45, 2, '2018-08-30', '190000', 61, 87, 80),
+	(44, 48, 2, '2018-08-30', '193000', 62, 87, 80),
+	(42, 33, 2, '2018-08-30', '210000', 63, 87, 80),
+	(49, 60, 2, '2018-08-30', '210000', 64, 87, 80),
+	(57, 61, 2, '2018-08-30', '210000', 65, 87, 80),
+	(40, 43, 2, '2018-09-06', '192000', 66, 84, 81),
+	(51, 34, 2, '2018-09-09', '120000', 67, 84, 81),
+	(56, 58, 2, '2018-09-09', '120000', 68, 84, 81),
+	(53, 55, 2, '2018-09-09', '120000', 69, 84, 81),
+	(46, 39, 2, '2018-09-09', '120000', 70, 84, 81),
+	(64, 35, 2, '2018-09-09', '120000', 71, 84, 81),
+	(47, 62, 2, '2018-09-09', '120000', 72, 84, 81),
+	(37, 59, 2, '2018-09-09', '120000', 73, 84, 81),
+	(50, 54, 2, '2018-09-09', '120000', 74, 84, 81),
+	(36, 38, 2, '2018-09-09', '150500', 75, 84, 81),
+	(52, 63, 2, '2018-09-09', '152500', 76, 84, 81),
+	(41, 45, 2, '2018-09-09', '152500', 77, 84, 81),
+	(44, 48, 2, '2018-09-09', '152500', 78, 84, 81),
+	(42, 33, 2, '2018-09-09', '192000', 79, 84, 81),
+	(49, 60, 2, '2018-09-10', '181000', 80, 84, 81),
+	(57, 61, 2, '2018-09-10', '212000', 81, 84, 81);
+
+SELECT t.id AS home_team_id, UCASE(t.name) AS home_team_name, home_team_score, tl.logo_filename AS home_logo, --n.code AS home_team_code,
+	   t2.id AS away_team_id, UCASE(t2.name) AS away_team_name, away_team_score, tl2.logo_filename AS away_logo, --n2.code AS away_team_code,
+	   pt.id AS home_parent_team_id, UCASE(pt.name) AS home_parent_team_name, pt2.id AS away_parent_team_id, UCASE(pt2.name) AS away_parent_team_name,
+	   home_team_extra_time_score, away_team_extra_time_score, home_team_penalty_score, away_team_penalty_score,
+	   DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date,
+	   TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order, bracket_order,
+	   waiting_home_team, waiting_away_team,
+	   g.name AS round, g2.name AS stage,
+	   g3.name AS group_name, g4.name AS parent_group_name, g5.name AS second_round_group_name,
+	   m.tournament_id, tou.name AS tournament_name, tou.points_for_win, tou.golden_goal_rule
+FROM `match` m
+		 LEFT JOIN tournament tou ON tou.id = m.tournament_id
+		 LEFT JOIN team t ON t.id = m.home_team_id
+		 LEFT JOIN team t2 ON t2.id = m.away_team_id
+		 LEFT JOIN `group` g ON g.id = m.round_id
+		 LEFT JOIN `group` g2 ON g2.id = m.stage_id
+		 LEFT JOIN team_tournament tt ON (tt.team_id = m.home_team_id AND tt.tournament_id = m.tournament_id)
+		 LEFT JOIN `group` g3 ON g3.id = tt.group_id
+		 LEFT JOIN `group` g4 ON g4.id = tt.parent_group_id
+		 LEFT JOIN `group` g5 ON g5.id = m.group_id
+		 LEFT JOIN team_logo tl ON tl.team_id = t.id
+		 LEFT JOIN team_logo tl2 ON tl2.team_id = t2.id
+		 LEFT JOIN team pt ON pt.id = t.parent_team_id
+		 LEFT JOIN team pt2 ON pt2.id = t2.parent_team_id
+WHERE tou.tournament_type_id = 2
+  AND m.tournament_id=2
+ORDER BY stage_id, match_order, match_date, match_time;
 
 INSERT INTO `match` (home_team_id, away_team_id, tournament_id, match_date, match_order, round_id,
 	home_set1_score, away_set1_score, home_set1_tiebreak, away_set1_tiebreak,

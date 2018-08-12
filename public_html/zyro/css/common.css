@@ -331,3 +331,23 @@ a:hover.hover-pointer { cursor: pointer; }
 #UNLLeagueTab > li.active > a, #UNLMatchDayTab > li.active > a {
     color: #e30e1b;
 }
+.nfl-nav1-pills > li > a {
+    border-radius: .25rem;
+    padding: .5rem 1rem;
+}
+.nfl-nav1-pills > li.active > a, .nfl-nav1-pills > li.active > a:hover, .nfl-nav1-pills > li.active > a:focus {
+    color: #fff;
+    background-color: #003b66;
+}
+.nfl-nav2-pills > li > a {
+    border-radius: .25rem;
+    padding: .5rem 1rem;
+    color: #a40d1e;
+}
+.nfl-nav2-pills > li > a:hover, .nfl-nav2-pills > li > a:focus {
+    color: #7b0a16;
+}
+.nfl-nav2-pills > li.active > a, .nfl-nav2-pills > li.active > a:hover, .nfl-nav2-pills > li.active > a:focus {
+    color: #fff;
+    background-color: #ce1126;
+}

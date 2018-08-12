@@ -2889,7 +2889,7 @@
                         $home_team_score, $away_team_score,
                         $row['home_team_extra_time_score'], $row['away_team_extra_time_score'],
                         $row['home_team_penalty_score'], $row['away_team_penalty_score'],
-                        $row['home_flag'], $row['away_flag']);
+                        $row['home_flag'], $row['away_flag'], '', '');
                     array_push($matches, $match);
                 }
                 $tournament->setMatches($matches);

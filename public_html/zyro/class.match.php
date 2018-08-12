@@ -63,6 +63,8 @@
         private $away_flag;
         private $home_alternative_flag;
         private $away_alternative_flag;
+        private $home_logo;
+        private $away_logo;
 
         protected function __construct(){ }
 
@@ -76,7 +78,7 @@
             $home_team_score, $away_team_score,
             $home_team_extra_time_score, $away_team_extra_time_score,
             $home_team_penalty_score, $away_team_penalty_score,
-            $home_flag, $away_flag)
+            $home_flag, $away_flag, $home_logo, $away_logo)
         {
             $m = new Match();
             $m->home_team_id = $home_team_id;
@@ -114,6 +116,8 @@
             $m->waiting_away_team = $waiting_away_team;
             $m->home_flag = $home_flag;
             $m->away_flag = $away_flag;
+            $m->home_logo = $home_logo;
+            $m->away_logo = $away_logo;
             return $m;
         }
 
@@ -132,7 +136,7 @@
                 $home_team_score, $away_team_score,
                 0, 0,
                 0, 0,
-                '', '');
+                '', '', '', '');
         }
 
         public static function CreateTennisMatch(
@@ -1154,5 +1158,37 @@
         public function setAwayAlternativeFlag($away_alternative_flag)
         {
             $this->away_alternative_flag = $away_alternative_flag;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getHomeLogo()
+        {
+            return $this->home_logo;
+        }
+
+        /**
+         * @param mixed $home_logo
+         */
+        public function setHomeLogo($home_logo)
+        {
+            $this->home_logo = $home_logo;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getAwayLogo()
+        {
+            return $this->away_logo;
+        }
+
+        /**
+         * @param mixed $away_logo
+         */
+        public function setAwayLogo($away_logo)
+        {
+            $this->away_logo = $away_logo;
         }
     }

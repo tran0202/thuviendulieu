@@ -81,4 +81,9 @@ $(function() {
 
     $('#UNLLeagueTab li:first-child a').tab('show');
     $('#UNLMatchDayTab li:first-child a').tab('show');
+
+    // NFL Initial Tab
+
+    $('.nfl-nav1-pills li:first-child a').tab('show');
+    $('.nfl-nav2-pills li:first-child a').tab('show');
 });
