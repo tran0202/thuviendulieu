@@ -9,6 +9,7 @@
         private $second_round_teams;
         private $tournament_teams;
         private $second_round_tournament_teams;
+        private $preseason_teams;
         private $matches;
         private $tournament_id;
         private $fantasy;
@@ -205,6 +206,8 @@
             Football::getFootballTeams($tournament);
             Football::getFootballMatches($tournament);
 
+            Football::getPreseasonRanking($tournament);
+            Football::getRegularSeasonRanking($tournament);
             Football::getFootballStandingsHtml($tournament);
 
             return $tournament;
@@ -334,6 +337,22 @@
         public function setSecondRoundTournamentTeams($second_round_tournament_teams)
         {
             $this->second_round_tournament_teams = $second_round_tournament_teams;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getPreseasonTeams()
+        {
+            return $this->preseason_teams;
+        }
+
+        /**
+         * @param mixed $preseason_teams
+         */
+        public function setPreseasonTeams($preseason_teams)
+        {
+            $this->preseason_teams = $preseason_teams;
         }
 
         /**

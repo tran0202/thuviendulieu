@@ -7,6 +7,9 @@
         const PRESEASON = 'Preseason';
         const REGULAR_SEASON = 'Regular Season';
         const POST_SEASON = 'Post Season';
+        const DIVISION = 'Division';
+        const CONFERENCE = 'Conference';
+        const LEAGUE = 'League';
 
         private $id;
 
@@ -18,12 +21,238 @@
             return $s;
         }
 
-        public static function getFootballTeamArrayByConfDiv($teams) {
+        public static function getPreseasonRanking($tournament) {
+            self::getStanding($tournament, self::PRESEASON);
+        }
+
+        public static function getRegularSeasonRanking($tournament) {
+            self::getStanding($tournament, self::REGULAR_SEASON);
+        }
+
+        public static function getStanding($tournament, $season) {
+            $start_index = 0;
+            $end_index = 65;
+            if ($season == self::REGULAR_SEASON) {
+                $start_index = 65;
+                $end_index = 321;
+            }
+            $matches = $tournament->getMatches();
+            $team_array = self::getTeamArrayByName($tournament->getPreseasonTeams());
+            if ($season == self::REGULAR_SEASON) {
+                $team_array = self::getTeamArrayByName($tournament->getTeams());
+            }
+            for ($i = $start_index; $i < $end_index; $i++ ) {
+                self::calculateStat($team_array, $matches[$i]);
+            }
+        }
+
+        public static function calculateStat(&$teams, $match) {
+            $home_name = $match->getHomeTeamName();
+            $away_name = $match->getAwayTeamName();
+            $home_team = $teams[$home_name];
+            $away_team = $teams[$away_name];
+            $home_score = $match->getHomeTeamScore();
+            $away_score = $match->getAwayTeamScore();
+            if ($home_score > $away_score) {
+                $home_team->setWin($home_team->getWin() + 1);
+                $away_team->setLoss($away_team->getLoss() + 1);
+            }
+            elseif ($home_score < $away_score) {
+                $home_team->setLoss($home_team->getLoss() + 1);
+                $away_team->setWin($away_team->getWin() + 1);
+            }
+            else {
+                if ($home_score != -1) {
+                    $home_team->setDraw($home_team->getDraw() + 1);
+                    $away_team->setDraw($away_team->getDraw() + 1);
+                }
+            }
+        }
+
+        public static function sortGroupStanding($teams, $matches) {
+            $teams_copy = $teams;
+            for ($i = 0; $i < sizeof($teams) - 1; $i++) {
+                for ($j = $i + 1; $j < sizeof($teams); $j++) {
+                    self::compareTeams($teams_copy[$i], $teams_copy[$j], $matches);
+                }
+            }
+            return $teams_copy;
+        }
+
+        public static function compareTeams(&$team1, &$team2, $matches) {
+            if (self::isHigherStanding($team2, $team1)) {
+                self::swapTeam($team1, $team2);
+            }
+        }
+
+        public static function isHigherStanding($t1, $t2) {
+            $match_play1 = $t1->getWin() + $t1->getLoss() + $t1->getDraw();
+            $match_play2 = $t2->getWin() + $t2->getLoss() + $t2->getDraw();
+            if ($match_play1 == 0 && $match_play2 == 0) return false;
+            if ($match_play1 == 0) {
+                return $t2->getWin() < $t2->getLoss();
+            }
+            if ($match_play2 == 0) {
+                return $t1->getWin() >= $t1->getLoss();
+            }
+            $pt1 = $t1->getWin() + $t1->getDraw() * 0.5;
+            $pt2 = $t2->getWin() + $t2->getDraw() * 0.5;
+            $pct1 = $pt1 / $match_play1;
+            $pct2 = $pt2 / $match_play2;
+            if ($pct1 > $pct2) {
+                return true;
+            }
+            elseif ($pct1 == $pct2) {
+                if ($pt1 == 0 && $pt2 == 0) {
+                    return $t1->getLoss() < $t2->getLoss();
+                }
+                return $pt1 > $pt2;
+            }
+            return false;
+        }
+
+        public static function isEqualStanding($t1, $t2) {
+            return $t1->getWin() == $t2->getWin() && $t1->getLoss() == $t2->getLoss();
+        }
+
+        public static function applyTiebreaker(&$t1, &$t2, $matches) {
+            $still_tie = false;
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                if ($matches[$i]->getHomeTeamName() == $t1->getName() && $matches[$i]->getAwayTeamName() == $t2->getName()) {
+                    if ($matches[$i]->getHomeTeamScore() < $matches[$i]->getAwayTeamScore()) {
+                        self::swapTeam($t1, $t2);
+                    }
+                    elseif ($matches[$i]->getHomeTeamScore() == $matches[$i]->getAwayTeamScore()) {
+                        $still_tie = true;
+                    }
+                    break;
+                }
+                elseif ($matches[$i]->getAwayTeamName() == $t1->getName() && $matches[$i]->getHomeTeamName() == $t2->getName()) {
+                    if ($matches[$i]->getAwayTeamScore() < $matches[$i]->getHomeTeamScore()) {
+                        self::swapTeam($t1, $t2);
+                    }
+                    elseif ($matches[$i]->getAwayTeamScore() == $matches[$i]->getHomeTeamScore()) {
+                        $still_tie = true;
+                    }
+                    break;
+                }
+            }
+            return $still_tie;
+        }
+
+        public static function fairPlayRule(&$t1, &$t2) {
+            if ($t2->getName() == 'JAPAN' && $t2->getTournamentName() == 1) {
+                self::swapTeam($t1, $t2);
+            }
+            else {
+                self::coinToss($t1, $t2);
+            }
+        }
+
+        public static function coinToss(&$t1, &$t2) {
+            $coin = mt_rand(0,1);
+            if ($coin == 1) self::swapTeam($t1, $t2);
+        }
+
+        public static function swapTeam(&$t1, &$t2) {
+            $tmp_t = $t1;
+            $t1 = $t2;
+            $t2 = $tmp_t;
+        }
+
+        public static function getNumberOfCompletedMatches($tournament) {
+            $matches = $tournament->getMatches();
+            $count = 0;
+            for ($i = 0; $i < sizeof($matches); $i++ ) {
+                if ($matches[$i]->getHomeTeamScore() != -1) {
+                    $count++;
+                }
+            }
+            if ($count > 256) $count = 256;
+            return $count;
+        }
+
+        public static function getTeamArrayByName($teams) {
             $result = array();
             for ($i = 0; $i < sizeof($teams); $i++) {
-                $result[$teams[$i]->getParentGroupLongName()]
-                [$teams[$i]->getParentGroupName().' '.$teams[$i]->getGroupName()]
-                [$teams[$i]->getGroupOrder()] = $teams[$i];
+                $result[strtoupper($teams[$i]->getName())] = $teams[$i];
+            }
+            return $result;
+        }
+
+        public static function getFootballTeamArrayByConfDiv($teams, $matches) {
+            $tmp_array = array();
+            $tmp_array3 = array();
+            foreach ($teams as $name => $_team) {
+                $tmp_array[$_team->getParentGroupName().$_team->getGroupName()][$_team->getName()] = $_team;
+            }
+            foreach ($tmp_array as $group_name => $_teams) {
+                $tmp_array2 = array();
+                foreach ($_teams as $_name => $_team) {
+                    array_push($tmp_array2, $_team);
+                }
+                $tmp_array[$group_name] = self::sortGroupStanding($tmp_array2, $matches);
+            }
+            foreach ($tmp_array as $group_name => $_teams) {
+                foreach ($_teams as $_name => $_team) {
+                    array_push($tmp_array3, $_team);
+                }
+            }
+            $result = array();
+            for ($i = 0; $i < sizeof($tmp_array3); $i++) {
+                $result[$tmp_array3[$i]->getParentGroupLongName()]
+                [$tmp_array3[$i]->getParentGroupName().$tmp_array3[$i]->getGroupName()]
+                [$tmp_array3[$i]->getGroupOrder()] = $tmp_array3[$i];
+            }
+            return $result;
+        }
+
+        public static function getFootballTeamArrayByConf($teams, $matches) {
+            $tmp_array = array();
+            $tmp_array3 = array();
+            foreach ($teams as $name => $_team) {
+                $tmp_array[$_team->getParentGroupLongName()][$_team->getName()] = $_team;
+            }
+            foreach ($tmp_array as $group_name => $_teams) {
+                $tmp_array2 = array();
+                foreach ($_teams as $_name => $_team) {
+                    array_push($tmp_array2, $_team);
+                }
+                $tmp_array[$group_name] = self::sortGroupStanding($tmp_array2, $matches);
+            }
+            foreach ($tmp_array as $group_name => $_teams) {
+                foreach ($_teams as $_name => $_team) {
+                    array_push($tmp_array3, $_team);
+                }
+            }
+            $result = array();
+            for ($i = 0; $i < sizeof($tmp_array3); $i++) {
+                $result[$tmp_array3[$i]->getParentGroupLongName()][$tmp_array3[$i]->getParentGroupOrder()] = $tmp_array3[$i];
+            }
+            return $result;
+        }
+
+        public static function getFootballTeamArrayById($teams, $matches) {
+            $tmp_array = array();
+            $tmp_array3 = array();
+            foreach ($teams as $name => $_team) {
+                $tmp_array['NFL'][$_team->getName()] = $_team;
+            }
+            foreach ($tmp_array as $group_name => $_teams) {
+                $tmp_array2 = array();
+                foreach ($_teams as $_name => $_team) {
+                    array_push($tmp_array2, $_team);
+                }
+                $tmp_array[$group_name] = self::sortGroupStanding($tmp_array2, $matches);
+            }
+            foreach ($tmp_array as $group_name => $_teams) {
+                foreach ($_teams as $_name => $_team) {
+                    array_push($tmp_array3, $_team);
+                }
+            }
+            $result = array();
+            for ($i = 0; $i < sizeof($tmp_array3); $i++) {
+                $result[$tmp_array3[$i]->getId()] = $tmp_array3[$i];
             }
             return $result;
         }
@@ -89,16 +318,16 @@
                             }
                             $score = 'at';
                             if ($_match->getHomeTeamScore() != -1) {
-                                $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
+                                $score = $_match->getHomeTeamScore().'&nbsp;&nbsp;&nbsp;&nbsp;'.$_match->getAwayTeamScore();
                             }
                             $time_zone = 'CT';
                             $output .= '<div class="col-sm-12 padding-tb-md border-bottom-gray5">
-                                        <div class="col-sm-2 padding-lr-xs">'.self::getMatchTimeFormat($_match).' '.$time_zone.'</div>
-                                        <div class="col-sm-3 h2-ff3 padding-left-lg padding-right-xs">'.$home_team_tmp.'</div>
+                                        <div class="col-sm-1 padding-lr-xs">'.self::getMatchTimeFormat($_match).' '.$time_zone.'</div>
+                                        <div class="col-sm-4 h2-ff3 padding-left-xs padding-right-xs text-right">'.$home_team_tmp.'</div>
                                         <div class="col-sm-1 padding-lr-xs text-right" style="width:40px">'.$home_logo_tmp.'</div>
-                                        <div class="col-sm-1 h2-ff3 padding-lr-xs text-right">'.$score.'</div>
-                                        <div class="col-sm-1 padding-lr-xs text-right">'.$away_logo_tmp.'</div>
-                                        <div class="col-sm-3 h2-ff3 padding-left-xs padding-right-xs">'.$away_team_tmp.'</div>
+                                        <div class="col-sm-1 h2-ff3 padding-left-md padding-right-xs text-center">'.$score.'</div>
+                                        <div class="col-sm-1 padding-lr-md text-right" style="width:40px">'.$away_logo_tmp.'</div>
+                                        <div class="col-sm-4 h2-ff3 padding-right-xs" style="padding-left:30px">'.$away_team_tmp.'</div>
                                     </div>';
                         }
                     }
@@ -107,12 +336,128 @@
                 $output .= '</div>';
                 $output .= '</div>';
             }
-            $output .= '</div>';
+            $output .= '</div>
+                <script>
+                    $("#pills-Preseason-2-tab").tab("show");
+                    $("#pills-RegularSeason-1-tab").tab("show");
+                </script>';
             $tournament->concatBodyHtml($output);
         }
 
         public static function getFootballStandingsHtml($tournament) {
-            $teams = self::getFootballTeamArrayByConfDiv($tournament->getTeams());
+            $output = '<ul class="nav nav-pills nfl-nav1-pills h2-ff6" id="pills-tab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-Division-tab" data-toggle="pill" href="#pills-Division" 
+                                role="tab" aria-controls="pills-Division" aria-selected="true">Division</a>
+                        </li>                    
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-Conference-tab" data-toggle="pill" href="#pills-Conference" 
+                                role="tab" aria-controls="pills-Conference" aria-selected="true">Conference</a>
+                        </li>                    
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-League-tab" data-toggle="pill" href="#pills-League" 
+                                role="tab" aria-controls="pills-League" aria-selected="true">League</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content padding-top-xs" id="pills-tabContent">
+                        <div class="tab-pane fade" id="pills-Division" role="tabpanel" aria-labelledby="pills-Division-tab">
+                            <ul class="nav nav-pills nfl-nav2-pills h2-ff6" id="pills-tab-for-Division" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-Division-Preseason-tab" data-toggle="pill" href="#pills-Division-Preseason" 
+                                        role="tab" aria-controls="pills-Division-Preseason" aria-selected="true">Preseason</a>
+                                </li>                    
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-Division-RegularSeason-tab" data-toggle="pill" href="#pills-Division-RegularSeason" 
+                                        role="tab" aria-controls="pills-Division-RegularSeason" aria-selected="true">Regular Season</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content padding-top-xs" id="pills-Division-tabContent">
+                                <div class="tab-pane fade" id="pills-Division-Preseason" role="tabpanel" aria-labelledby="pills-Division-Preseason-tab">'.
+                                    self::getStandingsHtml($tournament, self::DIVISION, self::PRESEASON).'
+                                </div>
+                                <div class="tab-pane fade" id="pills-Division-RegularSeason" role="tabpanel" aria-labelledby="pills-Division-RegularSeason-tab">'.
+                                    self::getStandingsHtml($tournament, self::DIVISION, self::REGULAR_SEASON).'
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="pills-Conference" role="tabpanel" aria-labelledby="pills-Conference-tab">
+                            <ul class="nav nav-pills nfl-nav2-pills h2-ff6" id="pills-tab-for-Conference" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-Conference-Preseason-tab" data-toggle="pill" href="#pills-Conference-Preseason" 
+                                        role="tab" aria-controls="pills-Conference-Preseason" aria-selected="true">Preseason</a>
+                                </li>                    
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-Conference-RegularSeason-tab" data-toggle="pill" href="#pills-Conference-RegularSeason" 
+                                        role="tab" aria-controls="pills-Conference-RegularSeason" aria-selected="true">Regular Season</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content padding-top-xs" id="pills-Conference-tabContent">
+                                <div class="tab-pane fade" id="pills-Conference-Preseason" role="tabpanel" aria-labelledby="pills-Conference-Preseason-tab">'.
+                                    self::getStandingsHtml($tournament, self::CONFERENCE, self::PRESEASON).'
+                                </div>
+                                <div class="tab-pane fade" id="pills-Conference-RegularSeason" role="tabpanel" aria-labelledby="pills-Conference-RegularSeason-tab">'.
+                                    self::getStandingsHtml($tournament, self::CONFERENCE, self::REGULAR_SEASON).'
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="pills-League" role="tabpanel" aria-labelledby="pills-League-tab">
+                            <ul class="nav nav-pills nfl-nav2-pills h2-ff6" id="pills-tab-for-League" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-League-Preseason-tab" data-toggle="pill" href="#pills-League-Preseason" 
+                                        role="tab" aria-controls="pills-League-Preseason" aria-selected="true">Preseason</a>
+                                </li>                    
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-League-RegularSeason-tab" data-toggle="pill" href="#pills-League-RegularSeason" 
+                                        role="tab" aria-controls="pills-League-RegularSeason" aria-selected="true">Regular Season</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content padding-top-xs" id="pills-League-tabContent">
+                                <div class="tab-pane fade" id="pills-League-Preseason" role="tabpanel" aria-labelledby="pills-League-Preseason-tab">'.
+                                    self::getStandingsHtml($tournament, self::LEAGUE, self::PRESEASON).'
+                                </div>
+                                <div class="tab-pane fade" id="pills-League-RegularSeason" role="tabpanel" aria-labelledby="pills-League-RegularSeason-tab">'.
+                                    self::getStandingsHtml($tournament, self::LEAGUE, self::REGULAR_SEASON).'
+                                </div>
+                            </div>
+                        </div>
+                    </div>';
+            $output .= '<script>
+                            $("#pills-Division-Preseason-tab").tab("show");
+                            $("#pills-Conference-Preseason-tab").tab("show");
+                            $("#pills-League-Preseason-tab").tab("show");
+                        </script>';
+            $tournament->concatBodyHtml($output);
+        }
+
+        public static function getStandingsHtml($tournament, $grouping, $season) {
+            $matches = $tournament->getMatches();
+            $teams1 = array();
+            $teams2 = array();
+            $teams3 = array();
+            if ($season == self::PRESEASON) {
+                $teams1 = self::getFootballTeamArrayByConfDiv($tournament->getPreseasonTeams(), $matches);
+                $teams2 = self::getFootballTeamArrayByConf($tournament->getPreseasonTeams(), $matches);
+                $teams3 = self::getFootballTeamArrayById($tournament->getPreseasonTeams(), $matches);
+            }
+            elseif ($season == self::REGULAR_SEASON) {
+                $teams1 = self::getFootballTeamArrayByConfDiv($tournament->getTeams(), $matches);
+                $teams2 = self::getFootballTeamArrayByConf($tournament->getTeams(), $matches);
+                $teams3 = self::getFootballTeamArrayById($tournament->getTeams(), $matches);
+            }
+            $output = '';
+            if ($grouping == self::DIVISION) {
+                $output .= self::getDivisionStandingsHtml($teams1);
+            }
+            elseif ($grouping == self::CONFERENCE) {
+                $output .= self::getConferenceStandingsHtml($teams2);
+            }
+            else {
+                $output .= self::getLeagueStandingsHtml($teams3);
+            }
+            return $output;
+        }
+
+        public static function getDivisionStandingsHtml($teams) {
             $output = '';
             foreach ($teams as $parent_group_long_name => $_conferences) {
                 $output .= '<div class="col-sm-12 h2-ff1 margin-top-md">'.$parent_group_long_name.'</div>';
@@ -146,6 +491,9 @@
                                         <div class="col-sm-10 no-padding-lr" style="padding-top:8px;">'.$_team->getName().'</div>
                                     </div>
                                     <div class="col-sm-2 no-padding-lr">
+                                        <div class="col-sm-4 no-padding-lr">'.$_team->getWin().'</div>
+                                        <div class="col-sm-4 no-padding-lr">'.$_team->getLoss().'</div>
+                                        <div class="col-sm-4 no-padding-lr">'.$_team->getDraw().'</div>
                                     </div>
                                     <div class="col-sm-5 no-padding-lr">
                                     </div>
@@ -156,7 +504,98 @@
                     $output .= '</div>';
                 }
             }
-            $tournament->concatBodyHtml($output);
+            return $output;
+        }
+
+        public static function getConferenceStandingsHtml($teams) {
+            $output = '';
+            foreach ($teams as $parent_group_long_name => $_conferences) {
+                $output .= '<div class="col-sm-12 h2-ff1 margin-top-md">'.$parent_group_long_name.'</div>';
+                $output .= '
+                        <div class="col-sm-12 box-xl">
+                            <div class="col-sm-12 no-padding-lr h3-ff4 row padding-tb-sm font-bold">
+                                <div class="col-sm-3 no-padding-lr"></div>
+                                <div class="col-sm-2 no-padding-lr">
+                                    <div class="col-sm-4 no-padding-lr">W</div>
+                                    <div class="col-sm-4 no-padding-lr">L</div>
+                                    <div class="col-sm-4 no-padding-lr">T</div>
+                                </div>
+                                <div class="col-sm-5 no-padding-lr">
+                                    <div class="col-sm-3 no-padding-lr">Home</div>
+                                    <div class="col-sm-3 no-padding-lr">Road</div>
+                                    <div class="col-sm-3 no-padding-lr">Div</div>
+                                    <div class="col-sm-3 no-padding-lr">Conf</div>
+                                </div>
+                                <div class="col-sm-2 no-padding-lr">
+                                    <div class="col-sm-6 no-padding-lr">Streak</div>
+                                    <div class="col-sm-6 no-padding-lr">Last 5</div>
+                                </div>
+                            </div>';
+                foreach ($_conferences as $group_order => $_team) {
+                    $output .= '<div class="col-sm-12 no-padding-lr h3-ff4 row padding-tb-sm">
+                                <div class="col-sm-3 no-padding-lr">
+                                    <div class="col-sm-2 no-padding-lr">
+                                        <img src="/images/nfl_logos/'.$_team->getLogoFileName().'" style="width:40px;" />
+                                    </div>
+                                    <div class="col-sm-10 no-padding-lr" style="padding-top:8px;">'.$_team->getName().'</div>
+                                </div>
+                                <div class="col-sm-2 no-padding-lr">
+                                    <div class="col-sm-4 no-padding-lr">'.$_team->getWin().'</div>
+                                    <div class="col-sm-4 no-padding-lr">'.$_team->getLoss().'</div>
+                                    <div class="col-sm-4 no-padding-lr">'.$_team->getDraw().'</div>
+                                </div>
+                                <div class="col-sm-5 no-padding-lr">
+                                </div>
+                                <div class="col-sm-2 no-padding-lr">
+                                </div>
+                            </div>';
+                }
+                $output .= '</div>';
+            }
+            return $output;
+        }
+
+        public static function getLeagueStandingsHtml($teams) {
+            $output = '<div class="col-sm-12 box-xl margin-top-lg">
+                            <div class="col-sm-12 no-padding-lr h3-ff4 row padding-tb-sm font-bold">
+                                <div class="col-sm-3 no-padding-lr"></div>
+                                <div class="col-sm-2 no-padding-lr">
+                                    <div class="col-sm-4 no-padding-lr">W</div>
+                                    <div class="col-sm-4 no-padding-lr">L</div>
+                                    <div class="col-sm-4 no-padding-lr">T</div>
+                                </div>
+                                <div class="col-sm-5 no-padding-lr">
+                                    <div class="col-sm-3 no-padding-lr">Home</div>
+                                    <div class="col-sm-3 no-padding-lr">Road</div>
+                                    <div class="col-sm-3 no-padding-lr">Div</div>
+                                    <div class="col-sm-3 no-padding-lr">Conf</div>
+                                </div>
+                                <div class="col-sm-2 no-padding-lr">
+                                    <div class="col-sm-6 no-padding-lr">Streak</div>
+                                    <div class="col-sm-6 no-padding-lr">Last 5</div>
+                                </div>
+                            </div>';
+            foreach ($teams as $id => $_team) {
+                $output .= '<div class="col-sm-12 no-padding-lr h3-ff4 row padding-tb-sm">
+                            <div class="col-sm-3 no-padding-lr">
+                                <div class="col-sm-2 no-padding-lr">
+                                    <img src="/images/nfl_logos/'.$_team->getLogoFileName().'" style="width:40px;" />
+                                </div>
+                                <div class="col-sm-10 no-padding-lr" style="padding-top:8px;">'.$_team->getName().'</div>
+                            </div>
+                            <div class="col-sm-2 no-padding-lr">
+                                <div class="col-sm-4 no-padding-lr">'.$_team->getWin().'</div>
+                                <div class="col-sm-4 no-padding-lr">'.$_team->getLoss().'</div>
+                                <div class="col-sm-4 no-padding-lr">'.$_team->getDraw().'</div>
+                            </div>
+                            <div class="col-sm-5 no-padding-lr">
+                            </div>
+                            <div class="col-sm-2 no-padding-lr">
+                            </div>
+                        </div>';
+            }
+            $output .= '</div>';
+            return $output;
         }
 
         public static function getFootballMatches($tournament) {
@@ -260,6 +699,7 @@
             $query->execute();
             $count = $query->rowCount();
             $teams = array();
+            $preseason_teams = array();
             $output = '<!-- Team Count = '.$count.' -->';
 
             if ($count == 0) {
@@ -268,11 +708,15 @@
             }
             else {
                 while ($row = $query->fetch(\PDO::FETCH_ASSOC)) {
-                    $team = Team::CreateFootballTeam($row['name'], $row['group_name'], $row['group_order'],
-                        $row['parent_group_long_name'], $row['parent_group_order'], $row['logo_filename']);
+                    $team = Team::CreateFootballTeam($row['team_id'], $row['name'], $row['group_name'], $row['group_order'],
+                        $row['parent_group_name'], $row['parent_group_long_name'], $row['parent_group_order'], $row['logo_filename']);
                     array_push($teams, $team);
+                    $preseason_team = Team::CreateFootballTeam($row['team_id'], $row['name'], $row['group_name'], $row['group_order'],
+                        $row['parent_group_name'], $row['parent_group_long_name'], $row['parent_group_order'], $row['logo_filename']);
+                    array_push($preseason_teams, $preseason_team);
                 }
                 $tournament->setTeams($teams);
+                $tournament->setPreseasonTeams($preseason_teams);
                 $tournament->concatBodyHtml($output);
             }
         }

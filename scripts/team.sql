@@ -17,6 +17,18 @@ ALTER TABLE team
 	ADD CONSTRAINT team_ibfk_3
 	FOREIGN KEY (parent_team_id) REFERENCES team(id);
 
+SELECT t.name AS name, tt.team_id,
+	   group_id, g.name AS group_name, group_order,
+	   parent_group_id, pg.name AS parent_group_name, pg.long_name AS parent_group_long_name, parent_group_order,
+	   tl.logo_filename, tt.tournament_id
+FROM team_tournament tt
+		 LEFT JOIN team t ON t.id = tt.team_id
+		 LEFT JOIN `group` g ON g.id = tt.group_id
+		 LEFT JOIN `group` pg ON pg.id = tt.parent_group_id
+		 LEFT JOIN team_logo tl ON tl.team_id = t.id
+WHERE tt.tournament_id = 2
+ORDER BY parent_group_name, group_id, group_order;
+
 INSERT INTO team (name, team_type_id)
 VALUES ('Brazil', 1), ('Germany', 1), ('Argentina', 1),	('Portugal', 1),
 		('Belgium', 1),	('Spain', 1), ('Poland', 1), ('Egypt', 1),

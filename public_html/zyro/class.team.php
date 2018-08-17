@@ -82,17 +82,12 @@
         }
 
         public static function CreateFootballTeam(
-            $name, $group_name, $group_order,
-            $parent_group_long_name, $parent_group_order, $logo_filename)
+            $id, $name, $group_name, $group_order,
+            $parent_group_name, $parent_group_long_name, $parent_group_order, $logo_filename)
         {
-            $t = new Team();
-            $t->name = $name;
-            $t->group_name = $group_name;
-            $t->group_order = $group_order;
-            $t->parent_group_long_name = $parent_group_long_name;
-            $t->parent_group_order = $parent_group_order;
-            $t->logo_filename = $logo_filename;
-            return $t;
+            return self::CreateTeam($id, '', $name, '', '', $group_name, $group_order,
+                0, '', $parent_group_name, $parent_group_long_name, $parent_group_order, '', $logo_filename,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, null, null);
         }
 
         /**
