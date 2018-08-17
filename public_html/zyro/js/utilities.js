@@ -84,6 +84,6 @@ $(function() {
 
     // NFL Initial Tab
 
-    $('.nfl-nav1-pills li:first-child a').tab('show');
+    // $('.nfl-nav1-pills li:first-child a').tab('show');
     // $('.nfl-nav2-pills li:first-child a').tab('show');
 });

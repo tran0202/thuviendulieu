@@ -56,17 +56,102 @@
             if ($home_score > $away_score) {
                 $home_team->setWin($home_team->getWin() + 1);
                 $away_team->setLoss($away_team->getLoss() + 1);
+                $home_team->setRoadWin($home_team->getRoadWin() + 1);
+                $away_team->setHomeLoss($away_team->getHomeLoss() + 1);
+                if ($home_team->getParentGroupName().$home_team->getGroupName() == $away_team->getParentGroupName().$away_team->getGroupName()) {
+                    $home_team->setDivWin($home_team->getDivWin() + 1);
+                    $away_team->setDivLoss($away_team->getDivLoss() + 1);
+                }
+                if ($home_team->getParentGroupName() == $away_team->getParentGroupName()) {
+                    $home_team->setConfWin($home_team->getConfWin() + 1);
+                    $away_team->setConfLoss($away_team->getConfLoss() + 1);
+                }
+                $home_streak = $home_team->getStreak();
+                array_push($home_streak, 'W');
+                $home_team->setStreak($home_streak);
+                $away_streak = $away_team->getStreak();
+                array_push($away_streak, 'L');
+                $away_team->setStreak($away_streak);
             }
             elseif ($home_score < $away_score) {
                 $home_team->setLoss($home_team->getLoss() + 1);
                 $away_team->setWin($away_team->getWin() + 1);
+                $home_team->setRoadLoss($home_team->getRoadLoss() + 1);
+                $away_team->setHomeWin($away_team->getHomeWin() + 1);
+                if ($home_team->getParentGroupName().$home_team->getGroupName() == $away_team->getParentGroupName().$away_team->getGroupName()) {
+                    $home_team->setDivLoss($home_team->getDivLoss() + 1);
+                    $away_team->setDivWin($away_team->getDivWin() + 1);
+                }
+                if ($home_team->getParentGroupName() == $away_team->getParentGroupName()) {
+                    $home_team->setConfLoss($home_team->getConfLoss() + 1);
+                    $away_team->setConfWin($away_team->getConfWin() + 1);
+                }
+                $home_streak = $home_team->getStreak();
+                array_push($home_streak, 'L');
+                $home_team->setStreak($home_streak);
+                $away_streak = $away_team->getStreak();
+                array_push($away_streak, 'W');
+                $away_team->setStreak($away_streak);
             }
             else {
                 if ($home_score != -1) {
                     $home_team->setDraw($home_team->getDraw() + 1);
                     $away_team->setDraw($away_team->getDraw() + 1);
+                    $home_team->setRoadTie($home_team->getRoadTie() + 1);
+                    $away_team->setHomeTie($away_team->getHomeTie() + 1);
+                    if ($home_team->getParentGroupName().$home_team->getGroupName() == $away_team->getParentGroupName().$away_team->getGroupName()) {
+                        $home_team->setDivTie($home_team->getDivTie() + 1);
+                        $away_team->setDivTie($away_team->getDivTie() + 1);
+                    }
+                    if ($home_team->getParentGroupName() == $away_team->getParentGroupName()) {
+                        $home_team->setConfTie($home_team->getConfTie() + 1);
+                        $away_team->setConfTie($away_team->getConfTie() + 1);
+                    }
+                    $home_streak = $home_team->getStreak();
+                    array_push($home_streak, 'T');
+                    $home_team->setStreak($home_streak);
+                    $away_streak = $away_team->getStreak();
+                    array_push($away_streak, 'T');
+                    $away_team->setStreak($away_streak);
                 }
             }
+        }
+
+        public static function getTeamStreak($streak_array) {
+            $result = '';
+            $streak_letter = '';
+            $streak_count = 0;
+            for ($i = 0; $i < sizeof($streak_array); $i++) {
+                if ($streak_array[$i] != $streak_letter) {
+                    $streak_letter = $streak_array[$i];
+                    $streak_count = 1;
+                }
+                else {
+                    $streak_count = $streak_count + 1;
+                }
+            }
+            if ($streak_count > 0) $result = $streak_letter.$streak_count;
+            return $result;
+        }
+
+        public static function getLast5($streak_array) {
+            $win_count = 0;
+            $tie_count = 0;
+            $loss_count = 0;
+            $start_index = 0;
+            if (sizeof($streak_array) > 5) $start_index = sizeof($streak_array) - 5;
+            for ($i = $start_index; $i < sizeof($streak_array); $i++) {
+                if ($streak_array[$i] == 'W') {
+                    $win_count = $win_count + 1;
+                }
+                elseif ($streak_array[$i] == 'L') {
+                    $loss_count = $loss_count + 1;
+                }
+                else {
+                    $tie_count = $tie_count + 1;
+                }
+            }
+            return $win_count.'-'.$loss_count.'-'.$tie_count;
         }
 
         public static function sortGroupStanding($teams, $matches) {
@@ -270,7 +355,41 @@
             return $date->format('h:i A');
         }
 
+        public static function getDefaultTabScript($week_start_date, $tab_array) {
+            $default_tab = self::getDefaultTab($week_start_date, $tab_array);
+            if (strpos($default_tab, 'Preseason') !== false) {
+                $result = '<script>
+                    $("#pills-Preseason-tab").tab("show");
+                    $("#pills-'.$default_tab.'-tab").tab("show");
+                    $("#pills-RegularSeason-1-tab").tab("show");
+                    </script>';
+            }
+            else {
+                $result = '<script>$(function() {
+                            $("#pills-Preseason-1-tab").tab("show");
+                            $("#pills-RegularSeason-tab").tab("show");
+                            $("#pills-'.$default_tab.'-tab").tab("show");
+                        });
+                    </script>';
+            }
+            return $result;
+        }
+
+        public static function getDefaultTab($week_start_date, $tab_array) {
+            $result = '';
+            for ($i = 0; $i < sizeof($week_start_date); $i++) {
+                $now = date_create('now');
+                if ($now->format('Y-m-d') >= $week_start_date[$i]) {
+                    if ($i == sizeof($week_start_date) - 1) $result = $tab_array[$i];
+                    elseif ($now->format('Y-m-d') < $week_start_date[$i + 1]) $result = $tab_array[$i];
+                }
+            }
+            return $result;
+        }
+
         public static function getFootballScheduleHtml($tournament) {
+            $week_start_date = array();
+            $tab_array = array();
             $matches = self::getMatchArray($tournament->getMatches());
             $output = '<ul class="nav nav-pills nfl-nav1-pills h2-ff6" id="pills-tab" role="tablist">';
             foreach ($matches as $stage_name => $stages) {
@@ -300,7 +419,14 @@
                     <div class="tab-content padding-top-xs" id="pills-'.$stage_tab.'-tabContent">';
                 foreach ($stages as $week_name => $weeks) {
                     $week_tab = $stage_tab.'-'.str_replace('Week ', '', $week_name);
-                    $week_link = str_replace('Week ', '', $week_name);
+                    $start_flag = true;
+                    foreach ($weeks as $match_dates => $_matches) {
+                        if ($start_flag) {
+                            array_push($week_start_date, $match_dates);
+                            array_push($tab_array, $week_tab);
+                            $start_flag = false;
+                        }
+                    }
                     $output .= '<div class="tab-pane fade" id="pills-'.$week_tab.'" role="tabpanel" aria-labelledby="pills-'.$week_tab.'-tab">';
                     foreach ($weeks as $match_dates => $_matches) {
                         $output .= '<div class="col-sm-12 h3-ff3 border-bottom-gray2 margin-top-md">'
@@ -337,10 +463,7 @@
                 $output .= '</div>';
             }
             $output .= '</div>
-                <script>
-                    $("#pills-Preseason-2-tab").tab("show");
-                    $("#pills-RegularSeason-1-tab").tab("show");
-                </script>';
+                '.self::getDefaultTabScript($week_start_date, $tab_array);
             $tournament->concatBodyHtml($output);
         }
 
@@ -422,6 +545,7 @@
                         </div>
                     </div>';
             $output .= '<script>
+                            $("#pills-Division-tab").tab("show");
                             $("#pills-Division-Preseason-tab").tab("show");
                             $("#pills-Conference-Preseason-tab").tab("show");
                             $("#pills-League-Preseason-tab").tab("show");
@@ -483,6 +607,7 @@
                                     </div>
                                 </div>';
                     foreach ($_divisions as $group_order => $_team) {
+
                         $output .= '<div class="col-sm-12 no-padding-lr h3-ff4 row padding-tb-sm">
                                     <div class="col-sm-3 no-padding-lr">
                                         <div class="col-sm-2 no-padding-lr">
@@ -496,8 +621,14 @@
                                         <div class="col-sm-4 no-padding-lr">'.$_team->getDraw().'</div>
                                     </div>
                                     <div class="col-sm-5 no-padding-lr">
+                                        <div class="col-sm-3 no-padding-lr">'.$_team->getHomeWin().'-'.$_team->getHomeLoss().'-'.$_team->getHomeTie().'</div>
+                                        <div class="col-sm-3 no-padding-lr">'.$_team->getRoadWin().'-'.$_team->getRoadLoss().'-'.$_team->getRoadTie().'</div>
+                                        <div class="col-sm-3 no-padding-lr">'.$_team->getDivWin().'-'.$_team->getDivLoss().'-'.$_team->getDivTie().'</div>
+                                        <div class="col-sm-3 no-padding-lr">'.$_team->getConfWin().'-'.$_team->getConfLoss().'-'.$_team->getConfTie().'</div>
                                     </div>
                                     <div class="col-sm-2 no-padding-lr">
+                                        <div class="col-sm-6 no-padding-lr">'.self::getTeamStreak($_team->getStreak()).'</div>
+                                        <div class="col-sm-6 no-padding-lr">'.self::getLast5($_team->getStreak()).'</div>
                                     </div>
                                 </div>';
                     }
@@ -545,8 +676,14 @@
                                     <div class="col-sm-4 no-padding-lr">'.$_team->getDraw().'</div>
                                 </div>
                                 <div class="col-sm-5 no-padding-lr">
+                                    <div class="col-sm-3 no-padding-lr">'.$_team->getHomeWin().'-'.$_team->getHomeLoss().'-'.$_team->getHomeTie().'</div>
+                                    <div class="col-sm-3 no-padding-lr">'.$_team->getRoadWin().'-'.$_team->getRoadLoss().'-'.$_team->getRoadTie().'</div>
+                                    <div class="col-sm-3 no-padding-lr">'.$_team->getDivWin().'-'.$_team->getDivLoss().'-'.$_team->getDivTie().'</div>
+                                    <div class="col-sm-3 no-padding-lr">'.$_team->getConfWin().'-'.$_team->getConfLoss().'-'.$_team->getConfTie().'</div>
                                 </div>
                                 <div class="col-sm-2 no-padding-lr">
+                                    <div class="col-sm-6 no-padding-lr">'.self::getTeamStreak($_team->getStreak()).'</div>
+                                    <div class="col-sm-6 no-padding-lr">'.self::getLast5($_team->getStreak()).'</div>
                                 </div>
                             </div>';
                 }
@@ -589,8 +726,14 @@
                                 <div class="col-sm-4 no-padding-lr">'.$_team->getDraw().'</div>
                             </div>
                             <div class="col-sm-5 no-padding-lr">
+                                <div class="col-sm-3 no-padding-lr">'.$_team->getHomeWin().'-'.$_team->getHomeLoss().'-'.$_team->getHomeTie().'</div>
+                                <div class="col-sm-3 no-padding-lr">'.$_team->getRoadWin().'-'.$_team->getRoadLoss().'-'.$_team->getRoadTie().'</div>
+                                <div class="col-sm-3 no-padding-lr">'.$_team->getDivWin().'-'.$_team->getDivLoss().'-'.$_team->getDivTie().'</div>
+                                <div class="col-sm-3 no-padding-lr">'.$_team->getConfWin().'-'.$_team->getConfLoss().'-'.$_team->getConfTie().'</div>
                             </div>
                             <div class="col-sm-2 no-padding-lr">
+                                <div class="col-sm-6 no-padding-lr">'.self::getTeamStreak($_team->getStreak()).'</div>
+                                <div class="col-sm-6 no-padding-lr">'.self::getLast5($_team->getStreak()).'</div>
                             </div>
                         </div>';
             }

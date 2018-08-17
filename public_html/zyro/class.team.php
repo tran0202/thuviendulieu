@@ -21,6 +21,22 @@
         private $win;
         private $draw;
         private $loss;
+        private $home_win;
+        private $home_tie;
+        private $home_loss;
+        private $road_win;
+        private $road_tie;
+        private $road_loss;
+        private $div_win;
+        private $div_tie;
+        private $div_loss;
+        private $conf_win;
+        private $conf_tie;
+        private $conf_loss;
+        private $last5_win;
+        private $last5_tie;
+        private $last5_loss;
+        private $streak;
         private $goal_for;
         private $goal_against;
         private $goal_diff;
@@ -34,7 +50,8 @@
         public static function CreateTeam($id, $tournament_name, $name, $l_name, $code, $group_name, $group_order,
             $parent_id, $parent_name, $parent_group_name, $parent_group_long_name, $parent_group_order,
             $flag_filename, $logo_filename,
-            $tournament_count, $match_play, $win, $draw, $loss,
+            $tournament_count, $match_play, $win, $draw, $loss, $home_win, $home_tie, $home_loss, $road_win, $road_tie, $road_loss,
+            $div_win, $div_tie, $div_loss, $conf_win, $conf_tie, $conf_loss, $last5_win, $last5_tie, $last5_loss, $streak,
             $goal_for, $goal_against, $goal_diff, $point, $best_finish, $scenarios)
         {
             $t = new Team();
@@ -57,6 +74,22 @@
             $t->win = $win;
             $t->draw = $draw;
             $t->loss = $loss;
+            $t->home_win = $home_win;
+            $t->home_tie = $home_tie;
+            $t->home_loss = $home_loss;
+            $t->road_win = $road_win;
+            $t->road_tie = $road_tie;
+            $t->road_loss = $road_loss;
+            $t->div_win = $div_win;
+            $t->div_tie = $div_tie;
+            $t->div_loss = $div_loss;
+            $t->conf_win = $conf_win;
+            $t->conf_tie = $conf_tie;
+            $t->conf_loss = $conf_loss;
+            $t->last5_win = $last5_win;
+            $t->last5_tie = $last5_tie;
+            $t->last5_loss = $last5_loss;
+            $t->streak = $streak;
             $t->goal_for = $goal_for;
             $t->goal_against = $goal_against;
             $t->goal_diff = $goal_diff;
@@ -71,14 +104,18 @@
                 $flag_filename, $tournament_count) {
             return self::CreateTeam($id, $tournament_name, $name, $l_name, $code, $group_name, $group_order,
                 $parent_id, $parent_name, $parent_group_name, $parent_group_long_name, $parent_group_order, $flag_filename, '',
-                $tournament_count, 0, 0, 0, 0, 0, 0, 0, 0, null, null);
+                $tournament_count, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, array(),
+                0, 0, 0, 0, null, null);
         }
 
         public static function CloneSoccerTeam($id, $name, $code, $group_name, $group_order,
                                              $match_play, $win, $draw, $loss, $goal_for, $goal_against, $goal_diff, $point) {
             return self::CreateTeam($id, '', $name, '', $code, $group_name, $group_order,
                 0, '', '', '', 0, '', '',
-                0, $match_play, $win, $draw, $loss, $goal_for, $goal_against, $goal_diff, $point, null, null);
+                0, $match_play, $win, $draw, $loss, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, array(),
+                $goal_for, $goal_against, $goal_diff, $point, null, null);
         }
 
         public static function CreateFootballTeam(
@@ -87,7 +124,9 @@
         {
             return self::CreateTeam($id, '', $name, '', '', $group_name, $group_order,
                 0, '', $parent_group_name, $parent_group_long_name, $parent_group_order, '', $logo_filename,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, null, null);
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, array(),
+                0, 0, 0, 0, null, null);
         }
 
         /**
@@ -392,6 +431,262 @@
         public function setLoss($loss)
         {
             $this->loss = $loss;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getHomeWin()
+        {
+            return $this->home_win;
+        }
+
+        /**
+         * @param mixed $home_win
+         */
+        public function setHomeWin($home_win)
+        {
+            $this->home_win = $home_win;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getHomeTie()
+        {
+            return $this->home_tie;
+        }
+
+        /**
+         * @param mixed $home_tie
+         */
+        public function setHomeTie($home_tie)
+        {
+            $this->home_tie = $home_tie;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getHomeLoss()
+        {
+            return $this->home_loss;
+        }
+
+        /**
+         * @param mixed $home_loss
+         */
+        public function setHomeLoss($home_loss)
+        {
+            $this->home_loss = $home_loss;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getRoadWin()
+        {
+            return $this->road_win;
+        }
+
+        /**
+         * @param mixed $road_win
+         */
+        public function setRoadWin($road_win)
+        {
+            $this->road_win = $road_win;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getRoadTie()
+        {
+            return $this->road_tie;
+        }
+
+        /**
+         * @param mixed $road_tie
+         */
+        public function setRoadTie($road_tie)
+        {
+            $this->road_tie = $road_tie;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getRoadLoss()
+        {
+            return $this->road_loss;
+        }
+
+        /**
+         * @param mixed $road_loss
+         */
+        public function setRoadLoss($road_loss)
+        {
+            $this->road_loss = $road_loss;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getDivWin()
+        {
+            return $this->div_win;
+        }
+
+        /**
+         * @param mixed $div_win
+         */
+        public function setDivWin($div_win)
+        {
+            $this->div_win = $div_win;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getDivTie()
+        {
+            return $this->div_tie;
+        }
+
+        /**
+         * @param mixed $div_tie
+         */
+        public function setDivTie($div_tie)
+        {
+            $this->div_tie = $div_tie;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getDivLoss()
+        {
+            return $this->div_loss;
+        }
+
+        /**
+         * @param mixed $div_loss
+         */
+        public function setDivLoss($div_loss)
+        {
+            $this->div_loss = $div_loss;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getConfWin()
+        {
+            return $this->conf_win;
+        }
+
+        /**
+         * @param mixed $conf_win
+         */
+        public function setConfWin($conf_win)
+        {
+            $this->conf_win = $conf_win;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getConfTie()
+        {
+            return $this->conf_tie;
+        }
+
+        /**
+         * @param mixed $conf_tie
+         */
+        public function setConfTie($conf_tie)
+        {
+            $this->conf_tie = $conf_tie;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getConfLoss()
+        {
+            return $this->conf_loss;
+        }
+
+        /**
+         * @param mixed $conf_loss
+         */
+        public function setConfLoss($conf_loss)
+        {
+            $this->conf_loss = $conf_loss;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getLast5Win()
+        {
+            return $this->last5_win;
+        }
+
+        /**
+         * @param mixed $last5_win
+         */
+        public function setLast5Win($last5_win)
+        {
+            $this->last5_win = $last5_win;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getLast5Tie()
+        {
+            return $this->last5_tie;
+        }
+
+        /**
+         * @param mixed $last5_tie
+         */
+        public function setLast5Tie($last5_tie)
+        {
+            $this->last5_tie = $last5_tie;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getLast5Loss()
+        {
+            return $this->last5_loss;
+        }
+
+        /**
+         * @param mixed $last5_loss
+         */
+        public function setLast5Loss($last5_loss)
+        {
+            $this->last5_loss = $last5_loss;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getStreak()
+        {
+            return $this->streak;
+        }
+
+        /**
+         * @param mixed $streak
+         */
+        public function setStreak($streak)
+        {
+            $this->streak = $streak;
         }
 
         /**
