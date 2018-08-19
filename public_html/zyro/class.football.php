@@ -376,7 +376,7 @@
         }
 
         public static function getDefaultTab($week_start_date, $tab_array) {
-            $result = '';
+            $result = $tab_array[0];
             for ($i = 0; $i < sizeof($week_start_date); $i++) {
                 $now = date_create('now');
                 if ($now->format('Y-m-d') >= $week_start_date[$i]) {

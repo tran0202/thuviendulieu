@@ -331,6 +331,13 @@ a:hover.hover-pointer { cursor: pointer; }
 #UNLLeagueTab > li.active > a, #UNLMatchDayTab > li.active > a {
     color: #e30e1b;
 }
+#UNLFilterTab > li > a {
+    width: 110px;
+    height: 90px;
+}
+#UNLFilterTab > li.active > a {
+    border: 1px solid #dddddd;
+}
 .nfl-nav1-pills > li > a {
     border-radius: .25rem;
     padding: .5rem 1rem;

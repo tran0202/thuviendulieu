@@ -80,7 +80,7 @@ $(function() {
     // UNL Initial Tab
 
     $('#UNLLeagueTab li:first-child a').tab('show');
-    $('#UNLMatchDayTab li:first-child a').tab('show');
+    // $('#UNLMatchDayTab li:first-child a').tab('show');
 
     // NFL Initial Tab
 
