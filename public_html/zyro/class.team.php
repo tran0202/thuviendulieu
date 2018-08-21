@@ -37,6 +37,8 @@
         private $last5_tie;
         private $last5_loss;
         private $streak;
+        private $opponents;
+        private $common_opponents;
         private $goal_for;
         private $goal_against;
         private $goal_diff;
@@ -52,7 +54,7 @@
             $flag_filename, $logo_filename,
             $tournament_count, $match_play, $win, $draw, $loss, $home_win, $home_tie, $home_loss, $road_win, $road_tie, $road_loss,
             $div_win, $div_tie, $div_loss, $conf_win, $conf_tie, $conf_loss, $last5_win, $last5_tie, $last5_loss, $streak,
-            $goal_for, $goal_against, $goal_diff, $point, $best_finish, $scenarios)
+            $opponents, $common_opponents, $goal_for, $goal_against, $goal_diff, $point, $best_finish, $scenarios)
         {
             $t = new Team();
             $t->id = $id;
@@ -90,6 +92,8 @@
             $t->last5_tie = $last5_tie;
             $t->last5_loss = $last5_loss;
             $t->streak = $streak;
+            $t->opponents = $opponents;
+            $t->common_opponents = $common_opponents;
             $t->goal_for = $goal_for;
             $t->goal_against = $goal_against;
             $t->goal_diff = $goal_diff;
@@ -105,7 +109,7 @@
             return self::CreateTeam($id, $tournament_name, $name, $l_name, $code, $group_name, $group_order,
                 $parent_id, $parent_name, $parent_group_name, $parent_group_long_name, $parent_group_order, $flag_filename, '',
                 $tournament_count, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, array(),
+                0, 0, 0, 0, 0, 0, 0, 0, 0, array(), array(), array(),
                 0, 0, 0, 0, null, null);
         }
 
@@ -114,7 +118,7 @@
             return self::CreateTeam($id, '', $name, '', $code, $group_name, $group_order,
                 0, '', '', '', 0, '', '',
                 0, $match_play, $win, $draw, $loss, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, array(),
+                0, 0, 0, 0, 0, 0, 0, 0, 0, array(), array(), array(),
                 $goal_for, $goal_against, $goal_diff, $point, null, null);
         }
 
@@ -125,7 +129,7 @@
             return self::CreateTeam($id, '', $name, '', '', $group_name, $group_order,
                 0, '', $parent_group_name, $parent_group_long_name, $parent_group_order, '', $logo_filename,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, array(),
+                0, 0, 0, 0, 0, 0, 0, 0, 0, array(), array(), array(),
                 0, 0, 0, 0, null, null);
         }
 
@@ -687,6 +691,38 @@
         public function setStreak($streak)
         {
             $this->streak = $streak;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getOpponents()
+        {
+            return $this->opponents;
+        }
+
+        /**
+         * @param mixed $opponents
+         */
+        public function setOpponents($opponents)
+        {
+            $this->opponents = $opponents;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getCommonOpponents()
+        {
+            return $this->common_opponents;
+        }
+
+        /**
+         * @param mixed $common_opponents
+         */
+        public function setCommonOpponents($common_opponents)
+        {
+            $this->common_opponents = $common_opponents;
         }
 
         /**

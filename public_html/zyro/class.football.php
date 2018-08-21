@@ -44,6 +44,7 @@
             for ($i = $start_index; $i < $end_index; $i++ ) {
                 self::calculateStat($team_array, $matches[$i]);
             }
+            self::calculateCommonOpponents($tournament);
         }
 
         public static function calculateStat(&$teams, $match) {
@@ -115,6 +116,51 @@
                     $away_team->setStreak($away_streak);
                 }
             }
+            $home_opponents = $home_team->getOpponents();
+            array_push($home_opponents, $away_name);
+            $home_team->setOpponents($home_opponents);
+            $away_opponents = $away_team->getOpponents();
+            array_push($away_opponents, $home_name);
+            $away_team->setOpponents($away_opponents);
+        }
+
+        public static function calculateCommonOpponents($tournament) {
+            $teams = $tournament->getTeams();
+            $division_teams = self::getTeamArrayByConfDiv($teams);
+            for ($i = 0; $i < sizeof($teams); $i++) {
+                $tmp_array = array();
+                $opponents = $teams[$i]->getOpponents();
+                $division_opponents = $division_teams[$teams[$i]->getParentGroupName().$teams[$i]->getGroupName()];
+                for ($j = 0; $j < sizeof($opponents); $j++) {
+                    $same_division = false;
+                    for ($k = 0; $k < sizeof($division_opponents); $k++) {
+                        if (strtoupper($opponents[$j]) == strtoupper($division_opponents[$k])) {
+                            $same_division = true;
+                            break;
+                        }
+                    }
+                    if (!$same_division) array_push($tmp_array, $opponents[$j]);
+                }
+                $teams[$i]->setCommonOpponents($tmp_array);
+            }
+            $team_array = self::getTeamArrayByName($teams);
+            $team_array2 = array();
+            foreach ($division_teams as $division_name => $_teams) {
+                $opponent1 = $team_array[strtoupper($_teams[0])]->getCommonOpponents();
+                $opponent2 = $team_array[strtoupper($_teams[1])]->getCommonOpponents();
+                $team_array3 = array();
+                for ($i = 0; $i < sizeof($opponent1); $i++) {
+                    for ($j = 0; $j < sizeof($opponent2); $j++) {
+                        if (strtoupper($opponent1[$i]) == strtoupper($opponent2[$j])) {
+                            array_push($team_array3, strtoupper($opponent1[$i]));
+                        }
+                    }
+                }
+                $team_array2[$division_name] = $team_array3;
+            }
+            for ($i = 0; $i < sizeof($teams); $i++) {
+                $teams[$i]->setCommonOpponents($team_array2[$teams[$i]->getParentGroupName().$teams[$i]->getGroupName()]);
+            }
         }
 
         public static function getTeamStreak($streak_array) {
@@ -168,6 +214,9 @@
             if (self::isHigherStanding($team2, $team1)) {
                 self::swapTeam($team1, $team2);
             }
+            elseif (self::isEqualStanding($team2, $team1)) {
+                self::applyTiebreaker($team1, $team2, $matches);
+            }
         }
 
         public static function isHigherStanding($t1, $t2) {
@@ -197,46 +246,271 @@
         }
 
         public static function isEqualStanding($t1, $t2) {
-            return $t1->getWin() == $t2->getWin() && $t1->getLoss() == $t2->getLoss();
+            return $t1->getWin() == $t2->getWin() && $t1->getLoss() == $t2->getLoss() && $t1->getDraw() == $t2->getDraw();
         }
 
         public static function applyTiebreaker(&$t1, &$t2, $matches) {
-            $still_tie = false;
-            for ($i = 0; $i < sizeof($matches); $i++) {
-                if ($matches[$i]->getHomeTeamName() == $t1->getName() && $matches[$i]->getAwayTeamName() == $t2->getName()) {
-                    if ($matches[$i]->getHomeTeamScore() < $matches[$i]->getAwayTeamScore()) {
-                        self::swapTeam($t1, $t2);
+            $still_tie = self::applyHeadToHead($t1, $t2, $matches);
+            if ($still_tie) {
+                $still_tie = self::applyDivisionWin($t1, $t2);
+                if ($still_tie) {
+                    $still_tie = self::applyCommonGames($t1, $t2, $matches);
+                    if ($still_tie) {
+                        $still_tie = self::applyConferenceWin($t1, $t2);
+                        if ($still_tie) {
+                            $still_tie = self::applyStrengthOfVictory($t1, $t2, $matches);
+                            if ($still_tie) {
+                                $still_tie = self::applyStrengthOfSchedule($t1, $t2, $matches);
+                                if ($still_tie) {
+                                    $still_tie = self::applyBestCombinedRankingAmongConferenceTeamsInPointsScoredAndPointsAllowed($t1, $t2, $matches);
+                                    if ($still_tie) {
+                                        $still_tie = self::applyBestCombinedRankingAmongAllTeamsInPointsScoredAndPointsAllowed($t1, $t2, $matches);
+                                        if ($still_tie) {
+                                            $still_tie = self::applyBestNetPointsInCommonGames($t1, $t2, $matches);
+                                            if ($still_tie) {
+                                                $still_tie = self::applyBestNetPointsInAllGames($t1, $t2, $matches);
+                                                if ($still_tie) {
+                                                    $still_tie = self::applyBestNetTouchDownsInAllGames($t1, $t2, $matches);
+                                                    if ($still_tie) {
+                                                        self::coinToss($t1, $t2);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
-                    elseif ($matches[$i]->getHomeTeamScore() == $matches[$i]->getAwayTeamScore()) {
-                        $still_tie = true;
-                    }
-                    break;
-                }
-                elseif ($matches[$i]->getAwayTeamName() == $t1->getName() && $matches[$i]->getHomeTeamName() == $t2->getName()) {
-                    if ($matches[$i]->getAwayTeamScore() < $matches[$i]->getHomeTeamScore()) {
-                        self::swapTeam($t1, $t2);
-                    }
-                    elseif ($matches[$i]->getAwayTeamScore() == $matches[$i]->getHomeTeamScore()) {
-                        $still_tie = true;
-                    }
-                    break;
                 }
             }
-            return $still_tie;
         }
 
-        public static function fairPlayRule(&$t1, &$t2) {
-            if ($t2->getName() == 'JAPAN' && $t2->getTournamentName() == 1) {
+        public static function applyHeadToHead(&$t1, &$t2, $matches) {
+            $count = 0;
+            $t1_point = 0;
+            $t2_point = 0;
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                if ($matches[$i]->getHomeTeamName() == strtoupper($t1->getName()) && $matches[$i]->getAwayTeamName() == strtoupper($t2->getName())) {
+                    if ($matches[$i]->getHomeTeamScore() > $matches[$i]->getAwayTeamScore()) {
+                        $t1_point = $t1_point + 1;
+                    }
+                    elseif ($matches[$i]->getHomeTeamScore() < $matches[$i]->getAwayTeamScore()) {
+                        $t2_point = $t2_point + 1;
+                    }
+                    elseif ($matches[$i]->getHomeTeamScore() == $matches[$i]->getAwayTeamScore()) {
+                        $t1_point = $t1_point + 0.5;
+                        $t2_point = $t2_point + 0.5;
+                    }
+                    $count = $count + 1;
+                    if ($count == 2) break;
+                }
+                elseif ($matches[$i]->getAwayTeamName() == strtoupper($t1->getName()) && $matches[$i]->getHomeTeamName() == strtoupper($t2->getName())) {
+                    if ($matches[$i]->getAwayTeamScore() > $matches[$i]->getHomeTeamScore()) {
+                        $t2_point = $t2_point + 1;
+                    }
+                    if ($matches[$i]->getAwayTeamScore() < $matches[$i]->getHomeTeamScore()) {
+                        $t1_point = $t1_point + 1;
+                    }
+                    elseif ($matches[$i]->getAwayTeamScore() == $matches[$i]->getHomeTeamScore()) {
+                        $t1_point = $t1_point + 0.5;
+                        $t2_point = $t2_point + 0.5;
+                    }
+                    $count = $count + 1;
+                    if ($count == 2) break;
+                }
+            }
+            if ($t1_point < $t2_point) self::swapTeam($t1, $t2);
+            return $t1_point == $t2_point;
+        }
+
+        public static function applyDivisionWin(&$t1, &$t2) {
+            $match_play1 = $t1->getDivWin() + $t1->getDivLoss() + $t1->getDivTie();
+            $match_play2 = $t2->getDivWin() + $t2->getDivLoss() + $t2->getDivTie();
+            if ($match_play1 == 0 && $match_play2 == 0) return true;
+            if ($match_play1 == 0) {
+                if ($t2->getDivWin() > $t2->getDivLoss()) {
+                    self::swapTeam($t1, $t2);
+                    return false;
+                }
+                elseif ($t2->getDivWin() < $t2->getDivLoss()) {
+                    return false;
+                }
+                return true;
+            }
+            if ($match_play2 == 0) {
+                if ($t1->getDivWin() < $t1->getDivLoss()) {
+                    self::swapTeam($t1, $t2);
+                    return false;
+                }
+                elseif ($t1->getDivWin() > $t1->getDivLoss()) {
+                    return false;
+                }
+                return true;
+            }
+            $pt1 = $t1->getDivWin() + $t1->getDivTie() * 0.5;
+            $pt2 = $t2->getDivWin() + $t2->getDivTie() * 0.5;
+            $pct1 = $pt1 / $match_play1;
+            $pct2 = $pt2 / $match_play2;
+            if ($pct1 < $pct2) {
                 self::swapTeam($t1, $t2);
+                return false;
             }
-            else {
-                self::coinToss($t1, $t2);
+            elseif ($pct1 == $pct2) {
+                if ($pt1 == 0 && $pt2 == 0) {
+                    if ($t1->getDivLoss() > $t2->getDivLoss()) {
+                        self::swapTeam($t1, $t2);
+                        return false;
+                    }
+                    elseif ($t1->getDivLoss() < $t2->getDivLoss()) {
+                        return false;
+                    }
+                    return true;
+                }
+                if ($t1->getDivWin() < $t2->getDivWin()) {
+                    self::swapTeam($t1, $t2);
+                    return false;
+                }
+                elseif ($t1->getDivWin() > $t2->getDivWin()) {
+                    return false;
+                }
+                return true;
             }
+            return false;
+        }
+
+        public static function applyCommonGames(&$t1, &$t2, $matches) {
+            if ($t1->getParentGroupName().$t1->getGroupName() != $t2->getParentGroupName().$t2->getGroupName()) return true;
+            $t1_point = 0;
+            $t2_point = 0;
+            $opponents = $t1->getCommonOpponents();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                for ($j = 0; $j < sizeof($opponents); $j++) {
+                    if ($matches[$i]->getHomeTeamName() == strtoupper($t1->getName()) && $matches[$i]->getAwayTeamName() == strtoupper($opponents[$j])) {
+                        if ($matches[$i]->getHomeTeamScore() > $matches[$i]->getAwayTeamScore()) {
+                            $t1_point = $t1_point + 1;
+                        }
+                        elseif ($matches[$i]->getHomeTeamScore() == $matches[$i]->getAwayTeamScore()) {
+                            $t1_point = $t1_point + 0.5;
+                        }
+                    }
+                    if ($matches[$i]->getAwayTeamName() == strtoupper($t1->getName()) && $matches[$i]->getHomeTeamName() == strtoupper($opponents[$j])) {
+                        if ($matches[$i]->getAwayTeamScore() > $matches[$i]->getHomeTeamScore()) {
+                            $t1_point = $t1_point + 1;
+                        }
+                        elseif ($matches[$i]->getAwayTeamScore() == $matches[$i]->getHomeTeamScore()) {
+                            $t1_point = $t1_point + 0.5;
+                        }
+                    }
+                    if ($matches[$i]->getHomeTeamName() == strtoupper($t2->getName()) && $matches[$i]->getAwayTeamName() == strtoupper($opponents[$j])) {
+                        if ($matches[$i]->getHomeTeamScore() > $matches[$i]->getAwayTeamScore()) {
+                            $t2_point = $t2_point + 1;
+                        }
+                        elseif ($matches[$i]->getHomeTeamScore() == $matches[$i]->getAwayTeamScore()) {
+                            $t2_point = $t2_point + 0.5;
+                        }
+                    }
+                    if ($matches[$i]->getAwayTeamName() == strtoupper($t2->getName()) && $matches[$i]->getHomeTeamName() == strtoupper($opponents[$j])) {
+                        if ($matches[$i]->getAwayTeamScore() > $matches[$i]->getHomeTeamScore()) {
+                            $t2_point = $t2_point + 1;
+                        }
+                        elseif ($matches[$i]->getAwayTeamScore() == $matches[$i]->getHomeTeamScore()) {
+                            $t2_point = $t2_point + 0.5;
+                        }
+                    }
+                }
+            }
+            if ($t1_point < $t2_point) self::swapTeam($t1, $t2);
+            return $t1_point == $t2_point;
+        }
+
+        public static function applyConferenceWin(&$t1, &$t2) {
+            $match_play1 = $t1->getConfWin() + $t1->getConfLoss() + $t1->getConfTie();
+            $match_play2 = $t2->getConfWin() + $t2->getConfLoss() + $t2->getConfTie();
+            if ($match_play1 == 0 && $match_play2 == 0) return true;
+            if ($match_play1 == 0) {
+                if ($t2->getConfWin() > $t2->getConfLoss()) {
+                    self::swapTeam($t1, $t2);
+                    return false;
+                }
+                elseif ($t2->getConfWin() < $t2->getConfLoss()) {
+                    return false;
+                }
+                return true;
+            }
+            if ($match_play2 == 0) {
+                if ($t1->getConfWin() < $t1->getConfLoss()) {
+                    self::swapTeam($t1, $t2);
+                    return false;
+                }
+                elseif ($t1->getConfWin() > $t1->getConfLoss()) {
+                    return false;
+                }
+                return true;
+            }
+            $pt1 = $t1->getConfWin() + $t1->getConfTie() * 0.5;
+            $pt2 = $t2->getConfWin() + $t2->getConfTie() * 0.5;
+            $pct1 = $pt1 / $match_play1;
+            $pct2 = $pt2 / $match_play2;
+            if ($pct1 < $pct2) {
+                self::swapTeam($t1, $t2);
+                return false;
+            }
+            elseif ($pct1 == $pct2) {
+                if ($pt1 == 0 && $pt2 == 0) {
+                    if ($t1->getConfLoss() > $t2->getConfLoss()) {
+                        self::swapTeam($t1, $t2);
+                        return false;
+                    }
+                    elseif ($t1->getConfLoss() < $t2->getConfLoss()) {
+                        return false;
+                    }
+                    return true;
+                }
+                if ($t1->getConfWin() < $t2->getConfWin()) {
+                    self::swapTeam($t1, $t2);
+                    return false;
+                }
+                elseif ($t1->getConfWin() > $t2->getConfWin()) {
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public static function applyStrengthOfVictory(&$t1, &$t2, $matches) {
+            return true;
+        }
+
+        public static function applyStrengthOfSchedule(&$t1, &$t2, $matches) {
+            return true;
+        }
+
+        public static function applyBestCombinedRankingAmongConferenceTeamsInPointsScoredAndPointsAllowed(&$t1, &$t2, $matches) {
+            return true;
+        }
+
+        public static function applyBestCombinedRankingAmongAllTeamsInPointsScoredAndPointsAllowed(&$t1, &$t2, $matches) {
+            return true;
+        }
+
+        public static function applyBestNetPointsInCommonGames(&$t1, &$t2, $matches) {
+            return true;
+        }
+
+        public static function applyBestNetPointsInAllGames(&$t1, &$t2, $matches) {
+            return true;
+        }
+
+        public static function applyBestNetTouchDownsInAllGames(&$t1, &$t2, $matches) {
+            return true;
         }
 
         public static function coinToss(&$t1, &$t2) {
             $coin = mt_rand(0,1);
             if ($coin == 1) self::swapTeam($t1, $t2);
+            return false;
         }
 
         public static function swapTeam(&$t1, &$t2) {
@@ -261,6 +535,22 @@
             $result = array();
             for ($i = 0; $i < sizeof($teams); $i++) {
                 $result[strtoupper($teams[$i]->getName())] = $teams[$i];
+            }
+            return $result;
+        }
+
+        public static function getTeamArrayByConfDiv($teams) {
+            $result = array();
+            $division_teams = array();
+            for ($i = 0; $i < sizeof($teams); $i++) {
+                $division_teams[$teams[$i]->getParentGroupName().$teams[$i]->getGroupName()][$teams[$i]->getName()] = $teams[$i];
+            }
+            foreach ($division_teams as $division_name => $_teams) {
+                $tmp_array = array();
+                foreach ($_teams as $name => $_team) {
+                    array_push($tmp_array, $name);
+                }
+                $result[$division_name] = $tmp_array;
             }
             return $result;
         }
