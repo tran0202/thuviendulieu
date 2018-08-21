@@ -640,6 +640,16 @@
             return $result;
         }
 
+        public static function getMatchArrayByTeam($matches, $name) {
+            $result = array();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                if ($matches[$i]->getHomeTeamName() == $name || $matches[$i]->getAwayTeamName() == $name) {
+                    $result[$matches[$i]->getStage()][$matches[$i]->getMatchDate()][$matches[$i]->getMatchOrder()] = $matches[$i];
+                }
+            }
+            return $result;
+        }
+
         public static function getMatchTimeFormat($match) {
             $date = DateTime::createFromFormat('Y-m-d H:i:s', $match->getMatchDate().' '.$match->getMatchTime());
             return $date->format('h:i A');
@@ -649,6 +659,7 @@
             $default_tab = self::getDefaultTab($week_start_date, $tab_array);
             if (strpos($default_tab, 'Preseason') !== false) {
                 $result = '<script>
+                    $("#All-tab").tab("show");
                     $("#pills-Preseason-tab").tab("show");
                     $("#pills-'.$default_tab.'-tab").tab("show");
                     $("#pills-RegularSeason-1-tab").tab("show");
@@ -656,6 +667,7 @@
             }
             else {
                 $result = '<script>$(function() {
+                            $("#All-tab").tab("show");
                             $("#pills-Preseason-1-tab").tab("show");
                             $("#pills-RegularSeason-tab").tab("show");
                             $("#pills-'.$default_tab.'-tab").tab("show");
@@ -678,6 +690,47 @@
         }
 
         public static function getFootballScheduleHtml($tournament) {
+            $teams = self::getTeamArrayByName($tournament->getTeams());
+            $output = '';
+            $output .= '<div class="col-sm-12 margin-top-sm">';
+            $output .= self::getCollapseHtml('teams-filter', 'Teams', self::getFilterHead($tournament));
+            $output .= '<div class="tab-content" id="filter-tabContent">';
+            $output .= '<div class="tab-pane fade" id="All_content" role="tabpanel" aria-labelledby="All-tab">';
+            $output .= self::getAllTeamScheduleHtml($tournament);
+            $output .= '</div>';
+            foreach ($teams as $name => $_team) {
+                $team_tab = str_replace(' ', '', $name);
+                $output .= '<div class="tab-pane fade" id="'.$team_tab.'_content" role="tabpanel" aria-labelledby="'.$team_tab.'-tab">';
+                $output .= self::getTeamScheduleHtml($tournament, $name);
+                $output .= '</div>';
+            }
+            $output .= '</div>';
+            $output .= '</div>';
+            $tournament->concatBodyHtml($output);
+        }
+
+        public static function getFilterHead($tournament) {
+            $teams = self::getTeamArrayByName($tournament->getTeams());
+            ksort($teams);
+            $output = '';
+            $output .= '<ul class="nav nav-tabs h6-ff6" id="NFLFilterTab" role="tablist">';
+            $output .= '<li class="nav-item">
+                                <a class="nav-link" id="All-tab" data-toggle="tab" href="#All_content" role="tab" aria-controls="All_content" aria-selected="true">
+                                    <img height="40" src="/images/nfl_logos/NFL.svg"><br>All Teams</a>
+                            </li>';
+            foreach ($teams as $name => $_team) {
+                $team_tab = str_replace(' ', '', $name);
+                $output .= '<li class="nav-item">
+                                <a class="nav-link" id="'.$team_tab.'-tab" data-toggle="tab" href="#'.$team_tab.'_content" 
+                                    role="tab" aria-controls="'.$team_tab.'_content" aria-selected="true">
+                                    <img style="height:40px;" src="/images/nfl_logos/'.$_team->getLogoFilename().'"><br>'.$name.'</a>
+                            </li>';
+            }
+            $output .= '</ul>';
+            return $output;
+        }
+
+        public static function getAllTeamScheduleHtml($tournament) {
             $week_start_date = array();
             $tab_array = array();
             $matches = self::getMatchArray($tournament->getMatches());
@@ -754,7 +807,110 @@
             }
             $output .= '</div>
                 '.self::getDefaultTabScript($week_start_date, $tab_array);
-            $tournament->concatBodyHtml($output);
+            return $output;
+        }
+
+        public static function getTeamScheduleHtml($tournament, $name) {
+            $matches = self::getMatchArrayByTeam($tournament->getMatches(), $name);
+            $output = '<ul class="nav nav-pills nfl-nav1-pills h2-ff6" id="pills-tab" role="tablist">';
+            foreach ($matches as $stage_name => $stages) {
+                $stage_tab = str_replace(' ', '', $name).'-'.str_replace(' ', '', $stage_name);
+                $output .= '                    
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-'.$stage_tab.'-tab" data-toggle="pill" href="#pills-'.$stage_tab.'" 
+                            role="tab" aria-controls="pills-'.$stage_tab.'" aria-selected="true">'.$stage_name.'</a>
+                    </li>';
+            }
+            $output .= '</ul>
+                <div class="tab-content padding-top-xs" id="pills-tabContent">';
+            foreach ($matches as $stage_name => $stages) {
+                $stage_tab = str_replace(' ', '', $name).'-'.str_replace(' ', '', $stage_name);
+                $output .= '<div class="tab-pane fade" id="pills-'.$stage_tab.'" role="tabpanel" aria-labelledby="pills-'.$stage_tab.'-tab">';
+                foreach ($stages as $match_dates => $_matches) {
+                    $output .= '<div class="col-sm-12 h3-ff3 border-bottom-gray2 margin-top-md">'
+                        .$_matches[array_keys($_matches)[0]]->getMatchDateFmt().'</div>';
+                    foreach ($_matches as $match_order => $_match) {
+                        $home_team_tmp = $_match->getHomeTeamName();
+                        $away_team_tmp = $_match->getAwayTeamName();
+                        $home_logo_tmp = '<img style="width:40px" src="/images/nfl_logos/'.$_match->getHomeLogo().'">';
+                        $away_logo_tmp = '<img style="width:40px" src="/images/nfl_logos/'.$_match->getAwayLogo().'">';
+                        if ($_match->getHomeTeamName() == '') {
+                            $home_team_tmp = '['.$_match->getWaitingHomeTeam().']';
+                            $away_team_tmp = '['.$_match->getWaitingAwayTeam().']';
+                            $home_logo_tmp = '';
+                            $away_logo_tmp = '';
+                        }
+                        $score = 'at';
+                        if ($_match->getHomeTeamScore() != -1) {
+                            $score = $_match->getHomeTeamScore().'&nbsp;&nbsp;&nbsp;&nbsp;'.$_match->getAwayTeamScore();
+                        }
+                        $time_zone = 'CT';
+                        $output .= '<div class="col-sm-12 padding-tb-md border-bottom-gray5">
+                                        <div class="col-sm-1 padding-lr-xs">'.self::getMatchTimeFormat($_match).' '.$time_zone.'</div>
+                                        <div class="col-sm-4 h2-ff3 padding-left-xs padding-right-xs text-right">'.$home_team_tmp.'</div>
+                                        <div class="col-sm-1 padding-lr-xs text-right" style="width:40px">'.$home_logo_tmp.'</div>
+                                        <div class="col-sm-1 h2-ff3 padding-left-md padding-right-xs text-center">'.$score.'</div>
+                                        <div class="col-sm-1 padding-lr-md text-right" style="width:40px">'.$away_logo_tmp.'</div>
+                                        <div class="col-sm-4 h2-ff3 padding-right-xs" style="padding-left:30px">'.$away_team_tmp.'</div>
+                                    </div>';
+                    }
+                }
+                $output .= '</div>';
+                $output .= self::getTeamDefaultTabScript(str_replace(' ', '', $name));
+            }
+            $output .= '</div>';
+            return $output;
+        }
+
+        public static function getTeamDefaultTabScript($name) {
+            $result = '';
+            $now = date_create('now');
+            if ($now->format('Y-m-d') < '2018-09-09') {
+                $result = '<script>
+                    $("#pills-'.$name.'-Preseason-tab").tab("show");
+                    </script>';
+            }
+            else {
+                $result = '<script>$(function() {
+                            $("#pills-'.$name.'-RegularSeason-tab").tab("show");
+                        });
+                    </script>';
+            }
+            return $result;
+        }
+
+        public static function getCollapseHtml($id, $name, $body) {
+            $output = '<div id="accordion-'.$id.'">
+                            <div class="card col-sm-12 padding-tb-md border-bottom-gray5">
+                                <div class="card-header" id="heading-'.$id.'" style="width:100%;padding-left:0;">
+                                    <button class="btn btn-link collapsed h2-ff1 no-padding-left" data-toggle="collapse"
+                                        data-target="#collapse-'.$id.'" aria-expanded="false" aria-controls="collapse-'.$id.'">
+                                            '.$name.' <i id="'.$id.'-down-arrow" class="fa fa-angle-double-down font-custom1"></i>
+                                            <i id="'.$id.'-up-arrow" class="fa fa-angle-double-up font-custom1 no-display"></i>
+                                    </button>
+                                </div>
+                                <div id="collapse-'.$id.'" class="collapse" aria-labelledby="heading-'.$id.'" data-parent="#accordion-'.$id.'">
+                                    <div class="card-body">
+                                        ';
+            $output .= $body;
+            $output .=         '
+                                    </div>
+                                </div>
+                            </div>
+                        </div>';
+            $output .= '<script>
+                        $(function() {
+                            $("#collapse-'.$id.'").on("shown.bs.collapse", function () {
+                                $("#'.$id.'-down-arrow").hide();
+                                $("#'.$id.'-up-arrow").show();
+                            })
+                            $("#collapse-'.$id.'").on("hidden.bs.collapse", function () {
+                                $("#'.$id.'-down-arrow").show();
+                                $("#'.$id.'-up-arrow").hide();
+                            })
+                        });
+                        </script>';
+            return $output;
         }
 
         public static function getFootballStandingsHtml($tournament) {

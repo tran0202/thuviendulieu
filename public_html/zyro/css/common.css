@@ -358,3 +358,10 @@ a:hover.hover-pointer { cursor: pointer; }
     color: #fff;
     background-color: #ce1126;
 }
+#NFLFilterTab > li > a {
+    width: 110px;
+    height: 110px;
+}
+#NFLFilterTab > li.active > a {
+    border: 1px solid #dddddd;
+}
