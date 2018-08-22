@@ -761,6 +761,7 @@
                 $output .= '</ul>
                     <div class="tab-content padding-top-xs" id="pills-'.$stage_tab.'-tabContent">';
                 foreach ($stages as $week_name => $weeks) {
+                    $bye_teams = self::getByeTeams($tournament, $weeks);
                     $week_tab = $stage_tab.'-'.str_replace('Week ', '', $week_name);
                     $start_flag = true;
                     foreach ($weeks as $match_dates => $_matches) {
@@ -771,6 +772,25 @@
                         }
                     }
                     $output .= '<div class="tab-pane fade" id="pills-'.$week_tab.'" role="tabpanel" aria-labelledby="pills-'.$week_tab.'-tab">';
+                    $tmp = '';
+                    if ($stage_name != 'Preseason') {
+                        $tmp = '<div class="col-sm-12 h3-ff3 margin-top-md gray3">BYE WEEK:&nbsp;';
+                        if (sizeof($bye_teams) == 0) {
+                            $tmp .= 'NO TEAMS ON BYE';
+                        }
+                        else {
+                            for ($i = 0; $i < sizeof($bye_teams); $i++) {
+                                if ($i != sizeof($bye_teams) - 1) {
+                                    $tmp .= $bye_teams[$i]->getName(). ' - ';
+                                }
+                                else {
+                                    $tmp .= $bye_teams[$i]->getName();
+                                }
+                            }
+                        }
+                        $tmp .= '</div>';
+                    }
+                    $output .= $tmp;
                     foreach ($weeks as $match_dates => $_matches) {
                         $output .= '<div class="col-sm-12 h3-ff3 border-bottom-gray2 margin-top-md">'
                             .$_matches[array_keys($_matches)[0]]->getMatchDateFmt().'</div>';
@@ -823,12 +843,28 @@
             }
             $output .= '</ul>
                 <div class="tab-content padding-top-xs" id="pills-tabContent">';
+            $match_weeks = array();
+            foreach ($matches as $stage_name => $stages) {
+                foreach ($stages as $match_dates => $_matches) {
+                    foreach ($_matches as $match_order => $_match) {
+                        array_push($match_weeks, $_match->getRound());
+                    }
+                }
+            }
+            $count = 0;
             foreach ($matches as $stage_name => $stages) {
                 $stage_tab = str_replace(' ', '', $name).'-'.str_replace(' ', '', $stage_name);
                 $output .= '<div class="tab-pane fade" id="pills-'.$stage_tab.'" role="tabpanel" aria-labelledby="pills-'.$stage_tab.'-tab">';
+                $count2 = 0;
                 foreach ($stages as $match_dates => $_matches) {
+                    if ('Week '.($count2 + 1) != $match_weeks[$count] && $stage_name != 'Preseason') {
+                        $output .= '<div class="col-sm-12 h3-ff3 border-bottom-gray2 margin-top-md">'
+                            .'Week '.($count2 + 1).': BYE WEEK</div>
+                            <div class="col-sm-12 padding-tb-md border-bottom-gray5"></div>';
+                        if ($match_weeks[$count] != 'HOF') $count2++;
+                    }
                     $output .= '<div class="col-sm-12 h3-ff3 border-bottom-gray2 margin-top-md">'
-                        .$_matches[array_keys($_matches)[0]]->getMatchDateFmt().'</div>';
+                        .$match_weeks[$count].': '.$_matches[array_keys($_matches)[0]]->getMatchDateFmt().'</div>';
                     foreach ($_matches as $match_order => $_match) {
                         $home_team_tmp = $_match->getHomeTeamName();
                         $away_team_tmp = $_match->getAwayTeamName();
@@ -853,6 +889,8 @@
                                         <div class="col-sm-1 padding-lr-md text-right" style="width:40px">'.$away_logo_tmp.'</div>
                                         <div class="col-sm-4 h2-ff3 padding-right-xs" style="padding-left:30px">'.$away_team_tmp.'</div>
                                     </div>';
+                        $count++;
+                        $count2++;
                     }
                 }
                 $output .= '</div>';
@@ -876,6 +914,25 @@
                         });
                     </script>';
             }
+            return $result;
+        }
+
+        public static function getByeTeams($tournament, $week_matches) {
+            $result = array();
+            $teams = $tournament->getTeams();
+            for ($i = 0; $i < sizeof($teams); $i++) {
+                $bye_week = true;
+                foreach ($week_matches as $match_dates => $_matches) {
+                    foreach ($_matches as $match_order => $_match) {
+                        if (strtoupper($teams[$i]->getName()) == $_match->getHomeTeamName() ||
+                            strtoupper($teams[$i]->getName()) == $_match->getAwayTeamName()) {
+                            $bye_week = false;
+                        }
+                    }
+                }
+                if ($bye_week) array_push($result, $teams[$i]);
+            }
+
             return $result;
         }
 
