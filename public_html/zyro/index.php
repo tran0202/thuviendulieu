@@ -11,7 +11,8 @@
         '7'	=> array('id' => '8', 'alias' => 'UEFANationsLeagueMatches', 'file' => 'uefa_nations_league_matches.php','controllers' => array()),
         '8'	=> array('id' => '9', 'alias' => 'NFL', 'file' => 'football.php','controllers' => array()),
         '9'	=> array('id' => '10', 'alias' => 'NFLStandings', 'file' => 'football_standings.php','controllers' => array()),
-        '10' => array('id' => '11', 'alias' => 'Tennis', 'file' => 'tennis.php','controllers' => array())
+        '10' => array('id' => '11', 'alias' => 'Tennis', 'file' => 'tennis.php','controllers' => array()),
+        '11' => array('id' => '12', 'alias' => 'TennisTournament', 'file' => 'tennis_tournament.php','controllers' => array())
 //		'4'	=> array('id' => '4', 'alias' => 'New-Link', 'file' => 'tennis.php','controllers' => array())
 	);
 	$forms = array(
