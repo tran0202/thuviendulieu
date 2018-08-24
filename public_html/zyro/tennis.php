@@ -20,6 +20,10 @@
                     <p class="wb-stl-highlight text-center"><a href="TennisTournament">2017 US Open Men's Singles</a></p>
                     <p class="wb-stl-normal"> </p>
                 </div>
+                <div class="col-sm-12">
+                    <p class="wb-stl-highlight text-center"><a href="TennisTournament?tid=27">2018 US Open Men's Singles</a></p>
+                    <p class="wb-stl-normal"> </p>
+                </div>
                 <div class="col-sm-12 margin-tb-lg">
                     <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
                 </div>

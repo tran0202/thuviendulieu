@@ -217,6 +217,7 @@
 
             $tournament = Tournament::CreateTennisTournamentById($tournament_id);
 
+            self::getTournamentProfile($tournament);
             Tennis::getTennisMatches($tournament);
             Tennis::getTennisHtml($tournament);
 
@@ -510,6 +511,11 @@
 
         public function getNFLTournamentHeader() {
             $output = '<img height="100" src="/images/nfl_logos/NFL.svg">&nbsp;&nbsp;'.self::getName();
+            return $output;
+        }
+
+        public function getTennisTournamentHeader() {
+            $output = self::getName();
             return $output;
         }
 

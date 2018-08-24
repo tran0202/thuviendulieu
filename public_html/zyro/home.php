@@ -32,7 +32,7 @@
                 <div class="col-sm-12 text-center padding-top-lg">
                     <a class="front-page-button padding-top-lg margin-right-lg" href="Soccer"><span>Soccer</span></a>
                     <a class="front-page-button padding-top-lg margin-right-lg" href="NFL"><span>NFL</span></a>
-                    <a class="front-page-button padding-top-lg margin-right-lg" href="Tennis"><span>2017 US Open Men's Singles</span></a>
+                    <a class="front-page-button padding-top-lg margin-right-lg" href="Tennis"><span>Tennis</span></a>
                     <img alt="gallery/ball_1" src="gallery_gen/740438132c8336073d625b0136159e8e_300x310.png">
                 </div>
                 <div class="col-sm-12 margin-tb-lg">

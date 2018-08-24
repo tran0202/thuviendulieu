@@ -39,3 +39,13 @@ VALUES ('Yuichi', 'Sugita', 98), ('Geoffrey', 'Blancaneaux', 71), ('Dominic', 'T
 	('Thanasi', 'Kokkinakis', 12), ('Janko', 'Tipsarevic', 165), ('Gilles', 'Muller', 115), ('Bernard', 'Tomic', 76),
 	('Jack', 'Sock', 203), ('Jordan', 'Thompson', 12), ('Alexander', 'Zverev', 76), ('Darian', 'King', 18),
 	('Borna', 'Coric', 51), ('Jiri', 'Vesely', 55), ('Thomas', 'Fabbiano', 96), ('John-Patrick', 'Smith', 12);
+
+INSERT INTO player (first_name, last_name, nation_id)
+VALUES ('Qualifier', 'Player', null), ('Guido', 'Andreozzi', 9), ('Mirza', 'Basic', 26), ('Jason', 'Kubler', 12),
+	   ('Denis', 'Kudla', 203), ('Matteo', 'Berrettini', 96), ('Andy', 'Murray', 212), ('James', 'Duckworth', 12),
+	   ('Roberto', 'Carballes Baena', 175), ('Stefanos', 'Tsitsipas', 79), ('Bradley', 'Klahn', 203), ('Nicolas', 'Jarry', 41),
+	   ('Peter', 'Gojowczyk', 76), ('Milos', 'Raonic', 36), ('Stan', 'Wawrinka', 184), ('Marco', 'Cecchinato', 96),
+	   ('Mackenzie', 'McDonald', 203), ('Federico', 'Delbonis', 9), ('Guillermo', 'Garcia-Lopez', 175), ('Jaume', 'Munar', 175),
+	   ('Kei', 'Nishikori', 98), ('Filip', 'Krajinovic', 165), ('Matthew', 'Ebden', 12), ('Yannick', 'Hanfmann', 76),
+	   ('Corentin', 'Moutet', 71), ('Novak', 'Djokovic', 165), ('Laslo', 'Djere', 165), ('Michael', 'Mmoh', 203),
+	   ('Jenson', 'Brooksby', 203), ('Noah', 'Rubin', 203), ('Yuki', 'Bhambri', 91), ('Yoshihito', 'Nishioka', 98);

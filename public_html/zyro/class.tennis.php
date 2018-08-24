@@ -189,7 +189,7 @@
             for ($view = 0; $view <= 4; $view++) {
                 $output2 .= $views[$view];
             }
-            $tournament->setBodyHtml($output2);
+            $tournament->concatBodyHtml($output2);
         }
 
         public static function getTennisMatches($tournament) {
@@ -230,7 +230,7 @@
         }
 
         public static function getTennisMatchSql($tournament_id) {
-            $sql = 'SELECT t.id AS home_id, t.name AS home_team_name, htt.seed AS home_team_seed, 
+            $sql = 'SELECT DISTINCT t.id AS home_id, t.name AS home_team_name, htt.seed AS home_team_seed, 
                 n.flag_filename AS home_flag_filename, n.alternative_flag_filename AS home_alternative_flag_filename,
                 t2.id AS away_id, t2.name AS away_team_name, att.seed AS away_team_seed, 
                 n2.flag_filename AS away_flag_filename, n2.alternative_flag_filename AS away_alternative_flag_filename,

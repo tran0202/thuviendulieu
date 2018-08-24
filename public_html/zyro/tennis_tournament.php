@@ -4,12 +4,15 @@
     $tournament_id = 4;
     if (isset($query_string['tid'])) $tournament_id = $query_string['tid'];
     $tournament = Tournament::getTennisTournament($tournament_id);
+    $profile = $tournament->getProfile();
+    $header = $profile->getTennisTournamentHeader();
+    $tournament_name = $profile->getName();
     $body_html = $tournament->getBodyHtml();
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>TVDL - 2017 US Open Men's Singles</title>
+    <title>TVDL - <?php echo $tournament_name; ?></title>
     <?php include_once('header_script.inc.php'); ?>
 </head>
 <body>
@@ -25,7 +28,7 @@
 		<div class="vbox wb_container" id="wb_main">
 			<div class="wb_cont_inner">
                 <div>
-                    <h1 class="wb-stl-heading1 green">2017 US Open Men's Singles Tournament</h1>
+                    <h1 class="wb-stl-heading1 green"><?php echo $header; ?></h1>
                 </div>
                 <div>
                     <?php echo $body_html; ?>
