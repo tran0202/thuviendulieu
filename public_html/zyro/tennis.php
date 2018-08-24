@@ -17,11 +17,15 @@
         <div class="vbox wb_container" id="wb_main">
             <div class="wb_cont_inner">
                 <div class="col-sm-12">
-                    <p class="wb-stl-highlight text-center"><a href="TennisTournament">2017 US Open Men's Singles</a></p>
+                    <p class="wb-stl-highlight2 text-center"><a href="TennisTournament">2017 US Open Men's Singles</a></p>
                     <p class="wb-stl-normal"> </p>
                 </div>
                 <div class="col-sm-12">
-                    <p class="wb-stl-highlight text-center"><a href="TennisTournament?tid=27">2018 US Open Men's Singles</a></p>
+                    <p class="wb-stl-highlight2 text-center"><a href="TennisTournament?tid=27">2018 US Open Men's Singles</a></p>
+                    <p class="wb-stl-normal"> </p>
+                </div>
+                <div class="col-sm-12">
+                    <p class="wb-stl-highlight2 text-center"><a href="TennisTournament?tid=28">2018 US Open Women's Singles</a></p>
                     <p class="wb-stl-normal"> </p>
                 </div>
                 <div class="col-sm-12 margin-tb-lg">

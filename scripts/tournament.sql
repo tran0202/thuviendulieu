@@ -50,10 +50,11 @@ INSERT INTO tournament (name, start_date, end_date)
 VALUES ('2018 US Open', '2018-08-27', '2017-09-09');
 
 INSERT INTO tournament (name, start_date, end_date, tournament_type_id, parent_tournament_id)
-VALUES ('2017 US Open Men''s Singles', '2017-08-08', '2017-09-10', 3, 3);
+VALUES ('2017 US Open Men''s Singles', '2017-08-08', '2017-09-10', 3, 3),
+	   ('2018 US Open Men''s Singles', '2018-08-27', '2018-09-09', 3, 26);
 
 INSERT INTO tournament (name, start_date, end_date, tournament_type_id, parent_tournament_id)
-VALUES ('2018 US Open Men''s Singles', '2018-08-27', '2018-09-09', 3, 26);
+VALUES ('2018 US Open Women''s Singles', '2018-08-27', '2018-09-09', 5, 26);
 
 ALTER TABLE tournament
 ADD COLUMN pointsForWin TINYINT UNSIGNED,

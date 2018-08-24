@@ -14,4 +14,7 @@ VALUES ('Men''s National'),
 		('Football'),
 		('Tennis Men''s Single');
 
+INSERT INTO team_type (name)
+VALUES ('Tennis Women''s Single');
+
 DROP TRIGGER before_insert_team_type;

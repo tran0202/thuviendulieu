@@ -10,10 +10,11 @@ CREATE TABLE IF NOT EXISTS tournament_type (
 INSERT INTO tournament_type (name, team_type_id, sport_id)
 VALUES ('FIFA World Cup', 1, 1),
 	('Football Season', 6, 2),
-	('ATP Men''s Singles', 7, 3);
+	('ATP Men''s Singles', 7, 3),
+	   ('UEFA Nations League', 1, 1);
 
 INSERT INTO tournament_type (name, team_type_id, sport_id)
-VALUES ('UEFA Nations League', 1, 1);
+VALUES ('WTA Women''s Singles', 8, 3);
 
 ALTER TABLE tournament_type
 ADD COLUMN sport_id INT;

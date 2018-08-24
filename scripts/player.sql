@@ -38,10 +38,8 @@ VALUES ('Yuichi', 'Sugita', 98), ('Geoffrey', 'Blancaneaux', 71), ('Dominic', 'T
 	('Nikoloz', 'Basilashvili', 75), ('Jared', 'Donaldson', 203), ('Ruben', 'Bemelmans', 20), ('Lucas', 'Pouille', 71),
 	('Thanasi', 'Kokkinakis', 12), ('Janko', 'Tipsarevic', 165), ('Gilles', 'Muller', 115), ('Bernard', 'Tomic', 76),
 	('Jack', 'Sock', 203), ('Jordan', 'Thompson', 12), ('Alexander', 'Zverev', 76), ('Darian', 'King', 18),
-	('Borna', 'Coric', 51), ('Jiri', 'Vesely', 55), ('Thomas', 'Fabbiano', 96), ('John-Patrick', 'Smith', 12);
-
-INSERT INTO player (first_name, last_name, nation_id)
-VALUES ('Qualifier', 'Player', null), ('Guido', 'Andreozzi', 9), ('Mirza', 'Basic', 26), ('Jason', 'Kubler', 12),
+	('Borna', 'Coric', 51), ('Jiri', 'Vesely', 55), ('Thomas', 'Fabbiano', 96), ('John-Patrick', 'Smith', 12),
+	   ('Qualifier', 'Player', null), ('Guido', 'Andreozzi', 9), ('Mirza', 'Basic', 26), ('Jason', 'Kubler', 12),
 	   ('Denis', 'Kudla', 203), ('Matteo', 'Berrettini', 96), ('Andy', 'Murray', 212), ('James', 'Duckworth', 12),
 	   ('Roberto', 'Carballes Baena', 175), ('Stefanos', 'Tsitsipas', 79), ('Bradley', 'Klahn', 203), ('Nicolas', 'Jarry', 41),
 	   ('Peter', 'Gojowczyk', 76), ('Milos', 'Raonic', 36), ('Stan', 'Wawrinka', 184), ('Marco', 'Cecchinato', 96),
@@ -49,3 +47,33 @@ VALUES ('Qualifier', 'Player', null), ('Guido', 'Andreozzi', 9), ('Mirza', 'Basi
 	   ('Kei', 'Nishikori', 98), ('Filip', 'Krajinovic', 165), ('Matthew', 'Ebden', 12), ('Yannick', 'Hanfmann', 76),
 	   ('Corentin', 'Moutet', 71), ('Novak', 'Djokovic', 165), ('Laslo', 'Djere', 165), ('Michael', 'Mmoh', 203),
 	   ('Jenson', 'Brooksby', 203), ('Noah', 'Rubin', 203), ('Yuki', 'Bhambri', 91), ('Yoshihito', 'Nishioka', 98);
+
+INSERT INTO player (first_name, last_name, nation_id)
+VALUES ('Simona', 'Halep', 156), ('Kaia', 'Kanepi', 66), ('Dalila', 'Jakupovic', 170), ('Vania', 'King', 203),
+	   ('Natalia', 'Vikhlyantseva', 157), ('Rebecca', 'Peterson', 183), ('Anastasia', 'Pavlyuchenkova', 157), ('Serena', 'Williams', 203),
+	   ('Magda', 'Linette', 151), ('Caroline', 'Dolehide', 203), ('Carina', 'Witthoeft', 76), ('Camila', 'Giorgi', 96),
+	   ('Whitney', 'Osuigwe', 203), ('Svetlana', 'Kuznetsova', 157), ('Venus', 'Williams', 203), ('Garbiñe', 'Muguruza', 175),
+	   ('Shuai', 'Zhang', 42), ('Dayana', 'Yastremska', 199), ('Petra', 'Martic', 51), ('Lucie', 'Safarova', 55),
+	   ('Ashleigh', 'Barty', 12), ('Maria', 'Sakkari', 79), ('Asia', 'Muhammad', 203), ('Luksika', 'Kumkhum', 189),
+	   ('Sofia', 'Kenin', 203), ('Ana', 'Bogdan', 156), ('Zarina', 'Diyas', 100), ('Karolina', 'Pliskova', 55),
+	   ('Sloane', 'Stephens', 203), ('Evgeniya', 'Rodina', 157), ('Victoria', 'Azarenka', 19), ('Viktoria', 'Kuzmova', 169),
+	   ('Sara', 'Sorribes Tormo', 175), ('Daria', 'Gavrilova', 12), ('Barbora', 'Strycova', 55), ('Kateryna', 'Kozlova', 199),
+	   ('Lara', 'Arruabarrena', 175), ('Verao', 'Lapko', 19), ('Kateryna', 'Bondarenko', 199), ('Kurumi', 'Nara', 98),
+	   ('Elise', 'Mertens', 20), ('Julia', 'Goerges', 76), ('Ekaterina', 'Makarova', 157), ('Polona', 'Hercog', 170),
+	   ('Claire', 'Liu', 203), ('Donna', 'Vekic', 51), ('Anastasija', 'Sevastova', 108), ('Magdalena', 'Rybarikova', 169),
+	   ('Qiang', 'Wang', 42), ('Jennifer', 'Brady', 203), ('Irina-Camelia', 'Begu', 156), ('Agnieszka', 'Radwanska', 151),
+	   ('Tatjana', 'Maria', 76), ('Sachia', 'Vickery', 203), ('Elina', 'Svitolina', 199), ('Caroline', 'Garcia', 71),
+	   ('Johanna', 'Konta', 212), ('Monica', 'Puig', 153), ('Stefanie', 'Voegele', 184), ('Kristina', 'Mladenovic', 71),
+	   ('Tamara', 'Zidansek', 170), ('Carla', 'Suarez Navarro', 175), ('Maria', 'Sharapova', 157), ('Sorana', 'Cirstea', 156),
+	   ('Alison', 'Riske', 203), ('Taylor', 'Townsend', 203), ('Amanda', 'Anisimova', 203), ('Andrea', 'Petkovic', 76),
+	   ('Jelena', 'Ostapenko', 108), ('Madison', 'Keys', 203), ('Pauline', 'Parmentier', 71), ('Yulia', 'Putintseva', 100),
+	   ('Bernarda', 'Pera', 203), ('Timea', 'Bacsinszky', 184), ('Aleksandra', 'Krunic', 165), ('Kirsten', 'Flipkens', 20),
+	   ('Coco', 'Vandeweghe', 203), ('Dominika', 'Cibulkova', 169), ('Ekaterina', 'Alexandrova', 157), ('Su-Wei', 'Hsieh', 43),
+	   ('Alize', 'Cornet', 71), ('Johanna', 'Larsson', 183), ('Margarita', 'Gasparyan', 157), ('Angelique', 'Kerber', 76),
+	   ('Petra', 'Kvitova', 55), ('Yanina', 'Wickmayer', 20), ('Yafan', 'Wang', 42), ('Anna Karolina', 'Schmiedlova', 169),
+	   ('Anna', 'Blinkova', 157), ('Danielle', 'Collins', 203), ('Aryna', 'Sabalenka', 19), ('Naomi', 'Osaka', 98),
+	   ('Laura', 'Siegemund', 76), ('Monica', 'Niculescu', 156), ('Aliaksandra', 'Sasnovich', 19), ('Belinda', 'Bencic', 184),
+	   ('Timea', 'Babos', 89), ('Daria', 'Kasatkina', 157), ('Kiki', 'Bertens', 135), ('Kristyna', 'Pliskova', 55),
+	   ('Christina', 'McHale', 203), ('Harmony', 'Tan', 71), ('Marketa', 'Vondrousova', 55), ('Mihaela', 'Buzarnescu', 156),
+	   ('Anett', 'Kontaveit', 66), ('Katerina', 'Siniakova', 55), ('Lizette', 'Cabrera', 12), ('Ajla', 'Tomljanovic', 12),
+	   ('Alison', 'Van Uytvanck', 20), ('Lesia', 'Tsurenko', 199), ('Samantha', 'Stosur', 12), ('Caroline', 'Wozniacki', 56);

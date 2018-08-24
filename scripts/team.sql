@@ -47,6 +47,31 @@ VALUES ('Brazil', 1), ('Germany', 1), ('Argentina', 1),	('Portugal', 1),
 		('Oakland Raiders', 6),	('Philadelphia Eagles', 6),	('Pittsburgh Steelers', 6),	('San Francisco 49ers', 6),
 		('Seattle Seahawks', 6), ('Tampa Bay Buccaneers', 6), ('Tennessee Titans', 6), ('Washington Redskins', 6);
 
+INSERT INTO team (name, team_type_id, nation_id)
+VALUES ('Algeria', 1, 3), ('Cameroon', 1, 35), ('Ghana', 1, 77), ('Côte d''Ivoire', 1, 50),
+	   ('Honduras', 1, 87), ('United States', 1, 203), ('Chile', 1, 41), ('Ecuador', 1, 60),
+	   ('Bosnia and Herzegovina', 1, 26), ('Greece', 1, 79), ('Italy', 1, 96), ('Netherlands', 1, 135),
+	   ('South Africa', 1, 173), ('Slovenia', 1, 170), ('Paraguay', 1, 148), ('New Zealand', 1, 137),
+	   ('Slovakia', 1, 169), ('Korea DPR', 1, 102),
+	   ('Trinidad and Tobago', 1, 193), ('Angola', 1, 6), ('Czech Republic', 1, 55), ('Togo', 1, 191),
+	   ('Ukraine', 1, 199), ('Serbia and Montenegro', 1, 213),
+	   ('Republic of Ireland', 1, 155), ('Turkey', 1, 195), ('China PR', 1, 42),
+	   ('Scotland', 1, 163), ('Norway', 1, 142), ('Austria', 1, 13), ('Bulgaria', 1, 31),
+	   ('Yugoslavia', 1, 214), ('Jamaica', 1, 97), ('Romania', 1, 156), ('Bolivia', 1, 25),
+	   ('Soviet Union', 1, 216), ('United Arab Emirates', 1, 200), ('Czechoslovakia', 1, 217), ('Germany FR', 1, 215),
+	   ('Canada', 1, 36), ('Hungary', 1, 89), ('Northern Ireland', 1, 141), ('Iraq', 1, 94),
+	   ('El Salvador', 1, 62), ('Kuwait', 1, 105),
+	   ('Germany DR', 1, 218), ('Zaire', 1, 219), ('Haiti', 1, 86), ('Congo DR', 1, 47), ('Israel', 1, 95), ('Wales', 1, 208),
+	   ('Dutch East Indies', 1, 220), ('Indonesia', 1, 92), ('Cuba', 1, 52);
+
+INSERT INTO team (name, team_type_id, nation_id)
+VALUES ('Albania', 1, 2), ('Estonia', 1, 66), ('Finland', 1, 70), ('Cyprus', 1, 54),
+	   ('Lithuania', 1, 114), ('Montenegro', 1, 128), ('Andorra', 1, 5), ('Georgia', 1, 75),
+	   ('Kazakhstan', 1, 100), ('Latvia', 1, 108), ('Belarus', 1, 19), ('Luxembourg', 1, 115),
+	   ('Moldova', 1, 126), ('San Marino', 1, 160), ('Azerbaijan', 1, 14), ('Faroe Islands', 1, 68),
+	   ('Kosovo', 1, 104), ('Malta', 1, 122), ('Armenia', 1, 10), ('FYR Macedonia', 1, 72),
+	   ('Gibraltar', 1, 78), ('Liechtenstein', 1, 113);
+
 INSERT INTO team (name, team_type_id)
 VALUES ('Yuichi Sugita', 7), ('Geoffrey Blancaneaux', 7), ('Dominic Thiem', 7),	('Alex De Minaur', 7),
 	   ('Bjorn Fratangelo', 7), ('Ivo Karlovic', 7), ('Richard Gasquet', 7), ('Leonardo Mayer', 7),
@@ -79,10 +104,8 @@ VALUES ('Yuichi Sugita', 7), ('Geoffrey Blancaneaux', 7), ('Dominic Thiem', 7),	
 	   ('Nikoloz Basilashvili', 7), ('Jared Donaldson', 7), ('Ruben Bemelmans', 7), ('Lucas Pouille', 7),
 	   ('Thanasi Kokkinakis', 7), ('Janko Tipsarevic', 7), ('Gilles Muller', 7), ('Bernard Tomic', 7),
 	   ('Jack Sock', 7), ('Jordan Thompson', 7), ('Alexander Zverev', 7), ('Darian King', 7),
-	   ('Borna Coric', 7), ('Jiri Vesely', 7), ('Thomas Fabbiano', 7), ('John-Patrick Smith', 7);
-
-INSERT INTO team (name, team_type_id)
-VALUES ('Qualifier Player', null), ('Guido Andreozzi', 7), ('Mirza Basic', 7), ('Jason Kubler', 7),
+	   ('Borna Coric', 7), ('Jiri Vesely', 7), ('Thomas Fabbiano', 7), ('John-Patrick Smith', 7),
+	   ('Qualifier Player', null), ('Guido Andreozzi', 7), ('Mirza Basic', 7), ('Jason Kubler', 7),
 	   ('Denis Kudla', 7), ('Matteo Berrettini', 7), ('Andy Murray', 7), ('James Duckworth', 7),
 	   ('Roberto Carballes Baena', 7), ('Stefanos Tsitsipas', 7), ('Bradley Klahn', 7), ('Nicolas Jarry', 7),
 	   ('Peter Gojowczyk', 7), ('Milos Raonic', 7), ('Stan Wawrinka', 7), ('Marco Cecchinato', 7),
@@ -91,29 +114,34 @@ VALUES ('Qualifier Player', null), ('Guido Andreozzi', 7), ('Mirza Basic', 7), (
 	   ('Corentin Moutet', 7), ('Novak Djokovic', 7), ('Laslo Djere', 7), ('Michael Mmoh', 7),
 	   ('Jenson Brooksby', 7), ('Noah Rubin', 7), ('Yuki Bhambri', 7), ('Yoshihito Nishioka', 7);
 
-INSERT INTO team (name, team_type_id, nation_id)
-VALUES ('Algeria', 1, 3), ('Cameroon', 1, 35), ('Ghana', 1, 77), ('Côte d''Ivoire', 1, 50),
-		('Honduras', 1, 87), ('United States', 1, 203), ('Chile', 1, 41), ('Ecuador', 1, 60),
-		('Bosnia and Herzegovina', 1, 26), ('Greece', 1, 79), ('Italy', 1, 96), ('Netherlands', 1, 135),
-		('South Africa', 1, 173), ('Slovenia', 1, 170), ('Paraguay', 1, 148), ('New Zealand', 1, 137),
-		('Slovakia', 1, 169), ('Korea DPR', 1, 102),
-	('Trinidad and Tobago', 1, 193), ('Angola', 1, 6), ('Czech Republic', 1, 55), ('Togo', 1, 191),
-	('Ukraine', 1, 199), ('Serbia and Montenegro', 1, 213),
-	('Republic of Ireland', 1, 155), ('Turkey', 1, 195), ('China PR', 1, 42),
-	('Scotland', 1, 163), ('Norway', 1, 142), ('Austria', 1, 13), ('Bulgaria', 1, 31),
-	('Yugoslavia', 1, 214), ('Jamaica', 1, 97), ('Romania', 1, 156), ('Bolivia', 1, 25),
-	('Soviet Union', 1, 216), ('United Arab Emirates', 1, 200), ('Czechoslovakia', 1, 217), ('Germany FR', 1, 215),
-	('Canada', 1, 36), ('Hungary', 1, 89), ('Northern Ireland', 1, 141), ('Iraq', 1, 94),
-	('El Salvador', 1, 62), ('Kuwait', 1, 105),
-	('Germany DR', 1, 218), ('Zaire', 1, 219), ('Haiti', 1, 86), ('Congo DR', 1, 47), ('Israel', 1, 95), ('Wales', 1, 208),
-	('Dutch East Indies', 1, 220), ('Indonesia', 1, 92), ('Cuba', 1, 52);
-
-INSERT INTO team (name, team_type_id, nation_id)
-VALUES ('Albania', 1, 2), ('Estonia', 1, 66), ('Finland', 1, 70), ('Cyprus', 1, 54),
-	('Lithuania', 1, 114), ('Montenegro', 1, 128), ('Andorra', 1, 5), ('Georgia', 1, 75),
-	('Kazakhstan', 1, 100), ('Latvia', 1, 108), ('Belarus', 1, 19), ('Luxembourg', 1, 115),
-	('Moldova', 1, 126), ('San Marino', 1, 160), ('Azerbaijan', 1, 14), ('Faroe Islands', 1, 68),
-	('Kosovo', 1, 104), ('Malta', 1, 122), ('Armenia', 1, 10), ('FYR Macedonia', 1, 72),
-	('Gibraltar', 1, 78), ('Liechtenstein', 1, 113);
+INSERT INTO team (name, team_type_id)
+VALUES ('Simona Halep', 8), ('Kaia Kanepi', 8), ('Dalila Jakupovic', 8), ('Vania King', 8),
+	   ('Natalia Vikhlyantseva', 8), ('Rebecca Peterson', 8), ('Anastasia Pavlyuchenkova', 8), ('Serena Williams', 8),
+	   ('Magda Linette', 8), ('Caroline Dolehide', 8), ('Carina Witthoeft', 8), ('Camila Giorgi', 8),
+	   ('Whitney Osuigwe', 8), ('Svetlana Kuznetsova', 8), ('Venus Williams', 8), ('Garbiñe Muguruza', 8),
+	   ('Shuai Zhang', 8), ('Dayana Yastremska', 8), ('Petra Martic', 8), ('Lucie Safarova', 8),
+	   ('Ashleigh Barty', 8), ('Maria Sakkari', 8), ('Asia Muhammad', 8), ('Luksika Kumkhum', 8),
+	   ('Sofia Kenin', 8), ('Ana Bogdan', 8), ('Zarina Diyas', 8), ('Karolina Pliskova', 8),
+	   ('Sloane Stephens', 8), ('Evgeniya Rodina', 8), ('Victoria Azarenka', 8), ('Viktoria Kuzmova', 8),
+	   ('Sara Sorribes Tormo', 8), ('Daria Gavrilova', 8), ('Barbora Strycova', 8), ('Kateryna Kozlova', 8),
+	   ('Lara Arruabarrena', 8), ('Verao Lapko', 8), ('Kateryna Bondarenko', 8), ('Kurumi Nara', 8),
+	   ('Elise Mertens', 8), ('Julia Goerges', 8), ('Ekaterina Makarova', 8), ('Polona Hercog', 8),
+	   ('Claire Liu', 8), ('Donna Vekic', 8), ('Anastasija Sevastova', 8), ('Magdalena Rybarikova', 8),
+	   ('Qiang Wang', 8), ('Jennifer Brady', 8), ('Irina-Camelia Begu', 8), ('Agnieszka Radwanska', 8),
+	   ('Tatjana Maria', 8), ('Sachia Vickery', 8), ('Elina Svitolina', 8), ('Caroline Garcia', 8),
+	   ('Johanna Konta', 8), ('Monica Puig', 8), ('Stefanie Voegele', 8), ('Kristina Mladenovic', 8),
+	   ('Tamara Zidansek', 8), ('Carla Suarez Navarro', 8), ('Maria Sharapova', 8), ('Sorana Cirstea', 8),
+	   ('Alison Riske', 8), ('Taylor Townsend', 8), ('Amanda Anisimova', 8), ('Andrea Petkovic', 8),
+	   ('Jelena Ostapenko', 8), ('Madison Keys', 8), ('Pauline Parmentier', 8), ('Yulia Putintseva', 8),
+	   ('Bernarda Pera', 8), ('Timea Bacsinszky', 8), ('Aleksandra Krunic', 8), ('Kirsten Flipkens', 8),
+	   ('Coco Vandeweghe', 8), ('Dominika Cibulkova', 8), ('Ekaterina Alexandrova', 8), ('Su-Wei Hsieh', 8),
+	   ('Alize Cornet', 8), ('Johanna Larsson', 8), ('Margarita Gasparyan', 8), ('Angelique Kerber', 8),
+	   ('Petra Kvitova', 8), ('Yanina Wickmayer', 8), ('Yafan Wang', 8), ('Anna Karolina Schmiedlova', 8),
+	   ('Anna Blinkova', 8), ('Danielle Collins', 8), ('Aryna Sabalenka', 8), ('Naomi Osaka', 8),
+	   ('Laura Siegemund', 8), ('Monica Niculescu', 8), ('Aliaksandra Sasnovich', 8), ('Belinda Bencic', 8),
+	   ('Timea Babos', 8), ('Daria Kasatkina', 8), ('Kiki Bertens', 8), ('Kristyna Pliskova', 8),
+	   ('Christina McHale', 8), ('Harmony Tan', 8), ('Marketa Vondrousova', 8), ('Mihaela Buzarnescu', 8),
+	   ('Anett Kontaveit', 8), ('Katerina Siniakova', 8), ('Lizette Cabrera', 8), ('Ajla Tomljanovic', 8),
+	   ('Alison Van Uytvanck', 8), ('Lesia Tsurenko', 8), ('Samantha Stosur', 8), ('Caroline Wozniacki', 8);
 
 DROP TRIGGER before_insert_team;
