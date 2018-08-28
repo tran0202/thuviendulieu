@@ -1289,7 +1289,7 @@
                         $row['match_order'], $row['bracket_order'], $row['round'], $row['stage'], $row['group_name'], $row['parent_group_name'], $row['second_round_group_name'],
                         $row['tournament_id'], $row['tournament_name'],
                         $row['points_for_win'], $row['golden_goal_rule'], $row['waiting_home_team'], $row['waiting_away_team'],
-                        $home_team_score, $away_team_score,
+                        $home_team_score, $away_team_score, 0, 0,
                         $row['home_team_extra_time_score'], $row['away_team_extra_time_score'],
                         $row['home_team_penalty_score'], $row['away_team_penalty_score'],
                         '', '', $row['home_logo'], $row['away_logo']);

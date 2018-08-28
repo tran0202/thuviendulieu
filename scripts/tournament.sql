@@ -43,6 +43,10 @@ VALUES ('1986 FIFA World Cup Mexico', '1986-05-31', '1986-06-29', 1, '1986.png',
 INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_filename)
 VALUES ('2018/19 UEFA Nations League', '2018-09-06', '2019-06-09', 4, 'UEFA_Nations_League.png');
 
+INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_filename)
+VALUES ('2018/19 UEFA Champions League', '2018-06-26', '2019-06-01', 6, 'UCL.svg'),
+	   ('2018/19 UEFA Europa League', '2018-06-28', '2019-05-29', 7, 'UEL.svg');
+
 INSERT INTO tournament (name, start_date, end_date)
 VALUES ('2017 US Open', '2017-08-28', '2017-09-10');
 
@@ -51,7 +55,8 @@ VALUES ('2018 US Open', '2018-08-27', '2017-09-09');
 
 INSERT INTO tournament (name, start_date, end_date, tournament_type_id, parent_tournament_id)
 VALUES ('2017 US Open Men''s Singles', '2017-08-08', '2017-09-10', 3, 3),
-	   ('2018 US Open Men''s Singles', '2018-08-27', '2018-09-09', 3, 26);
+	   ('2018 US Open Men''s Singles', '2018-08-27', '2018-09-09', 3, 26),
+	   ('2018 US Open Women''s Singles', '2018-08-27', '2018-09-09', 5, 26);
 
 INSERT INTO tournament (name, start_date, end_date, tournament_type_id, parent_tournament_id)
 VALUES ('2018 US Open Women''s Singles', '2018-08-27', '2018-09-09', 5, 26);

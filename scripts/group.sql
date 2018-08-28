@@ -65,6 +65,29 @@ VALUES ('First Stage', 4),
 	('MatchDay 5', 5),
 	('MatchDay 6', 5);
 
+INSERT INTO `group` (name, group_type_id)
+VALUES ('Qualifying Stage', 4),
+	   ('Preliminary Round 1', 5),
+	   ('Preliminary Round 2', 5),
+	   ('Preliminary Round - 1st Leg', 5),
+	   ('Preliminary Round - 2nd Leg', 5),
+	   ('Qualifying Round 1 - 1st Leg', 5),
+	   ('Qualifying Round 1 - 2nd Leg', 5),
+	   ('Qualifying Round 2 - 1st Leg', 5),
+	   ('Qualifying Round 2 - 2nd Leg', 5),
+	   ('Qualifying Round 3 - 1st Leg', 5),
+	   ('Qualifying Round 3 - 2nd Leg', 5),
+	   ('Playoff Round - 1st Leg', 5),
+	   ('Playoff Round - 2nd Leg', 5),
+	   ('Round of 32 - 1st Leg', 5),
+	   ('Round of 32 - 2nd Leg', 5),
+	   ('Round of 16 - 1st Leg', 5),
+	   ('Round of 16 - 2nd Leg', 5),
+	   ('Quarterfinals - 1st Leg', 5),
+	   ('Quarterfinals - 2nd Leg', 5),
+	   ('Semifinals - 1st Leg', 5),
+	   ('Semifinals - 2nd Leg', 5);
+
 INSERT INTO `group` (name, long_name, group_type_id)
 VALUES ('Preseason', null, 4),
 	('Regular Season', null, 4),

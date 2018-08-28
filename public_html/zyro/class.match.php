@@ -6,6 +6,8 @@
         private $home_team_name;
         private $home_team_code;
         private $home_team_score;
+        private $home_team_first_leg_score;
+        private $home_team_aggregate_score;
         private $home_team_extra_time_score;
         private $home_team_penalty_score;
         private $home_team_replay_score;
@@ -15,6 +17,8 @@
         private $away_team_name;
         private $away_team_code;
         private $away_team_score;
+        private $away_team_first_leg_score;
+        private $away_team_aggregate_score;
         private $away_team_extra_time_score;
         private $away_team_penalty_score;
         private $away_team_replay_score;
@@ -75,7 +79,7 @@
             $match_order, $bracket_order, $round, $stage, $group_name, $parent_group_name, $second_round_group_name,
             $tournament_id, $tournament_name, $points_for_win, $golden_goal_rule,
             $waiting_home_team, $waiting_away_team,
-            $home_team_score, $away_team_score,
+            $home_team_score, $away_team_score, $home_team_first_leg_score, $away_team_first_leg_score,
             $home_team_extra_time_score, $away_team_extra_time_score,
             $home_team_penalty_score, $away_team_penalty_score,
             $home_flag, $away_flag, $home_logo, $away_logo)
@@ -89,6 +93,8 @@
             $m->away_team_code = $away_team_code;
             $m->home_team_score = $home_team_score;
             $m->away_team_score = $away_team_score;
+            $m->home_team_first_leg_score = $home_team_first_leg_score;
+            $m->away_team_first_leg_score = $away_team_first_leg_score;
             $m->home_team_extra_time_score = $home_team_extra_time_score;
             $m->away_team_extra_time_score = $away_team_extra_time_score;
             $m->home_team_penalty_score = $home_team_penalty_score;
@@ -133,7 +139,7 @@
                 '', '', '',
                 0, '', 0,'',
                 '', '',
-                $home_team_score, $away_team_score,
+                $home_team_score, $away_team_score, 0, 0,
                 0, 0,
                 0, 0,
                 '', '', '', '');
@@ -246,6 +252,38 @@
         public function setHomeTeamScore($home_team_score)
         {
             $this->home_team_score = $home_team_score;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getHomeTeamFirstLegScore()
+        {
+            return $this->home_team_first_leg_score;
+        }
+
+        /**
+         * @param mixed $home_team_first_leg_score
+         */
+        public function setHomeTeamFirstLegScore($home_team_first_leg_score)
+        {
+            $this->home_team_first_leg_score = $home_team_first_leg_score;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getHomeTeamAggregateScore()
+        {
+            return $this->home_team_aggregate_score;
+        }
+
+        /**
+         * @param mixed $home_team_aggregate_score
+         */
+        public function setHomeTeamAggregateScore($home_team_aggregate_score)
+        {
+            $this->home_team_aggregate_score = $home_team_aggregate_score;
         }
 
         /**
@@ -390,6 +428,38 @@
         public function setAwayTeamScore($away_team_score)
         {
             $this->away_team_score = $away_team_score;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getAwayTeamFirstLegScore()
+        {
+            return $this->away_team_first_leg_score;
+        }
+
+        /**
+         * @param mixed $away_team_first_leg_score
+         */
+        public function setAwayTeamFirstLegScore($away_team_first_leg_score)
+        {
+            $this->away_team_first_leg_score = $away_team_first_leg_score;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getAwayTeamAggregateScore()
+        {
+            return $this->away_team_aggregate_score;
+        }
+
+        /**
+         * @param mixed $away_team_aggregate_score
+         */
+        public function setAwayTeamAggregateScore($away_team_aggregate_score)
+        {
+            $this->away_team_aggregate_score = $away_team_aggregate_score;
         }
 
         /**

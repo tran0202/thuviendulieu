@@ -9,10 +9,12 @@
         '5'	=> array('id' => '6', 'alias' => 'WorldCupArchive', 'file' => 'world_cup_archive.php','controllers' => array()),
         '6'	=> array('id' => '7', 'alias' => 'UEFANationsLeagueStandings', 'file' => 'uefa_nations_league_standings.php','controllers' => array()),
         '7'	=> array('id' => '8', 'alias' => 'UEFANationsLeagueMatches', 'file' => 'uefa_nations_league_matches.php','controllers' => array()),
-        '8'	=> array('id' => '9', 'alias' => 'NFL', 'file' => 'football.php','controllers' => array()),
-        '9'	=> array('id' => '10', 'alias' => 'NFLStandings', 'file' => 'football_standings.php','controllers' => array()),
-        '10' => array('id' => '11', 'alias' => 'Tennis', 'file' => 'tennis.php','controllers' => array()),
-        '11' => array('id' => '12', 'alias' => 'TennisTournament', 'file' => 'tennis_tournament.php','controllers' => array())
+        '8'	=> array('id' => '9', 'alias' => 'UEFAChampionsLeagueStandings', 'file' => 'uefa_champions_league_standings.php','controllers' => array()),
+        '9'	=> array('id' => '10', 'alias' => 'UEFAChampionsLeagueMatches', 'file' => 'uefa_champions_league_matches.php','controllers' => array()),
+        '10'	=> array('id' => '11', 'alias' => 'NFL', 'file' => 'football.php','controllers' => array()),
+        '11'	=> array('id' => '12', 'alias' => 'NFLStandings', 'file' => 'football_standings.php','controllers' => array()),
+        '12' => array('id' => '13', 'alias' => 'Tennis', 'file' => 'tennis.php','controllers' => array()),
+        '13' => array('id' => '14', 'alias' => 'TennisTournament', 'file' => 'tennis_tournament.php','controllers' => array())
 //		'4'	=> array('id' => '4', 'alias' => 'New-Link', 'file' => 'tennis.php','controllers' => array())
 	);
 	$forms = array(

@@ -4,6 +4,8 @@ CREATE TABLE IF NOT EXISTS `match` (
 	home_team_score TINYINT UNSIGNED,
 	away_team_id INT,
 	away_team_score TINYINT UNSIGNED,
+	home_team_first_leg_score TINYINT UNSIGNED,
+	away_team_first_leg_score TINYINT UNSIGNED,
 	tournament_id INT NOT NULL,
 	match_date DATE,
 	match_time TIME,
@@ -49,7 +51,8 @@ CREATE TABLE IF NOT EXISTS `match` (
 );
 
 ALTER TABLE `match`
-	ADD COLUMN group_id INT AFTER stage_order;
+	ADD COLUMN home_team_first_leg_score TINYINT UNSIGNED AFTER stage_order,
+	ADD COLUMN away_team_first_leg_score TINYINT UNSIGNED AFTER stage_order;
 
 ALTER TABLE `match`
 	ADD CONSTRAINT match_ibfk_6
@@ -1606,3 +1609,34 @@ FROM `match` m
 WHERE tou.tournament_type_id = 2
   AND m.tournament_id=2
 ORDER BY stage_id, match_order, match_date, match_time;
+
+SELECT t.id AS home_team_id, UCASE(t.name) AS home_team_name, home_team_score, n.flag_filename AS home_flag, tl.logo_filename AS home_logo, n.code AS home_team_code,
+	   t2.id AS away_team_id, UCASE(t2.name) AS away_team_name, away_team_score, n2.flag_filename AS away_flag, tl2.logo_filename AS away_logo, n2.code AS away_team_code,
+	   pt.id AS home_parent_team_id, UCASE(pt.name) AS home_parent_team_name, pt2.id AS away_parent_team_id, UCASE(pt2.name) AS away_parent_team_name,
+	   home_team_first_leg_score, away_team_first_leg_score,
+	   home_team_extra_time_score, away_team_extra_time_score, home_team_penalty_score, away_team_penalty_score,
+	   DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date,
+	   TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order, bracket_order,
+	   waiting_home_team, waiting_away_team,
+	   g.name AS round, g2.name AS stage,
+	   g3.name AS group_name, g4.name AS parent_group_name, g5.name AS second_round_group_name,
+	   m.tournament_id, tou.name AS tournament_name, tou.points_for_win, tou.golden_goal_rule
+FROM `match` m
+		 LEFT JOIN tournament tou ON tou.id = m.tournament_id
+		 LEFT JOIN team t ON t.id = m.home_team_id
+		 LEFT JOIN team t2 ON t2.id = m.away_team_id
+		 LEFT JOIN `group` g ON g.id = m.round_id
+		 LEFT JOIN `group` g2 ON g2.id = m.stage_id
+		 LEFT JOIN team_tournament tt ON (tt.team_id = m.home_team_id AND tt.tournament_id = m.tournament_id)
+		 LEFT JOIN `group` g3 ON g3.id = tt.group_id
+		 LEFT JOIN `group` g4 ON g4.id = tt.parent_group_id
+		 LEFT JOIN `group` g5 ON g5.id = m.group_id
+		 LEFT JOIN nation n ON n.id = t.nation_id
+		 LEFT JOIN nation n2 ON n2.id = t2.nation_id
+		 LEFT JOIN team_logo tl ON tl.team_id = t.id
+		 LEFT JOIN team_logo tl2 ON tl2.team_id = t2.id
+		 LEFT JOIN team pt ON pt.id = t.parent_team_id
+		 LEFT JOIN team pt2 ON pt2.id = t2.parent_team_id
+WHERE tou.tournament_type_id = 6
+  AND m.tournament_id = 29
+ORDER BY stage_id, match_order, match_date, match_time

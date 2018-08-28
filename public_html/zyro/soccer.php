@@ -17,7 +17,7 @@
         <div class="vbox wb_container" id="wb_main">
             <div class="wb_cont_inner">
                 <div class="col-sm-12">
-                    <p class="wb-stl-highlight text-center">UEFA Nations League 2018/19</p>
+                    <p class="wb-stl-highlight text-center">2018/19 UEFA Nations League</p>
                     <p class="wb-stl-normal"> </p>
                 </div>
                 <div class="col-sm-12">
@@ -29,6 +29,15 @@
                 <div class="col-sm-12">
                     <h5 class="wb-stl-subtitle2 text-center">
                         <a href="UEFANationsLeagueStandings">Standings</a> | <a href="UEFANationsLeagueMatches">Matches</a>
+                    </h5>
+                </div>
+                <div class="col-sm-12 margin-top-lg padding-top-lg border-top-gray5">
+                    <p class="wb-stl-highlight text-center">2018/19 UEFA Champions League</p>
+                    <p class="wb-stl-normal"> </p>
+                </div>
+                <div class="col-sm-12">
+                    <h5 class="wb-stl-subtitle2 text-center">
+                        <a href="UEFAChampionsLeagueMatches">Matches</a>
                     </h5>
                 </div>
 <!--                <div class="col-sm-12 margin-top-lg padding-top-lg border-top-gray5">-->
