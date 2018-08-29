@@ -176,6 +176,33 @@
             return $tournament;
         }
 
+        public static function getUELTournamentMatches($tournament_id, $fantasy) {
+
+            $tournament = Tournament::CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy);
+
+            self::getTournamentProfile($tournament);
+            Soccer::getSoccerTeams($tournament);
+            Soccer::getUELMatches($tournament);
+
+            if ($fantasy == Fantasy::All) {
+//                Soccer::getStanding($tournament);
+                Soccer::getUELMatchesHtml($tournament, false);
+            }
+            elseif ($fantasy == Fantasy::Half) {
+//                Soccer::getStanding($tournament);
+                Soccer::getUELMatchesHtml($tournament, false);
+//                Soccer::getSoccerPopoverHtml($tournament);
+            }
+            else {
+//                Soccer::getStanding($tournament);
+                Soccer::getUELMatchesHtml($tournament, false);
+            }
+//
+//            Soccer::getUNLGroupModalHtml($tournament);
+
+            return $tournament;
+        }
+
         public static function getAllTimeSoccerTournament() {
 
             $tournament = Tournament::CreateSoccerTournament();
@@ -537,6 +564,11 @@
         }
 
         public function getUCLTournamentHeader() {
+            $output = '<img height="100" src="/images/club_logos/'.self::getLogoFilename().'">&nbsp;&nbsp;'.self::getName();
+            return $output;
+        }
+
+        public function getUELTournamentHeader() {
             $output = '<img height="100" src="/images/club_logos/'.self::getLogoFilename().'">&nbsp;&nbsp;'.self::getName();
             return $output;
         }

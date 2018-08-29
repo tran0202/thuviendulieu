@@ -2686,6 +2686,7 @@
         }
 
         public static function getDefaultTabScript($week_start_date, $tab_array) {
+            if (sizeof($tab_array) == 0) return '';
             $result = $tab_array[0];
             for ($i = 0; $i < sizeof($week_start_date); $i++) {
                 $now = date_create('now');
@@ -3041,7 +3042,7 @@
             $matches = self::getMatchArrayByDate($matches);
             $output = '';
             $output .= '<div class="col-sm-12 margin-top-sm">
-                        <ul class="nav nav-tabs nav-justified h2-ff6" id="UNLMatchDayTab" role="tablist">';
+                        <ul class="nav nav-tabs nav-justified h3-ff6" id="UNLMatchDayTab" role="tablist">';
             foreach ($matches as $rounds => $_round) {
                 $round_name = str_replace(' ', '', $rounds);
                 $output .= '<li class="nav-item">
@@ -3108,14 +3109,14 @@
                                 }
                                 else {
                                     if ($_match->getHomeTeamPenaltyScore() != 0 || $_match->getAwayTeamPenaltyScore() != 0) {
-                                        $penalty_score = ' '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore().' pen';
+                                        $penalty_score .= ' '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore().' pen';
                                     }
                                 }
                             }
                             if ($_match->getHomeTeamFirstLegScore() != null) {
                                 $home_total_score = $_match->getHomeTeamFirstLegScore() + $_match->getHomeTeamScore();
                                 $away_total_score = $_match->getAwayTeamFirstLegScore() + $_match->getAwayTeamScore();
-                                $aggregate_score .= 'Agg: '.$home_total_score.'-'.$away_total_score;
+                                $aggregate_score .= 'Agg '.$home_total_score.'-'.$away_total_score;
                                 if ($home_total_score > $away_total_score) {
                                     $away_team_color = 'gray3';
                                 }
@@ -3124,10 +3125,32 @@
                                 }
                                 else {
                                     if ($_match->getHomeTeamFirstLegScore() > $_match->getAwayTeamScore()) {
-                                        $aggregate_score .= ' '.$home_team_tmp.' win on away goals';
+                                        $aggregate_score .= ' >> '.$home_team_tmp.' win on away goals';
+                                        $away_team_color = 'gray3';
                                     }
                                     elseif ($_match->getHomeTeamFirstLegScore() < $_match->getAwayTeamScore()) {
-                                        $aggregate_score .= ' '.$away_team_tmp.' win on away goals';
+                                        $aggregate_score .= ' >> '.$away_team_tmp.' win on away goals';
+                                        $home_team_color = 'gray3';
+                                    }
+                                    else {
+                                        if ($_match->getHomeTeamExtraTimeScore() > $_match->getAwayTeamExtraTimeScore()) {
+                                            $aggregate_score .= ' >> '.$home_team_tmp.' win after extra time';
+                                            $away_team_color = 'gray3';
+                                        }
+                                        elseif ($_match->getHomeTeamExtraTimeScore() < $_match->getAwayTeamExtraTimeScore()) {
+                                            $aggregate_score .= ' >> '.$away_team_tmp.' win after extra time';
+                                            $home_team_color = 'gray3';
+                                        }
+                                        else {
+                                            if ($_match->getHomeTeamPenaltyScore() > $_match->getAwayTeamPenaltyScore()) {
+                                                $aggregate_score .= ' >> '.$home_team_tmp.' win on penalties '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore();
+                                                $away_team_color = 'gray3';
+                                            }
+                                            else {
+                                                $aggregate_score .= ' >> '.$away_team_tmp.' win on penalties '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore();
+                                                $home_team_color = 'gray3';
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -3147,7 +3170,7 @@
                                         <div class="col-sm-1 padding-lr-xs">'.$_match->getMatchTimeFmt().' '.$time_zone.'<br>'.$group_text.'</div>
                                         <div class="col-sm-4 h2-ff3 padding-left-xs padding-right-xs text-right '.$home_team_color.'">'.$home_team_tmp.$advance_popover.'</div>
                                         <div class="col-sm-1 padding-lr-xs padding-top-xs text-right" style="width:40px">'.$home_logo_tmp.'</div>
-                                        <div class="col-sm-1 h2-ff3 padding-left-md padding-right-xs text-center">'.$score.'<br>'.$penalty_score.'</div>
+                                        <div class="col-sm-1 h2-ff3 padding-left-md padding-right-xs text-center">'.$score.'</div>
                                         <div class="col-sm-1 padding-lr-md padding-top-xs text-right" style="width:40px">'.$away_logo_tmp.'</div>
                                         <div class="col-sm-4 h2-ff3 padding-right-xs '.$away_team_color.'" style="padding-left:30px">'.$advance_popover2.$away_team_tmp.'</div>
                                     </div>';
@@ -3230,14 +3253,14 @@
                             }
                             else {
                                 if ($_match->getHomeTeamPenaltyScore() != 0 || $_match->getAwayTeamPenaltyScore() != 0) {
-                                    $penalty_score = ' '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore().' pen';
+                                    $penalty_score .= ' '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore().' pen';
                                 }
                             }
                         }
                         if ($_match->getHomeTeamFirstLegScore() != null) {
                             $home_total_score = $_match->getHomeTeamFirstLegScore() + $_match->getHomeTeamScore();
                             $away_total_score = $_match->getAwayTeamFirstLegScore() + $_match->getAwayTeamScore();
-                            $aggregate_score .= 'Agg: '.$home_total_score.'-'.$away_total_score;
+                            $aggregate_score .= 'Agg '.$home_total_score.'-'.$away_total_score;
                             if ($home_total_score > $away_total_score) {
                                 $away_team_color = 'gray3';
                             }
@@ -3246,10 +3269,32 @@
                             }
                             else {
                                 if ($_match->getHomeTeamFirstLegScore() > $_match->getAwayTeamScore()) {
-                                    $aggregate_score .= ' '.$home_team_tmp.' win on away goals';
+                                    $aggregate_score .= ' >> '.$home_team_tmp.' win on away goals';
+                                    $away_team_color = 'gray3';
                                 }
                                 elseif ($_match->getHomeTeamFirstLegScore() < $_match->getAwayTeamScore()) {
-                                    $aggregate_score .= ' '.$away_team_tmp.' win on away goals';
+                                    $aggregate_score .= ' >> '.$away_team_tmp.' win on away goals';
+                                    $home_team_color = 'gray3';
+                                }
+                                else {
+                                    if ($_match->getHomeTeamExtraTimeScore() > $_match->getAwayTeamExtraTimeScore()) {
+                                        $aggregate_score .= ' >> '.$home_team_tmp.' win after extra time';
+                                        $away_team_color = 'gray3';
+                                    }
+                                    elseif ($_match->getHomeTeamExtraTimeScore() < $_match->getAwayTeamExtraTimeScore()) {
+                                        $aggregate_score .= ' >> '.$away_team_tmp.' win after extra time';
+                                        $home_team_color = 'gray3';
+                                    }
+                                    else {
+                                        if ($_match->getHomeTeamPenaltyScore() > $_match->getAwayTeamPenaltyScore()) {
+                                            $aggregate_score .= ' >> '.$home_team_tmp.' win on penalties '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore();
+                                            $away_team_color = 'gray3';
+                                        }
+                                        else {
+                                            $aggregate_score .= ' >> '.$away_team_tmp.' win on penalties '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore();
+                                            $home_team_color = 'gray3';
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -3269,7 +3314,7 @@
                                         <div class="col-sm-1 padding-lr-xs">'.$_match->getMatchTimeFmt().' '.$time_zone.'<br>'.$group_text.'</div>
                                         <div class="col-sm-4 h2-ff3 padding-left-xs padding-right-xs text-right '.$home_team_color.'">'.$home_team_tmp.$advance_popover.'</div>
                                         <div class="col-sm-1 padding-lr-xs padding-top-xs text-right" style="width:40px">'.$home_logo_tmp.'</div>
-                                        <div class="col-sm-1 h2-ff3 padding-left-md padding-right-xs text-center">'.$score.'<br>'.$penalty_score.'</div>
+                                        <div class="col-sm-1 h2-ff3 padding-left-md padding-right-xs text-center">'.$score.'</div>
                                         <div class="col-sm-1 padding-lr-md padding-top-xs text-right" style="width:40px">'.$away_logo_tmp.'</div>
                                         <div class="col-sm-4 h2-ff3 padding-right-xs '.$away_team_color.'" style="padding-left:30px">'.$advance_popover2.$away_team_tmp.'</div>
                                     </div>';
@@ -3297,6 +3342,47 @@
             return $output;
         }
 
+        public static function getUELMatchesHtml($tournament, $lookAheadPopover) {
+            $teams = self::getTeamArrayByName($tournament->getTeams());
+            $output = '';
+            $output .= '<div class="col-sm-12 margin-top-sm">';
+            $output .= self::getCollapseHtml('filter', 'Filter by', self::getUELFilterHead($tournament));
+            $output .= '<div class="tab-content" id="filter-tabContent">';
+            $output .= '<div class="tab-pane fade" id="All_content" role="tabpanel" aria-labelledby="All-tab">';
+            $output .= self::getUCLAllMatchesHtml($tournament, $lookAheadPopover);
+            $output .= '</div>';
+            foreach ($teams as $name => $_team) {
+                $team_tab = str_replace(' ', '', $name);
+                $output .= '<div class="tab-pane fade" id="'.$team_tab.'_content" role="tabpanel" aria-labelledby="'.$team_tab.'-tab">';
+                $output .= self::getUCLTeamMatchesHtml($tournament, $name, $lookAheadPopover);
+                $output .= '</div>';
+            }
+            $output .= '</div>';
+            $output .= '</div>';
+            $tournament->concatBodyHtml($output);
+        }
+
+        public static function getUELFilterHead($tournament) {
+            $teams = self::getTeamArrayByName($tournament->getTeams());
+            ksort($teams);
+            $output = '';
+            $output .= '<ul class="nav nav-tabs h6-ff6" id="UNLFilterTab" role="tablist">';
+            $output .= '<li class="nav-item">
+                                <a class="nav-link" id="All-tab" data-toggle="tab" href="#All_content" role="tab" aria-controls="All_content" aria-selected="true">
+                                    <img height="32" src="/images/club_logos/UEL.svg"><br>ALL EUROPA</a>
+                            </li>';
+            foreach ($teams as $name => $_team) {
+                $team_tab = str_replace(' ', '', $name);
+                $output .= '<li class="nav-item">
+                                <a class="nav-link" id="'.$team_tab.'-tab" data-toggle="tab" href="#'.$team_tab.'_content" 
+                                    role="tab" aria-controls="'.$team_tab.'_content" aria-selected="true">
+                                    <img height="32" src="/images/club_logos/'.$_team->getLogoFilename().'"><br>'.$name.'</a>
+                            </li>';
+            }
+            $output .= '</ul>';
+            return $output;
+        }
+
         public static function getWorldCupMatches($tournament) {
             self::getSoccerMatches($tournament, 1);
         }
@@ -3307,6 +3393,10 @@
 
         public static function getUCLMatches($tournament) {
             self::getSoccerMatches($tournament, 6);
+        }
+
+        public static function getUELMatches($tournament) {
+            self::getSoccerMatches($tournament, 7);
         }
 
         public static function getSoccerMatches($tournament, $tournament_type_id) {
