@@ -3001,6 +3001,7 @@
             $output .= '</div>';
             foreach ($teams as $name => $_team) {
                 $team_tab = str_replace(' ', '', $name);
+                $team_tab = str_replace('\'', '', $team_tab);
                 $output .= '<div class="tab-pane fade" id="'.$team_tab.'_content" role="tabpanel" aria-labelledby="'.$team_tab.'-tab">';
                 $output .= self::getUCLTeamMatchesHtml($tournament, $name, $lookAheadPopover);
                 $output .= '</div>';
@@ -3021,6 +3022,7 @@
                             </li>';
             foreach ($teams as $name => $_team) {
                 $team_tab = str_replace(' ', '', $name);
+                $team_tab = str_replace('\'', '', $team_tab);
                 $output .= '<li class="nav-item">
                                 <a class="nav-link" id="'.$team_tab.'-tab" data-toggle="tab" href="#'.$team_tab.'_content" 
                                     role="tab" aria-controls="'.$team_tab.'_content" aria-selected="true">
@@ -3098,41 +3100,64 @@
                         if (self::isGoldenGoalRule($_match->getGoldenGoalRule()) && $_match->getHomeTeamPenaltyScore() == '') $aet = ' gg';
                         if ($_match->getHomeTeamScore() != -1) {
                             $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
-                            if (self::isShowOvertimeScore($rounds) && $_match->getHomeTeamScore() == $_match->getAwayTeamScore()) {
-                                $score = ($_match->getHomeTeamScore()+$_match->getHomeTeamExtraTimeScore()).
-                                    '-'.($_match->getAwayTeamScore()+$_match->getAwayTeamExtraTimeScore());
-                                if ($_match->getHomeTeamExtraTimeScore() > $_match->getAwayTeamExtraTimeScore()) {
-                                    $aet .= $home_team_tmp.' win after extra time';
+                            if (self::isShowOvertimeScore($_match->getRound())) {
+                                if ($_match->getHomeTeamScore() > $_match->getAwayTeamScore()) {
+                                    $away_team_color = 'gray3';
                                 }
-                                elseif ($_match->getHomeTeamExtraTimeScore() < $_match->getAwayTeamExtraTimeScore()) {
-                                    $aet .= $away_team_tmp.' win after extra time';
+                                elseif ($_match->getHomeTeamScore() < $_match->getAwayTeamScore()) {
+                                    $home_team_color = 'gray3';
                                 }
                                 else {
-                                    if ($_match->getHomeTeamPenaltyScore() != 0 || $_match->getAwayTeamPenaltyScore() != 0) {
-                                        $penalty_score .= ' '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore().' pen';
+                                    $score = ($_match->getHomeTeamScore()+$_match->getHomeTeamExtraTimeScore()).
+                                        '-'.($_match->getAwayTeamScore()+$_match->getAwayTeamExtraTimeScore());
+                                    if ($_match->getHomeTeamExtraTimeScore() > $_match->getAwayTeamExtraTimeScore()) {
+                                        $aet .= $home_team_tmp.' win after extra time';
+                                        $away_team_color = 'gray3';
+                                    }
+                                    elseif ($_match->getHomeTeamExtraTimeScore() < $_match->getAwayTeamExtraTimeScore()) {
+                                        $aet .= $away_team_tmp.' win after extra time';
+                                        $home_team_color = 'gray3';
+                                    }
+                                    else {
+                                        if ($_match->getHomeTeamPenaltyScore() != 0 || $_match->getAwayTeamPenaltyScore() != 0) {
+                                            if ($_match->getHomeTeamPenaltyScore() > $_match->getAwayTeamPenaltyScore()) {
+                                                $aet .= $home_team_tmp.' win on penalties '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore();
+                                                $away_team_color = 'gray3';
+                                            }
+                                            else {
+                                                $aet .= $away_team_tmp.' win on penalties '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore();
+                                                $home_team_color = 'gray3';
+                                            }
+                                        }
                                     }
                                 }
                             }
                             if ($_match->getHomeTeamFirstLegScore() != null) {
                                 $home_total_score = $_match->getHomeTeamFirstLegScore() + $_match->getHomeTeamScore();
                                 $away_total_score = $_match->getAwayTeamFirstLegScore() + $_match->getAwayTeamScore();
-                                $aggregate_score .= 'Agg '.$home_total_score.'-'.$away_total_score;
                                 if ($home_total_score > $away_total_score) {
+                                    $aggregate_score .= 'Agg '.$home_total_score.'-'.$away_total_score;
                                     $away_team_color = 'gray3';
                                 }
                                 elseif ($home_total_score < $away_total_score) {
+                                    $aggregate_score .= 'Agg '.$home_total_score.'-'.$away_total_score;
                                     $home_team_color = 'gray3';
                                 }
                                 else {
                                     if ($_match->getHomeTeamFirstLegScore() > $_match->getAwayTeamScore()) {
+                                        $aggregate_score .= 'Agg '.$home_total_score.'-'.$away_total_score;
                                         $aggregate_score .= ' >> '.$home_team_tmp.' win on away goals';
                                         $away_team_color = 'gray3';
                                     }
                                     elseif ($_match->getHomeTeamFirstLegScore() < $_match->getAwayTeamScore()) {
+                                        $aggregate_score .= 'Agg '.$home_total_score.'-'.$away_total_score;
                                         $aggregate_score .= ' >> '.$away_team_tmp.' win on away goals';
                                         $home_team_color = 'gray3';
                                     }
                                     else {
+                                        $score = ($_match->getHomeTeamScore()+$_match->getHomeTeamExtraTimeScore()).
+                                            '-'.($_match->getAwayTeamScore()+$_match->getAwayTeamExtraTimeScore());
+                                        $aggregate_score .= 'Agg '.($home_total_score + $_match->getHomeTeamExtraTimeScore()).'-'.($away_total_score + $_match->getAwayTeamExtraTimeScore());
                                         if ($_match->getHomeTeamExtraTimeScore() > $_match->getAwayTeamExtraTimeScore()) {
                                             $aggregate_score .= ' >> '.$home_team_tmp.' win after extra time';
                                             $away_team_color = 'gray3';
@@ -3242,41 +3267,64 @@
                     if (self::isGoldenGoalRule($_match->getGoldenGoalRule()) && $_match->getHomeTeamPenaltyScore() == '') $aet = ' gg';
                     if ($_match->getHomeTeamScore() != -1) {
                         $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
-                        if (self::isShowOvertimeScore($_match->getRound()) && $_match->getHomeTeamScore() == $_match->getAwayTeamScore()) {
-                            $score = ($_match->getHomeTeamScore()+$_match->getHomeTeamExtraTimeScore()).
-                                '-'.($_match->getAwayTeamScore()+$_match->getAwayTeamExtraTimeScore());
-                            if ($_match->getHomeTeamExtraTimeScore() > $_match->getAwayTeamExtraTimeScore()) {
-                                $aet .= $home_team_tmp.' win after extra time';
+                        if (self::isShowOvertimeScore($_match->getRound())) {
+                            if ($_match->getHomeTeamScore() > $_match->getAwayTeamScore()) {
+                                $away_team_color = 'gray3';
                             }
-                            elseif ($_match->getHomeTeamExtraTimeScore() < $_match->getAwayTeamExtraTimeScore()) {
-                                $aet .= $away_team_tmp.' win after extra time';
+                            elseif ($_match->getHomeTeamScore() < $_match->getAwayTeamScore()) {
+                                $home_team_color = 'gray3';
                             }
                             else {
-                                if ($_match->getHomeTeamPenaltyScore() != 0 || $_match->getAwayTeamPenaltyScore() != 0) {
-                                    $penalty_score .= ' '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore().' pen';
+                                $score = ($_match->getHomeTeamScore()+$_match->getHomeTeamExtraTimeScore()).
+                                    '-'.($_match->getAwayTeamScore()+$_match->getAwayTeamExtraTimeScore());
+                                if ($_match->getHomeTeamExtraTimeScore() > $_match->getAwayTeamExtraTimeScore()) {
+                                    $aet .= $home_team_tmp.' win after extra time';
+                                    $away_team_color = 'gray3';
+                                }
+                                elseif ($_match->getHomeTeamExtraTimeScore() < $_match->getAwayTeamExtraTimeScore()) {
+                                    $aet .= $away_team_tmp.' win after extra time';
+                                    $home_team_color = 'gray3';
+                                }
+                                else {
+                                    if ($_match->getHomeTeamPenaltyScore() != 0 || $_match->getAwayTeamPenaltyScore() != 0) {
+                                        if ($_match->getHomeTeamPenaltyScore() > $_match->getAwayTeamPenaltyScore()) {
+                                            $aet .= $home_team_tmp.' win on penalties '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore();
+                                            $away_team_color = 'gray3';
+                                        }
+                                        else {
+                                            $aet .= $away_team_tmp.' win on penalties '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore();
+                                            $home_team_color = 'gray3';
+                                        }
+                                    }
                                 }
                             }
                         }
                         if ($_match->getHomeTeamFirstLegScore() != null) {
                             $home_total_score = $_match->getHomeTeamFirstLegScore() + $_match->getHomeTeamScore();
                             $away_total_score = $_match->getAwayTeamFirstLegScore() + $_match->getAwayTeamScore();
-                            $aggregate_score .= 'Agg '.$home_total_score.'-'.$away_total_score;
                             if ($home_total_score > $away_total_score) {
+                                $aggregate_score .= 'Agg '.$home_total_score.'-'.$away_total_score;
                                 $away_team_color = 'gray3';
                             }
                             elseif ($home_total_score < $away_total_score) {
+                                $aggregate_score .= 'Agg '.$home_total_score.'-'.$away_total_score;
                                 $home_team_color = 'gray3';
                             }
                             else {
                                 if ($_match->getHomeTeamFirstLegScore() > $_match->getAwayTeamScore()) {
+                                    $aggregate_score .= 'Agg '.$home_total_score.'-'.$away_total_score;
                                     $aggregate_score .= ' >> '.$home_team_tmp.' win on away goals';
                                     $away_team_color = 'gray3';
                                 }
                                 elseif ($_match->getHomeTeamFirstLegScore() < $_match->getAwayTeamScore()) {
+                                    $aggregate_score .= 'Agg '.$home_total_score.'-'.$away_total_score;
                                     $aggregate_score .= ' >> '.$away_team_tmp.' win on away goals';
                                     $home_team_color = 'gray3';
                                 }
                                 else {
+                                    $score = ($_match->getHomeTeamScore()+$_match->getHomeTeamExtraTimeScore()).
+                                        '-'.($_match->getAwayTeamScore()+$_match->getAwayTeamExtraTimeScore());
+                                    $aggregate_score .= 'Agg '.($home_total_score + $_match->getHomeTeamExtraTimeScore()).'-'.($away_total_score + $_match->getAwayTeamExtraTimeScore());
                                     if ($_match->getHomeTeamExtraTimeScore() > $_match->getAwayTeamExtraTimeScore()) {
                                         $aggregate_score .= ' >> '.$home_team_tmp.' win after extra time';
                                         $away_team_color = 'gray3';
@@ -3353,6 +3401,7 @@
             $output .= '</div>';
             foreach ($teams as $name => $_team) {
                 $team_tab = str_replace(' ', '', $name);
+                $team_tab = str_replace('\'', '', $team_tab);
                 $output .= '<div class="tab-pane fade" id="'.$team_tab.'_content" role="tabpanel" aria-labelledby="'.$team_tab.'-tab">';
                 $output .= self::getUCLTeamMatchesHtml($tournament, $name, $lookAheadPopover);
                 $output .= '</div>';
@@ -3373,6 +3422,7 @@
                             </li>';
             foreach ($teams as $name => $_team) {
                 $team_tab = str_replace(' ', '', $name);
+                $team_tab = str_replace('\'', '', $team_tab);
                 $output .= '<li class="nav-item">
                                 <a class="nav-link" id="'.$team_tab.'-tab" data-toggle="tab" href="#'.$team_tab.'_content" 
                                     role="tab" aria-controls="'.$team_tab.'_content" aria-selected="true">
