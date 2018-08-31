@@ -86,7 +86,8 @@ VALUES ('Qualifying Stage', 4),
 	   ('Quarterfinals - 1st Leg', 5),
 	   ('Quarterfinals - 2nd Leg', 5),
 	   ('Semifinals - 1st Leg', 5),
-	   ('Semifinals - 2nd Leg', 5);
+	   ('Semifinals - 2nd Leg', 5),
+	   ('Knockout Stage', 4);
 
 INSERT INTO `group` (name, long_name, group_type_id)
 VALUES ('Preseason', null, 4),

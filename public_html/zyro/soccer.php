@@ -37,7 +37,7 @@
                 </div>
                 <div class="col-sm-12">
                     <h5 class="wb-stl-subtitle2 text-center">
-                        <a href="UEFAChampionsLeagueMatches">Matches</a>
+                        <a href="UEFAChampionsLeagueStandings">Standings</a> | <a href="UEFAChampionsLeagueMatches">Matches</a>
                     </h5>
                 </div>
                 <div class="col-sm-12 margin-top-lg padding-top-lg border-top-gray5">

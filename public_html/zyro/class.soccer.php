@@ -3002,6 +3002,7 @@
             foreach ($teams as $name => $_team) {
                 $team_tab = str_replace(' ', '', $name);
                 $team_tab = str_replace('\'', '', $team_tab);
+                $team_tab = str_replace('.', '', $team_tab);
                 $output .= '<div class="tab-pane fade" id="'.$team_tab.'_content" role="tabpanel" aria-labelledby="'.$team_tab.'-tab">';
                 $output .= self::getUCLTeamMatchesHtml($tournament, $name, $lookAheadPopover);
                 $output .= '</div>';
@@ -3023,6 +3024,7 @@
             foreach ($teams as $name => $_team) {
                 $team_tab = str_replace(' ', '', $name);
                 $team_tab = str_replace('\'', '', $team_tab);
+                $team_tab = str_replace('.', '', $team_tab);
                 $output .= '<li class="nav-item">
                                 <a class="nav-link" id="'.$team_tab.'-tab" data-toggle="tab" href="#'.$team_tab.'_content" 
                                     role="tab" aria-controls="'.$team_tab.'_content" aria-selected="true">
@@ -3044,7 +3046,7 @@
             $matches = self::getMatchArrayByDate($matches);
             $output = '';
             $output .= '<div class="col-sm-12 margin-top-sm">
-                        <ul class="nav nav-tabs nav-justified h3-ff6" id="UNLMatchDayTab" role="tablist">';
+                        <ul class="nav nav-tabs nav-justified h6-ff6" id="UNLMatchDayTab" role="tablist">';
             foreach ($matches as $rounds => $_round) {
                 $round_name = str_replace(' ', '', $rounds);
                 $output .= '<li class="nav-item">
@@ -3402,6 +3404,7 @@
             foreach ($teams as $name => $_team) {
                 $team_tab = str_replace(' ', '', $name);
                 $team_tab = str_replace('\'', '', $team_tab);
+                $team_tab = str_replace('.', '', $team_tab);
                 $output .= '<div class="tab-pane fade" id="'.$team_tab.'_content" role="tabpanel" aria-labelledby="'.$team_tab.'-tab">';
                 $output .= self::getUCLTeamMatchesHtml($tournament, $name, $lookAheadPopover);
                 $output .= '</div>';
@@ -3423,6 +3426,7 @@
             foreach ($teams as $name => $_team) {
                 $team_tab = str_replace(' ', '', $name);
                 $team_tab = str_replace('\'', '', $team_tab);
+                $team_tab = str_replace('.', '', $team_tab);
                 $output .= '<li class="nav-item">
                                 <a class="nav-link" id="'.$team_tab.'-tab" data-toggle="tab" href="#'.$team_tab.'_content" 
                                     role="tab" aria-controls="'.$team_tab.'_content" aria-selected="true">

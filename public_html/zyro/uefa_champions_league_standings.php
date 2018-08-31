@@ -7,7 +7,7 @@
     if (isset($query_string['tid'])) $tournament_id = $query_string['tid'];
     $fantasy = Fantasy::None;
     if (isset($query_string['fid'])) $fantasy = Soccer::getFantasy($query_string['fid']);
-    $tournament = Tournament::getUCLTournamentMatches($tournament_id, $fantasy);
+    $tournament = Tournament::getUCLTournamentStandings($tournament_id, $fantasy);
     $profile = $tournament->getProfile();
     $header = $profile->getUCLTournamentHeader();
     $tournament_name = $profile->getName();
@@ -40,8 +40,7 @@
                 </div>
                 <div>
                     <?php echo $body_html; ?>
-                    <?php echo $popover_html; ?>
-                    <p class="wb-stl-normal"> </p>
+                    <p> </p>
                 </div>
                 <div class="col-sm-12 margin-tb-lg">
                     <p class="wb-stl-footer black">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
