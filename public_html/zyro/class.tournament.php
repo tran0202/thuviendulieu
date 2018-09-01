@@ -158,7 +158,7 @@
             Soccer::getUCLMatches($tournament);
 
 //            Soccer::getStanding($tournament);
-            Soccer::getUNLStandingsHtml($tournament);
+            Soccer::getUCLStandingsHtml($tournament);
 
             return $tournament;
         }
@@ -185,7 +185,7 @@
                 Soccer::getUCLMatchesHtml($tournament, false);
             }
 //
-//            Soccer::getUNLGroupModalHtml($tournament);
+            Soccer::getUCLGroupModalHtml($tournament);
 
             return $tournament;
         }
@@ -212,7 +212,7 @@
                 Soccer::getUELMatchesHtml($tournament, false);
             }
 //
-//            Soccer::getUNLGroupModalHtml($tournament);
+            Soccer::getUCLGroupModalHtml($tournament);
 
             return $tournament;
         }

@@ -1926,7 +1926,9 @@
         public static function getTeamArrayByGroup($teams) {
             $result = array();
             for ($i = 0; $i < sizeof($teams); $i++) {
-                $result[$teams[$i]->getGroupName()][$teams[$i]->getName()] = $teams[$i];
+                if ($teams[$i]->getGroupName() != null) {
+                    $result[$teams[$i]->getGroupName()][$teams[$i]->getName()] = $teams[$i];
+                }
             }
             return $result;
         }
@@ -2990,6 +2992,75 @@
             $tournament->concatModalHtml($output);
         }
 
+        public static function getUCLStandingsHtml($tournament) {
+            $teams = self::getTeamArrayByGroup($tournament->getTeams());
+            $output = '';
+            $output .= '<div class="col-sm-12 margin-top-sm">';
+            foreach ($teams as $group_name => $_teams) {
+                $output .= '<div class="col-sm-12 margin-top-sm">
+                        <span class="col-sm-2 h2-ff2">Group '.$group_name.'</span>
+                    </div>
+                    <div class="col-sm-12 box-xl">
+                        <div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md font-bold">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-1">MP</div>
+                            <div class="col-sm-1">W</div>
+                            <div class="col-sm-1">D</div>
+                            <div class="col-sm-1">L</div>
+                            <div class="col-sm-1">GF</div>
+                            <div class="col-sm-1">GA</div>
+                            <div class="col-sm-1">+/-</div>
+                            <div class="col-sm-1">Pts</div>
+                        </div>';
+                foreach ($_teams as $name => $_team) {
+                    $goal_diff = $_team->getGoalDiff();
+                    if ($_team->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
+                    $striped = '';
+                    if (self::isTeamAdvancedSecondRound($tournament, $_team, Stage::First)) $striped = 'advanced-second-round-striped';
+                    $output .= '<div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md '.$striped.'">
+                            <div class="col-sm-1"><img height="32" src="/images/club_logos/'.$_team->getLogoFilename().'"></div>
+                            <div class="col-sm-3" style="padding-top: 3px;">'.$_team->getName().'</div>
+                            <div class="col-sm-1">'.$_team->getMatchPlay().'</div>
+                            <div class="col-sm-1">'.$_team->getWin().'</div>
+                            <div class="col-sm-1">'.$_team->getDraw().'</div>
+                            <div class="col-sm-1">'.$_team->getLoss().'</div>
+                            <div class="col-sm-1">'.$_team->getGoalFor().'</div>
+                            <div class="col-sm-1">'.$_team->getGoalAgainst().'</div>
+                            <div class="col-sm-1">'.$goal_diff.'</div>
+                            <div class="col-sm-1">'.$_team->getPoint().'</div>
+                        </div>';
+                }
+                $output .= '</div>';
+                $output .= self::getCollapseHtml($group_name.'matches', 'Matches', self::getUCLGroupMatchesCollapseHtml($tournament, $group_name));
+            }
+            $output .= '</div>';
+            $tournament->concatBodyHtml($output);
+        }
+
+        public static function getUCLGroupMatchesCollapseHtml($tournament, $group_name) {
+            $group_matches = self::getMatchArrayByGroup($tournament->getMatches());
+            $output = '';
+            $group_matches = $group_matches[$group_name];
+            foreach ($group_matches as $match_order => $_match) {
+                if ($_match->getStage() == 'Group Stage') {
+                    $score = 'vs';
+                    if ($_match->getHomeTeamScore() != -1) $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
+                    $home_logo_tmp = '<img height="32" src="/images/club_logos/'.$_match->getHomeLogo().'">';
+                    $away_logo_tmp = '<img height="32" src="/images/club_logos/'.$_match->getAwayLogo().'">';
+                    $output .= '<div class="col-sm-10 col-sm-offset-1 h2-ff3 padding-tb-md padding-lr-xs border-bottom-gray5">
+                                        <div class="col-sm-1 h6-ff3 padding-top-sm padding-lr-xs">'.$_match->getMatchDate().'<br>'.$_match->getMatchTimeFmt().'</div>
+                                        <div class="col-sm-4 h2-ff3 padding-left-xs padding-right-xs padding-top-xs text-right">'.$_match->getHomeTeamName().'</div>
+                                        <div class="col-sm-1 padding-lr-xs text-right" style="width:40px">'.$home_logo_tmp.'</div>
+                                        <div class="col-sm-1 h2-ff3 padding-left-md padding-right-xs text-center">'.$score.'</div>
+                                        <div class="col-sm-1 padding-lr-md text-right" style="width:40px">'.$away_logo_tmp.'</div>
+                                        <div class="col-sm-4 h2-ff3 padding-right-xs padding-top-xs" style="padding-left:30px">'.$_match->getAwayTeamName().'</div>
+                                    </div>';
+                }
+            }
+            return $output;
+        }
+
         public static function getUCLMatchesHtml($tournament, $lookAheadPopover) {
             $teams = self::getTeamArrayByName($tournament->getTeams());
             $output = '';
@@ -3090,8 +3161,7 @@
                             if ($_match->getRound() == self::FINAL_ROUND) $group_name = $_match->getSecondRoundGroupName();
                             $group_id = str_replace('League ', '', $_match->getParentGroupName()).$group_name;
                             if ($group_name == self::FINAL_ROUND) $group_id = 'FinalRound';
-                            $league_name_short = str_replace('League ', '', $_match->getParentGroupName());
-                            $group_text = '<span class="unl-league-'.$league_name_short.'">'.$_match->getParentGroupName().'</span> - <a class="link-modal" data-toggle="modal" data-target="#group'.$group_id.'StandingModal">'.$group_anchor.'</a>' ;
+                            $group_text = '<a class="link-modal" data-toggle="modal" data-target="#group'.$group_id.'StandingModal">'.$group_anchor.'</a>' ;
                         }
                         $score = 'vs';
                         $penalty_score = '';
@@ -3257,8 +3327,7 @@
                         if ($_match->getRound() == self::FINAL_ROUND) $group_name = $_match->getSecondRoundGroupName();
                         $group_id = str_replace('League ', '', $_match->getParentGroupName()).$group_name;
                         if ($group_name == self::FINAL_ROUND) $group_id = 'FinalRound';
-                        $league_name_short = str_replace('League ', '', $_match->getParentGroupName());
-                        $group_text = '<span class="unl-league-'.$league_name_short.'">'.$_match->getParentGroupName().'</span> - <a class="link-modal" data-toggle="modal" data-target="#group'.$group_id.'StandingModal">'.$group_anchor.'</a>' ;
+                        $group_text = '<a class="link-modal" data-toggle="modal" data-target="#group'.$group_id.'StandingModal">'.$group_anchor.'</a>' ;
                     }
                     $score = 'vs';
                     $penalty_score = '';
@@ -3392,6 +3461,81 @@
             return $output;
         }
 
+        public static function getUCLGroupModalHtml($tournament) {
+            $league_teams = self::getTeamArrayByParentGroup($tournament->getTeams());
+            $output = '';
+            foreach ($league_teams as $league_name => $group_teams) {
+                foreach ($group_teams as $group_name => $_teams) {
+                    $league_name_short = str_replace('League ', '', $league_name);
+                    $group_id = $league_name_short.$group_name;
+                    $table_name = 'Group '.$group_name;
+                    if ($group_name == self::FINAL_ROUND) {
+                        $group_id = 'FinalRound';
+                        $table_name = $group_name;
+                    }
+                    elseif ($group_name == 'ThirdPlace') {
+                        $table_name = 'Ranking of third-placed teams';
+                    }
+                    $output .= '<div class="modal fade" id="group'.$group_id.'StandingModal" tabindex="-1" role="dialog" 
+                        aria-labelledby="group'.$group_id.'StandingModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document" style="width:800px;">
+                            <div class="modal-content">
+                                <div class="col-sm-12">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span class="modal-X" aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-header col-sm-12 padding-lr-lg" style="border-bottom:none;">
+                                    <div class="col-sm-12 h3-ff3 border-bottom-gray2" id="group'.$group_id.'StandingModalLabel">'.
+                        $table_name.'
+                                    </div>
+                                </div>
+                                <div class="modal-body col-sm-12 padding-lr-lg" id="group'.$group_id.'StandingModalBody">
+                                    <div class="col-sm-12 h3-ff3 row padding-tb-md font-bold">
+                                        <div class="col-sm-1"></div>
+                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-1">MP</div>
+                                        <div class="col-sm-1">W</div>
+                                        <div class="col-sm-1">D</div>
+                                        <div class="col-sm-1">L</div>
+                                        <div class="col-sm-1">GF</div>
+                                        <div class="col-sm-1">GA</div>
+                                        <div class="col-sm-1">+/-</div>
+                                        <div class="col-sm-1">Pts</div>
+                                    </div>';
+                    foreach ($_teams as $name => $_team) {
+                        $goal_diff = $_team->getGoalDiff();
+                        if ($_team->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
+                        $striped = '';
+                        if (self::isTeamAdvancedSecondRound($tournament, $_team, Stage::First)) $striped = 'advanced-second-round-striped';
+                        $output .=     '<div class="col-sm-12 h3-ff3 row padding-tb-md '.$striped.'">
+                                        <div class="col-sm-1"><img height=32 src="/images/club_logos/'.$_team->getLogoFilename().'"></div>
+                                        <div class="col-sm-3" style="padding-top: 3px;">'.$_team->getName().'</div>
+                                        <div class="col-sm-1">'.$_team->getMatchPlay().'</div>
+                                        <div class="col-sm-1">'.$_team->getWin().'</div>
+                                        <div class="col-sm-1">'.$_team->getDraw().'</div>
+                                        <div class="col-sm-1">'.$_team->getLoss().'</div>
+                                        <div class="col-sm-1">'.$_team->getGoalFor().'</div>
+                                        <div class="col-sm-1">'.$_team->getGoalAgainst().'</div>
+                                        <div class="col-sm-1">'.$goal_diff.'</div>
+                                        <div class="col-sm-1">'.$_team->getPoint().'</div>
+                                    </div>';
+                    }
+                    $output .= '
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span class="modal-close" aria-hidden="true">Close</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>';
+                }
+            }
+            $tournament->concatModalHtml($output);
+        }
+
         public static function getUELMatchesHtml($tournament, $lookAheadPopover) {
             $teams = self::getTeamArrayByName($tournament->getTeams());
             $output = '';
@@ -3446,16 +3590,22 @@
         }
 
         public static function getUCLMatches($tournament) {
-            self::getSoccerMatches($tournament, 6);
+            self::getSoccerMatches2($tournament, 6);
         }
 
         public static function getUELMatches($tournament) {
-            self::getSoccerMatches($tournament, 7);
+            self::getSoccerMatches2($tournament, 7);
         }
 
         public static function getSoccerMatches($tournament, $tournament_type_id) {
 
             $sql = self::getSoccerMatchSql($tournament->getTournamentId(), $tournament_type_id);
+            self::getSoccerMatchDb($tournament, $sql);
+        }
+
+        public static function getSoccerMatches2($tournament, $tournament_type_id) {
+
+            $sql = self::getSoccerMatchSql2($tournament->getTournamentId(), $tournament_type_id);
             self::getSoccerMatchDb($tournament, $sql);
         }
 
@@ -3551,6 +3701,42 @@
                     WHERE tou.tournament_type_id = '.$tournament_type_id.'
                     AND '.$tournament_id_str.'
                     ORDER BY stage_id, match_order, match_date, match_time;';
+            return $sql;
+        }
+
+        public static function getSoccerMatchSql2($tournament_id, $tournament_type_id) {
+            $tournament_id_str = 'm.tournament_id = '.$tournament_id;
+            if ($tournament_id == null) $tournament_id_str = '1 = 1'; // 'm.tournament_id <> 1'
+            $sql = 'SELECT t.id AS home_team_id, UCASE(t.name) AS home_team_name, home_team_score, n.flag_filename AS home_flag, tl.logo_filename AS home_logo, n.code AS home_team_code,
+                        t2.id AS away_team_id, UCASE(t2.name) AS away_team_name, away_team_score, n2.flag_filename AS away_flag, tl2.logo_filename AS away_logo, n2.code AS away_team_code, 
+                        pt.id AS home_parent_team_id, UCASE(pt.name) AS home_parent_team_name, pt2.id AS away_parent_team_id, UCASE(pt2.name) AS away_parent_team_name, 
+                        home_team_first_leg_score, away_team_first_leg_score, 
+                        home_team_extra_time_score, away_team_extra_time_score, home_team_penalty_score, away_team_penalty_score, 
+                        DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date, 
+                        TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order, bracket_order,
+                        waiting_home_team, waiting_away_team,
+                        g.name AS round, g2.name AS stage,
+                        g3.name AS group_name, g4.name AS parent_group_name, g5.name AS second_round_group_name, 
+                        m.tournament_id, tou.name AS tournament_name, tou.points_for_win, tou.golden_goal_rule
+                    FROM `match` m  
+                    LEFT JOIN tournament tou ON tou.id = m.tournament_id 
+                    LEFT JOIN team t ON t.id = m.home_team_id
+                    LEFT JOIN team t2 ON t2.id = m.away_team_id
+                    LEFT JOIN `group` g ON g.id = m.round_id
+                    LEFT JOIN `group` g2 ON g2.id = m.stage_id
+                    LEFT JOIN team_tournament tt ON (tt.team_id = m.home_team_id AND tt.tournament_id = m.tournament_id)
+                    LEFT JOIN `group` g3 ON g3.id = tt.group_id 
+                    LEFT JOIN `group` g4 ON g4.id = tt.parent_group_id 
+                    LEFT JOIN `group` g5 ON g5.id = m.group_id
+                    LEFT JOIN nation n ON n.id = t.nation_id  
+                    LEFT JOIN nation n2 ON n2.id = t2.nation_id  
+                    LEFT JOIN team_logo tl ON tl.team_id = t.id
+                    LEFT JOIN team_logo tl2 ON tl2.team_id = t2.id 
+                    LEFT JOIN team pt ON pt.id = t.parent_team_id 
+                    LEFT JOIN team pt2 ON pt2.id = t2.parent_team_id
+                    WHERE tou.tournament_type_id = '.$tournament_type_id.'
+                    AND '.$tournament_id_str.'
+                    ORDER BY match_date, match_time;';
             return $sql;
         }
 
