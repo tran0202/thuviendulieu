@@ -22,13 +22,17 @@ VALUES ('A', 'Group A', 1),
 	('5', 'Group 5', 1),
 	('6', 'Group 6', 1),
 	('Withdrew', null, 1),
-	('Final Round', null, 1);
+	('Final Round', null, 1),
+	   ('League A', 'League A', 8),
+	   ('League B', 'League B', 8),
+	   ('League C', 'League C', 8),
+	   ('League D', 'League D', 8);
 
 INSERT INTO `group` (name, long_name, group_type_id)
-VALUES ('League A', 'League A', 8),
-	('League B', 'League B', 8),
-	('League C', 'League C', 8),
-	('League D', 'League D', 8);
+VALUES ('I', 'Group I', 1),
+	   ('J', 'Group J', 1),
+	   ('K', 'Group K', 1),
+	   ('L', 'Group L', 1);
 
 INSERT INTO `group` (name, tournament_id, group_type_id)
 VALUES ('AFC', 2, 2),

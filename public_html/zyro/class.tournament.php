@@ -190,6 +190,20 @@
             return $tournament;
         }
 
+        public static function getUELTournamentStandings($tournament_id, $fantasy) {
+
+            $tournament = Tournament::CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy);
+
+            self::getTournamentProfile($tournament);
+            Soccer::getSoccerTeams($tournament);
+            Soccer::getUELMatches($tournament);
+
+//            Soccer::getStanding($tournament);
+            Soccer::getUCLStandingsHtml($tournament);
+
+            return $tournament;
+        }
+
         public static function getUELTournamentMatches($tournament_id, $fantasy) {
 
             $tournament = Tournament::CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy);

@@ -3117,7 +3117,7 @@
             $matches = self::getMatchArrayByDate($matches);
             $output = '';
             $output .= '<div class="col-sm-12 margin-top-sm">
-                        <ul class="nav nav-tabs nav-justified h6-ff6" id="UNLMatchDayTab" role="tablist">';
+                        <ul class="nav nav-tabs h4-ff6" id="UNLMatchDayTab" role="tablist">';
             foreach ($matches as $rounds => $_round) {
                 $round_name = str_replace(' ', '', $rounds);
                 $output .= '<li class="nav-item">
@@ -3736,7 +3736,7 @@
                     LEFT JOIN team pt2 ON pt2.id = t2.parent_team_id
                     WHERE tou.tournament_type_id = '.$tournament_type_id.'
                     AND '.$tournament_id_str.'
-                    ORDER BY match_date, match_time;';
+                    ORDER BY match_date, match_time, match_order;';
             return $sql;
         }
 
