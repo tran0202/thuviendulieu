@@ -20,6 +20,8 @@ ALTER TABLE team
 	ADD CONSTRAINT team_ibfk_3
 	FOREIGN KEY (parent_team_id) REFERENCES team(id);
 
+ALTER TABLE team DROP INDEX `name`;
+
 SELECT t.name AS name, tt.team_id,
 	   group_id, g.name AS group_name, group_order,
 	   parent_group_id, pg.name AS parent_group_name, pg.long_name AS parent_group_long_name, parent_group_order,
@@ -65,15 +67,23 @@ VALUES ('Algeria', 1, 3), ('Cameroon', 1, 35), ('Ghana', 1, 77), ('Côte d''Ivoi
 	   ('Canada', 1, 36), ('Hungary', 1, 89), ('Northern Ireland', 1, 141), ('Iraq', 1, 94),
 	   ('El Salvador', 1, 62), ('Kuwait', 1, 105),
 	   ('Germany DR', 1, 218), ('Zaire', 1, 219), ('Haiti', 1, 86), ('Congo DR', 1, 47), ('Israel', 1, 95), ('Wales', 1, 208),
-	   ('Dutch East Indies', 1, 220), ('Indonesia', 1, 92), ('Cuba', 1, 52);
-
-INSERT INTO team (name, team_type_id, nation_id)
-VALUES ('Albania', 1, 2), ('Estonia', 1, 66), ('Finland', 1, 70), ('Cyprus', 1, 54),
+	   ('Dutch East Indies', 1, 220), ('Indonesia', 1, 92), ('Cuba', 1, 52),
+	   ('Albania', 1, 2), ('Estonia', 1, 66), ('Finland', 1, 70), ('Cyprus', 1, 54),
 	   ('Lithuania', 1, 114), ('Montenegro', 1, 128), ('Andorra', 1, 5), ('Georgia', 1, 75),
 	   ('Kazakhstan', 1, 100), ('Latvia', 1, 108), ('Belarus', 1, 19), ('Luxembourg', 1, 115),
 	   ('Moldova', 1, 126), ('San Marino', 1, 160), ('Azerbaijan', 1, 14), ('Faroe Islands', 1, 68),
 	   ('Kosovo', 1, 104), ('Malta', 1, 122), ('Armenia', 1, 10), ('FYR Macedonia', 1, 72),
 	   ('Gibraltar', 1, 78), ('Liechtenstein', 1, 113);
+
+# Women's
+
+INSERT INTO team (name, team_type_id, nation_id)
+VALUES ('Canada', 3, 36), ('China PR', 3, 42), ('Netherlands', 3, 135), ('New Zealand', 3, 137),
+	   ('Germany', 3, 76), ('Norway', 3, 142), ('Thailand', 3, 189), ('Côte d''Ivoire', 3, 50),
+	   ('Japan', 3, 98), ('Cameroon', 3, 35), ('Switzerland', 3, 184), ('Ecuador', 3, 60),
+	   ('USA', 3, 203), ('Australia', 3, 12), ('Sweden', 3, 183), ('Nigeria', 3, 140),
+	   ('Brazil', 3, 28), ('Korea Republic', 3, 103), ('Costa Rica', 3, 49), ('Spain', 3, 175),
+	   ('France', 3, 71), ('England', 3, 63), ('Colombia', 3, 44), ('Mexico', 3, 125);
 
 INSERT INTO team (name, official_name, team_type_id, nation_id, code)
 VALUES ('Atletico Madrid', 'Club Atlético de Madrid', 2, 175, 'ATM'),
@@ -402,4 +412,4 @@ VALUES ('Simona Halep', 8), ('Kaia Kanepi', 8), ('Dalila Jakupovic', 8), ('Vania
 INSERT INTO team (name, team_type_id)
 VALUES ('Mona Barthel', 8);
 
-DROP TRIGGER before_insert_team;Madison Brengle
+DROP TRIGGER before_insert_team;

@@ -2028,7 +2028,7 @@
         }
 
         public static function isThirdPlaceRankingTournament($tournament) {
-            return $tournament->getTournamentId() >= 10 && $tournament->getTournamentId() <= 12;
+            return ($tournament->getTournamentId() >= 10 && $tournament->getTournamentId() <= 12) || $tournament->getTournamentId() == 31;
         }
 
         public static function getThirdPlaceTeams($tournament) {
@@ -3589,6 +3589,10 @@
 
         public static function getWorldCupMatches($tournament) {
             self::getSoccerMatches($tournament, 1);
+        }
+
+        public static function getWomenWorldCupMatches($tournament) {
+            self::getSoccerMatches($tournament, 8);
         }
 
         public static function getUNLMatches($tournament) {

@@ -1,0 +1,41 @@
+CREATE TABLE IF NOT EXISTS team_tournament (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	team_id INT NOT NULL,
+	tournament_id INT NOT NULL,
+	group_id INT,
+	group_order TINYINT UNSIGNED,
+	parent_group_id INT,
+	parent_group_order TINYINT UNSIGNED,
+	seed TINYINT UNSIGNED,
+	FOREIGN KEY (team_id) REFERENCES team(id),
+	FOREIGN KEY (tournament_id) REFERENCES tournament(id),
+	FOREIGN KEY (group_id) REFERENCES `group`(id),
+	FOREIGN KEY (parent_group_id) REFERENCES `group`(id)
+);
+
+# Canada 2015
+INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
+VALUES (811, 31, 1, 1),
+	(812, 31, 1, 2),
+	(813, 31, 1, 3),
+	(814, 31, 1, 4),
+	(815, 31, 2, 1),
+	(816, 31, 2, 2),
+	(817, 31, 2, 3),
+	(818, 31, 2, 4),
+	(819, 31, 3, 1),
+	(820, 31, 3, 2),
+	(821, 31, 3, 3),
+	(822, 31, 3, 4),
+	(823, 31, 4, 1),
+	(824, 31, 4, 2),
+	(825, 31, 4, 3),
+	(826, 31, 4, 4),
+	(827, 31, 5, 1),
+	(828, 31, 5, 2),
+	(829, 31, 5, 3),
+	(830, 31, 5, 4),
+	(831, 31, 6, 1),
+	(832, 31, 6, 2),
+	(833, 31, 6, 3),
+	(834, 31, 6, 4);

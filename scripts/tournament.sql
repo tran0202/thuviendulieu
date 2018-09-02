@@ -41,6 +41,9 @@ VALUES ('1986 FIFA World Cup Mexico', '1986-05-31', '1986-06-29', 1, '1986.png',
 	('1930 FIFA World Cup Uruguay', '1930-07-13', '1930-07-30', 1, '1930.png', 2);
 
 INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_filename)
+VALUES ('2015 FIFA Women''s World Cup Canada', '2015-06-06', '2010-07-05', 8, '2015.png');
+
+INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_filename)
 VALUES ('2018/19 UEFA Nations League', '2018-09-06', '2019-06-09', 4, 'UEFA_Nations_League.png');
 
 INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_filename)

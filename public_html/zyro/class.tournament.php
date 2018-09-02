@@ -267,6 +267,25 @@
             return $tournament;
         }
 
+        public static function getWomenSoccerTournament($tournament_id) {
+
+            $tournament = Tournament::CreateSoccerTournamentById($tournament_id);
+
+            self::getTournamentProfile($tournament);
+            Soccer::getSoccerTeams($tournament);
+            Soccer::getWomenWorldCupMatches($tournament);
+
+            Soccer::getFirstStageMatchesRanking($tournament);
+            Soccer::getArchiveSoccerScheduleHtml($tournament);
+            Soccer::getSoccerGroupModalHtml($tournament);
+            Soccer::updateFirstStageMatchesRanking($tournament);
+
+            Soccer::getSecondStageMatchesRanking($tournament);
+            Soccer::getTournamentSoccerRankingHtml($tournament);
+
+            return $tournament;
+        }
+
         public static function getFootballTournamentSchedule($tournament_id) {
 
             $tournament = Tournament::CreateFootballTournamentById($tournament_id);
@@ -583,6 +602,11 @@
 
         public function getTournamentHeader() {
             $output = '<img src="/images/wc_logos/'.self::getLogoFilename().'">&nbsp;&nbsp;'.self::getName();
+            return $output;
+        }
+
+        public function getWomenTournamentHeader() {
+            $output = '<img src="/images/wwc_logos/'.self::getLogoFilename().'">&nbsp;&nbsp;'.self::getName();
             return $output;
         }
 
