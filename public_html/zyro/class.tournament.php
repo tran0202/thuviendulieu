@@ -607,7 +607,7 @@
         }
 
         public function getTennisTournamentHeader() {
-            $output = self::getName();
+            $output = '<img height="40" src="/images/logos/'.self::getLogoFilename().'">&nbsp;&nbsp;'.self::getName();
             return $output;
         }
 

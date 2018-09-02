@@ -55,6 +55,10 @@
                             $away_flag = '<img class="flag-sm" src="/images/flags/'.$away_flag.'">';
                             $home_team_name = $_match->getHomeTeamName();
                             $away_team_name = $_match->getAwayTeamName();
+                            $home_retired = '';
+                            $away_retired = '';
+                            if ($_match->getHomeRetired() == 1) $home_retired = ' <span style="color:#858585">(Retired)</span>';
+                            if ($_match->getAwayRetired() == 1) $away_retired = ' <span style="color:#858585">(Retired)</span>';
                             $home_win = 0;
                             $away_win = 0;
                             if ($_match->getHomeSet1Score() > $_match->getAwaySet1Score()) $home_win = $home_win + 1;
@@ -67,12 +71,12 @@
                             if ($_match->getHomeSet3Score() < $_match->getAwaySet3Score()) $away_win = $away_win + 1;
                             if ($_match->getHomeSet4Score() < $_match->getAwaySet4Score()) $away_win = $away_win + 1;
                             if ($_match->getHomeSet5Score() < $_match->getAwaySet5Score()) $away_win = $away_win + 1;
-                            if ($home_win > $away_win) $away_team_name = '<span style="color:#858585">'.$_match->getAwayTeamName().'</span>';
-                            if ($home_win < $away_win) $home_team_name = '<span style="color:#858585">'.$_match->getHomeTeamName().'</span>';
+                            if ($home_win > $away_win || $_match->getAwayRetired() == 1) $away_team_name = '<span style="color:#858585">'.$_match->getAwayTeamName().'</span>';
+                            if ($home_win < $away_win || $_match->getHomeRetired() == 1) $home_team_name = '<span style="color:#858585">'.$_match->getHomeTeamName().'</span>';
                             $home_team_seed = '<span class="h6-ff3 weight-light">('.$_match->getHomeTeamSeed().')</span> ';
                             $away_team_seed = '<span class="h6-ff3 weight-light">('.$_match->getAwayTeamSeed().')</span> ';
-                            if ($home_win > $away_win) $away_team_seed = '<span class="h6-ff3 weight-light" style="color:#858585">('.$_match->getAwayTeamSeed().')</span> ';
-                            if ($home_win < $away_win) $home_team_seed = '<span class="h6-ff3 weight-light" style="color:#858585">('.$_match->getHomeTeamSeed().')</span> ';
+                            if ($home_win > $away_win || $_match->getAwayRetired() == 1) $away_team_seed = '<span class="h6-ff3 weight-light" style="color:#858585">('.$_match->getAwayTeamSeed().')</span> ';
+                            if ($home_win < $away_win || $_match->getHomeRetired() == 1) $home_team_seed = '<span class="h6-ff3 weight-light" style="color:#858585">('.$_match->getHomeTeamSeed().')</span> ';
                             $home_set1_score = $_match->getHomeSet1Score();
                             $home_set2_score = $_match->getHomeSet2Score();
                             $home_set3_score = $_match->getHomeSet3Score();
@@ -120,7 +124,7 @@
                                                 <div class="col-sm-2 no-padding-right padding-left-sm">'.$home_flag.'</div>
                                                 <div class="col-sm-10 no-padding-right padding-left-xs" style="padding-top:2px;">';
                             if ($_match->getHomeTeamSeed() != '') $output .= $home_team_seed;
-                            $output .=                  $home_team_name.
+                            $output .=                  $home_team_name.$home_retired.
                                 '</div>
                                             </div>
                                             <div class="col-sm-1 no-padding-lr" style="padding-top:2px;">'.
@@ -149,7 +153,7 @@
                                                 <div class="col-sm-2 no-padding-right padding-left-sm">'.$away_flag.'</div>
                                                 <div class="col-sm-10 no-padding-right padding-left-xs" style="padding-top:2px;">';
                             if ($_match->getAwayTeamSeed() != '') $output .= $away_team_seed;
-                            $output .=                  $away_team_name.
+                            $output .=                  $away_team_name.$away_retired.
                                 '</div>
                                             </div>
                                             <div class="col-sm-1 no-padding-lr" style="padding-top:2px;">'.
@@ -214,7 +218,7 @@
                 while ($row = $query->fetch(\PDO::FETCH_ASSOC)) {
                     $match = Match::CreateTennisMatch($row['home_team_name'], $row['away_team_name'],
                         $row['match_date'], $row['match_order'], $row['round'],
-                        $row['home_team_seed'], $row['away_team_seed'],
+                        $row['home_team_seed'], $row['away_team_seed'], $row['home_retired'], $row['away_retired'],
                         $row['home_set1_score'], $row['away_set1_score'], $row['home_set1_tiebreak'], $row['away_set1_tiebreak'],
                         $row['home_set2_score'], $row['away_set2_score'], $row['home_set2_tiebreak'], $row['away_set2_tiebreak'],
                         $row['home_set3_score'], $row['away_set3_score'], $row['home_set3_tiebreak'], $row['away_set3_tiebreak'],
@@ -234,6 +238,7 @@
                 n.flag_filename AS home_flag_filename, n.alternative_flag_filename AS home_alternative_flag_filename,
                 t2.id AS away_id, t2.name AS away_team_name, att.seed AS away_team_seed, 
                 n2.flag_filename AS away_flag_filename, n2.alternative_flag_filename AS away_alternative_flag_filename,
+                home_retired, away_retired, 
                 home_set1_score, away_set1_score, home_set1_tiebreak, away_set1_tiebreak,
                 home_set2_score, away_set2_score, home_set2_tiebreak, away_set2_tiebreak,
                 home_set3_score, away_set3_score, home_set3_tiebreak, away_set3_tiebreak,

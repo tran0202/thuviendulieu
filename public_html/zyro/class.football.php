@@ -329,24 +329,16 @@
             $match_play2 = $t2->getDivWin() + $t2->getDivLoss() + $t2->getDivTie();
             if ($match_play1 == 0 && $match_play2 == 0) return true;
             if ($match_play1 == 0) {
-                if ($t2->getDivWin() > $t2->getDivLoss()) {
+                if ($t2->getConfWin() >= $t2->getConfLoss()) {
                     self::swapTeam($t1, $t2);
-                    return false;
                 }
-                elseif ($t2->getDivWin() < $t2->getDivLoss()) {
-                    return false;
-                }
-                return true;
+                return false;
             }
             if ($match_play2 == 0) {
-                if ($t1->getDivWin() < $t1->getDivLoss()) {
+                if ($t1->getConfWin() < $t1->getConfLoss()) {
                     self::swapTeam($t1, $t2);
-                    return false;
                 }
-                elseif ($t1->getDivWin() > $t1->getDivLoss()) {
-                    return false;
-                }
-                return true;
+                return false;
             }
             $pt1 = $t1->getDivWin() + $t1->getDivTie() * 0.5;
             $pt2 = $t2->getDivWin() + $t2->getDivTie() * 0.5;
@@ -429,24 +421,16 @@
             $match_play2 = $t2->getConfWin() + $t2->getConfLoss() + $t2->getConfTie();
             if ($match_play1 == 0 && $match_play2 == 0) return true;
             if ($match_play1 == 0) {
-                if ($t2->getConfWin() > $t2->getConfLoss()) {
+                if ($t2->getConfWin() >= $t2->getConfLoss()) {
                     self::swapTeam($t1, $t2);
-                    return false;
                 }
-                elseif ($t2->getConfWin() < $t2->getConfLoss()) {
-                    return false;
-                }
-                return true;
+                return false;
             }
             if ($match_play2 == 0) {
                 if ($t1->getConfWin() < $t1->getConfLoss()) {
                     self::swapTeam($t1, $t2);
-                    return false;
                 }
-                elseif ($t1->getConfWin() > $t1->getConfLoss()) {
-                    return false;
-                }
-                return true;
+                return false;
             }
             $pt1 = $t1->getConfWin() + $t1->getConfTie() * 0.5;
             $pt2 = $t2->getConfWin() + $t2->getConfTie() * 0.5;

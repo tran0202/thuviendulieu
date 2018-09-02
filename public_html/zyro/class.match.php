@@ -41,6 +41,8 @@
         private $group_name;
         private $parent_group_name;
         private $second_round_group_name;
+        private $home_retired;
+        private $away_retired;
         private $home_team_seed;
         private $away_team_seed;
         private $home_set1_score;
@@ -148,6 +150,7 @@
         public static function CreateTennisMatch(
             $home_team_name, $away_team_name,
             $match_date, $match_order, $round, $home_team_seed, $away_team_seed,
+            $home_retired, $away_retired,
             $home_set1_score, $away_set1_score, $home_set1_tiebreak, $away_set1_tiebreak,
             $home_set2_score, $away_set2_score, $home_set2_tiebreak, $away_set2_tiebreak,
             $home_set3_score, $away_set3_score, $home_set3_tiebreak, $away_set3_tiebreak,
@@ -161,6 +164,8 @@
             $m->match_date = $match_date;
             $m->match_order = $match_order;
             $m->round = $round;
+            $m->home_retired = $home_retired;
+            $m->away_retired = $away_retired;
             $m->home_team_seed = $home_team_seed;
             $m->away_team_seed = $away_team_seed;
             $m->home_set1_score = $home_set1_score;
@@ -812,6 +817,38 @@
         public function setSecondRoundGroupName($second_round_group_name)
         {
             $this->second_round_group_name = $second_round_group_name;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getHomeRetired()
+        {
+            return $this->home_retired;
+        }
+
+        /**
+         * @param mixed $home_retired
+         */
+        public function setHomeRetired($home_retired)
+        {
+            $this->home_retired = $home_retired;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getAwayRetired()
+        {
+            return $this->away_retired;
+        }
+
+        /**
+         * @param mixed $away_retired
+         */
+        public function setAwayRetired($away_retired)
+        {
+            $this->away_retired = $away_retired;
         }
 
         /**

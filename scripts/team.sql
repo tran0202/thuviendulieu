@@ -359,6 +359,12 @@ VALUES ('Yuichi Sugita', 7), ('Geoffrey Blancaneaux', 7), ('Dominic Thiem', 7),	
 	   ('Jenson Brooksby', 7), ('Noah Rubin', 7), ('Yuki Bhambri', 7), ('Yoshihito Nishioka', 7);
 
 INSERT INTO team (name, team_type_id)
+VALUES ('Lorenzo Sonego', 7), ('Casper Ruud', 7), ('Felix Auger-Aliassime', 7), ('Donald Young', 7),
+	   ('Mitchell Krueger', 7), ('Tommy Robredo', 7), ('Lloyd Harris', 7), ('Collin Altamirano', 7),
+	   ('Ugo Humbert', 7), ('Hubert Hurkacz', 7), ('Federico Gaio', 7), ('Facundo Bagnis', 7),
+	   ('Peter Polansky', 7), ('Yannick Maden', 7), ('Marcel Granollers', 7), ('Dennis Novak', 7);
+
+INSERT INTO team (name, team_type_id)
 VALUES ('Simona Halep', 8), ('Kaia Kanepi', 8), ('Dalila Jakupovic', 8), ('Vania King', 8),
 	   ('Natalia Vikhlyantseva', 8), ('Rebecca Peterson', 8), ('Anastasia Pavlyuchenkova', 8), ('Serena Williams', 8),
 	   ('Magda Linette', 8), ('Caroline Dolehide', 8), ('Carina Witthoeft', 8), ('Camila Giorgi', 8),
@@ -386,6 +392,14 @@ VALUES ('Simona Halep', 8), ('Kaia Kanepi', 8), ('Dalila Jakupovic', 8), ('Vania
 	   ('Timea Babos', 8), ('Daria Kasatkina', 8), ('Kiki Bertens', 8), ('Kristyna Pliskova', 8),
 	   ('Christina McHale', 8), ('Harmony Tan', 8), ('Marketa Vondrousova', 8), ('Mihaela Buzarnescu', 8),
 	   ('Anett Kontaveit', 8), ('Katerina Siniakova', 8), ('Lizette Cabrera', 8), ('Ajla Tomljanovic', 8),
-	   ('Alison Van Uytvanck', 8), ('Lesia Tsurenko', 8), ('Samantha Stosur', 8), ('Caroline Wozniacki', 8);
+	   ('Alison Van Uytvanck', 8), ('Lesia Tsurenko', 8), ('Samantha Stosur', 8), ('Caroline Wozniacki', 8),
+	   ('Jil Teichmann', 8), ('Karolina Muchova', 8), ('Ons Jabeur', 8), ('Marie Bouzkova', 8),
+	   ('Kathinka Von Deichmann', 8), ('Anhelina Kalinina', 8), ('Danielle Lao', 8), ('Anna Kalinskaya', 8),
+	   ('Heather Watson', 8), ('Nicole Gibbs', 8), ('Patty Schnyder', 8), ('Arantxa Rus', 8),
+	   ('Vera Zvonareva', 8), ('Julia Glushko', 8), ('Francesca Di Lorenzo', 8), ('Eugenie Bouchard', 8),
+	   ('Madison Brengle', 8);
 
-DROP TRIGGER before_insert_team;
+INSERT INTO team (name, team_type_id)
+VALUES ('Mona Barthel', 8);
+
+DROP TRIGGER before_insert_team;Madison Brengle

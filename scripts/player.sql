@@ -49,6 +49,12 @@ VALUES ('Yuichi', 'Sugita', 98), ('Geoffrey', 'Blancaneaux', 71), ('Dominic', 'T
 	   ('Jenson', 'Brooksby', 203), ('Noah', 'Rubin', 203), ('Yuki', 'Bhambri', 91), ('Yoshihito', 'Nishioka', 98);
 
 INSERT INTO player (first_name, last_name, nation_id)
+VALUES ('Lorenzo', 'Sonego', 96), ('Casper', 'Ruud', 142), ('Felix', 'Auger-Aliassime', 36), ('Donald', 'Young', 203),
+	   ('Mitchell', 'Krueger', 203), ('Tommy', 'Robredo', 175), ('Lloyd', 'Harris', 173), ('Collin', 'Altamirano', 203),
+	   ('Ugo', 'Humbert', 71), ('Hubert', 'Hurkacz', 151), ('Federico', 'Gaio', 96), ('Facundo', 'Bagnis', 9),
+	   ('Peter', 'Polansky', 36), ('Yannick', 'Maden', 76), ('Marcel', 'Granollers', 175), ('Dennis', 'Novak', 13);
+
+INSERT INTO player (first_name, last_name, nation_id)
 VALUES ('Simona', 'Halep', 156), ('Kaia', 'Kanepi', 66), ('Dalila', 'Jakupovic', 170), ('Vania', 'King', 203),
 	   ('Natalia', 'Vikhlyantseva', 157), ('Rebecca', 'Peterson', 183), ('Anastasia', 'Pavlyuchenkova', 157), ('Serena', 'Williams', 203),
 	   ('Magda', 'Linette', 151), ('Caroline', 'Dolehide', 203), ('Carina', 'Witthoeft', 76), ('Camila', 'Giorgi', 96),
@@ -76,4 +82,12 @@ VALUES ('Simona', 'Halep', 156), ('Kaia', 'Kanepi', 66), ('Dalila', 'Jakupovic',
 	   ('Timea', 'Babos', 89), ('Daria', 'Kasatkina', 157), ('Kiki', 'Bertens', 135), ('Kristyna', 'Pliskova', 55),
 	   ('Christina', 'McHale', 203), ('Harmony', 'Tan', 71), ('Marketa', 'Vondrousova', 55), ('Mihaela', 'Buzarnescu', 156),
 	   ('Anett', 'Kontaveit', 66), ('Katerina', 'Siniakova', 55), ('Lizette', 'Cabrera', 12), ('Ajla', 'Tomljanovic', 12),
-	   ('Alison', 'Van Uytvanck', 20), ('Lesia', 'Tsurenko', 199), ('Samantha', 'Stosur', 12), ('Caroline', 'Wozniacki', 56);
+	   ('Alison', 'Van Uytvanck', 20), ('Lesia', 'Tsurenko', 199), ('Samantha', 'Stosur', 12), ('Caroline', 'Wozniacki', 56),
+	   ('Jil', 'Teichmann', 184), ('Karolina', 'Muchova', 55), ('Ons', 'Jabeur', 194), ('Marie', 'Bouzkova', 55),
+	   ('Kathinka', 'Von Deichmann', 113), ('Anhelina', 'Kalinina', 199), ('Danielle', 'Lao', 203), ('Anna', 'Kalinskaya', 157),
+	   ('Heather', 'Watson', 212), ('Nicole', 'Gibbs', 203), ('Patty', 'Schnyder', 184), ('Arantxa', 'Rus', 135),
+	   ('Vera', 'Zvonareva', 157), ('Julia', 'Glushko', 95), ('Francesca', 'Di Lorenzo', 203), ('Eugenie', 'Bouchard', 36),
+	   ('Madison', 'Brengle', 203);
+
+INSERT INTO player (first_name, last_name, nation_id)
+VALUES ('Mona', 'Barthel', 76);

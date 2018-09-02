@@ -22,6 +22,8 @@ CREATE TABLE IF NOT EXISTS `match` (
 	stage_id INT,
 	stage_order TINYINT UNSIGNED,
 	group_id INT,
+	home_retired TINYINT UNSIGNED,
+	away_retired TINYINT UNSIGNED,
 	home_set1_score TINYINT UNSIGNED,
 	away_set1_score TINYINT UNSIGNED,
 	home_set1_tiebreak TINYINT UNSIGNED,
@@ -51,8 +53,8 @@ CREATE TABLE IF NOT EXISTS `match` (
 );
 
 ALTER TABLE `match`
-	ADD COLUMN home_team_first_leg_score TINYINT UNSIGNED AFTER stage_order,
-	ADD COLUMN away_team_first_leg_score TINYINT UNSIGNED AFTER stage_order;
+	ADD COLUMN away_retired TINYINT UNSIGNED AFTER group_id,
+	ADD COLUMN home_retired TINYINT UNSIGNED AFTER group_id;
 
 ALTER TABLE `match`
 	ADD CONSTRAINT match_ibfk_6

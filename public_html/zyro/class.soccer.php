@@ -3019,7 +3019,7 @@
                     $striped = '';
                     if (self::isTeamAdvancedSecondRound($tournament, $_team, Stage::First)) $striped = 'advanced-second-round-striped';
                     $output .= '<div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md '.$striped.'">
-                            <div class="col-sm-1"><img height="32" src="/images/club_logos/'.$_team->getLogoFilename().'"></div>
+                            <div class="col-sm-1 no-padding-lr"><img height=32 src="/images/club_logos/'.$_team->getLogoFilename().'"><img height=20 class="padding-top-xs" src="/images/flags/'.$_team->getFlagFilename().'"></div>
                             <div class="col-sm-3" style="padding-top: 3px;">'.$_team->getName().'</div>
                             <div class="col-sm-1">'.$_team->getMatchPlay().'</div>
                             <div class="col-sm-1">'.$_team->getWin().'</div>
@@ -3048,12 +3048,14 @@
                     if ($_match->getHomeTeamScore() != -1) $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
                     $home_logo_tmp = '<img height="32" src="/images/club_logos/'.$_match->getHomeLogo().'">';
                     $away_logo_tmp = '<img height="32" src="/images/club_logos/'.$_match->getAwayLogo().'">';
-                    $output .= '<div class="col-sm-10 col-sm-offset-1 h2-ff3 padding-tb-md padding-lr-xs border-bottom-gray5">
+                    $home_nation_flag = '<img height="24" class="padding-top-xs" src="/images/flags/'.$_match->getHomeFlag().'">';
+                    $away_nation_flag = '<img height="24" class="padding-top-xs" src="/images/flags/'.$_match->getAwayFlag().'">';
+                    $output .= '<div class="col-sm-12 h2-ff3 padding-tb-md padding-lr-xs border-bottom-gray5">
                                         <div class="col-sm-1 h6-ff3 padding-top-sm padding-lr-xs">'.$_match->getMatchDate().'<br>'.$_match->getMatchTimeFmt().'</div>
                                         <div class="col-sm-4 h2-ff3 padding-left-xs padding-right-xs padding-top-xs text-right">'.$_match->getHomeTeamName().'</div>
-                                        <div class="col-sm-1 padding-lr-xs text-right" style="width:40px">'.$home_logo_tmp.'</div>
+                                        <div class="col-sm-1 padding-lr-xs text-right">'.$home_logo_tmp.$home_nation_flag.'</div>
                                         <div class="col-sm-1 h2-ff3 padding-left-md padding-right-xs text-center">'.$score.'</div>
-                                        <div class="col-sm-1 padding-lr-md text-right" style="width:40px">'.$away_logo_tmp.'</div>
+                                        <div class="col-sm-1 padding-lr-xs text-right">'.$away_logo_tmp.$away_nation_flag.'</div>
                                         <div class="col-sm-4 h2-ff3 padding-right-xs padding-top-xs" style="padding-left:30px">'.$_match->getAwayTeamName().'</div>
                                     </div>';
                 }
@@ -3106,10 +3108,6 @@
             return $output;
         }
 
-        public static function isShowOvertimeScore($round) {
-            return $round == self::PRELIMINARY_ROUND1 || $round == self::PRELIMINARY_ROUND2;
-        }
-
         public static function getUCLAllMatchesHtml($tournament, $lookAheadPopover) {
             $matchDay_start = array();
             $tab_array = array();
@@ -3147,6 +3145,8 @@
                         $group_text = '';
                         $home_logo_tmp = '<img height="32" src="/images/club_logos/'.$_match->getHomeLogo().'">';
                         $away_logo_tmp = '<img height="32" src="/images/club_logos/'.$_match->getAwayLogo().'">';
+                        $home_nation_flag = '<img height="24" class="padding-top-xs" src="/images/flags/'.$_match->getHomeFlag().'">';
+                        $away_nation_flag = '<img height="24" class="padding-top-xs" src="/images/flags/'.$_match->getAwayFlag().'">';
                         if ($_match->getHomeTeamName() == '') {
                             $home_team_tmp = '['.$_match->getWaitingHomeTeam().']';
                             $away_team_tmp = '['.$_match->getWaitingAwayTeam().']';
@@ -3266,23 +3266,23 @@
                         $output .= '<div class="col-sm-12 padding-tb-md">
                                         <div class="col-sm-1 padding-lr-xs">'.$_match->getMatchTimeFmt().' '.$time_zone.'<br>'.$group_text.'</div>
                                         <div class="col-sm-4 h2-ff3 padding-left-xs padding-right-xs text-right '.$home_team_color.'">'.$home_team_tmp.$advance_popover.'</div>
-                                        <div class="col-sm-1 padding-lr-xs padding-top-xs text-right" style="width:40px">'.$home_logo_tmp.'</div>
+                                        <div class="col-sm-1 padding-lr-xs padding-top-xs text-right">'.$home_logo_tmp.$home_nation_flag.'</div>
                                         <div class="col-sm-1 h2-ff3 padding-left-md padding-right-xs text-center">'.$score.'</div>
-                                        <div class="col-sm-1 padding-lr-md padding-top-xs text-right" style="width:40px">'.$away_logo_tmp.'</div>
+                                        <div class="col-sm-1 padding-lr-xs padding-top-xs text-right">'.$away_logo_tmp.$away_nation_flag.'</div>
                                         <div class="col-sm-4 h2-ff3 padding-right-xs '.$away_team_color.'" style="padding-left:30px">'.$advance_popover2.$away_team_tmp.'</div>
                                     </div>';
                         if ($aet != '') {
                             $output .= '<div class="col-sm-12 padding-bottom-md border-bottom-gray5">
                                         <div class="col-sm-4"></div>
-                                        <div class="col-sm-4 text-center">'.$aet.'</div>
-                                        <div class="col-sm-4"></div>
+                                        <div class="col-sm-5 text-center">'.$aet.'</div>
+                                        <div class="col-sm-3"></div>
                                     </div>';
                         }
                         if ($aggregate_score != '') {
                             $output .= '<div class="col-sm-12 padding-bottom-md border-bottom-gray5">
                                         <div class="col-sm-4"></div>
-                                        <div class="col-sm-4 text-center">'.$aggregate_score.'</div>
-                                        <div class="col-sm-4"></div>
+                                        <div class="col-sm-5 text-center">'.$aggregate_score.'</div>
+                                        <div class="col-sm-3"></div>
                                     </div>';
                         }
                         if ($aet == '' && $aggregate_score == '') {
@@ -3313,6 +3313,8 @@
                     $group_text = '';
                     $home_logo_tmp = '<img height="32" src="/images/club_logos/'.$_match->getHomeLogo().'">';
                     $away_logo_tmp = '<img height="32" src="/images/club_logos/'.$_match->getAwayLogo().'">';
+                    $home_nation_flag = '<img height="24" class="padding-top-xs" src="/images/flags/'.$_match->getHomeFlag().'">';
+                    $away_nation_flag = '<img height="24" class="padding-top-xs" src="/images/flags/'.$_match->getAwayFlag().'">';
                     if ($_match->getHomeTeamName() == '') {
                         $home_team_tmp = '['.$_match->getWaitingHomeTeam().']';
                         $away_team_tmp = '['.$_match->getWaitingAwayTeam().']';
@@ -3432,23 +3434,23 @@
                     $output .= '<div class="col-sm-12 padding-tb-md">
                                         <div class="col-sm-1 padding-lr-xs">'.$_match->getMatchTimeFmt().' '.$time_zone.'<br>'.$group_text.'</div>
                                         <div class="col-sm-4 h2-ff3 padding-left-xs padding-right-xs text-right '.$home_team_color.'">'.$home_team_tmp.$advance_popover.'</div>
-                                        <div class="col-sm-1 padding-lr-xs padding-top-xs text-right" style="width:40px">'.$home_logo_tmp.'</div>
+                                        <div class="col-sm-1 padding-lr-xs padding-top-xs text-right">'.$home_logo_tmp.$home_nation_flag.'</div>
                                         <div class="col-sm-1 h2-ff3 padding-left-md padding-right-xs text-center">'.$score.'</div>
-                                        <div class="col-sm-1 padding-lr-md padding-top-xs text-right" style="width:40px">'.$away_logo_tmp.'</div>
+                                        <div class="col-sm-1 padding-lr-xs padding-top-xs text-right">'.$away_logo_tmp.$away_nation_flag.'</div>
                                         <div class="col-sm-4 h2-ff3 padding-right-xs '.$away_team_color.'" style="padding-left:30px">'.$advance_popover2.$away_team_tmp.'</div>
                                     </div>';
                     if ($aet != '') {
                         $output .= '<div class="col-sm-12 padding-bottom-md border-bottom-gray5">
                                         <div class="col-sm-4"></div>
-                                        <div class="col-sm-4 text-center">'.$aet.'</div>
-                                        <div class="col-sm-4"></div>
+                                        <div class="col-sm-5 text-center">'.$aet.'</div>
+                                        <div class="col-sm-3"></div>
                                     </div>';
                     }
                     if ($aggregate_score != '') {
                         $output .= '<div class="col-sm-12 padding-bottom-md border-bottom-gray5">
                                         <div class="col-sm-4"></div>
-                                        <div class="col-sm-4 text-center">'.$aggregate_score.'</div>
-                                        <div class="col-sm-4"></div>
+                                        <div class="col-sm-5 text-center">'.$aggregate_score.'</div>
+                                        <div class="col-sm-3"></div>
                                     </div>';
                     }
                     if ($aet == '' && $aggregate_score == '') {
@@ -3509,7 +3511,7 @@
                         $striped = '';
                         if (self::isTeamAdvancedSecondRound($tournament, $_team, Stage::First)) $striped = 'advanced-second-round-striped';
                         $output .=     '<div class="col-sm-12 h3-ff3 row padding-tb-md '.$striped.'">
-                                        <div class="col-sm-1"><img height=32 src="/images/club_logos/'.$_team->getLogoFilename().'"></div>
+                                        <div class="col-sm-1 no-padding-lr"><img height=32 src="/images/club_logos/'.$_team->getLogoFilename().'"><img height=16 class="padding-top-xs" src="/images/flags/'.$_team->getFlagFilename().'"></div>
                                         <div class="col-sm-3" style="padding-top: 3px;">'.$_team->getName().'</div>
                                         <div class="col-sm-1">'.$_team->getMatchPlay().'</div>
                                         <div class="col-sm-1">'.$_team->getWin().'</div>
@@ -3579,6 +3581,10 @@
             }
             $output .= '</ul>';
             return $output;
+        }
+
+        public static function isShowOvertimeScore($round) {
+            return $round == self::PRELIMINARY_ROUND1 || $round == self::PRELIMINARY_ROUND2;
         }
 
         public static function getWorldCupMatches($tournament) {
