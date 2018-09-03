@@ -82,6 +82,44 @@
             }
         }
 
+        public static function getUCLStanding($tournament) {
+//            $numberOfMatches = 48;
+//            if ($tournament->getFantasy() == Fantasy::Half) $numberOfMatches = 32;
+//            elseif ($tournament->getFantasy() == Fantasy::None) $numberOfMatches = self::getNumberOfCompletedMatches($tournament);
+            $matches = self::getStageMatches($tournament->getMatches(), self::GROUP_STAGE);
+            $team_array = self::getTeamArrayByName($tournament->getTeams());
+            $tmp_array = array();
+            $result = array();
+            for ($i = 0; $i < sizeof($matches); $i++ ) {
+                self::calculatePoint($team_array, $matches[$i], Stage::First);
+            }
+            foreach ($team_array as $name => $_team) {
+                $tmp_array[$_team->getGroupName()][$_team->getName()] = $_team;
+            }
+            foreach ($tmp_array as $group_name => $_teams) {
+                $tmp_array2 = array();
+                foreach ($_teams as $_name => $_team) {
+                    array_push($tmp_array2, $_team);
+                }
+                $tmp_array[$group_name] = self::sortGroupStanding($tmp_array2, $matches);
+            }
+            foreach ($tmp_array as $group_name => $_teams) {
+                foreach ($_teams as $_name => $_team) {
+                    array_push($result, $_team);
+                }
+            }
+            $tournament->setTeams($result);
+            if ($tournament->getFantasy() == Fantasy::All) {
+                self::round16Qualifiers($tournament);
+                self::quarterfinalQualifiers($tournament);
+                self::semifinalQualifiers($tournament);
+                self::finalQualifiers($tournament);
+            }
+            elseif ($tournament->getFantasy() == Fantasy::Half) {
+                self::calculateScenarios($tournament);
+            }
+        }
+
         public static function getNumberOfCompletedMatches($tournament) {
             $matches = $tournament->getMatches();
             $count = 0;
@@ -1249,6 +1287,7 @@
 
         public static function calculatePoint(&$teams, $match, $stage) {
             if ($match->getSecondRoundGroupName() == self::WITHDREW) return;
+            if ($match->getHomeTeamScore() == -1) return;
 //            if (!$all_time_ranking && strpos($match->getRound(), 'Replay') !== false) { echo 'yes';return;}
             $all_time_ranking = $stage == Stage::AllStages;
             $points_for_win = 3;
@@ -1752,6 +1791,16 @@
             return $result;
         }
 
+        public static function getStageMatches($matches, $stage) {
+            $result = array();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                if ($matches[$i]->getStage() == $stage) {
+                    array_push($result, $matches[$i]);
+                }
+            }
+            return $result;
+        }
+
         public static function getBracketMatches($matches) {
             self::switchLast2Matches($matches);
             $match_count = sizeof($matches);
@@ -2043,8 +2092,15 @@
         }
 
         public static function getShortTournamentName($name) {
+            $olympic_tournament = false;
+            if (strpos($name, 'Olympic') !== false) {
+                $olympic_tournament = true;
+            }
             $result = str_replace(' FIFA World Cup ', '', $name);
-            $result = substr($result, -(strlen($result) - 4)).' '.substr($result, 0, 4);
+            $result = str_replace(' FIFA Women\'s World Cup ', '', $result);
+            $result = str_replace('Women\'s Olympic Football Tournament ', '', $result);
+            $result = str_replace('Olympic Football Tournament ', '', $result);
+            if (!$olympic_tournament) $result = substr($result, -(strlen($result) - 4)).' '.substr($result, 0, 4);
             return $result;
         }
 
@@ -2114,7 +2170,8 @@
         }
 
         public static function isThirdPlaceRankingTournament($tournament) {
-            return ($tournament->getTournamentId() >= 10 && $tournament->getTournamentId() <= 12) || $tournament->getTournamentId() == 31;
+            return ($tournament->getTournamentId() >= 10 && $tournament->getTournamentId() <= 12) ||
+                $tournament->getTournamentId() == 31 || $tournament->getTournamentId() == 33;
         }
 
         public static function getThirdPlaceTeams($tournament) {
@@ -3106,7 +3163,7 @@
                     $striped = '';
                     if (self::isTeamAdvancedSecondRound($tournament, $_team, Stage::First)) $striped = 'advanced-second-round-striped';
                     $output .= '<div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md '.$striped.'">
-                            <div class="col-sm-1 no-padding-lr"><img height=32 src="/images/club_logos/'.$_team->getLogoFilename().'"><img height=20 class="padding-top-xs" src="/images/flags/'.$_team->getFlagFilename().'"></div>
+                            <div class="col-sm-1 no-padding-lr"><img height=32 src="/images/club_logos/'.$_team->getLogoFilename().'"><img class="flag-sm-2" src="/images/flags/'.$_team->getFlagFilename().'"></div>
                             <div class="col-sm-3" style="padding-top: 3px;">'.$_team->getName().'</div>
                             <div class="col-sm-1">'.$_team->getMatchPlay().'</div>
                             <div class="col-sm-1">'.$_team->getWin().'</div>
@@ -3135,8 +3192,8 @@
                     if ($_match->getHomeTeamScore() != -1) $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
                     $home_logo_tmp = '<img height="32" src="/images/club_logos/'.$_match->getHomeLogo().'">';
                     $away_logo_tmp = '<img height="32" src="/images/club_logos/'.$_match->getAwayLogo().'">';
-                    $home_nation_flag = '<img height="24" class="padding-top-xs" src="/images/flags/'.$_match->getHomeFlag().'">';
-                    $away_nation_flag = '<img height="24" class="padding-top-xs" src="/images/flags/'.$_match->getAwayFlag().'">';
+                    $home_nation_flag = '<img class="flag-sm-2" class="padding-top-xs" src="/images/flags/'.$_match->getHomeFlag().'">';
+                    $away_nation_flag = '<img class="flag-sm-2" class="padding-top-xs" src="/images/flags/'.$_match->getAwayFlag().'">';
                     $output .= '<div class="col-sm-12 h2-ff3 padding-tb-md padding-lr-xs border-bottom-gray5">
                                         <div class="col-sm-1 h6-ff3 padding-top-sm padding-lr-xs">'.$_match->getMatchDate().'<br>'.$_match->getMatchTimeFmt().'</div>
                                         <div class="col-sm-4 h2-ff3 padding-left-xs padding-right-xs padding-top-xs text-right">'.$_match->getHomeTeamName().'</div>
@@ -3232,8 +3289,8 @@
                         $group_text = '';
                         $home_logo_tmp = '<img height="32" src="/images/club_logos/'.$_match->getHomeLogo().'">';
                         $away_logo_tmp = '<img height="32" src="/images/club_logos/'.$_match->getAwayLogo().'">';
-                        $home_nation_flag = '<img height="24" class="padding-top-xs" src="/images/flags/'.$_match->getHomeFlag().'">';
-                        $away_nation_flag = '<img height="24" class="padding-top-xs" src="/images/flags/'.$_match->getAwayFlag().'">';
+                        $home_nation_flag = '<img class="flag-sm-2" src="/images/flags/'.$_match->getHomeFlag().'">';
+                        $away_nation_flag = '<img class="flag-sm-2" src="/images/flags/'.$_match->getAwayFlag().'">';
                         if ($_match->getHomeTeamName() == '') {
                             $home_team_tmp = '['.$_match->getWaitingHomeTeam().']';
                             $away_team_tmp = '['.$_match->getWaitingAwayTeam().']';
@@ -3400,8 +3457,8 @@
                     $group_text = '';
                     $home_logo_tmp = '<img height="32" src="/images/club_logos/'.$_match->getHomeLogo().'">';
                     $away_logo_tmp = '<img height="32" src="/images/club_logos/'.$_match->getAwayLogo().'">';
-                    $home_nation_flag = '<img height="24" class="padding-top-xs" src="/images/flags/'.$_match->getHomeFlag().'">';
-                    $away_nation_flag = '<img height="24" class="padding-top-xs" src="/images/flags/'.$_match->getAwayFlag().'">';
+                    $home_nation_flag = '<img class="flag-sm-2" src="/images/flags/'.$_match->getHomeFlag().'">';
+                    $away_nation_flag = '<img class="flag-sm-2" src="/images/flags/'.$_match->getAwayFlag().'">';
                     if ($_match->getHomeTeamName() == '') {
                         $home_team_tmp = '['.$_match->getWaitingHomeTeam().']';
                         $away_team_tmp = '['.$_match->getWaitingAwayTeam().']';
@@ -3598,7 +3655,7 @@
                         $striped = '';
                         if (self::isTeamAdvancedSecondRound($tournament, $_team, Stage::First)) $striped = 'advanced-second-round-striped';
                         $output .=     '<div class="col-sm-12 h3-ff3 row padding-tb-md '.$striped.'">
-                                        <div class="col-sm-1 no-padding-lr"><img height=32 src="/images/club_logos/'.$_team->getLogoFilename().'"><img height=16 class="padding-top-xs" src="/images/flags/'.$_team->getFlagFilename().'"></div>
+                                        <div class="col-sm-1 no-padding-lr"><img height=32 src="/images/club_logos/'.$_team->getLogoFilename().'"><img class="flag-sm" src="/images/flags/'.$_team->getFlagFilename().'"></div>
                                         <div class="col-sm-3" style="padding-top: 3px;">'.$_team->getName().'</div>
                                         <div class="col-sm-1">'.$_team->getMatchPlay().'</div>
                                         <div class="col-sm-1">'.$_team->getWin().'</div>
@@ -3686,6 +3743,10 @@
             self::getSoccerMatches($tournament, 9);
         }
 
+        public static function getWomenOlympicMatches($tournament) {
+            self::getSoccerMatches($tournament, 10);
+        }
+
         public static function getUNLMatches($tournament) {
             self::getSoccerMatches($tournament, 4);
         }
@@ -3712,7 +3773,25 @@
 
         public static function getAllTimeSoccerMatches($tournament) {
 
-            $sql = self::getAllTimeSoccerMatchSql();
+            $sql = self::getAllTimeSoccerMatchSql(1);
+            self::getSoccerMatchDb($tournament, $sql);
+        }
+
+        public static function getAllTimeWomenSoccerMatches($tournament) {
+
+            $sql = self::getAllTimeSoccerMatchSql(8);
+            self::getSoccerMatchDb($tournament, $sql);
+        }
+
+        public static function getAllTimeOlympicSoccerMatches($tournament) {
+
+            $sql = self::getAllTimeSoccerMatchSql(9);
+            self::getSoccerMatchDb($tournament, $sql);
+        }
+
+        public static function getAllTimeWomenOlympicSoccerMatches($tournament) {
+
+            $sql = self::getAllTimeSoccerMatchSql(10);
             self::getSoccerMatchDb($tournament, $sql);
         }
 
@@ -3767,6 +3846,10 @@
                 $tournament->setMatches($matches);
                 $tournament->concatBodyHtml($output);
             }
+        }
+
+        public static function getAllTimeSoccerMatchSql($tournament_type_id) {
+            return self::getSoccerMatchSql(null, $tournament_type_id);
         }
 
         public static function getSoccerMatchSql($tournament_id, $tournament_type_id) {
@@ -3841,10 +3924,6 @@
             return $sql;
         }
 
-        public static function getAllTimeSoccerMatchSql() {
-            return self::getSoccerMatchSql(null, 1);
-        }
-
         public static function getSoccerTeams($tournament) {
 
             $sql = self::getSoccerTeamSql($tournament->getTournamentId());
@@ -3853,13 +3932,49 @@
 
         public static function getAllTimeSoccerTeams($tournament) {
 
-            $sql = self::getAllTimeSoccerTeamSql();
+            $sql = self::getAllTimeSoccerTeamSql(1);
+            self::getAllTimeSoccerTeamDb($tournament, $sql);
+        }
+
+        public static function getAllTimeWomenSoccerTeams($tournament) {
+
+            $sql = self::getAllTimeSoccerTeamSql(8);
+            self::getAllTimeSoccerTeamDb($tournament, $sql);
+        }
+
+        public static function getAllTimeOlympicSoccerTeams($tournament) {
+
+            $sql = self::getAllTimeSoccerTeamSql(9);
+            self::getAllTimeSoccerTeamDb($tournament, $sql);
+        }
+
+        public static function getAllTimeWomenOlympicSoccerTeams($tournament) {
+
+            $sql = self::getAllTimeSoccerTeamSql(10);
             self::getAllTimeSoccerTeamDb($tournament, $sql);
         }
 
         public static function getAllTimeSoccerTeamTournaments($tournament) {
 
-            $sql = self::getAllTimeSoccerTeamTournamentSql();
+            $sql = self::getAllTimeSoccerTeamTournamentSql(1);
+            self::getAllTimeSoccerTeamTournamentDb($tournament, $sql);
+        }
+
+        public static function getAllTimeWomenSoccerTeamTournaments($tournament) {
+
+            $sql = self::getAllTimeSoccerTeamTournamentSql(8);
+            self::getAllTimeSoccerTeamTournamentDb($tournament, $sql);
+        }
+
+        public static function getAllTimeOlympicSoccerTeamTournaments($tournament) {
+
+            $sql = self::getAllTimeSoccerTeamTournamentSql(9);
+            self::getAllTimeSoccerTeamTournamentDb($tournament, $sql);
+        }
+
+        public static function getAllTimeWomenOlympicSoccerTeamTournaments($tournament) {
+
+            $sql = self::getAllTimeSoccerTeamTournamentSql(10);
             self::getAllTimeSoccerTeamTournamentDb($tournament, $sql);
         }
 
@@ -3977,7 +4092,7 @@
             return $sql;
         }
 
-        public static function getAllTimeSoccerTeamSql() {
+        public static function getAllTimeSoccerTeamSql($tournament_type_id) {
             $sql = 'SELECT DISTINCT UCASE(t.name) AS name, t.id, t.parent_team_id, UCASE(t2.name) AS parent_team_name,
                         n.flag_filename, n.code, tc.tournament_count
                     FROM team t
@@ -3990,7 +4105,7 @@
                                 FROM team_tournament 
                                 WHERE (group_id <> 63 OR group_id is null) -- AND tournament_id <> 1
                                 GROUP BY team_id) tc ON tc.team_id = t.id
-                    WHERE tou.tournament_type_id = 1  -- AND tt.tournament_id <> 1
+                    WHERE tou.tournament_type_id = '.$tournament_type_id.'  -- AND tt.tournament_id <> 1
                     UNION
                     SELECT DISTINCT UCASE(t.name) AS name, t.id, null, null,
                         n.flag_filename, n.code, tc.tournament_count
@@ -4004,11 +4119,11 @@
                                 FROM team_tournament 
                                 WHERE (group_id <> 63 OR group_id is null) -- AND tournament_id <> 1
                                 GROUP BY team_id) tc ON tc.team_id = t.id
-                    WHERE tou.tournament_type_id = 1  -- AND tt.tournament_id <> 1';
+                    WHERE tou.tournament_type_id = '.$tournament_type_id.'  -- AND tt.tournament_id <> 1';
             return $sql;
         }
 
-        public static function getAllTimeSoccerTeamTournamentSql() {
+        public static function getAllTimeSoccerTeamTournamentSql($tournament_type_id) {
             $sql = 'SELECT UCASE(t.name) AS name, t.id, tou.name AS tournament_name, t.parent_team_id, UCASE(t2.name) AS parent_team_name,
                         n.flag_filename, n.code
                     FROM team t
@@ -4017,7 +4132,7 @@
                     LEFT JOIN team t2 ON t2.id = t.parent_team_id 
                     LEFT JOIN `group` g ON g.id = tt.group_id
                     LEFT JOIN nation n ON n.id = t.nation_id
-                    WHERE tou.tournament_type_id = 1'; // AND tt.tournament_id <> 1'
+                    WHERE tou.tournament_type_id = '.$tournament_type_id.''; // AND tt.tournament_id <> 1'
             return $sql;
         }
 

@@ -147,6 +147,10 @@ body {
     height: 16px;
     border: 1px solid #c7c6c6;
 }
+.flag-sm-2 {
+    height: 20px;
+    border: 1px solid #c7c6c6;
+}
 .flag-md {
     width: 48px;
     height: 32px;

@@ -157,7 +157,7 @@
             Soccer::getSoccerTeams($tournament);
             Soccer::getUCLMatches($tournament);
 
-//            Soccer::getStanding($tournament);
+            Soccer::getUCLStanding($tournament);
             Soccer::getUCLStandingsHtml($tournament);
 
             return $tournament;
@@ -172,19 +172,19 @@
             Soccer::getUCLMatches($tournament);
 
             if ($fantasy == Fantasy::All) {
-//                Soccer::getStanding($tournament);
+                Soccer::getUCLStanding($tournament);
                 Soccer::getUCLMatchesHtml($tournament, false);
             }
             elseif ($fantasy == Fantasy::Half) {
-//                Soccer::getStanding($tournament);
+                Soccer::getUCLStanding($tournament);
                 Soccer::getUCLMatchesHtml($tournament, false);
-//                Soccer::getSoccerPopoverHtml($tournament);
+                Soccer::getSoccerPopoverHtml($tournament);
             }
             else {
-//                Soccer::getStanding($tournament);
+                Soccer::getUCLStanding($tournament);
                 Soccer::getUCLMatchesHtml($tournament, false);
             }
-//
+
             Soccer::getUCLGroupModalHtml($tournament);
 
             return $tournament;
@@ -248,6 +248,57 @@
             return $tournament;
         }
 
+        public static function getAllTimeWomenSoccerTournament() {
+
+            $tournament = Tournament::CreateSoccerTournament();
+
+            Soccer::getAllTimeWomenSoccerTeams($tournament);
+            Soccer::getAllTimeWomenSoccerMatches($tournament);
+            Soccer::getAllTimeWomenSoccerTeamTournaments($tournament);
+
+            Soccer::getTournamentCount($tournament);
+            Soccer::getAllTimeRanking($tournament);
+            Soccer::getAllTimeSoccerRankingHtml($tournament);
+            Soccer::getAllTimeTournamentRanking($tournament);
+            Soccer::getAllTimeSoccerPopoverHtml($tournament);
+
+            return $tournament;
+        }
+
+        public static function getAllTimeOlympicSoccerTournament() {
+
+            $tournament = Tournament::CreateSoccerTournament();
+
+            Soccer::getAllTimeOlympicSoccerTeams($tournament);
+            Soccer::getAllTimeOlympicSoccerMatches($tournament);
+            Soccer::getAllTimeOlympicSoccerTeamTournaments($tournament);
+
+            Soccer::getTournamentCount($tournament);
+            Soccer::getAllTimeRanking($tournament);
+            Soccer::getAllTimeSoccerRankingHtml($tournament);
+            Soccer::getAllTimeTournamentRanking($tournament);
+            Soccer::getAllTimeSoccerPopoverHtml($tournament);
+
+            return $tournament;
+        }
+
+        public static function getAllTimeWomenOlympicSoccerTournament() {
+
+            $tournament = Tournament::CreateSoccerTournament();
+
+            Soccer::getAllTimeWomenOlympicSoccerTeams($tournament);
+            Soccer::getAllTimeWomenOlympicSoccerMatches($tournament);
+            Soccer::getAllTimeWomenOlympicSoccerTeamTournaments($tournament);
+
+            Soccer::getTournamentCount($tournament);
+            Soccer::getAllTimeRanking($tournament);
+            Soccer::getAllTimeSoccerRankingHtml($tournament);
+            Soccer::getAllTimeTournamentRanking($tournament);
+            Soccer::getAllTimeSoccerPopoverHtml($tournament);
+
+            return $tournament;
+        }
+
         public static function getArchiveSoccerTournament($tournament_id) {
 
             $tournament = Tournament::CreateSoccerTournamentById($tournament_id);
@@ -293,6 +344,25 @@
             self::getTournamentProfile($tournament);
             Soccer::getSoccerTeams($tournament);
             Soccer::getOlympicMatches($tournament);
+
+            Soccer::getFirstStageMatchesRanking($tournament);
+            Soccer::getArchiveSoccerScheduleHtml($tournament);
+            Soccer::getSoccerGroupModalHtml($tournament);
+            Soccer::updateFirstStageMatchesRanking($tournament);
+
+            Soccer::getSecondStageMatchesRanking($tournament);
+            Soccer::getTournamentSoccerRankingHtml($tournament);
+
+            return $tournament;
+        }
+
+        public static function getWomenOlympicSoccerTournament($tournament_id) {
+
+            $tournament = Tournament::CreateSoccerTournamentById($tournament_id);
+
+            self::getTournamentProfile($tournament);
+            Soccer::getSoccerTeams($tournament);
+            Soccer::getWomenOlympicMatches($tournament);
 
             Soccer::getFirstStageMatchesRanking($tournament);
             Soccer::getArchiveSoccerScheduleHtml($tournament);

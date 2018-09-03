@@ -1,8 +1,8 @@
 <?php
     include_once('class.tournament.php');
-//    $tournament = Tournament::getAllTimeSoccerTournament();
-//    $body_html = $tournament->getBodyHtml();
-//    $popover_html = $tournament->getPopoverHtml();
+    $tournament = Tournament::getAllTimeOlympicSoccerTournament();
+    $body_html = $tournament->getBodyHtml();
+    $popover_html = $tournament->getPopoverHtml();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,8 +32,8 @@
                     </h5>
                 </div>
                 <div>
-                    <?php //echo $body_html; ?>
-                    <?php //echo $popover_html; ?>
+                    <?php echo $body_html; ?>
+                    <?php echo $popover_html; ?>
                     <p class="wb-stl-normal"> </p>
                 </div>
                 <div class="col-sm-12 margin-tb-lg">

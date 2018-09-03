@@ -1641,4 +1641,4 @@ FROM `match` m
 		 LEFT JOIN team pt2 ON pt2.id = t2.parent_team_id
 WHERE tou.tournament_type_id = 6
   AND m.tournament_id = 29
-ORDER BY stage_id, match_order, match_date, match_time
+ORDER BY match_order, match_date, match_time

@@ -3,7 +3,7 @@
     parse_str($_SERVER['QUERY_STRING'], $query_string);
     $tournament_id = 33;
     if (isset($query_string['tid'])) $tournament_id = $query_string['tid'];
-    $tournament = Tournament::getOlympicSoccerTournament($tournament_id);
+    $tournament = Tournament::getWomenOlympicSoccerTournament($tournament_id);
     $profile = $tournament->getProfile();
     $header = $profile->getOlympicTournamentHeader();
     $tournament_name = $profile->getName();
