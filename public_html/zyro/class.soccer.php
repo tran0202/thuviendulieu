@@ -28,6 +28,8 @@
         const SEMIFINALS = 'Semifinals';
         const THIRD_PLACE = 'Third place';
         const FINAL_ = 'Final';
+        const BRONZE_MEDAL_MATCH = 'Bronze Medal Match';
+        const GOLD_MEDAL_MATCH = 'Gold Medal Match';
         const FIRST_STAGE = 'First Stage';
         const GROUP_STAGE = 'Group Stage';
         const SECOND_STAGE = 'Second Stage';
@@ -1086,6 +1088,8 @@
             Soccer::getQuarterfinalMatchesRanking($tournament);
             Soccer::getReplayQuarterfinalMatchesRanking($tournament);
             Soccer::getSemifinalMatchesRanking($tournament);
+            Soccer::getBronzeMedalMatchRanking($tournament);
+            Soccer::getGoldMedalMatchRanking($tournament);
             Soccer::getThirdPlaceMatchRanking($tournament);
             Soccer::getFinalMatchRanking($tournament);
             Soccer::sortTournamentStanding($tournament);
@@ -1131,6 +1135,32 @@
             $semifinal_matches = self::getSemifinalMatches($tournament->getMatches());
             $teams = self::getGroupRanking($tournament->getTeams(), $semifinal_matches, Stage::Second);
             $tournament->setTeams($teams);
+        }
+
+        public static function getBronzeMedalMatchRanking($tournament) {
+            $teams = self::getTeamArrayByName($tournament->getTeams());
+            $bronze_medal_match = self::getBronzeMedalMatch($tournament->getMatches());
+            if ($bronze_medal_match != null) {
+                self::calculatePoint($teams, $bronze_medal_match, Stage::Second);
+                $teams_tmp = array();
+                foreach ($teams as $name => $_team) {
+                    array_push($teams_tmp, $_team);
+                }
+                $tournament->setTeams($teams_tmp);
+            }
+        }
+
+        public static function getGoldMedalMatchRanking($tournament) {
+            $teams = self::getTeamArrayByName($tournament->getTeams());
+            $gold_medal_match = self::getGoldMedalMatch($tournament->getMatches());
+            if ($gold_medal_match != null) {
+                self::calculatePoint($teams, $gold_medal_match, Stage::Second);
+                $teams_tmp = array();
+                foreach ($teams as $name => $_team) {
+                    array_push($teams_tmp, $_team);
+                }
+                $tournament->setTeams($teams_tmp);
+            }
         }
 
         public static function getThirdPlaceMatchRanking($tournament) {
@@ -1328,27 +1358,50 @@
 
         public static function sortTournamentStanding($tournament) {
             $teams = $tournament->getTeams();
+            if (sizeof($tournament->getMatches()) == 0) return;
+            if (sizeof($teams) == 0) return;
             $result = array();
             $teams_tmp = array();
             for ($i = 0; $i < sizeof($teams); $i++) {
                 $teams_tmp[$teams[$i]->getBestFinish()][$teams[$i]->getName()] = $teams[$i];
             }
-            foreach ($teams_tmp[Finish::Champion] as $name => $_team) {
-                array_push($result, $_team);
+            if (array_key_exists(Finish::Champion, $teams_tmp)) {
+                foreach ($teams_tmp[Finish::Champion] as $name => $_team) {
+                    array_push($result, $_team);
+                }
             }
-            foreach ($teams_tmp[Finish::RunnerUp] as $name => $_team) {
-                array_push($result, $_team);
+            if (array_key_exists(Finish::RunnerUp, $teams_tmp)) {
+                foreach ($teams_tmp[Finish::RunnerUp] as $name => $_team) {
+                    array_push($result, $_team);
+                }
             }
             if (array_key_exists(Finish::ThirdPlace, $teams_tmp)) {
                 foreach ($teams_tmp[Finish::ThirdPlace] as $name => $_team) {
                     array_push($result, $_team);
                 }
             }
-            foreach ($teams_tmp[Finish::Semifinal] as $name => $_team) {
-                if ($name == 'USA') {
-                   $_team->setBestFinish(Finish::ThirdPlace);
+            if (array_key_exists(Finish::GoldMedal, $teams_tmp)) {
+                foreach ($teams_tmp[Finish::GoldMedal] as $name => $_team) {
+                    array_push($result, $_team);
                 }
-                array_push($result, $_team);
+            }
+            if (array_key_exists(Finish::SilverMedal, $teams_tmp)) {
+                foreach ($teams_tmp[Finish::SilverMedal] as $name => $_team) {
+                    array_push($result, $_team);
+                }
+            }
+            if (array_key_exists(Finish::BronzeMedal, $teams_tmp)) {
+                foreach ($teams_tmp[Finish::BronzeMedal] as $name => $_team) {
+                    array_push($result, $_team);
+                }
+            }
+            if (array_key_exists(Finish::Semifinal, $teams_tmp)) {
+                foreach ($teams_tmp[Finish::Semifinal] as $name => $_team) {
+                    if ($name == 'USA') {
+                        $_team->setBestFinish(Finish::ThirdPlace);
+                    }
+                    array_push($result, $_team);
+                }
             }
             if (array_key_exists(Finish::ReplayQuarterfinal, $teams_tmp)) {
                 foreach ($teams_tmp[Finish::ReplayQuarterfinal] as $name => $_team) {
@@ -1422,6 +1475,12 @@
         }
 
         public static function resetBestFinish($match, $team) {
+            if ($match->getRound() == self::BRONZE_MEDAL_MATCH) {
+                $team->setBestFinish(Finish::Semifinal);
+            }
+            if ($match->getRound() == self::GOLD_MEDAL_MATCH) {
+                $team->setBestFinish(Finish::SilverMedal);
+            }
             if ($match->getRound() == self::THIRD_PLACE) {
                 $team->setBestFinish(Finish::Semifinal);
             }
@@ -1465,6 +1524,12 @@
                     break;
                 case self::SEMIFINALS:
                     $best_finish = Finish::Semifinal;
+                    break;
+                case self::BRONZE_MEDAL_MATCH:
+                    $best_finish = Finish::BronzeMedal;
+                    break;
+                case self::GOLD_MEDAL_MATCH:
+                    $best_finish = Finish::GoldMedal;
                     break;
                 case self::THIRD_PLACE:
                     $best_finish = Finish::ThirdPlace;
@@ -1511,6 +1576,15 @@
                     break;
                 case Finish::Semifinal:
                     $best_finish = 'Fourth Place';
+                    break;
+                case Finish::BronzeMedal:
+                    $best_finish = 'Bronze Medal';
+                    break;
+                case Finish::SilverMedal:
+                    $best_finish = 'Silver Medal';
+                    break;
+                case Finish::GoldMedal:
+                    $best_finish = 'Gold Medal';
                     break;
                 case Finish::ThirdPlace:
                     $best_finish = 'Third Place';
@@ -1642,6 +1716,18 @@
 
         public static function getSemifinalMatches($matches) {
             return self::getRoundMatches($matches, self::SEMIFINALS);
+        }
+
+        public static function getBronzeMedalMatch($matches) {
+            $matches_tmp = self::getRoundMatches($matches, self::BRONZE_MEDAL_MATCH);
+            if (sizeof($matches_tmp) == 0) return null;
+            return $matches_tmp[0];
+        }
+
+        public static function getGoldMedalMatch($matches) {
+            $matches_tmp = self::getRoundMatches($matches, self::GOLD_MEDAL_MATCH);
+            if (sizeof($matches_tmp) == 0) return null;
+            return $matches_tmp[0];
         }
 
         public static function getThirdPlaceMatch($matches) {
@@ -2540,6 +2626,7 @@
         }
 
         public static function getSoccerRankingHtml($teams, $all_time) {
+            if (sizeof($teams) == 0) return;
             if (!$all_time) $teams = self::getTeamArrayByBestFinish($teams);
             $title = 'Tournament Rankings';
             $tc_header = '<div class="col-sm-3"></div>';
@@ -3595,6 +3682,10 @@
             self::getSoccerMatches($tournament, 8);
         }
 
+        public static function getOlympicMatches($tournament) {
+            self::getSoccerMatches($tournament, 9);
+        }
+
         public static function getUNLMatches($tournament) {
             self::getSoccerMatches($tournament, 4);
         }
@@ -3980,4 +4071,7 @@
         const ThirdPlace = 12;
         const RunnerUp = 13;
         const Champion = 14;
+        const BronzeMedal = 15;
+        const SilverMedal = 16;
+        const GoldMedal = 17;
     }

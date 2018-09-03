@@ -71,6 +71,18 @@
                     </p>
                     <p class="wb-stl-normal"> </p>
                 </div>
+                <div class="col-sm-12 margin-top-lg padding-top-lg border-top-gray5">
+                    <p class="wb-stl-highlight text-center">
+                        <a href="OlympicFootballTournamentArchive">Olympic Football Tournament Archive <span class="fa fa-futbol-o"></span> <span class="fa fa-futbol-o"></span> <span class="fa fa-futbol-o"></span></a>
+                    </p>
+                    <p class="wb-stl-normal"> </p>
+                </div>
+                <div class="col-sm-12 margin-top-lg padding-top-lg border-top-gray5">
+                    <p class="wb-stl-highlight text-center">
+                        <a href="WomenOlympicFootballTournamentArchive">Women's Olympic Football Tournament Archive <span class="fa fa-futbol-o"></span> <span class="fa fa-futbol-o"></span> <span class="fa fa-futbol-o"></span></a>
+                    </p>
+                    <p class="wb-stl-normal"> </p>
+                </div>
                 <div class="col-sm-12 margin-tb-lg">
                     <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
                 </div>

@@ -85,6 +85,14 @@ VALUES ('Canada', 3, 36), ('China PR', 3, 42), ('Netherlands', 3, 135), ('New Ze
 	   ('Brazil', 3, 28), ('Korea Republic', 3, 103), ('Costa Rica', 3, 49), ('Spain', 3, 175),
 	   ('France', 3, 71), ('England', 3, 63), ('Colombia', 3, 44), ('Mexico', 3, 125);
 
+# Olympic
+
+INSERT INTO team (name, team_type_id, nation_id)
+VALUES ('Brazil', 4, 28), ('Denmark', 4, 56), ('Iraq', 4, 94), ('South Africa', 4, 173),
+	   ('Nigeria', 4, 140), ('Colombia', 4, 44), ('Japan', 4, 98), ('Sweden', 4, 183),
+	   ('Korea Republic', 4, 103), ('Germany', 4, 76), ('Mexico', 4, 125), ('Fiji', 4, 69),
+	   ('Portugal', 4, 152), ('Honduras', 4, 87), ('Argentina', 4, 9), ('Algeria', 4, 3);
+
 INSERT INTO team (name, official_name, team_type_id, nation_id, code)
 VALUES ('Atletico Madrid', 'Club Atlético de Madrid', 2, 175, 'ATM'),
 	   ('Barcelona', 'FC Barcelona', 2, 175, 'FCB'),

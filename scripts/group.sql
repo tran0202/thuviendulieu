@@ -67,10 +67,8 @@ VALUES ('First Stage', 4),
 	('MatchDay 3', 5),
 	('MatchDay 4', 5),
 	('MatchDay 5', 5),
-	('MatchDay 6', 5);
-
-INSERT INTO `group` (name, group_type_id)
-VALUES ('Qualifying Stage', 4),
+	('MatchDay 6', 5),
+	   ('Qualifying Stage', 4),
 	   ('Preliminary Round 1', 5),
 	   ('Preliminary Round 2', 5),
 	   ('Preliminary Round - 1st Leg', 5),
@@ -92,6 +90,10 @@ VALUES ('Qualifying Stage', 4),
 	   ('Semifinals - 1st Leg', 5),
 	   ('Semifinals - 2nd Leg', 5),
 	   ('Knockout Stage', 4);
+
+INSERT INTO `group` (name, group_type_id)
+VALUES ('Bronze Medal Match', 5),
+	   ('Gold Medal Match', 5);
 
 INSERT INTO `group` (name, long_name, group_type_id)
 VALUES ('Preseason', null, 4),

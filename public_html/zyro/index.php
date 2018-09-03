@@ -15,10 +15,14 @@
         '11'	=> array('id' => '12', 'alias' => 'UEFAEuropaLeagueMatches', 'file' => 'uefa_europa_league_matches.php','controllers' => array()),
         '12'	=> array('id' => '13', 'alias' => 'WomenWorldCup', 'file' => 'women_world_cup_tournament.php','controllers' => array()),
         '13'	=> array('id' => '14', 'alias' => 'WomenWorldCupArchive', 'file' => 'women_world_cup_archive.php','controllers' => array()),
-        '14'	=> array('id' => '15', 'alias' => 'NFL', 'file' => 'football.php','controllers' => array()),
-        '15'	=> array('id' => '16', 'alias' => 'NFLStandings', 'file' => 'football_standings.php','controllers' => array()),
-        '16' => array('id' => '17', 'alias' => 'Tennis', 'file' => 'tennis.php','controllers' => array()),
-        '17' => array('id' => '18', 'alias' => 'TennisTournament', 'file' => 'tennis_tournament.php','controllers' => array())
+        '14'	=> array('id' => '15', 'alias' => 'OlympicFootballTournament', 'file' => 'olympic_football_tournament.php','controllers' => array()),
+        '15'	=> array('id' => '16', 'alias' => 'OlympicFootballTournamentArchive', 'file' => 'olympic_football_tournament_archive.php','controllers' => array()),
+        '16'	=> array('id' => '17', 'alias' => 'WomenOlympicFootballTournament', 'file' => 'women_olympic_football_tournament.php','controllers' => array()),
+        '17'	=> array('id' => '18', 'alias' => 'WomenOlympicFootballTournamentArchive', 'file' => 'women_olympic_football_tournament_archive.php','controllers' => array()),
+        '18'	=> array('id' => '19', 'alias' => 'NFL', 'file' => 'football.php','controllers' => array()),
+        '19'	=> array('id' => '20', 'alias' => 'NFLStandings', 'file' => 'football_standings.php','controllers' => array()),
+        '20' => array('id' => '21', 'alias' => 'Tennis', 'file' => 'tennis.php','controllers' => array()),
+        '21' => array('id' => '22', 'alias' => 'TennisTournament', 'file' => 'tennis_tournament.php','controllers' => array())
 //		'4'	=> array('id' => '4', 'alias' => 'New-Link', 'file' => 'tennis.php','controllers' => array())
 	);
 	$forms = array(

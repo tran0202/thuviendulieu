@@ -14,10 +14,12 @@ VALUES ('FIFA World Cup', 1, 1),
 	   ('UEFA Nations League', 1, 1),
 	   ('WTA Women''s Singles', 8, 3),
 	   ('UEFA Champions League', 2, 1),
-	   ('UEFA Europa League', 2, 1);
+	   ('UEFA Europa League', 2, 1),
+	   ('FIFA Women''s World Cup', 3, 1);
 
 INSERT INTO tournament_type (name, team_type_id, sport_id)
-VALUES ('FIFA Women''s World Cup', 3, 1);
+VALUES ('Olympic Football Tournament', 4, 1),
+	   ('Women''s Olympic Football Tournament', 5, 1);
 
 ALTER TABLE tournament_type
 ADD COLUMN sport_id INT;

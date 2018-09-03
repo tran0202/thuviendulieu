@@ -44,6 +44,10 @@ INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_fil
 VALUES ('2015 FIFA Women''s World Cup Canada', '2015-06-06', '2010-07-05', 8, '2015.png');
 
 INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_filename)
+VALUES ('Olympic Football Tournament Rio 2016', '2016-08-03', '2016-08-20', 9, '2016.png'),
+	   ('Women''s Olympic Football Tournament Rio 2016', '2016-08-03', '2016-08-20', 10, '2016.png');
+
+INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_filename)
 VALUES ('2018/19 UEFA Nations League', '2018-09-06', '2019-06-09', 4, 'UEFA_Nations_League.png');
 
 INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_filename)
