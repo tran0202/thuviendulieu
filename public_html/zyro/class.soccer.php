@@ -1,6 +1,7 @@
 <?php
     include_once('class.match.php');
     include_once('class.team.php');
+    include_once('class.scenario.php');
 
     class Soccer {
 
