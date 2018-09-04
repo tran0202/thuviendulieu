@@ -103,9 +103,9 @@
             return $t;
         }
 
-        public static function CreateSoccerTeam($id, $tournament_name, $name, $l_name, $code, $parent_id, $parent_name,
+        public static function CreateSoccerTeam($id, $name, $l_name, $code, $parent_id, $parent_name,
                 $group_name, $group_order, $parent_group_name, $parent_group_long_name, $parent_group_order,
-                $flag_filename, $logo_filename, $tournament_count) {
+                $flag_filename, $logo_filename, $tournament_name, $tournament_count) {
             return self::CreateTeam($id, $tournament_name, $name, $l_name, $code, $group_name, $group_order,
                 $parent_id, $parent_name, $parent_group_name, $parent_group_long_name, $parent_group_order, $flag_filename, $logo_filename,
                 $tournament_count, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

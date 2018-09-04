@@ -85,6 +85,43 @@
             return $output;
         }
 
+        public static function getTournamentProfile($tournament) {
+
+            $sql = self::getTournamentProfileSql($tournament->getTournamentId());
+            self::getTournamentProfileDb($tournament, $sql);
+        }
+
+        public static function getTournamentProfileSql($tournament_id) {
+            $sql = 'SELECT name, id, logo_filename,
+                        start_date, end_date, 
+                        tournament_type_id, parent_tournament_id,
+                        points_for_win, golden_goal_rule 
+                    FROM tournament t 
+                    WHERE t.id = '.$tournament_id;
+            return $sql;
+        }
+
+        public static function getTournamentProfileDb($tournament, $sql) {
+
+            $query = $GLOBALS['connection']->prepare($sql);
+            $query->execute();
+            $count = $query->rowCount();
+            $output = '<!-- Tournament Count = '.$count.' -->';
+
+            if ($count == 0) {
+                $output = '<h2>No result found!</h2>';
+                $tournament->concatBodyHtml($output);
+            }
+            else {
+                $row = $query->fetch(\PDO::FETCH_ASSOC);
+                $tournament_profile = TournamentProfile::CreateTournamentProfile(
+                    $row['id'], $row['name'], $row['logo_filename'], $row['start_date'], $row['end_date'],
+                    $row['tournament_type_id'], $row['parent_tournament_id'], $row['points_for_win'], $row['golden_goal_rule']);
+                $tournament->setProfile($tournament_profile);
+                $tournament->concatBodyHtml($output);
+            }
+        }
+
         /**
          * @return mixed
          */

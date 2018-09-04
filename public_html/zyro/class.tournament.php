@@ -2,6 +2,7 @@
     include_once('config.php');
     include_once('class.tournamentProfile.php');
     include_once('class.soccer.php');
+    include_once('class.soccerTeam.php');
     include_once('class.tennis.php');
     include_once('class.football.php');
 
@@ -70,8 +71,8 @@
 
             $tournament = Tournament::CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy);
 
-            self::getTournamentProfile($tournament);
-            Soccer::getSoccerTeams($tournament);
+            TournamentProfile::getTournamentProfile($tournament);
+            SoccerTeam::getSoccerTeams($tournament);
             Soccer::getWorldCupMatches($tournament);
 
             if ($fantasy == Fantasy::All) {
@@ -97,8 +98,8 @@
 
             $tournament = Tournament::CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy);
 
-            self::getTournamentProfile($tournament);
-            Soccer::getSoccerTeams($tournament);
+            TournamentProfile::getTournamentProfile($tournament);
+            SoccerTeam::getSoccerTeams($tournament);
             Soccer::getWorldCupMatches($tournament);
 
             Soccer::getStanding($tournament);
@@ -113,8 +114,8 @@
 
             $tournament = Tournament::CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy);
 
-            self::getTournamentProfile($tournament);
-            Soccer::getSoccerTeams($tournament);
+            TournamentProfile::getTournamentProfile($tournament);
+            SoccerTeam::getSoccerTeams($tournament);
             Soccer::getUNLMatches($tournament);
 
             Soccer::getStanding($tournament);
@@ -127,8 +128,8 @@
 
             $tournament = Tournament::CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy);
 
-            self::getTournamentProfile($tournament);
-            Soccer::getSoccerTeams($tournament);
+            TournamentProfile::getTournamentProfile($tournament);
+            SoccerTeam::getSoccerTeams($tournament);
             Soccer::getUNLMatches($tournament);
 
             if ($fantasy == Fantasy::All) {
@@ -154,8 +155,8 @@
 
             $tournament = Tournament::CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy);
 
-            self::getTournamentProfile($tournament);
-            Soccer::getSoccerTeams($tournament);
+            TournamentProfile::getTournamentProfile($tournament);
+            SoccerTeam::getSoccerTeams($tournament);
             Soccer::getUCLMatches($tournament);
 
             Soccer::getUCLStanding($tournament);
@@ -168,8 +169,8 @@
 
             $tournament = Tournament::CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy);
 
-            self::getTournamentProfile($tournament);
-            Soccer::getSoccerTeams($tournament);
+            TournamentProfile::getTournamentProfile($tournament);
+            SoccerTeam::getSoccerTeams($tournament);
             Soccer::getUCLMatches($tournament);
 
             if ($fantasy == Fantasy::All) {
@@ -195,8 +196,8 @@
 
             $tournament = Tournament::CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy);
 
-            self::getTournamentProfile($tournament);
-            Soccer::getSoccerTeams($tournament);
+            TournamentProfile::getTournamentProfile($tournament);
+            SoccerTeam::getSoccerTeams($tournament);
             Soccer::getUELMatches($tournament);
 
 //            Soccer::getStanding($tournament);
@@ -209,8 +210,8 @@
 
             $tournament = Tournament::CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy);
 
-            self::getTournamentProfile($tournament);
-            Soccer::getSoccerTeams($tournament);
+            TournamentProfile::getTournamentProfile($tournament);
+            SoccerTeam::getSoccerTeams($tournament);
             Soccer::getUELMatches($tournament);
 
             if ($fantasy == Fantasy::All) {
@@ -304,8 +305,8 @@
 
             $tournament = Tournament::CreateSoccerTournamentById($tournament_id);
 
-            self::getTournamentProfile($tournament);
-            Soccer::getSoccerTeams($tournament);
+            TournamentProfile::getTournamentProfile($tournament);
+            SoccerTeam::getSoccerTeams($tournament);
             Soccer::getWorldCupMatches($tournament);
 
             Soccer::getFirstStageMatchesRanking($tournament);
@@ -323,8 +324,8 @@
 
             $tournament = Tournament::CreateSoccerTournamentById($tournament_id);
 
-            self::getTournamentProfile($tournament);
-            Soccer::getSoccerTeams($tournament);
+            TournamentProfile::getTournamentProfile($tournament);
+            SoccerTeam::getSoccerTeams($tournament);
             Soccer::getWomenWorldCupMatches($tournament);
 
             Soccer::getFirstStageMatchesRanking($tournament);
@@ -342,8 +343,8 @@
 
             $tournament = Tournament::CreateSoccerTournamentById($tournament_id);
 
-            self::getTournamentProfile($tournament);
-            Soccer::getSoccerTeams($tournament);
+            TournamentProfile::getTournamentProfile($tournament);
+            SoccerTeam::getSoccerTeams($tournament);
             Soccer::getOlympicMatches($tournament);
 
             Soccer::getFirstStageMatchesRanking($tournament);
@@ -361,8 +362,8 @@
 
             $tournament = Tournament::CreateSoccerTournamentById($tournament_id);
 
-            self::getTournamentProfile($tournament);
-            Soccer::getSoccerTeams($tournament);
+            TournamentProfile::getTournamentProfile($tournament);
+            SoccerTeam::getSoccerTeams($tournament);
             Soccer::getWomenOlympicMatches($tournament);
 
             Soccer::getFirstStageMatchesRanking($tournament);
@@ -380,7 +381,7 @@
 
             $tournament = Tournament::CreateFootballTournamentById($tournament_id);
 
-            self::getTournamentProfile($tournament);
+            TournamentProfile::getTournamentProfile($tournament);
             Football::getFootballTeams($tournament);
             Football::getFootballMatches($tournament);
 
@@ -393,7 +394,7 @@
 
             $tournament = Tournament::CreateFootballTournamentById($tournament_id);
 
-            self::getTournamentProfile($tournament);
+            TournamentProfile::getTournamentProfile($tournament);
             Football::getFootballTeams($tournament);
             Football::getFootballMatches($tournament);
 
@@ -408,48 +409,11 @@
 
             $tournament = Tournament::CreateTennisTournamentById($tournament_id);
 
-            self::getTournamentProfile($tournament);
+            TournamentProfile::getTournamentProfile($tournament);
             Tennis::getTennisMatches($tournament);
             Tennis::getTennisHtml($tournament);
 
             return $tournament;
-        }
-
-        public static function getTournamentProfile($tournament) {
-
-            $sql = Tournament::getTournamentProfileSql($tournament->getTournamentId());
-            self::getTournamentProfileDb($tournament, $sql);
-        }
-
-        public static function getTournamentProfileDb($tournament, $sql) {
-
-            $query = $GLOBALS['connection']->prepare($sql);
-            $query->execute();
-            $count = $query->rowCount();
-            $output = '<!-- Tournament Count = '.$count.' -->';
-
-            if ($count == 0) {
-                $output = '<h2>No result found!</h2>';
-                $tournament->concatBodyHtml($output);
-            }
-            else {
-                $row = $query->fetch(\PDO::FETCH_ASSOC);
-                $tournament_profile = TournamentProfile::CreateTournamentProfile(
-                    $row['id'], $row['name'], $row['logo_filename'], $row['start_date'], $row['end_date'],
-                    $row['tournament_type_id'], $row['parent_tournament_id'], $row['points_for_win'], $row['golden_goal_rule']);
-                $tournament->setProfile($tournament_profile);
-                $tournament->concatBodyHtml($output);
-            }
-        }
-
-        public static function getTournamentProfileSql($tournament_id) {
-            $sql = 'SELECT name, id, logo_filename,
-                        start_date, end_date, 
-                        tournament_type_id, parent_tournament_id,
-                        points_for_win, golden_goal_rule 
-                    FROM tournament t 
-                    WHERE t.id = '.$tournament_id;
-            return $sql;
         }
 
         public function concatBodyHtml($body_html)
