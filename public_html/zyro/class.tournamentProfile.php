@@ -91,6 +91,15 @@
             self::getTournamentProfileDb($tournament, $sql);
         }
 
+        /*
+            SELECT name, id, logo_filename,
+                    start_date, end_date,
+                    tournament_type_id, parent_tournament_id,
+                    points_for_win, golden_goal_rule
+            FROM tournament t
+            WHERE t.id = 1
+         */
+
         public static function getTournamentProfileSql($tournament_id) {
             $sql = 'SELECT name, id, logo_filename,
                         start_date, end_date, 

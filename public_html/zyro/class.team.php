@@ -2,6 +2,9 @@
     include_once('config.php');
 
     class Team {
+
+        const WITHDREW = 63;
+
         private $id;
         private $tournament_name;
         private $name;
@@ -131,6 +134,247 @@
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, array(), array(), array(),
                 0, 0, 0, 0, null, null);
+        }
+
+        public static function getSoccerTeams($tournament) {
+
+            $sql = self::getSoccerTeamSql($tournament->getTournamentId());
+            self::getSoccerTeamDb($tournament, $sql);
+        }
+
+        /*
+            SELECT UCASE(t.name) AS name, t.name AS l_name, tt.team_id,
+                UCASE(t2.name) AS parent_team_name, t2.name AS l_parent_team_name, t.parent_team_id,
+                group_id, UCASE(g.name) AS group_name, group_order,
+                parent_group_id, pg.name AS parent_group_name, pg.long_name AS parent_group_long_name, parent_group_order,
+                tl.logo_filename, n.flag_filename, n.code, tt.tournament_id
+            FROM team_tournament tt
+            LEFT JOIN team t ON t.id = tt.team_id
+            LEFT JOIN team t2 ON t2.id = t.parent_team_id
+            LEFT JOIN `group` g ON g.id = tt.group_id
+            LEFT JOIN `group` pg ON pg.id = tt.parent_group_id
+            LEFT JOIN nation n ON n.id = t.nation_id
+            LEFT JOIN team_logo tl ON tl.team_id = t.id
+            WHERE tt.tournament_id = 1
+            ORDER BY parent_group_name, group_id, group_order
+        */
+
+        public static function getSoccerTeamSql($tournament_id) {
+
+            $sql = 'SELECT UCASE(t.name) AS name, t.name AS l_name, tt.team_id, 
+                        UCASE(t2.name) AS parent_team_name, t2.name AS l_parent_team_name, t.parent_team_id,
+                        group_id, UCASE(g.name) AS group_name, group_order, 
+                        parent_group_id, pg.name AS parent_group_name, pg.long_name AS parent_group_long_name, parent_group_order, 
+                        tl.logo_filename, n.flag_filename, n.code, tt.tournament_id 
+                    FROM team_tournament tt 
+                    LEFT JOIN team t ON t.id = tt.team_id  
+                    LEFT JOIN team t2 ON t2.id = t.parent_team_id 
+                    LEFT JOIN `group` g ON g.id = tt.group_id  
+                    LEFT JOIN `group` pg ON pg.id = tt.parent_group_id
+                    LEFT JOIN nation n ON n.id = t.nation_id  
+                    LEFT JOIN team_logo tl ON tl.team_id = t.id 
+                    WHERE tt.tournament_id = '.$tournament_id.' 
+                    ORDER BY parent_group_name, group_id, group_order';
+            return $sql;
+        }
+
+        public static function getSoccerTeamDb($tournament, $sql) {
+
+            $query = $GLOBALS['connection']->prepare($sql);
+            $query->execute();
+            $count = $query->rowCount();
+            $teams = array();
+            $second_round_teams = array();
+            $output = '<!-- Team Count = '.$count.' -->';
+
+            if ($count == 0) {
+                $output = '<h2>No result found!</h2>';
+                $tournament->concatBodyHtml($output);
+            }
+            else {
+                while ($row = $query->fetch(\PDO::FETCH_ASSOC)) {
+                    $team = Team::CreateSoccerTeam(
+                        $row['team_id'], $row['name'], $row['l_name'], $row['code'],
+                        $row['parent_team_id'], $row['parent_team_name'],
+                        $row['group_name'], $row['group_order'],
+                        $row['parent_group_name'], $row['parent_group_long_name'], $row['parent_group_order'],
+                        $row['flag_filename'], $row['logo_filename'], '', 1);
+                    array_push($teams, $team);
+
+                    $second_round_team = Team::CreateSoccerTeam(
+                        $row['team_id'], $row['name'], $row['l_name'], $row['code'],
+                        $row['parent_team_id'], $row['parent_team_name'],
+                        '', $row['group_order'],
+                        $row['parent_group_name'], $row['parent_group_long_name'], $row['parent_group_order'],
+                        $row['flag_filename'], $row['logo_filename'], '', 1);
+                    array_push($second_round_teams, $second_round_team);
+                }
+                $tournament->setTeams($teams);
+                $tournament->setSecondRoundTeams($second_round_teams);
+                $tournament->concatBodyHtml($output);
+            }
+        }
+
+        public static function getAllTimeSoccerTeams($tournament) {
+
+            $sql = self::getAllTimeSoccerTeamSql($tournament->getTournamentTypeId());
+            self::getAllTimeSoccerTeamDb($tournament, $sql);
+        }
+
+        /*
+            SELECT DISTINCT t.id, UCASE(t.name) AS name, t.parent_team_id, UCASE(t2.name) AS parent_team_name,
+                        n.flag_filename, n.code, tc.tournament_count
+            FROM team t
+            LEFT JOIN team_tournament tt ON tt.team_id = t.id
+            LEFT JOIN tournament tou ON tou.id = tt.tournament_id
+            LEFT JOIN team t2 ON t2.id = t.parent_team_id
+            LEFT JOIN `group` g ON g.id = tt.group_id
+            LEFT JOIN nation n ON n.id = t.nation_id
+            LEFT JOIN (SELECT team_id, COUNT(team_id) AS tournament_count
+                        FROM team_tournament
+                        WHERE (group_id <> 63 OR group_id is null)
+                        GROUP BY team_id) tc ON tc.team_id = t.id
+            WHERE tou.tournament_type_id = 1
+            UNION
+            SELECT DISTINCT t.id, UCASE(t.name) AS name, null, null,
+                n.flag_filename, n.code, tc.tournament_count
+            FROM team t
+            LEFT OUTER JOIN team t2 ON t2.parent_team_id = t.id
+            LEFT JOIN team_tournament tt ON tt.team_id = t2.id
+            LEFT JOIN tournament tou ON tou.id = tt.tournament_id
+            LEFT JOIN `group` g ON g.id = tt.group_id
+            LEFT JOIN nation n ON n.id = t.nation_id
+            LEFT JOIN (SELECT team_id, COUNT(team_id) AS tournament_count
+                        FROM team_tournament
+                        WHERE (group_id <> 63 OR group_id is null)
+                        GROUP BY team_id) tc ON tc.team_id = t.id
+            WHERE tou.tournament_type_id = 1
+         */
+
+        public static function getAllTimeSoccerTeamSql($tournament_type_id) {
+
+            $sql = 'SELECT DISTINCT t.id, UCASE(t.name) AS name, t.parent_team_id, UCASE(t2.name) AS parent_team_name,
+                        n.flag_filename, n.code, tc.tournament_count
+                    FROM team t
+                    LEFT JOIN team_tournament tt ON tt.team_id = t.id
+                    LEFT JOIN tournament tou ON tou.id = tt.tournament_id  
+                    LEFT JOIN team t2 ON t2.id = t.parent_team_id 
+                    LEFT JOIN `group` g ON g.id = tt.group_id
+                    LEFT JOIN nation n ON n.id = t.nation_id
+                    LEFT JOIN (SELECT team_id, COUNT(team_id) AS tournament_count
+                                FROM team_tournament 
+                                WHERE (group_id <> '.self::WITHDREW.' OR group_id is null) -- AND tournament_id <> 1
+                                GROUP BY team_id) tc ON tc.team_id = t.id
+                    WHERE tou.tournament_type_id = '.$tournament_type_id.'  -- AND tt.tournament_id <> 1
+                    UNION
+                    SELECT DISTINCT t.id, UCASE(t.name) AS name, null, null,
+                        n.flag_filename, n.code, tc.tournament_count
+                    FROM team t  
+                    LEFT OUTER JOIN team t2 ON t2.parent_team_id = t.id
+                    LEFT JOIN team_tournament tt ON tt.team_id = t2.id
+                    LEFT JOIN tournament tou ON tou.id = tt.tournament_id
+                    LEFT JOIN `group` g ON g.id = tt.group_id  
+                    LEFT JOIN nation n ON n.id = t.nation_id 
+                    LEFT JOIN (SELECT team_id, COUNT(team_id) AS tournament_count
+                                FROM team_tournament 
+                                WHERE (group_id <> '.self::WITHDREW.' OR group_id is null) -- AND tournament_id <> 1
+                                GROUP BY team_id) tc ON tc.team_id = t.id
+                    WHERE tou.tournament_type_id = '.$tournament_type_id.'  -- AND tt.tournament_id <> 1';
+            return $sql;
+        }
+
+        public static function getAllTimeSoccerTeamDb($tournament, $sql) {
+
+            $query = $GLOBALS['connection']->prepare($sql);
+            $query->execute();
+            $count = $query->rowCount();
+            $output = '<!-- Team Count = '.$count.' -->';
+            $teams = array();
+
+            if ($count == 0) {
+                $output = '<h2>No result found!</h2>';
+                $tournament->concatBodyHtml($output);
+            }
+            else {
+                while ($row = $query->fetch(\PDO::FETCH_ASSOC)) {
+                    $team = Team::CreateSoccerTeam(
+                        $row['id'], $row['name'], '', $row['code'], $row['parent_team_id'], $row['parent_team_name'],
+                        '', '',
+                        '', '', 0,
+                        $row['flag_filename'], '', '', $row['tournament_count']);
+                    array_push($teams, $team);
+                }
+                $tournament->setTeams($teams);
+                $tournament->concatBodyHtml($output);
+            }
+        }
+
+        public static function getAllTimeSoccerTeamTournaments($tournament) {
+
+            $sql = self::getAllTimeSoccerTeamTournamentSql($tournament->getTournamentTypeId());
+            self::getAllTimeSoccerTeamTournamentDb($tournament, $sql);
+        }
+
+        /*
+            SELECT t.id, UCASE(t.name) AS name,
+                t.parent_team_id, UCASE(t2.name) AS parent_team_name,
+                n.flag_filename, n.code, tou.name AS tournament_name
+            FROM team t
+            LEFT JOIN team_tournament tt ON tt.team_id = t.id
+            LEFT JOIN tournament tou ON tou.id = tt.tournament_id
+            LEFT JOIN team t2 ON t2.id = t.parent_team_id
+            LEFT JOIN `group` g ON g.id = tt.group_id
+            LEFT JOIN nation n ON n.id = t.nation_id
+            WHERE tou.tournament_type_id = 1
+         */
+
+        public static function getAllTimeSoccerTeamTournamentSql($tournament_type_id) {
+            $sql = 'SELECT t.id, UCASE(t.name) AS name, 
+                        t.parent_team_id, UCASE(t2.name) AS parent_team_name,
+                        n.flag_filename, n.code, tou.name AS tournament_name
+                    FROM team t
+                    LEFT JOIN team_tournament tt ON tt.team_id = t.id
+                    LEFT JOIN tournament tou ON tou.id = tt.tournament_id  
+                    LEFT JOIN team t2 ON t2.id = t.parent_team_id 
+                    LEFT JOIN `group` g ON g.id = tt.group_id
+                    LEFT JOIN nation n ON n.id = t.nation_id
+                    WHERE tou.tournament_type_id = '.$tournament_type_id; // AND tt.tournament_id <> 1'
+            return $sql;
+        }
+
+        public static function getAllTimeSoccerTeamTournamentDb($tournament, $sql) {
+
+            $query = $GLOBALS['connection']->prepare($sql);
+            $query->execute();
+            $count = $query->rowCount();
+            $output = '<!-- TeamTournament Count = '.$count.' -->';
+            $teams = array();
+            $second_round_teams = array();
+
+            if ($count == 0) {
+                $output = '<h2>No result found!</h2>';
+                $tournament->concatBodyHtml($output);
+            }
+            else {
+                while ($row = $query->fetch(\PDO::FETCH_ASSOC)) {
+                    $team = Team::CreateSoccerTeam(
+                        $row['id'], $row['name'], '', $row['code'], $row['parent_team_id'], $row['parent_team_name'],
+                        '', '',
+                        '', '', 0,
+                        $row['flag_filename'], '', $row['tournament_name'], 0);
+                    array_push($teams, $team);
+
+                    $second_round_team = Team::CreateSoccerTeam(
+                        $row['id'], $row['name'], '', $row['code'], $row['parent_team_id'], $row['parent_team_name'],
+                        '', '',
+                        '', '', 0,
+                        $row['flag_filename'], '', $row['tournament_name'], 0);
+                    array_push($second_round_teams, $second_round_team);
+                }
+                $tournament->setTournamentTeams($teams);
+                $tournament->setSecondRoundTournamentTeams($second_round_teams);
+                $tournament->concatBodyHtml($output);
+            }
         }
 
         /**

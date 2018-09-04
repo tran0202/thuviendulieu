@@ -1,6 +1,6 @@
 <?php
     include_once('class.tournament.php');
-    $tournament = Tournament::getAllTimeOlympicSoccerTournament();
+    $tournament = Tournament::getAllTimeOlympicSoccerTournament(Tournament::OLYMPIC);
     $body_html = $tournament->getBodyHtml();
     $popover_html = $tournament->getPopoverHtml();
 ?>
