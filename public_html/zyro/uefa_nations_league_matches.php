@@ -9,7 +9,7 @@
     if (isset($query_string['fid'])) $fantasy = Soccer::getFantasy($query_string['fid']);
     $tournament = Tournament::getUNLTournamentMatches($tournament_id, $fantasy);
     $profile = $tournament->getProfile();
-    $header = $profile->getUNLTournamentHeader();
+    $header = $profile->getTournamentHeader();
     $tournament_name = $profile->getName();
     $body_html = $tournament->getBodyHtml();
     $modal_html = $tournament->getModalHtml();

@@ -83,9 +83,6 @@
         }
 
         public static function getUCLStanding($tournament) {
-//            $numberOfMatches = 48;
-//            if ($tournament->getFantasy() == Fantasy::Half) $numberOfMatches = 32;
-//            elseif ($tournament->getFantasy() == Fantasy::None) $numberOfMatches = self::getNumberOfCompletedMatches($tournament);
             $matches = self::getStageMatches($tournament->getMatches(), self::GROUP_STAGE);
             $team_array = self::getTeamArrayByName($tournament->getTeams());
             $tmp_array = array();
