@@ -8,9 +8,19 @@
     class Tournament {
 
         const WORLD_CUP = 1;
+        const FOOTBALL = 2;
+        const MENS_TENNIS = 3;
+        const NATIONS_LEAGUE = 4;
+        const WOMENS_TENNIS = 5;
+        const CHAMPIONS_LEAGUE = 6;
+        const EUROPA_LEAGUE = 7;
         const WOMENS_WORLD_CUP = 8;
         const OLYMPIC = 9;
         const WOMENS_OLYMPIC = 10;
+
+        const SIMULATION_MODE_0 = 0;
+        const SIMULATION_MODE_1 = 1;
+        const SIMULATION_MODE_2 = 2;
 
         private $teams;
         private $second_round_teams;
@@ -20,7 +30,7 @@
         private $matches;
         private $tournament_id;
         private $tournament_type_id;
-        private $fantasy;
+        private $simulation_mode;
         private $body_html;
         private $modal_html;
         private $popover_html;
@@ -29,7 +39,7 @@
         protected function __construct() { }
 
         public static function CreateTournament($teams, $second_round_teams, $tournament_teams, $matches,
-                                                $tournament_id, $tournament_type_id, $fantasy,
+                                                $tournament_id, $tournament_type_id, $simulation_mode,
                                                 $body_html, $modal_html, $popover_html, $profile) {
             $t = new Tournament();
             $t->teams = $teams;
@@ -38,7 +48,7 @@
             $t->matches = $matches;
             $t->tournament_id = $tournament_id;
             $t->tournament_type_id = $tournament_type_id;
-            $t->fantasy = $fantasy;
+            $t->simulation_mode = $simulation_mode;
             $t->body_html = $body_html;
             $t->modal_html = $modal_html;
             $t->popover_html = $popover_html;
@@ -56,18 +66,28 @@
                 '', '', '', null);
         }
 
-        public static function CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy) {
-            return self::CreateTournament(null, null, null, null, $tournament_id, 0, $fantasy,
+        public static function CreateSoccerTournamentByType($tournament_type_id) {
+            return self::CreateTournament(null, null, null, null, 0, $tournament_type_id, null,
+                '', '', '', null);
+        }
+
+        public static function CreateSoccerTournamentByIdType($tournament_id, $tournament_type_id) {
+            return self::CreateTournament(null, null, null, null, $tournament_id, $tournament_type_id, null,
+                '', '', '', null);
+        }
+
+        public static function CreateSoccerTournamentByIdSimMode($tournament_id, $simulation_mode) {
+            return self::CreateTournament(null, null, null, null, $tournament_id, 0, $simulation_mode,
+                '', '', '', null);
+        }
+
+        public static function CreateSoccerTournamentByIdTypeSimMode($tournament_id, $tournament_type_id, $simulation_mode) {
+            return self::CreateTournament(null, null, null, null, $tournament_id, $tournament_type_id, $simulation_mode,
                 '', '', '', null);
         }
 
         public static function CreateSoccerTournamentByTeams($teams, $second_round_teams, $matches) {
             return self::CreateTournament($teams, $second_round_teams, null, $matches, 0, 0, null,
-                '', '', '', null);
-        }
-
-        public static function CreateSoccerTournamentByType($tournament_type_id) {
-            return self::CreateTournament(null, null, null, null, 0, $tournament_type_id, null,
                 '', '', '', null);
         }
 
@@ -81,19 +101,96 @@
                 '', '', '', null);
         }
 
-        public static function getSoccerTournamentBySchedule($tournament_id, $fantasy) {
+        public static function getSoccerTournament($tournament_id) {
 
-            $tournament = Tournament::CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy);
+            $tournament = Tournament::CreateSoccerTournamentById($tournament_id);
 
             TournamentProfile::getTournamentProfile($tournament);
             Team::getSoccerTeams($tournament);
-            Soccer::getWorldCupMatches($tournament);
+            Match::getSoccerMatches($tournament);
 
-            if ($fantasy == Fantasy::All) {
+            Soccer::getFirstStageMatchesRanking($tournament);
+            Soccer::getArchiveSoccerScheduleHtml($tournament);
+            Soccer::getSoccerGroupModalHtml($tournament);
+            Soccer::updateFirstStageMatchesRanking($tournament);
+
+            Soccer::getSecondStageMatchesRanking($tournament);
+            Soccer::getTournamentSoccerRankingHtml($tournament);
+
+            return $tournament;
+        }
+
+        public static function getSoccerTournamentByGroup($tournament_id, $simulation_mode) {
+
+            $tournament = Tournament::CreateSoccerTournamentByIdSimMode($tournament_id, $simulation_mode);
+
+            TournamentProfile::getTournamentProfile($tournament);
+            Team::getSoccerTeams($tournament);
+            Match::getSoccerMatches($tournament);
+
+            Soccer::getStanding($tournament);
+            Soccer::getSoccerGroupHtml($tournament);
+            Soccer::getSoccerBracketHtml($tournament);
+            Soccer::getSoccerScheduleModalHtml($tournament);
+
+            return $tournament;
+        }
+
+        public static function getSoccerTournamentByStandings($tournament_id, $simulation_mode) {
+
+            $tournament = Tournament::CreateSoccerTournamentByIdSimMode($tournament_id, $simulation_mode);
+
+            TournamentProfile::getTournamentProfile($tournament);
+            Team::getSoccerTeams($tournament);
+            Match::getSoccerMatches($tournament);
+
+            Soccer::getStanding($tournament);
+            Soccer::getUNLStandingsHtml($tournament);
+
+            return $tournament;
+        }
+
+        public static function getUCLTournamentStandings($tournament_id, $simulation_mode) {
+
+            $tournament = Tournament::CreateSoccerTournamentByIdSimMode($tournament_id, $simulation_mode);
+
+            TournamentProfile::getTournamentProfile($tournament);
+            Team::getSoccerTeams($tournament);
+            Match::getSoccerMatches($tournament);
+
+            Soccer::getUCLStanding($tournament);
+            Soccer::getUCLStandingsHtml($tournament);
+
+            return $tournament;
+        }
+
+        public static function getUELTournamentStandings($tournament_id, $simulation_mode) {
+
+            $tournament = Tournament::CreateSoccerTournamentByIdSimMode($tournament_id, $simulation_mode);
+
+            TournamentProfile::getTournamentProfile($tournament);
+            Team::getSoccerTeams($tournament);
+            Match::getSoccerMatches($tournament);
+
+            Soccer::getUCLStanding($tournament);
+            Soccer::getUCLStandingsHtml($tournament);
+
+            return $tournament;
+        }
+
+        public static function getSoccerTournamentBySchedule($tournament_id, $simulation_mode) {
+
+            $tournament = Tournament::CreateSoccerTournamentByIdSimMode($tournament_id, $simulation_mode);
+
+            TournamentProfile::getTournamentProfile($tournament);
+            Team::getSoccerTeams($tournament);
+            Match::getSoccerMatches($tournament);
+
+            if ($simulation_mode == self::SIMULATION_MODE_2) {
                 Soccer::getStanding($tournament);
                 Soccer::getSoccerScheduleHtml($tournament, false);
             }
-            elseif ($fantasy == Fantasy::Half) {
+            elseif ($simulation_mode == self::SIMULATION_MODE_1) {
                 Soccer::getStanding($tournament);
                 Soccer::getSoccerScheduleHtml($tournament, true);
                 Soccer::getSoccerPopoverHtml($tournament);
@@ -108,49 +205,19 @@
             return $tournament;
         }
 
-        public static function getSoccerTournamentByGroup($tournament_id, $fantasy) {
+        public static function getSoccerTournamentByMatches($tournament_id, $simulation_mode) {
 
-            $tournament = Tournament::CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy);
-
-            TournamentProfile::getTournamentProfile($tournament);
-            Team::getSoccerTeams($tournament);
-            Soccer::getWorldCupMatches($tournament);
-
-            Soccer::getStanding($tournament);
-            Soccer::getSoccerGroupHtml($tournament);
-            Soccer::getSoccerBracketHtml($tournament);
-            Soccer::getSoccerScheduleModalHtml($tournament);
-
-            return $tournament;
-        }
-
-        public static function getUNLTournamentStandings($tournament_id, $fantasy) {
-
-            $tournament = Tournament::CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy);
+            $tournament = Tournament::CreateSoccerTournamentByIdSimMode($tournament_id, $simulation_mode);
 
             TournamentProfile::getTournamentProfile($tournament);
             Team::getSoccerTeams($tournament);
-            Soccer::getUNLMatches($tournament);
+            Match::getSoccerMatches($tournament);
 
-            Soccer::getStanding($tournament);
-            Soccer::getUNLStandingsHtml($tournament);
-
-            return $tournament;
-        }
-
-        public static function getUNLTournamentMatches($tournament_id, $fantasy) {
-
-            $tournament = Tournament::CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy);
-
-            TournamentProfile::getTournamentProfile($tournament);
-            Team::getSoccerTeams($tournament);
-            Soccer::getUNLMatches($tournament);
-
-            if ($fantasy == Fantasy::All) {
+            if ($simulation_mode == self::SIMULATION_MODE_2) {
                 Soccer::getStanding($tournament);
                 Soccer::getUNLMatchesHtml($tournament, false);
             }
-            elseif ($fantasy == Fantasy::Half) {
+            elseif ($simulation_mode == self::SIMULATION_MODE_1) {
                 Soccer::getStanding($tournament);
                 Soccer::getUNLMatchesHtml($tournament, false);
                 Soccer::getSoccerPopoverHtml($tournament);
@@ -165,33 +232,19 @@
             return $tournament;
         }
 
-        public static function getUCLTournamentStandings($tournament_id, $fantasy) {
+        public static function getUCLTournamentMatches($tournament_id, $simulation_mode) {
 
-            $tournament = Tournament::CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy);
-
-            TournamentProfile::getTournamentProfile($tournament);
-            Team::getSoccerTeams($tournament);
-            Soccer::getUCLMatches($tournament);
-
-            Soccer::getUCLStanding($tournament);
-            Soccer::getUCLStandingsHtml($tournament);
-
-            return $tournament;
-        }
-
-        public static function getUCLTournamentMatches($tournament_id, $fantasy) {
-
-            $tournament = Tournament::CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy);
+            $tournament = Tournament::CreateSoccerTournamentByIdSimMode($tournament_id, $simulation_mode);
 
             TournamentProfile::getTournamentProfile($tournament);
             Team::getSoccerTeams($tournament);
-            Soccer::getUCLMatches($tournament);
+            Match::getSoccerMatches($tournament);
 
-            if ($fantasy == Fantasy::All) {
+            if ($simulation_mode == self::SIMULATION_MODE_2) {
                 Soccer::getUCLStanding($tournament);
                 Soccer::getUCLMatchesHtml($tournament, false);
             }
-            elseif ($fantasy == Fantasy::Half) {
+            elseif ($simulation_mode == self::SIMULATION_MODE_1) {
                 Soccer::getUCLStanding($tournament);
                 Soccer::getUCLMatchesHtml($tournament, false);
                 Soccer::getSoccerPopoverHtml($tournament);
@@ -206,42 +259,28 @@
             return $tournament;
         }
 
-        public static function getUELTournamentStandings($tournament_id, $fantasy) {
+        public static function getUELTournamentMatches($tournament_id, $simulation_mode) {
 
-            $tournament = Tournament::CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy);
-
-            TournamentProfile::getTournamentProfile($tournament);
-            Team::getSoccerTeams($tournament);
-            Soccer::getUELMatches($tournament);
-
-//            Soccer::getStanding($tournament);
-            Soccer::getUCLStandingsHtml($tournament);
-
-            return $tournament;
-        }
-
-        public static function getUELTournamentMatches($tournament_id, $fantasy) {
-
-            $tournament = Tournament::CreateSoccerTournamentByIdFantasy($tournament_id, $fantasy);
+            $tournament = Tournament::CreateSoccerTournamentByIdSimMode($tournament_id, $simulation_mode);
 
             TournamentProfile::getTournamentProfile($tournament);
             Team::getSoccerTeams($tournament);
-            Soccer::getUELMatches($tournament);
+            Match::getSoccerMatches($tournament);
 
-            if ($fantasy == Fantasy::All) {
-//                Soccer::getStanding($tournament);
+            if ($simulation_mode == self::SIMULATION_MODE_2) {
+                Soccer::getUCLStanding($tournament);
                 Soccer::getUELMatchesHtml($tournament, false);
             }
-            elseif ($fantasy == Fantasy::Half) {
-//                Soccer::getStanding($tournament);
+            elseif ($simulation_mode == self::SIMULATION_MODE_1) {
+                Soccer::getUCLStanding($tournament);
                 Soccer::getUELMatchesHtml($tournament, false);
-//                Soccer::getSoccerPopoverHtml($tournament);
+                Soccer::getSoccerPopoverHtml($tournament);
             }
             else {
-//                Soccer::getStanding($tournament);
+                Soccer::getUCLStanding($tournament);
                 Soccer::getUELMatchesHtml($tournament, false);
             }
-//
+
             Soccer::getUCLGroupModalHtml($tournament);
 
             return $tournament;
@@ -252,7 +291,7 @@
             $tournament = Tournament::CreateSoccerTournamentByType($tournament_type_id);
 
             Team::getAllTimeSoccerTeams($tournament);
-            Soccer::getAllTimeSoccerMatches($tournament);
+            Match::getAllTimeSoccerMatches($tournament);
             Team::getAllTimeSoccerTeamTournaments($tournament);
 
             Soccer::getTournamentCount($tournament);
@@ -260,133 +299,6 @@
             Soccer::getAllTimeSoccerRankingHtml($tournament);
             Soccer::getAllTimeTournamentRanking($tournament);
             Soccer::getAllTimeSoccerPopoverHtml($tournament);
-
-            return $tournament;
-        }
-
-        public static function getAllTimeWomenSoccerTournament($tournament_type_id) {
-
-            $tournament = Tournament::CreateSoccerTournamentByType($tournament_type_id);
-
-            Team::getAllTimeSoccerTeams($tournament);
-            Soccer::getAllTimeWomenSoccerMatches($tournament);
-            Team::getAllTimeSoccerTeamTournaments($tournament);
-
-            Soccer::getTournamentCount($tournament);
-            Soccer::getAllTimeRanking($tournament);
-            Soccer::getAllTimeSoccerRankingHtml($tournament);
-            Soccer::getAllTimeTournamentRanking($tournament);
-            Soccer::getAllTimeSoccerPopoverHtml($tournament);
-
-            return $tournament;
-        }
-
-        public static function getAllTimeOlympicSoccerTournament($tournament_type_id) {
-
-            $tournament = Tournament::CreateSoccerTournamentByType($tournament_type_id);
-
-            Team::getAllTimeSoccerTeams($tournament);
-            Soccer::getAllTimeOlympicSoccerMatches($tournament);
-            Team::getAllTimeSoccerTeamTournaments($tournament);
-
-            Soccer::getTournamentCount($tournament);
-            Soccer::getAllTimeRanking($tournament);
-            Soccer::getAllTimeSoccerRankingHtml($tournament);
-            Soccer::getAllTimeTournamentRanking($tournament);
-            Soccer::getAllTimeSoccerPopoverHtml($tournament);
-
-            return $tournament;
-        }
-
-        public static function getAllTimeWomenOlympicSoccerTournament($tournament_type_id) {
-
-            $tournament = Tournament::CreateSoccerTournamentByType($tournament_type_id);
-
-            Team::getAllTimeSoccerTeams($tournament);
-            Soccer::getAllTimeWomenOlympicSoccerMatches($tournament);
-            Team::getAllTimeSoccerTeamTournaments($tournament);
-
-            Soccer::getTournamentCount($tournament);
-            Soccer::getAllTimeRanking($tournament);
-            Soccer::getAllTimeSoccerRankingHtml($tournament);
-            Soccer::getAllTimeTournamentRanking($tournament);
-            Soccer::getAllTimeSoccerPopoverHtml($tournament);
-
-            return $tournament;
-        }
-
-        public static function getArchiveSoccerTournament($tournament_id) {
-
-            $tournament = Tournament::CreateSoccerTournamentById($tournament_id);
-
-            TournamentProfile::getTournamentProfile($tournament);
-            Team::getSoccerTeams($tournament);
-            Soccer::getWorldCupMatches($tournament);
-
-            Soccer::getFirstStageMatchesRanking($tournament);
-            Soccer::getArchiveSoccerScheduleHtml($tournament);
-            Soccer::getSoccerGroupModalHtml($tournament);
-            Soccer::updateFirstStageMatchesRanking($tournament);
-
-            Soccer::getSecondStageMatchesRanking($tournament);
-            Soccer::getTournamentSoccerRankingHtml($tournament);
-
-            return $tournament;
-        }
-
-        public static function getWomenSoccerTournament($tournament_id) {
-
-            $tournament = Tournament::CreateSoccerTournamentById($tournament_id);
-
-            TournamentProfile::getTournamentProfile($tournament);
-            Team::getSoccerTeams($tournament);
-            Soccer::getWomenWorldCupMatches($tournament);
-
-            Soccer::getFirstStageMatchesRanking($tournament);
-            Soccer::getArchiveSoccerScheduleHtml($tournament);
-            Soccer::getSoccerGroupModalHtml($tournament);
-            Soccer::updateFirstStageMatchesRanking($tournament);
-
-            Soccer::getSecondStageMatchesRanking($tournament);
-            Soccer::getTournamentSoccerRankingHtml($tournament);
-
-            return $tournament;
-        }
-
-        public static function getOlympicSoccerTournament($tournament_id) {
-
-            $tournament = Tournament::CreateSoccerTournamentById($tournament_id);
-
-            TournamentProfile::getTournamentProfile($tournament);
-            Team::getSoccerTeams($tournament);
-            Soccer::getOlympicMatches($tournament);
-
-            Soccer::getFirstStageMatchesRanking($tournament);
-            Soccer::getArchiveSoccerScheduleHtml($tournament);
-            Soccer::getSoccerGroupModalHtml($tournament);
-            Soccer::updateFirstStageMatchesRanking($tournament);
-
-            Soccer::getSecondStageMatchesRanking($tournament);
-            Soccer::getTournamentSoccerRankingHtml($tournament);
-
-            return $tournament;
-        }
-
-        public static function getWomenOlympicSoccerTournament($tournament_id) {
-
-            $tournament = Tournament::CreateSoccerTournamentById($tournament_id);
-
-            TournamentProfile::getTournamentProfile($tournament);
-            Team::getSoccerTeams($tournament);
-            Soccer::getWomenOlympicMatches($tournament);
-
-            Soccer::getFirstStageMatchesRanking($tournament);
-            Soccer::getArchiveSoccerScheduleHtml($tournament);
-            Soccer::getSoccerGroupModalHtml($tournament);
-            Soccer::updateFirstStageMatchesRanking($tournament);
-
-            Soccer::getSecondStageMatchesRanking($tournament);
-            Soccer::getTournamentSoccerRankingHtml($tournament);
 
             return $tournament;
         }
@@ -576,17 +488,17 @@
         /**
          * @return mixed
          */
-        public function getFantasy()
+        public function getSimulationMode()
         {
-            return $this->fantasy;
+            return $this->simulation_mode;
         }
 
         /**
-         * @param mixed $fantasy
+         * @param mixed $simulation_mode
          */
-        public function setFantasy($fantasy)
+        public function setSimulationMode($simulation_mode)
         {
-            $this->fantasy = $fantasy;
+            $this->simulation_mode = $simulation_mode;
         }
 
         /**

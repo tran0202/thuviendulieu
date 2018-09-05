@@ -5,9 +5,9 @@
     parse_str($_SERVER['QUERY_STRING'], $query_string);
     $tournament_id = 29;
     if (isset($query_string['tid'])) $tournament_id = $query_string['tid'];
-    $fantasy = Fantasy::None;
-    if (isset($query_string['fid'])) $fantasy = Soccer::getFantasy($query_string['fid']);
-    $tournament = Tournament::getUCLTournamentStandings($tournament_id, $fantasy);
+    $simulation_mode = Tournament::SIMULATION_MODE_0;
+    if (isset($query_string['smid'])) $simulation_mode = $query_string['smid'];
+    $tournament = Tournament::getUCLTournamentStandings($tournament_id, $simulation_mode);
     $profile = $tournament->getProfile();
     $header = $profile->getTournamentHeader();
     $tournament_name = $profile->getName();

@@ -47,8 +47,8 @@
 
         public static function getStanding($tournament) {
             $numberOfMatches = 48;
-            if ($tournament->getFantasy() == Fantasy::Half) $numberOfMatches = 32;
-            elseif ($tournament->getFantasy() == Fantasy::None) $numberOfMatches = self::getNumberOfCompletedMatches($tournament);
+            if ($tournament->getSimulationMode() == Tournament::SIMULATION_MODE_1) $numberOfMatches = 32;
+            elseif ($tournament->getSimulationMode() == Tournament::SIMULATION_MODE_0) $numberOfMatches = self::getNumberOfCompletedMatches($tournament);
             $matches = $tournament->getMatches();
             $team_array = self::getTeamArrayByName($tournament->getTeams());
             $tmp_array = array();
@@ -72,13 +72,13 @@
                 }
             }
             $tournament->setTeams($result);
-            if ($tournament->getFantasy() == Fantasy::All) {
+            if ($tournament->getSimulationMode() == Tournament::SIMULATION_MODE_2) {
                 self::round16Qualifiers($tournament);
                 self::quarterfinalQualifiers($tournament);
                 self::semifinalQualifiers($tournament);
                 self::finalQualifiers($tournament);
             }
-            elseif ($tournament->getFantasy() == Fantasy::Half) {
+            elseif ($tournament->getSimulationMode() == Tournament::SIMULATION_MODE_1) {
                 self::calculateScenarios($tournament);
             }
         }
@@ -107,13 +107,13 @@
                 }
             }
             $tournament->setTeams($result);
-            if ($tournament->getFantasy() == Fantasy::All) {
+            if ($tournament->getSimulationMode() == Tournament::SIMULATION_MODE_2) {
                 self::round16Qualifiers($tournament);
                 self::quarterfinalQualifiers($tournament);
                 self::semifinalQualifiers($tournament);
                 self::finalQualifiers($tournament);
             }
-            elseif ($tournament->getFantasy() == Fantasy::Half) {
+            elseif ($tournament->getSimulationMode() == Tournament::SIMULATION_MODE_1) {
                 self::calculateScenarios($tournament);
             }
         }
@@ -1865,22 +1865,6 @@
                 }
             }
             return $spot;
-        }
-
-        public static function getFantasy($fantasy) {
-            switch($fantasy)
-            {
-                case 2:
-                    $f = Fantasy::Half;
-                    break;
-                case 3:
-                    $f = Fantasy::All;
-                    break;
-                default:
-                    $f = Fantasy::None;
-                    break;
-            }
-            return $f;
         }
 
         public static function randomMatchScore($row) {
@@ -3729,199 +3713,6 @@
             return $round == self::PRELIMINARY_ROUND1 || $round == self::PRELIMINARY_ROUND2;
         }
 
-        public static function getWorldCupMatches($tournament) {
-            self::getSoccerMatches($tournament, 1);
-        }
-
-        public static function getWomenWorldCupMatches($tournament) {
-            self::getSoccerMatches($tournament, 8);
-        }
-
-        public static function getOlympicMatches($tournament) {
-            self::getSoccerMatches($tournament, 9);
-        }
-
-        public static function getWomenOlympicMatches($tournament) {
-            self::getSoccerMatches($tournament, 10);
-        }
-
-        public static function getUNLMatches($tournament) {
-            self::getSoccerMatches($tournament, 4);
-        }
-
-        public static function getUCLMatches($tournament) {
-            self::getSoccerMatches2($tournament, 6);
-        }
-
-        public static function getUELMatches($tournament) {
-            self::getSoccerMatches2($tournament, 7);
-        }
-
-        public static function getSoccerMatches($tournament, $tournament_type_id) {
-
-            $sql = self::getSoccerMatchSql($tournament->getTournamentId(), $tournament_type_id);
-            self::getSoccerMatchDb($tournament, $sql);
-        }
-
-        public static function getSoccerMatches2($tournament, $tournament_type_id) {
-
-            $sql = self::getSoccerMatchSql2($tournament->getTournamentId(), $tournament_type_id);
-            self::getSoccerMatchDb($tournament, $sql);
-        }
-
-        public static function getAllTimeSoccerMatches($tournament) {
-
-            $sql = self::getAllTimeSoccerMatchSql(1);
-            self::getSoccerMatchDb($tournament, $sql);
-        }
-
-        public static function getAllTimeWomenSoccerMatches($tournament) {
-
-            $sql = self::getAllTimeSoccerMatchSql(8);
-            self::getSoccerMatchDb($tournament, $sql);
-        }
-
-        public static function getAllTimeOlympicSoccerMatches($tournament) {
-
-            $sql = self::getAllTimeSoccerMatchSql(9);
-            self::getSoccerMatchDb($tournament, $sql);
-        }
-
-        public static function getAllTimeWomenOlympicSoccerMatches($tournament) {
-
-            $sql = self::getAllTimeSoccerMatchSql(10);
-            self::getSoccerMatchDb($tournament, $sql);
-        }
-
-        public static function getSoccerMatchDb($tournament, $sql) {
-
-            $query = $GLOBALS['connection']->prepare($sql);
-            $query->execute();
-            $count = $query->rowCount();
-            $matches = array();
-            $output = '<!-- Match Count = '.$count.' -->';
-
-            if ($count == 0) {
-                $output = '<h2>No result found!</h2>';
-                $tournament->concatBodyHtml($output);
-            }
-            else {
-                $i = 0;
-                while ($row = $query->fetch(\PDO::FETCH_ASSOC)) {
-                    $home_team_score = -1;
-                    $away_team_score = -1;
-                    if ($row['home_team_score'] != null) $home_team_score = $row['home_team_score'];
-                    if ($row['away_team_score'] != null) $away_team_score = $row['away_team_score'];
-                    if ($tournament->getFantasy() == Fantasy::All) {
-                        $row = self::randomMatchScore($row);
-                        $home_team_score = $row['home_team_score'];
-                        $away_team_score = $row['away_team_score'];
-                    }
-                    elseif ($tournament->getFantasy() == Fantasy::Half) {
-                        if ($i < 32) {
-                            $row = self::randomMatchScore($row);
-                            $home_team_score = $row['home_team_score'];
-                            $away_team_score = $row['away_team_score'];
-                        }
-                        $i = $i + 1;
-                    }
-                    $match = Match::CreateSoccerMatch(
-                        $row['home_team_id'], $row['home_team_name'], $row['home_team_code'],
-                        $row['away_team_id'], $row['away_team_name'], $row['away_team_code'],
-                        $row['home_parent_team_id'], $row['home_parent_team_name'], $row['away_parent_team_id'], $row['away_parent_team_name'],
-                        $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_time_fmt'],
-                        $row['match_order'], $row['bracket_order'], $row['round'], $row['stage'],
-                        $row['group_name'], $row['parent_group_name'], $row['second_round_group_name'],
-                        $row['tournament_id'], $row['tournament_name'],
-                        $row['points_for_win'], $row['golden_goal_rule'], $row['waiting_home_team'], $row['waiting_away_team'],
-                        $home_team_score, $away_team_score,
-                        $row['home_team_first_leg_score'], $row['away_team_first_leg_score'],
-                        $row['home_team_extra_time_score'], $row['away_team_extra_time_score'],
-                        $row['home_team_penalty_score'], $row['away_team_penalty_score'],
-                        $row['home_flag'], $row['away_flag'], $row['home_logo'], $row['away_logo']);
-                    array_push($matches, $match);
-                }
-                $tournament->setMatches($matches);
-                $tournament->concatBodyHtml($output);
-            }
-        }
-
-        public static function getAllTimeSoccerMatchSql($tournament_type_id) {
-            return self::getSoccerMatchSql(null, $tournament_type_id);
-        }
-
-        public static function getSoccerMatchSql($tournament_id, $tournament_type_id) {
-            $tournament_id_str = 'm.tournament_id = '.$tournament_id;
-            if ($tournament_id == null) $tournament_id_str = '1 = 1'; // 'm.tournament_id <> 1'
-            $sql = 'SELECT t.id AS home_team_id, UCASE(t.name) AS home_team_name, home_team_score, n.flag_filename AS home_flag, tl.logo_filename AS home_logo, n.code AS home_team_code,
-                        t2.id AS away_team_id, UCASE(t2.name) AS away_team_name, away_team_score, n2.flag_filename AS away_flag, tl2.logo_filename AS away_logo, n2.code AS away_team_code, 
-                        pt.id AS home_parent_team_id, UCASE(pt.name) AS home_parent_team_name, pt2.id AS away_parent_team_id, UCASE(pt2.name) AS away_parent_team_name, 
-                        home_team_first_leg_score, away_team_first_leg_score, 
-                        home_team_extra_time_score, away_team_extra_time_score, home_team_penalty_score, away_team_penalty_score, 
-                        DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date, 
-                        TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order, bracket_order,
-                        waiting_home_team, waiting_away_team,
-                        g.name AS round, g2.name AS stage,
-                        g3.name AS group_name, g4.name AS parent_group_name, g5.name AS second_round_group_name, 
-                        m.tournament_id, tou.name AS tournament_name, tou.points_for_win, tou.golden_goal_rule
-                    FROM `match` m  
-                    LEFT JOIN tournament tou ON tou.id = m.tournament_id 
-                    LEFT JOIN team t ON t.id = m.home_team_id
-                    LEFT JOIN team t2 ON t2.id = m.away_team_id
-                    LEFT JOIN `group` g ON g.id = m.round_id
-                    LEFT JOIN `group` g2 ON g2.id = m.stage_id
-                    LEFT JOIN team_tournament tt ON (tt.team_id = m.home_team_id AND tt.tournament_id = m.tournament_id)
-                    LEFT JOIN `group` g3 ON g3.id = tt.group_id 
-                    LEFT JOIN `group` g4 ON g4.id = tt.parent_group_id 
-                    LEFT JOIN `group` g5 ON g5.id = m.group_id
-                    LEFT JOIN nation n ON n.id = t.nation_id  
-                    LEFT JOIN nation n2 ON n2.id = t2.nation_id  
-                    LEFT JOIN team_logo tl ON tl.team_id = t.id
-                    LEFT JOIN team_logo tl2 ON tl2.team_id = t2.id 
-                    LEFT JOIN team pt ON pt.id = t.parent_team_id 
-                    LEFT JOIN team pt2 ON pt2.id = t2.parent_team_id
-                    WHERE tou.tournament_type_id = '.$tournament_type_id.'
-                    AND '.$tournament_id_str.'
-                    ORDER BY stage_id, match_order, match_date, match_time;';
-            return $sql;
-        }
-
-        public static function getSoccerMatchSql2($tournament_id, $tournament_type_id) {
-            $tournament_id_str = 'm.tournament_id = '.$tournament_id;
-            if ($tournament_id == null) $tournament_id_str = '1 = 1'; // 'm.tournament_id <> 1'
-            $sql = 'SELECT t.id AS home_team_id, UCASE(t.name) AS home_team_name, home_team_score, n.flag_filename AS home_flag, tl.logo_filename AS home_logo, n.code AS home_team_code,
-                        t2.id AS away_team_id, UCASE(t2.name) AS away_team_name, away_team_score, n2.flag_filename AS away_flag, tl2.logo_filename AS away_logo, n2.code AS away_team_code, 
-                        pt.id AS home_parent_team_id, UCASE(pt.name) AS home_parent_team_name, pt2.id AS away_parent_team_id, UCASE(pt2.name) AS away_parent_team_name, 
-                        home_team_first_leg_score, away_team_first_leg_score, 
-                        home_team_extra_time_score, away_team_extra_time_score, home_team_penalty_score, away_team_penalty_score, 
-                        DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date, 
-                        TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order, bracket_order,
-                        waiting_home_team, waiting_away_team,
-                        g.name AS round, g2.name AS stage,
-                        g3.name AS group_name, g4.name AS parent_group_name, g5.name AS second_round_group_name, 
-                        m.tournament_id, tou.name AS tournament_name, tou.points_for_win, tou.golden_goal_rule
-                    FROM `match` m  
-                    LEFT JOIN tournament tou ON tou.id = m.tournament_id 
-                    LEFT JOIN team t ON t.id = m.home_team_id
-                    LEFT JOIN team t2 ON t2.id = m.away_team_id
-                    LEFT JOIN `group` g ON g.id = m.round_id
-                    LEFT JOIN `group` g2 ON g2.id = m.stage_id
-                    LEFT JOIN team_tournament tt ON (tt.team_id = m.home_team_id AND tt.tournament_id = m.tournament_id)
-                    LEFT JOIN `group` g3 ON g3.id = tt.group_id 
-                    LEFT JOIN `group` g4 ON g4.id = tt.parent_group_id 
-                    LEFT JOIN `group` g5 ON g5.id = m.group_id
-                    LEFT JOIN nation n ON n.id = t.nation_id  
-                    LEFT JOIN nation n2 ON n2.id = t2.nation_id  
-                    LEFT JOIN team_logo tl ON tl.team_id = t.id
-                    LEFT JOIN team_logo tl2 ON tl2.team_id = t2.id 
-                    LEFT JOIN team pt ON pt.id = t.parent_team_id 
-                    LEFT JOIN team pt2 ON pt2.id = t2.parent_team_id
-                    WHERE tou.tournament_type_id = '.$tournament_type_id.'
-                    AND '.$tournament_id_str.'
-                    ORDER BY match_date, match_time, match_order;';
-            return $sql;
-        }
-
         /**
          * @return mixed
          */
@@ -3937,12 +3728,6 @@
         {
             $this->id = $id;
         }
-    }
-
-    abstract class Fantasy {
-        const None = 1;
-        const Half = 2;
-        const All = 3;
     }
 
     abstract class Stage {

@@ -1253,12 +1253,12 @@
                     $away_team_score = -1;
                     if ($row['home_team_score'] != null) $home_team_score = $row['home_team_score'];
                     if ($row['away_team_score'] != null) $away_team_score = $row['away_team_score'];
-                    if ($tournament->getFantasy() == Fantasy::All) {
+                    if ($tournament->getSimulationMode() == Tournament::SIMULATION_MODE_2) {
                         $row = self::randomMatchScore($row);
                         $home_team_score = $row['home_team_score'];
                         $away_team_score = $row['away_team_score'];
                     }
-                    elseif ($tournament->getFantasy() == Fantasy::Half) {
+                    elseif ($tournament->getSimulationMode() == Tournament::SIMULATION_MODE_1) {
                         if ($i < 32) {
                             $row = self::randomMatchScore($row);
                             $home_team_score = $row['home_team_score'];
