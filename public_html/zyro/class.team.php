@@ -1,12 +1,10 @@
 <?php
-    include_once('config.php');
 
     class Team {
 
         const WITHDREW = 63;
 
         private $id;
-        private $tournament_name;
         private $name;
         private $l_name;
         private $code;
@@ -19,6 +17,8 @@
         private $parent_group_order;
         private $flag_filename;
         private $logo_filename;
+        private $tournament_id;
+        private $tournament_name;
         private $tournament_count;
         private $match_play;
         private $win;
@@ -52,16 +52,15 @@
 
         protected function __construct() { }
 
-        public static function CreateTeam($id, $tournament_name, $name, $l_name, $code, $group_name, $group_order,
+        public static function CreateTeam($id, $name, $l_name, $code, $group_name, $group_order,
             $parent_id, $parent_name, $parent_group_name, $parent_group_long_name, $parent_group_order,
-            $flag_filename, $logo_filename,
-            $tournament_count, $match_play, $win, $draw, $loss, $home_win, $home_tie, $home_loss, $road_win, $road_tie, $road_loss,
+            $flag_filename, $logo_filename, $tournament_id, $tournament_name, $tournament_count,
+            $match_play, $win, $draw, $loss, $home_win, $home_tie, $home_loss, $road_win, $road_tie, $road_loss,
             $div_win, $div_tie, $div_loss, $conf_win, $conf_tie, $conf_loss, $last5_win, $last5_tie, $last5_loss, $streak,
             $opponents, $common_opponents, $goal_for, $goal_against, $goal_diff, $point, $best_finish, $scenarios)
         {
             $t = new Team();
             $t->id = $id;
-            $t->tournament_name = $tournament_name;
             $t->name = $name;
             $t->l_name = $l_name;
             $t->code = $code;
@@ -74,6 +73,8 @@
             $t->parent_group_order = $parent_group_order;
             $t->flag_filename = $flag_filename;
             $t->logo_filename = $logo_filename;
+            $t->tournament_id = $tournament_id;
+            $t->tournament_name = $tournament_name;
             $t->tournament_count = $tournament_count;
             $t->match_play = $match_play;
             $t->win = $win;
@@ -108,19 +109,19 @@
 
         public static function CreateSoccerTeam($id, $name, $l_name, $code, $parent_id, $parent_name,
                 $group_name, $group_order, $parent_group_name, $parent_group_long_name, $parent_group_order,
-                $flag_filename, $logo_filename, $tournament_name, $tournament_count) {
-            return self::CreateTeam($id, $tournament_name, $name, $l_name, $code, $group_name, $group_order,
+                $flag_filename, $logo_filename, $tournament_id, $tournament_name, $tournament_count) {
+            return self::CreateTeam($id, $name, $l_name, $code, $group_name, $group_order,
                 $parent_id, $parent_name, $parent_group_name, $parent_group_long_name, $parent_group_order, $flag_filename, $logo_filename,
-                $tournament_count, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                $tournament_id, $tournament_name, $tournament_count, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, array(), array(), array(),
                 0, 0, 0, 0, null, null);
         }
 
         public static function CloneSoccerTeam($id, $name, $code, $group_name, $group_order,
                                              $match_play, $win, $draw, $loss, $goal_for, $goal_against, $goal_diff, $point) {
-            return self::CreateTeam($id, '', $name, '', $code, $group_name, $group_order,
+            return self::CreateTeam($id, $name, '', $code, $group_name, $group_order,
                 0, '', '', '', 0, '', '',
-                0, $match_play, $win, $draw, $loss, 0, 0, 0, 0, 0, 0,
+                0, '', 0, $match_play, $win, $draw, $loss, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, array(), array(), array(),
                 $goal_for, $goal_against, $goal_diff, $point, null, null);
         }
@@ -129,9 +130,9 @@
             $id, $name, $group_name, $group_order,
             $parent_group_name, $parent_group_long_name, $parent_group_order, $logo_filename)
         {
-            return self::CreateTeam($id, '', $name, '', '', $group_name, $group_order,
+            return self::CreateTeam($id, $name, '', '', $group_name, $group_order,
                 0, '', $parent_group_name, $parent_group_long_name, $parent_group_order, '', $logo_filename,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, array(), array(), array(),
                 0, 0, 0, 0, null, null);
         }
@@ -198,7 +199,7 @@
                         $row['parent_team_id'], $row['parent_team_name'],
                         $row['group_name'], $row['group_order'],
                         $row['parent_group_name'], $row['parent_group_long_name'], $row['parent_group_order'],
-                        $row['flag_filename'], $row['logo_filename'], '', 1);
+                        $row['flag_filename'], $row['logo_filename'], $row['tournament_id'], '', 1);
                     array_push($teams, $team);
 
                     $second_round_team = Team::CreateSoccerTeam(
@@ -206,7 +207,7 @@
                         $row['parent_team_id'], $row['parent_team_name'],
                         '', $row['group_order'],
                         $row['parent_group_name'], $row['parent_group_long_name'], $row['parent_group_order'],
-                        $row['flag_filename'], $row['logo_filename'], '', 1);
+                        $row['flag_filename'], $row['logo_filename'], $row['tournament_id'], '', 1);
                     array_push($second_round_teams, $second_round_team);
                 }
                 $tournament->setTeams($teams);
@@ -301,7 +302,7 @@
                         $row['id'], $row['name'], '', $row['code'], $row['parent_team_id'], $row['parent_team_name'],
                         '', '',
                         '', '', 0,
-                        $row['flag_filename'], '', '', $row['tournament_count']);
+                        $row['flag_filename'], '', 0,'', $row['tournament_count']);
                     array_push($teams, $team);
                 }
                 $tournament->setTeams($teams);
@@ -361,20 +362,74 @@
                         $row['id'], $row['name'], '', $row['code'], $row['parent_team_id'], $row['parent_team_name'],
                         '', '',
                         '', '', 0,
-                        $row['flag_filename'], '', $row['tournament_name'], 0);
+                        $row['flag_filename'], '', 0, $row['tournament_name'], 0);
                     array_push($teams, $team);
 
                     $second_round_team = Team::CreateSoccerTeam(
                         $row['id'], $row['name'], '', $row['code'], $row['parent_team_id'], $row['parent_team_name'],
                         '', '',
                         '', '', 0,
-                        $row['flag_filename'], '', $row['tournament_name'], 0);
+                        $row['flag_filename'], '', 0, $row['tournament_name'], 0);
                     array_push($second_round_teams, $second_round_team);
                 }
                 $tournament->setTournamentTeams($teams);
                 $tournament->setSecondRoundTournamentTeams($second_round_teams);
                 $tournament->concatBodyHtml($output);
             }
+        }
+
+        public static function getTeamArrayByGroup($teams) {
+            $result = array();
+            for ($i = 0; $i < sizeof($teams); $i++) {
+                if ($teams[$i]->getGroupName() != null) {
+                    $result[$teams[$i]->getGroupName()][$teams[$i]->getName()] = $teams[$i];
+                }
+            }
+            return $result;
+        }
+
+        public static function getTeamArrayByBestFinish($teams) {
+            $teams_tmp = array();
+            $result = array();
+            for ($i = 0; $i < sizeof($teams); $i++) {
+                if ($teams[$i]->getBestFinish() == Finish::Playoff) {
+                    $teams[$i]->setBestFinish(Finish::Group);
+                    $teams_tmp[Finish::Group][$teams[$i]->getName()] = $teams[$i];
+                }
+                elseif ($teams[$i]->getBestFinish() == Finish::ReplayFirstRound) {
+                    $teams[$i]->setBestFinish(Finish::FirstRound);
+                    $teams_tmp[Finish::FirstRound][$teams[$i]->getName()] = $teams[$i];
+                }
+                elseif ($teams[$i]->getBestFinish() == Finish::ReplayQuarterfinal) {
+                    $teams[$i]->setBestFinish(Finish::Quarterfinal);
+                    $teams_tmp[Finish::Quarterfinal][$teams[$i]->getName()] = $teams[$i];
+                }
+                else {
+                    $teams_tmp[$teams[$i]->getBestFinish()][$teams[$i]->getName()] = $teams[$i];
+                }
+            }
+            foreach ($teams_tmp as $best_finish => $_teams) {
+                foreach ($_teams as $name => $_team) {
+                    array_push($result, $_team);
+                }
+            }
+            return $result;
+        }
+
+        public static function getTeamArrayByParentGroup($teams) {
+            $result = array();
+            for ($i = 0; $i < sizeof($teams); $i++) {
+                $result[$teams[$i]->getParentGroupName()][$teams[$i]->getGroupName()][$teams[$i]->getName()] = $teams[$i];
+            }
+            return $result;
+        }
+
+        public static function getTeamArrayByName($teams) {
+            $result = array();
+            for ($i = 0; $i < sizeof($teams); $i++) {
+                $result[$teams[$i]->getName()] = $teams[$i];
+            }
+            return $result;
         }
 
         /**
@@ -391,22 +446,6 @@
         public function setId($id)
         {
             $this->id = $id;
-        }
-
-        /**
-         * @return mixed
-         */
-        public function getTournamentName()
-        {
-            return $this->tournament_name;
-        }
-
-        /**
-         * @param mixed $tournament_name
-         */
-        public function setTournamentName($tournament_name)
-        {
-            $this->tournament_name = $tournament_name;
         }
 
         /**
@@ -1031,6 +1070,38 @@
         public function setPoint($point)
         {
             $this->point = $point;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getTournamentId()
+        {
+            return $this->tournament_id;
+        }
+
+        /**
+         * @param mixed $tournament_id
+         */
+        public function setTournamentId($tournament_id)
+        {
+            $this->tournament_id = $tournament_id;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getTournamentName()
+        {
+            return $this->tournament_name;
+        }
+
+        /**
+         * @param mixed $tournament_name
+         */
+        public function setTournamentName($tournament_name)
+        {
+            $this->tournament_name = $tournament_name;
         }
 
         /**

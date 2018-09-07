@@ -1,6 +1,4 @@
 <?php
-    include_once('class.match.php');
-    include_once('class.team.php');
 
     class Tennis {
 

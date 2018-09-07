@@ -1,7 +1,9 @@
 <?php
-    include_once('config.php');
 
     class Match {
+
+        const REPLAY = 'Replay';
+
         private $home_team_id;
         private $home_team_name;
         private $home_team_code;
@@ -340,6 +342,205 @@
                 $tournament->setMatches($matches);
                 $tournament->concatBodyHtml($output);
             }
+        }
+
+        public static function getFinalGroupMatches($matches) {
+            $result = array();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                if (self::isFirstStage($matches[$i]) && $matches[$i]->getHomeTeamScore() != -1) {
+                    array_push($result, $matches[$i]);
+                }
+            }
+            return $result;
+        }
+
+        public static function isFirstStage($match) {
+            return $match->getStage() == Soccer::GROUP_STAGE || $match->getStage() == Soccer::FIRST_STAGE;
+        }
+
+        public static function getNumberOfCompletedMatches($tournament) {
+            $matches = $tournament->getMatches();
+            $count = 0;
+            for ($i = 0; $i < sizeof($matches); $i++ ) {
+                if ($matches[$i]->getHomeTeamScore() != -1) {
+                    $count++;
+                }
+            }
+            if ($count > 48) $count = 48;
+            return $count;
+        }
+
+        public static function getGroupMatches($matches) {
+            return self::getRoundMatches($matches, Soccer::GROUP_MATCHES);
+        }
+
+        public static function getSecondRoundMatches($matches) {
+            return self::getRoundMatches($matches, Soccer::SECOND_ROUND);
+        }
+
+        public static function getFinalRoundMatches($matches) {
+            return self::getRoundMatches($matches, Soccer::FINAL_ROUND);
+        }
+
+        public static function getPlayOffMatches($matches) {
+            return self::getRoundMatches($matches, Soccer::PLAY_OFF);
+        }
+
+        public static function getPreliminaryRoundMatches($matches) {
+            return self::getRoundMatches($matches, Soccer::PRELIMINARY_ROUND);
+        }
+
+        public static function getFirstRoundMatches($matches) {
+            return self::getRoundMatches($matches, Soccer::FIRST_ROUND);
+        }
+
+        public static function getReplayFirstRoundMatches($matches) {
+            return self::getRoundMatches($matches, Soccer::REPLAY_FIRST_ROUND);
+        }
+
+        public static function getRound16Matches($matches) {
+            return self::getRoundMatches($matches, Soccer::ROUND16);
+        }
+
+        public static function getQuarterfinalMatches($matches) {
+            return self::getRoundMatches($matches, Soccer::QUARTERFINALS);
+        }
+
+        public static function getReplayQuarterfinalMatches($matches) {
+            return self::getRoundMatches($matches, Soccer::REPLAY_QUARTERFINALS);
+        }
+
+        public static function getSemifinalMatches($matches) {
+            return self::getRoundMatches($matches, Soccer::SEMIFINALS);
+        }
+
+        public static function getBronzeMedalMatch($matches) {
+            $matches_tmp = self::getRoundMatches($matches, Soccer::BRONZE_MEDAL_MATCH);
+            if (sizeof($matches_tmp) == 0) return null;
+            return $matches_tmp[0];
+        }
+
+        public static function getGoldMedalMatch($matches) {
+            $matches_tmp = self::getRoundMatches($matches, Soccer::GOLD_MEDAL_MATCH);
+            if (sizeof($matches_tmp) == 0) return null;
+            return $matches_tmp[0];
+        }
+
+        public static function getThirdPlaceMatch($matches) {
+            $matches_tmp = self::getRoundMatches($matches, Soccer::THIRD_PLACE);
+            if (sizeof($matches_tmp) == 0) return null;
+            return $matches_tmp[0];
+        }
+
+        public static function getFinalMatch($matches) {
+            $matches_tmp = self::getRoundMatches($matches, Soccer::FINAL_);
+            if (sizeof($matches_tmp) == 0) return null;
+            return $matches_tmp[0];
+        }
+
+        public static function getRoundMatches($matches, $round) {
+            $result = array();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                if ($matches[$i]->getRound() == $round) {
+                    array_push($result, $matches[$i]);
+                }
+            }
+            return $result;
+        }
+
+        public static function getStageMatches($matches, $stage) {
+            $result = array();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                if ($matches[$i]->getStage() == $stage) {
+                    array_push($result, $matches[$i]);
+                }
+            }
+            return $result;
+        }
+
+        public static function getBracketMatches($matches) {
+            self::switchLast2Matches($matches);
+            $match_count = sizeof($matches);
+            $result = array();
+            $replay_matches = array();
+            $tmp_matches = array();
+            for ($i = 0; $i < $match_count; $i++) {
+                if (self::isMatchReplay($matches[$i])) {
+                    array_push($replay_matches, $matches[$i]);
+                }
+            }
+            for ($i = 0; $i < $match_count; $i++) {
+                if ($matches[$i]->getStage() == Soccer::SECOND_STAGE) {
+                    for ($j = 0; $j < sizeof($replay_matches); $j++) {
+                        if ($matches[$i]->getHomeTeamName() == $replay_matches[$j]->getHomeTeamName()) {
+                            $matches[$i]->setHomeTeamReplayScore($replay_matches[$j]->getHomeTeamScore());
+                            $matches[$i]->setAwayTeamReplayScore($replay_matches[$j]->getAwayTeamScore());
+                            break;
+                        }
+                    }
+                    if (!self::isMatchReplay($matches[$i])) {
+                        array_push($tmp_matches, $matches[$i]);
+                    }
+                }
+            }
+            for ($i = 0; $i < sizeof($tmp_matches) - 1; $i++) {
+                for ($j = $i + 1; $j < sizeof($tmp_matches); $j++) {
+                    if ($tmp_matches[$i]->getBracketOrder() >= $tmp_matches[$j]->getBracketOrder()) {
+                        $tmp_match = $tmp_matches[$i];
+                        $tmp_matches[$i] = $tmp_matches[$j];
+                        $tmp_matches[$j] = $tmp_match;
+                    }
+                }
+            }
+            for ($i = 0; $i < sizeof($tmp_matches); $i++) {
+                $result[$tmp_matches[$i]->getRound()][$tmp_matches[$i]->getBracketOrder()] = $tmp_matches[$i];
+            }
+            return $result;
+        }
+
+        public static function switchLast2Matches($matches) {
+            $match_count = sizeof($matches);
+            $tmp_match = $matches[$match_count - 2];
+            $matches[$match_count - 2] = $matches[$match_count - 1];
+            $matches[$match_count - 1] = $tmp_match;
+        }
+
+        public static function isMatchReplay($match) {
+            return strpos($match->getRound(), self::REPLAY) !== false;
+        }
+
+        public static function getMatchArrayByDate($matches) {
+            $result = array();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                $result[$matches[$i]->getRound()][$matches[$i]->getMatchDate()][$matches[$i]->getMatchOrder()] = $matches[$i];
+            }
+            return $result;
+        }
+
+        public static function getMatchArrayByGroup($matches) {
+            $result = array();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                $result[$matches[$i]->getGroupName()][$matches[$i]->getMatchOrder()] = $matches[$i];
+            }
+            return $result;
+        }
+
+        public static function getMatchArrayByParentGroup($matches) {
+            $result = array();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                $result[$matches[$i]->getParentGroupName()][$matches[$i]->getGroupName()][$matches[$i]->getMatchOrder()] = $matches[$i];
+            }
+            return $result;
+        }
+
+        public static function getMatchArrayByTeam($matches, $name) {
+            $result = array();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                if ($matches[$i]->getHomeTeamName() == $name || $matches[$i]->getAwayTeamName() == $name) {
+                    $result[$matches[$i]->getMatchDate()][$matches[$i]->getMatchOrder()] = $matches[$i];
+                }
+            }
+            return $result;
         }
 
         /**
