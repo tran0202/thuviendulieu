@@ -41,11 +41,11 @@
             return $tp;
         }
 
-        public function getTournamentHeader() {
-            $logo_height = 100;
+        public static function getTournamentLogo($profile, $logo_height = 0) {
+            $default_logo_height = 100;
             $logo_dir = 'logos/';
-            $logo_filename = self::getLogoFilename();
-            switch(self::getTournamentTypeId())
+            $logo_filename = $profile->getLogoFilename();
+            switch($profile->getTournamentTypeId())
             {
                 case self::WORLD_CUP:
                     $logo_dir = 'wc_logos/';
@@ -55,13 +55,13 @@
                     $logo_filename = 'NFL.svg';
                     break;
                 case self::ATP_MENS_SINGLES:
-                    $logo_height = 40;
+                    $default_logo_height = 40;
                     break;
                 case self::NATIONS_LEAGUE:
                     $logo_dir = 'unl_logos/';
                     break;
                 case self::WTA_WOMENS_SINGLES:
-                    $logo_height = 40;
+                    $default_logo_height = 40;
                     break;
                 case self::CHAMPIONS_LEAGUE:
                     $logo_dir = 'club_logos/';
@@ -81,8 +81,33 @@
                 default:
                     break;
             }
-            $output = '<img height="'.$logo_height.'" src="/images/'.$logo_dir.$logo_filename.'">&nbsp;&nbsp;'.self::getName();
+            if ($logo_height == 0) $logo_height = $default_logo_height;
+            $output = '<img height="'.$logo_height.'" src="/images/'.$logo_dir.$logo_filename.'">';
             return $output;
+        }
+
+        public static function getTournamentHeader($profile) {
+            return self::getTournamentLogo($profile).'&nbsp;&nbsp;'.$profile->getName();
+        }
+
+        public static function getAllFilteringText($profile) {
+
+            switch($profile->getTournamentTypeId())
+            {
+                case self::NATIONS_LEAGUE:
+                    $text = 'ALL NATIONS';
+                    break;
+                case self::CHAMPIONS_LEAGUE:
+                    $text = 'ALL CHAMPIONS';
+                    break;
+                case self::EUROPA_LEAGUE:
+                    $text = 'ALL EUROPA';
+                    break;
+                default:
+                    $text = 'ALL TEAMS';
+                    break;
+            }
+            return $text;
         }
 
         public static function getTournamentProfile($tournament) {

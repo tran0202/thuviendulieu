@@ -21,12 +21,6 @@
                     <p class="wb-stl-normal"> </p>
                 </div>
                 <div class="col-sm-12">
-                    <div class="col-sm-2" style="margin-right:55px;"></div>
-                    <div class="col-sm-8 text-center">
-                        <div class="clock"></div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
                     <h5 class="wb-stl-subtitle2 text-center">
                         <a href="UEFANationsLeagueStandings">Standings</a> | <a href="UEFANationsLeagueMatches">Matches</a>
                     </h5>
@@ -34,6 +28,12 @@
                 <div class="col-sm-12 margin-top-lg padding-top-lg border-top-gray5">
                     <p class="wb-stl-highlight text-center">2018/19 UEFA Champions League</p>
                     <p class="wb-stl-normal"> </p>
+                </div>
+                <div class="col-sm-12">
+                    <div class="col-sm-2" style="margin-right:55px;"></div>
+                    <div class="col-sm-8 text-center">
+                        <div class="clock"></div>
+                    </div>
                 </div>
                 <div class="col-sm-12">
                     <h5 class="wb-stl-subtitle2 text-center">

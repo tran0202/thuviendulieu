@@ -4,6 +4,9 @@
 
         const WITHDREW = 63;
 
+        const FLAG = 1;
+        const LOGO = 2;
+
         private $id;
         private $name;
         private $l_name;
@@ -378,6 +381,14 @@
             }
         }
 
+        public static function getTeamArrayByName($teams) {
+            $result = array();
+            for ($i = 0; $i < sizeof($teams); $i++) {
+                $result[$teams[$i]->getName()] = $teams[$i];
+            }
+            return $result;
+        }
+
         public static function getTeamArrayByGroup($teams) {
             $result = array();
             for ($i = 0; $i < sizeof($teams); $i++) {
@@ -392,17 +403,17 @@
             $teams_tmp = array();
             $result = array();
             for ($i = 0; $i < sizeof($teams); $i++) {
-                if ($teams[$i]->getBestFinish() == Finish::Playoff) {
-                    $teams[$i]->setBestFinish(Finish::Group);
-                    $teams_tmp[Finish::Group][$teams[$i]->getName()] = $teams[$i];
+                if ($teams[$i]->getBestFinish() == Soccer::Playoff) {
+                    $teams[$i]->setBestFinish(Soccer::Group);
+                    $teams_tmp[Soccer::Group][$teams[$i]->getName()] = $teams[$i];
                 }
-                elseif ($teams[$i]->getBestFinish() == Finish::ReplayFirstRound) {
-                    $teams[$i]->setBestFinish(Finish::FirstRound);
-                    $teams_tmp[Finish::FirstRound][$teams[$i]->getName()] = $teams[$i];
+                elseif ($teams[$i]->getBestFinish() == Soccer::ReplayFirstRound) {
+                    $teams[$i]->setBestFinish(Soccer::FirstRound);
+                    $teams_tmp[Soccer::FirstRound][$teams[$i]->getName()] = $teams[$i];
                 }
-                elseif ($teams[$i]->getBestFinish() == Finish::ReplayQuarterfinal) {
-                    $teams[$i]->setBestFinish(Finish::Quarterfinal);
-                    $teams_tmp[Finish::Quarterfinal][$teams[$i]->getName()] = $teams[$i];
+                elseif ($teams[$i]->getBestFinish() == Soccer::ReplayQuarterfinal) {
+                    $teams[$i]->setBestFinish(Soccer::Quarterfinal);
+                    $teams_tmp[Soccer::Quarterfinal][$teams[$i]->getName()] = $teams[$i];
                 }
                 else {
                     $teams_tmp[$teams[$i]->getBestFinish()][$teams[$i]->getName()] = $teams[$i];
@@ -424,11 +435,16 @@
             return $result;
         }
 
-        public static function getTeamArrayByName($teams) {
-            $result = array();
-            for ($i = 0; $i < sizeof($teams); $i++) {
-                $result[$teams[$i]->getName()] = $teams[$i];
+        public static function getFilteringLogo($team, $image_type) {
+            $image_class = 'flag-md';
+            $image_dir = 'flags';
+            $image_file = $team->getFlagFilename();
+            if ($image_type == self::LOGO) {
+                $image_class = 'logo-md';
+                $image_dir = 'club_logos';
+                $image_file = $team->getLogoFilename();
             }
+            $result = '<img class="'.$image_class.'" src="/images/'.$image_dir.'/'.$image_file.'">';
             return $result;
         }
 

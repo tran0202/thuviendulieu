@@ -5,7 +5,7 @@
     if (isset($query_string['tid'])) $tournament_id = $query_string['tid'];
     $tournament = Tournament::getSoccerTournament($tournament_id);
     $profile = $tournament->getProfile();
-    $header = $profile->getTournamentHeader();
+    $header = TournamentProfile::getTournamentHeader($profile);
     $tournament_name = $profile->getName();
     $body_html = $tournament->getBodyHtml();
     $modal_html = $tournament->getModalHtml();

@@ -1,6 +1,11 @@
 <?php
 
     class Scenario {
+
+        const Advanced = 'Advanced';
+        const NeedHelp = 'NeedHelp';
+        const Eliminated = 'Eliminated';
+
         private $team1;
         private $team1_result;
         private $team1_point;
@@ -108,23 +113,23 @@
             $tmp_scenarios2 = array();
             $tmp_scenarios3 = array();
             $tmp_scenarios4 = array();
-            array_push($scenario_array, Soccer::calculateGroupStanding($group_teams, $group_team_names[0], 1, 0, $group_team_names[1],
+            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 1, 0, $group_team_names[1],
                 $group_team_names[2], 1, 0, $group_team_names[3], $matches));
-            array_push($scenario_array, Soccer::calculateGroupStanding($group_teams, $group_team_names[0], 1, 0, $group_team_names[1],
+            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 1, 0, $group_team_names[1],
                 $group_team_names[2], 0, 0, $group_team_names[3], $matches));
-            array_push($scenario_array, Soccer::calculateGroupStanding($group_teams, $group_team_names[0], 1, 0, $group_team_names[1],
+            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 1, 0, $group_team_names[1],
                 $group_team_names[2], 0, 1, $group_team_names[3], $matches));
-            array_push($scenario_array, Soccer::calculateGroupStanding($group_teams, $group_team_names[0], 0, 0, $group_team_names[1],
+            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 0, $group_team_names[1],
                 $group_team_names[2], 1, 0, $group_team_names[3], $matches));
-            array_push($scenario_array, Soccer::calculateGroupStanding($group_teams, $group_team_names[0], 0, 0, $group_team_names[1],
+            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 0, $group_team_names[1],
                 $group_team_names[2], 0, 0, $group_team_names[3], $matches));
-            array_push($scenario_array, Soccer::calculateGroupStanding($group_teams, $group_team_names[0], 0, 0, $group_team_names[1],
+            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 0, $group_team_names[1],
                 $group_team_names[2], 0, 1, $group_team_names[3], $matches));
-            array_push($scenario_array, Soccer::calculateGroupStanding($group_teams, $group_team_names[0], 0, 1, $group_team_names[1],
+            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 1, $group_team_names[1],
                 $group_team_names[2], 1, 0, $group_team_names[3], $matches));
-            array_push($scenario_array, Soccer::calculateGroupStanding($group_teams, $group_team_names[0], 0, 1, $group_team_names[1],
+            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 1, $group_team_names[1],
                 $group_team_names[2], 0, 0, $group_team_names[3], $matches));
-            array_push($scenario_array, Soccer::calculateGroupStanding($group_teams, $group_team_names[0], 0, 1, $group_team_names[1],
+            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 1, $group_team_names[1],
                 $group_team_names[2], 0, 1, $group_team_names[3], $matches));
             for ($i = 0; $i < 9; $i++) {
                 array_push($tmp_scenarios1, $scenario_array[$i]);
@@ -164,6 +169,87 @@
             $group_teams[$group_team_names[3]]->setScenarios($tmp_scenarios4);
         }
 
+        public static function calculateGroupStanding($group_teams, $t1, $t1_gf, $t1_ga, $t2, $t3, $t3_gf, $t3_ga, $t4, $matches) {
+            $tmp_group_teams = array();
+            foreach ($group_teams as $team_name => $team) {
+                $tmp_group_teams[$team_name] = Team::CloneSoccerTeam($team->getId(), $team->getName(), $team->getCode(), $team->getGroupName(),
+                    $team->getGroupOrder(), $team->getMatchPlay(), $team->getWin(), $team->getDraw(), $team->getLoss(),
+                    $team->getGoalFor(), $team->getGoalAgainst(), $team->getGoalDiff(), $team->getPoint());
+            }
+
+            $tmp_matches = array();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                array_push($tmp_matches, Match::CloneSoccerMatch($matches[$i]->getHomeTeamId(), $matches[$i]->getHomeTeamName(),
+                    $matches[$i]->getHomeTeamCode(), $matches[$i]->getAwayTeamId(), $matches[$i]->getAwayTeamName(), $matches[$i]->getAwayTeamCode(),
+                    $matches[$i]->getHomeTeamScore(), $matches[$i]->getAwayTeamScore()));
+            }
+            for ($i = 0; $i < sizeof($tmp_matches); $i++) {
+                if ($tmp_matches[$i]->getHomeTeamName() == $t1 && $tmp_matches[$i]->getAwayTeamName() == $t2) {
+                    $tmp_matches[$i]->setHomeTeamScore($t1_gf);
+                    $tmp_matches[$i]->setAwayTeamScore($t1_ga);
+                }
+                if ($tmp_matches[$i]->getHomeTeamName() == $t2 && $tmp_matches[$i]->getAwayTeamName() == $t1) {
+                    $tmp_matches[$i]->setHomeTeamScore($t1_ga);
+                    $tmp_matches[$i]->setAwayTeamScore($t1_gf);
+                }
+                if ($tmp_matches[$i]->getHomeTeamName() == $t3 && $tmp_matches[$i]->getAwayTeamName() == $t4) {
+                    $tmp_matches[$i]->setHomeTeamScore($t3_gf);
+                    $tmp_matches[$i]->setAwayTeamScore($t3_ga);
+                }
+                if ($tmp_matches[$i]->getHomeTeamName() == $t4 && $tmp_matches[$i]->getAwayTeamName() == $t3) {
+                    $tmp_matches[$i]->setHomeTeamScore($t3_ga);
+                    $tmp_matches[$i]->setAwayTeamScore($t3_gf);
+                }
+            }
+            $tmp_m1 = Match::CloneSoccerMatch(0, $t1, 'T1', 0, $t2, 'T2', $t1_gf, $t1_ga);
+            $tmp_m3 = Match::CloneSoccerMatch(0, $t3, 'T3', 0, $t4, 'T4', $t3_gf, $t3_ga);
+            Soccer::calculatePoint($tmp_group_teams, $tmp_m1, Soccer::First);
+            Soccer::calculatePoint($tmp_group_teams, $tmp_m3, Soccer::First);
+            $team_array = array();
+            foreach ($tmp_group_teams as $team_name => $team) {
+                array_push($team_array, $team);
+            }
+            $team_array = Soccer::sortGroupStanding($team_array, $tmp_matches);
+            $team_array2 = array();
+            for ($i = 0; $i < sizeof($team_array); $i++) {
+                $team_array[$i]->setGroupOrder($i + 1);
+                $team_array2[$team_array[$i]->getName()] = $team_array[$i];
+            }
+            $t1_g_diff = $team_array2[$t1]->getGoalDiff();
+            if ($team_array2[$t1]->getGoalDiff() > 0) $t1_g_diff = '+'.$t1_g_diff;
+            $t2_g_diff = $team_array2[$t2]->getGoalDiff();
+            if ($team_array2[$t2]->getGoalDiff() > 0) $t2_g_diff = '+'.$t2_g_diff;
+            $t3_g_diff = $team_array2[$t3]->getGoalDiff();
+            if ($team_array2[$t3]->getGoalDiff() > 0) $t3_g_diff = '+'.$t3_g_diff;
+            $t4_g_diff = $team_array2[$t4]->getGoalDiff();
+            if ($team_array2[$t4]->getGoalDiff() > 0) $t4_g_diff = '+'.$t4_g_diff;
+            $team1_match_result = 'W';
+            $team2_match_result = 'L';
+            $team3_match_result = 'W';
+            $team4_match_result = 'L';
+            if ($t1_gf == $t1_ga) {
+                $team1_match_result = 'D';
+                $team2_match_result = 'D';
+            }
+            elseif ($t1_gf < $t1_ga) {
+                $team1_match_result = 'L';
+                $team2_match_result = 'W';
+            }
+            if ($t3_gf == $t3_ga) {
+                $team3_match_result = 'D';
+                $team4_match_result = 'D';
+            }
+            elseif ($t3_gf < $t3_ga) {
+                $team3_match_result = 'L';
+                $team4_match_result = 'W';
+            }
+            $tmp_s = Scenario::CreateScenario($team_array2[$t1]->getCode(), $team_array2[$t1]->getGroupOrder(), $team_array2[$t1]->getPoint(), $t1_g_diff, $team_array2[$t1]->getGoalFor(), $t1_gf, $t1_ga,
+                '', $team1_match_result, $team_array2[$t2]->getCode(), $team_array2[$t2]->getGroupOrder(), $team_array2[$t2]->getPoint(), $t2_g_diff, $team_array2[$t2]->getGoalFor(), '', $team2_match_result,
+                $team_array2[$t3]->getCode(), $team_array2[$t3]->getGroupOrder(), $team_array2[$t3]->getPoint(), $t3_g_diff, $team_array2[$t3]->getGoalFor(), $t3_gf, $t3_ga, '', $team3_match_result,
+                $team_array2[$t4]->getCode(), $team_array2[$t4]->getGroupOrder(), $team_array2[$t4]->getPoint(), $t4_g_diff, $team_array2[$t4]->getGoalFor(), '', $team4_match_result, '');
+            return $tmp_s;
+        }
+
         public static function calculateTeamScenarios($scenarios) {
             $team_array = array();
             for ($i = 0; $i < sizeof($scenarios); $i++) {
@@ -175,7 +261,7 @@
                     3, 0, 0, 0, $scenarios[$i]->getTeam3GoalFor(), 0, $scenarios[$i]->getTeam3GoalDiff(), $scenarios[$i]->getTeam3Point());
                 $team_array[$scenarios[$i]->getTeam4Result()] = Team::CloneSoccerTeam(0, $scenarios[$i]->getTeam4MatchResult(), $scenarios[$i]->getTeam4(), '', $scenarios[$i]->getTeam4Result(),
                     3, 0, 0, 0, $scenarios[$i]->getTeam4GoalFor(), 0, $scenarios[$i]->getTeam4GoalDiff(), $scenarios[$i]->getTeam4Point());
-                $qualify_status = QualifyStatus::Eliminated;
+                $qualify_status = self::Eliminated;
                 $note = '';
                 if ($team_array[1]->getPoint() == $team_array[2]->getPoint() && $team_array[1]->getPoint() == $team_array[3]->getPoint() &&
                     $team_array[1]->getPoint() == $team_array[4]->getPoint()) {
@@ -193,25 +279,25 @@
                     $passing_gf6 = $team_array[3]->getGoalFor() - $team_array[4]->getGoalFor() + 1;
                     if ($scenarios[$i]->getTeam1Result() == 1) {
                         if ($team_array[1]->getName() == 'W' && $team_array[2]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[1]->getName() == 'W' && $team_array[2]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[1]->getName() == 'W' && $team_array[2]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[1]->getName() == 'D' && $team_array[2]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[1]->getName() == 'D' && $team_array[2]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[1]->getName() == 'D' && $team_array[2]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[1]->getName() == 'L' && $team_array[2]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                             if ($team_array[3]->getName() == 'W') { echo '<script>alert("No#11");</script>';
                                 $note = '*** If both '.$team_array[2]->getCode().' and '.$team_array[3]->getCode().' catch up the goal-diff by '.($passing_gd - 1).' and '.($passing_gd2 - 1).
                                     ' respectively, and pass the goal-for by '.$passing_gf.' and '.$passing_gf2.', '.$team_array[1]->getCode().' will be eliminated. ***<br>';
@@ -226,10 +312,10 @@
                             }
                         }
                         elseif ($team_array[1]->getName() == 'L' && $team_array[2]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[1]->getName() == 'L' && $team_array[2]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                             $note = '*** If both '.$team_array[3]->getCode().' and '.$team_array[4]->getCode().' win '.$passing_gd2.'-0 and '.$passing_gd3.'-0 (or win the goal-diff by '.($passing_gd2 - 1).' and '.($passing_gd3 - 1).
                                 ') respectively, and score '.($passing_gf2 + 1).' and '.($passing_gf3 + 1).' (or win goal-for by '.($passing_gf2 + 1).' and '.($passing_gf3 + 1).', '.$team_array[1]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If both '.$team_array[3]->getCode().' and '.$team_array[4]->getCode().' win '.($passing_gd2 + 1).'-0 and '.($passing_gd3 + 1).'-0 (or win the goal-diff by '.$passing_gd2.' and '.$passing_gd3.
@@ -238,13 +324,13 @@
                     }
                     elseif ($scenarios[$i]->getTeam1Result() == 2) {
                         if ($team_array[2]->getName() == 'W' && $team_array[1]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[2]->getName() == 'W' && $team_array[1]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[2]->getName() == 'W' && $team_array[1]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                             $note = '*** If '.$team_array[2]->getCode().' wins '.$passing_gd.'-0 (or wins goal-diff by '.($passing_gd - 1).') and scores '.$passing_gf.' (or wins goal-for by '.$passing_gf.'), '.$team_array[2]->getCode().' will advance for sure. *** Or Else:<br>';
                             $note .= '*** If '.$team_array[2]->getCode().' wins '.($passing_gd + 1).'-0 (or wins the goal-diff by '.$passing_gd.'), '.$team_array[2]->getCode().' will advance for sure. *** Or Else:<br>';
                             if ($team_array[3]->getName() == 'W') { echo '<script>alert("No#12");</script>';
@@ -257,16 +343,16 @@
                             }
                         }
                         elseif ($team_array[2]->getName() == 'D' && $team_array[1]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[2]->getName() == 'D' && $team_array[1]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[2]->getName() == 'D' && $team_array[1]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[2]->getName() == 'L' && $team_array[1]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                             if ($team_array[3]->getName() == 'W') {
                                 $note = '*** If '.$team_array[3]->getCode().' wins '.$passing_gd4.'-0 (or wins goal-diff by '.($passing_gd4 - 1).') and scores '.($passing_gf4 + 1).' (or wins goal-for by '.($passing_gf4 + 1).'), '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                                 $note .= '*** If '.$team_array[3]->getCode().' wins '.($passing_gd4 + 1).'-0 (or wins goal-diff by '.$passing_gd4.'), '.$team_array[2]->getCode().' will be eliminated. ***';
@@ -277,10 +363,10 @@
                             }
                         }
                         elseif ($team_array[2]->getName() == 'L' && $team_array[1]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[2]->getName() == 'L' && $team_array[1]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                             $note = '*** If both '.$team_array[3]->getCode().' and '.$team_array[4]->getCode().' win '.$passing_gd4.'-0 and '.$passing_gd5.'-0 (or win goal-diff by '.($passing_gd4 - 1).' and '.($passing_gd5 - 1).
                                 ') respectively, and score '.($passing_gf4 + 1).' and '.($passing_gf5 + 1).' (or win goal-for by '.($passing_gf4 + 1).' and '.($passing_gf5 + 1).'), '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If both '.$team_array[3]->getCode().' and '.$team_array[4]->getCode().' win '.($passing_gd4 + 1).'-0 and '.($passing_gd5 + 1).'-0 (or win goal-diff by '.$passing_gd4.' and '.$passing_gd5.
@@ -289,21 +375,21 @@
                     }
                     elseif ($scenarios[$i]->getTeam1Result() == 3) {
                         if ($team_array[3]->getName() == 'W' && $team_array[2]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Eliminated; echo '<script>alert("No#15");</script>';
+                            $qualify_status = self::Eliminated; echo '<script>alert("No#15");</script>';
                             $note = '*** If '.$team_array[3]->getCode().' catches up the goal-diff by '.($passing_gd2 - 1).' and passes the goal-for by '.$passing_gf2.', '.$team_array[1]->getCode().' will be eliminated and '.$team_array[3]->getCode().' will advance<br>';
                             $note .= '*** If '.$team_array[3]->getCode().' passes the goal-diff by '.$passing_gd2.', '.$team_array[1]->getCode().' will be eliminated and '.$team_array[3]->getCode().' will advance.<br>';
                             $note .= '*** Or If '.$team_array[3]->getCode().' catches up the goal-diff by '.($passing_gd4 - 1).' and passes the goal-for by '.$passing_gf4.', '.$team_array[2]->getCode().' will be eliminated and '.$team_array[3]->getCode().' will advance<br>';
                             $note .= '*** If '.$team_array[3]->getCode().' passes the goal-diff by '.$passing_gd4.', '.$team_array[2]->getCode().' will be eliminated and '.$team_array[3]->getCode().' will advance.<br>';
                         }
                         elseif ($team_array[3]->getName() == 'W' && $team_array[2]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Eliminated; echo '<script>alert("No#16");</script>';
+                            $qualify_status = self::Eliminated; echo '<script>alert("No#16");</script>';
                             $note = '*** If '.$team_array[3]->getCode().' catches up the goal-diff by '.($passing_gd2 - 1).' and passes the goal-for by '.$passing_gf2.', '.$team_array[1]->getCode().' will be eliminated and '.$team_array[3]->getCode().' will advance<br>';
                             $note .= '*** If '.$team_array[3]->getCode().' passes the goal-diff by '.$passing_gd2.', '.$team_array[1]->getCode().' will be eliminated and '.$team_array[3]->getCode().' will advance.<br>';
                             $note .= '*** Or If '.$team_array[3]->getCode().' catches up the goal-diff by '.($passing_gd4 - 1).' and passes the goal-for by '.$passing_gf4.', '.$team_array[2]->getCode().' will be eliminated and '.$team_array[3]->getCode().' will advance<br>';
                             $note .= '*** If '.$team_array[3]->getCode().' passes the goal-diff by '.$passing_gd4.', '.$team_array[2]->getCode().' will be eliminated and '.$team_array[3]->getCode().' will advance.<br>';
                         }
                         elseif ($team_array[3]->getName() == 'W' && $team_array[2]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                             $note = '*** If '.$team_array[3]->getCode().' wins '.$passing_gd2.'-0 (or wins goal-diff by '.($passing_gd2 - 1).') and scores '.($passing_gf2 + 1).' (or wins goal-for by '.($passing_gf2 + 1).'), '.$team_array[1]->getCode().' will be eliminated and '.$team_array[3]->getCode().' will advance<br>';
                             $note .= '*** If '.$team_array[3]->getCode().' wins '.($passing_gd2 + 1).'-0 (or wins goal-diff by '.$passing_gd2.'), '.$team_array[1]->getCode().' will be eliminated and '.$team_array[3]->getCode().' will advance.<br>';
                             $note .= '*** Or If '.$team_array[3]->getCode().' wins '.$passing_gd4.'-0 (or wins goal-diff by '.($passing_gd4 - 1).') and scores '.($passing_gf4 + 1).' (or wins goal-for by '.($passing_gf4 + 1).'), '.$team_array[2]->getCode().' will be eliminated and '.$team_array[3]->getCode().' will advance<br>';
@@ -312,14 +398,14 @@
                             $note .= '*** If '.$team_array[4]->getCode().' wins '.($passing_gd6 + 1).'-0 (or wins goal-diff by '.$passing_gd6.'), '.$team_array[3]->getCode().' will be eliminated for sure and '.$team_array[4]->getCode().' may advance.<br>';
                         }
                         elseif ($team_array[3]->getName() == 'D' && $team_array[2]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                             if ($team_array[1]->getName() == 'L') { echo '<script>alert("No#17");</script>';
                                 $note = '*** If '.$team_array[3]->getCode().' catches up the goal-diff by '.($passing_gd2 - 1).' and passes the goal-for by '.$passing_gf2.', '.$team_array[1]->getCode().' will be eliminated and '.$team_array[3]->getCode().' will advance<br>';
                                 $note .= '*** If '.$team_array[3]->getCode().' passes the goal-diff by '.$passing_gd2.', '.$team_array[1]->getCode().' will be eliminated and '.$team_array[3]->getCode().' will advance.<br>';
                             }
                         }
                         elseif ($team_array[3]->getName() == 'D' && $team_array[2]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                             if ($team_array[1]->getName() == 'L') { echo '<script>alert("No#18");</script>';
                                 $note = '*** If '.$team_array[3]->getCode().' catches up the goal-diff by '.($passing_gd2 - 1).' and passes the goal-for by '.$passing_gf2.', '.$team_array[1]->getCode().' will be eliminated and '.$team_array[3]->getCode().' will advance<br>';
                                 $note .= '*** If '.$team_array[3]->getCode().' passes the goal-diff by '.$passing_gd2.', '.$team_array[1]->getCode().' will be eliminated and '.$team_array[3]->getCode().' will advance.<br>';
@@ -328,7 +414,7 @@
                             }
                         }
                         elseif ($team_array[3]->getName() == 'D' && $team_array[2]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                             if ($team_array[1]->getName() == 'W') { echo '<script>alert("No#19");</script>';
                                 $note = '*** If '.$team_array[3]->getCode().' catches up the goal-diff by '.($passing_gd4 - 1).' and passes the goal-for by '.$passing_gf4.', '.$team_array[2]->getCode().' will be eliminated and '.$team_array[3]->getCode().' will advance<br>';
                                 $note .= '*** If '.$team_array[3]->getCode().' passes the goal-diff by '.$passing_gd4.', '.$team_array[2]->getCode().' will be eliminated and '.$team_array[3]->getCode().' will advance.<br>';
@@ -341,7 +427,7 @@
                             }
                         }
                         elseif ($team_array[3]->getName() == 'L' && $team_array[2]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                             if ($team_array[1]->getName() == 'L') {
                                 $note = '*** If '.$team_array[1]->getCode().' loses 0-'.$passing_gd2.' (or loses goal-diff by '.($passing_gd2 - 1).') and loses goal-for by '.$passing_gf2.', '.$team_array[1]->getCode().' will be eliminated and '.$team_array[3]->getCode().' will advance<br>';
                                 $note .= '*** If '.$team_array[1]->getCode().' loses 0-'.($passing_gd2 + 1).' (or loses goal-diff by '.$passing_gd2.', '.$team_array[1]->getCode().' will be eliminated and '.$team_array[3]->getCode().' will advance.<br>';
@@ -350,10 +436,10 @@
                             }
                         }
                         elseif ($team_array[3]->getName() == 'L' && $team_array[2]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                         }
                         elseif ($team_array[3]->getName() == 'L' && $team_array[2]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Eliminated; echo '<script>alert("No#21");</script>';
+                            $qualify_status = self::Eliminated; echo '<script>alert("No#21");</script>';
                             $note = '*** If both '.$team_array[3]->getCode().' and '.$team_array[4]->getCode().' catches up the goal-diff by '.($passing_gd4 - 1).' and '.($passing_gd5 - 1).
                                 ' respectively, and passes the goal-for by '.$passing_gf4.' and '.$passing_gf5.', '.$team_array[2]->getCode().' will be eliminated. '.$team_array[3]->getCode().' and '.$team_array[4]->getCode().' will advance.***<br>';
                             $note .= '*** If both '.$team_array[3]->getCode().' and '.$team_array[4]->getCode().' passes the goal-diff by '.$passing_gd4.' and '.$passing_gd5.
@@ -366,21 +452,21 @@
                     }
                     else {
                         if ($team_array[4]->getName() == 'W' && $team_array[2]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                             $note = '*** If '.$team_array[4]->getCode().' wins '.$passing_gd3.'-0 (or wins goal-diff by '.($passing_gd3 - 1).') and scores '.($passing_gf3 + 1).' (or wins goal-for by '.($passing_gf3 + 1).'), '.$team_array[1]->getCode().' will be eliminated and '.$team_array[4]->getCode().' will advance<br>';
                             $note .= '*** If '.$team_array[4]->getCode().' wins '.($passing_gd3 + 1).'-0 (or wins goal-diff by '.$passing_gd3.'), '.$team_array[1]->getCode().' will be eliminated and '.$team_array[4]->getCode().' will advance.<br>';
                             $note .= '*** Or If '.$team_array[4]->getCode().' wins '.$passing_gd5.'-0 (or wins goal-diff by '.($passing_gd5 - 1).') and scores '.($passing_gf5 + 1).' (or wins goal-for by '.$passing_gf5.'), '.$team_array[2]->getCode().' will be eliminated and '.$team_array[4]->getCode().' will advance<br>';
                             $note .= '*** If '.$team_array[4]->getCode().' wins '.($passing_gd5 + 1).'-0 (or wins goal-diff by '.$passing_gd5.'), '.$team_array[2]->getCode().' will be eliminated and '.$team_array[4]->getCode().' will advance.<br>';
                         }
                         elseif ($team_array[4]->getName() == 'W' && $team_array[2]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Eliminated; echo '<script>alert("No#22");</script>';
+                            $qualify_status = self::Eliminated; echo '<script>alert("No#22");</script>';
                             $note = '*** If '.$team_array[4]->getCode().' catches up the goal-diff by '.($passing_gd3 - 1).' and passes the goal-for by '.$passing_gf3.', '.$team_array[1]->getCode().' will be eliminated and '.$team_array[4]->getCode().' will advance<br>';
                             $note .= '*** If '.$team_array[4]->getCode().' passes the goal-diff by '.$passing_gd3.', '.$team_array[1]->getCode().' will be eliminated and '.$team_array[4]->getCode().' will advance.<br>';
                             $note .= '*** Or If '.$team_array[4]->getCode().' catches up the goal-diff by '.($passing_gd5 - 1).' and passes the goal-for by '.$passing_gf5.', '.$team_array[2]->getCode().' will be eliminated and '.$team_array[4]->getCode().' will advance<br>';
                             $note .= '*** If '.$team_array[4]->getCode().' passes the goal-diff by '.$passing_gd5.', '.$team_array[2]->getCode().' will be eliminated and '.$team_array[4]->getCode().' will advance.<br>';
                         }
                         elseif ($team_array[4]->getName() == 'W' && $team_array[2]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                             $note = '*** If both '.$team_array[3]->getCode().' and '.$team_array[4]->getCode().' win '.$passing_gd2.'-0 and '.$passing_gd3.'-0 (or win goal-diff by '.($passing_gd2 - 1).' and '.($passing_gd3 - 1).
                                 ') respectively, and score '.($passing_gf2 + 1).' and '.($passing_gf3 + 1).' (or win goal-for by '.($passing_gf2 + 1).' and '.($passing_gf3 + 1).'), '.$team_array[1]->getCode().' will be eliminated. '.$team_array[3]->getCode().' and '.$team_array[4]->getCode().' will advance.***<br>';
                             $note .= '*** If both '.$team_array[3]->getCode().' and '.$team_array[4]->getCode().' win '.($passing_gd2 + 1).'-0 and '.($passing_gd3 + 1).'-0 (or win goal-diff by '.$passing_gd2.' and '.$passing_gd3.
@@ -391,22 +477,22 @@
                                 ') respectively, '.$team_array[2]->getCode().' will be eliminated. '.$team_array[3]->getCode().' and '.$team_array[4]->getCode().' will advance.***<br>';
                         }
                         elseif ($team_array[4]->getName() == 'D' && $team_array[2]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                         }
                         elseif ($team_array[4]->getName() == 'D' && $team_array[2]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                         }
                         elseif ($team_array[4]->getName() == 'D' && $team_array[2]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                         }
                         elseif ($team_array[4]->getName() == 'L' && $team_array[2]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                         }
                         elseif ($team_array[4]->getName() == 'L' && $team_array[2]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                         }
                         elseif ($team_array[4]->getName() == 'L' && $team_array[2]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                         }
                     }
                 }
@@ -415,39 +501,39 @@
                         $passing_gd = $team_array[1]->getGoalDiff() - $team_array[3]->getGoalDiff() + 1;
                         $passing_gf = $team_array[1]->getGoalFor() - $team_array[3]->getGoalFor() + 1;
                         if ($team_array[1]->getName() == 'W' && $team_array[3]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                             $note = '*** If '.$team_array[3]->getCode().' wins '.$passing_gd.'-0 (or wins goal-diff by '.($passing_gd - 1).') and scores '.($passing_gf + 1).' (or wins goal-for by '.$passing_gf.'), '.$team_array[1]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[3]->getCode().' wins '.($passing_gd + 1).'-0 (or wins goal-diff by '.$passing_gd.'), '.$team_array[1]->getCode().' will be eliminated. ***';
                         }
                         elseif ($team_array[1]->getName() == 'W' && $team_array[3]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[1]->getName() == 'W' && $team_array[3]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[1]->getName() == 'D' && $team_array[3]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                             $note = '*** If '.$team_array[3]->getCode().' wins '.$passing_gd.'-0 (or similar) and scores '.($passing_gf + 1).' (or wins goal-for by '.($passing_gf + 1).'), '.$team_array[1]->getCode().' will be eliminated. '.$team_array[3]->getCode().' will advance. ***<br>';
                             $note .= '*** If '.$team_array[3]->getCode().' wins '.($passing_gd + 1).'-0 (or similar), '.$team_array[1]->getCode().' will be eliminated. '.$team_array[3]->getCode().' will advance. ***';
                         }
                         elseif ($team_array[1]->getName() == 'D' && $team_array[3]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[1]->getName() == 'D' && $team_array[3]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[1]->getName() == 'L' && $team_array[3]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                             $note = '*** If '.$team_array[3]->getCode().' wins '.$passing_gd.'-0 (or wins the goal-diff by '.($passing_gd - 1).') and scores '.($passing_gf + 1).' (or wins goal-for by '.($passing_gf + 1).'), '.$team_array[1]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[3]->getCode().' wins '.($passing_gd + 1).'-0 (or wins goal-diff by '.$passing_gd.'), '.$team_array[1]->getCode().' will be eliminated. ***';
                         }
                         elseif ($team_array[1]->getName() == 'L' && $team_array[3]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                             $note = '*** If '.$team_array[1]->getCode().' loses 0-'.$passing_gd.' (or similar) and loses goal-for by '.$passing_gf.', '.$team_array[1]->getCode().' will be eliminated. '.$team_array[3]->getCode().' will advance. ***<br>';
                             $note .= '*** If '.$team_array[1]->getCode().' loses 0-'.($passing_gd + 1).' (or similar), '.$team_array[1]->getCode().' will be eliminated. '.$team_array[3]->getCode().' will advance. ***';
                         }
                         elseif ($team_array[1]->getName() == 'L' && $team_array[3]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Advanced; echo '<script>alert("No#1");</script>';
+                            $qualify_status = self::Advanced; echo '<script>alert("No#1");</script>';
                             $note = '*** If '.$team_array[3]->getCode().' catches up the goal-diff by '.($passing_gd - 1).' and passes the goal-for by '.$passing_gf.', '.$team_array[1]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[3]->getCode().' passes the goal-diff by '.$passing_gd.', '.$team_array[1]->getCode().' will be eliminated. ***';
                         }
@@ -456,39 +542,39 @@
                         $passing_gd = $team_array[2]->getGoalDiff() - $team_array[3]->getGoalDiff() + 1;
                         $passing_gf = $team_array[2]->getGoalFor() - $team_array[3]->getGoalFor() + 1;
                         if ($team_array[2]->getName() == 'W' && $team_array[3]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                             $note = '*** If '.$team_array[3]->getCode().' wins '.$passing_gd.'-0 (or wins goal-diff by '.($passing_gd - 1).') and scores '.($passing_gf + 1).' (or wins goal-for by '.$passing_gf.'), '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[3]->getCode().' wins '.($passing_gd + 1).'-0 (or wins goal-diff by '.$passing_gd.'), '.$team_array[2]->getCode().' will be eliminated. ***';
                         }
                         elseif ($team_array[2]->getName() == 'W' && $team_array[3]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[2]->getName() == 'W' && $team_array[3]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[2]->getName() == 'D' && $team_array[3]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                             $note = '*** If '.$team_array[3]->getCode().' wins '.$passing_gd.'-0 (or similar) and scores '.($passing_gf + 1).' (or wins goal-for by '.($passing_gf + 1).'), '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[3]->getCode().' wins '.($passing_gd + 1).'-0 (or similar), '.$team_array[2]->getCode().' will be eliminated. ***';
                         }
                         elseif ($team_array[2]->getName() == 'D' && $team_array[3]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[2]->getName() == 'D' && $team_array[3]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[2]->getName() == 'L' && $team_array[3]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                             $note = '*** If '.$team_array[3]->getCode().' wins '.$passing_gd.'-0 (or wins goal-diff by '.($passing_gd - 1).') and scores '.($passing_gf + 1).' (or wins goal-for by '.($passing_gf + 1).'), '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[3]->getCode().' wins '.($passing_gd + 1).'-0 (or wins goal-diff by '.$passing_gd.'), '.$team_array[2]->getCode().' will be eliminated. ***';
                         }
                         elseif ($team_array[2]->getName() == 'L' && $team_array[3]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                             $note = '*** If '.$team_array[2]->getCode().' loses 0-'.$passing_gd.' (or similar) and loses goal-for by '.$passing_gf.', '.$team_array[2]->getCode().' will be eliminated. '.$team_array[3]->getCode().' will advance. ***<br>';
                             $note .= '*** If '.$team_array[2]->getCode().' loses 0-'.($passing_gd + 1).' (or similar), '.$team_array[2]->getCode().' will be eliminated. '.$team_array[3]->getCode().' will advance. ***';
                         }
                         elseif ($team_array[2]->getName() == 'L' && $team_array[3]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Advanced; echo '<script>alert("No#2");</script>';
+                            $qualify_status = self::Advanced; echo '<script>alert("No#2");</script>';
                             $note = '*** If '.$team_array[3]->getCode().' catches up the goal-diff by '.($passing_gd - 1).' and passes the goal-for by '.$passing_gf.', '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[3]->getCode().' passes the goal-diff by '.$passing_gd.', '.$team_array[2]->getCode().' will be eliminated. ***';
                         }
@@ -497,38 +583,38 @@
                         $passing_gd = $team_array[2]->getGoalDiff() - $team_array[3]->getGoalDiff() + 1;
                         $passing_gf = $team_array[2]->getGoalFor() - $team_array[3]->getGoalFor() + 1;
                         if ($team_array[3]->getName() == 'W' && $team_array[2]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                             $note = '*** If '.$team_array[3]->getCode().' wins '.$passing_gd.'-0 (or wins goal-diff by '.($passing_gd - 1).') and scores '.($passing_gf + 1).' (or wins goal-for by '.$passing_gf.'), '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[3]->getCode().' wins '.($passing_gd + 1).'-0 (or wins goal-diff by '.$passing_gd.'), '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***';
                         }
                         elseif ($team_array[3]->getName() == 'W' && $team_array[2]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                             $note = '*** If '.$team_array[3]->getCode().' wins '.$passing_gd.'-0 (or similar) and scores '.($passing_gf + 1).' (or wins goal-for by '.($passing_gf + 1).'), '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[3]->getCode().' wins '.($passing_gd+ 1).'-0 (or similar), '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***';
                         }
                         elseif ($team_array[3]->getName() == 'W' && $team_array[2]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                             $note = '*** If '.$team_array[3]->getCode().' wins '.$passing_gd.'-0 (or wins goal-diff by '.($passing_gd - 1).') and scores '.($passing_gf + 1).' (or wins goal-for by '.($passing_gf + 1).'), '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[3]->getCode().' wins '.($passing_gd+ 1).'-0 (or wins goal-diff by '.$passing_gd.'), '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***';
                         }
                         elseif ($team_array[3]->getName() == 'D' && $team_array[2]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                         }
                         elseif ($team_array[3]->getName() == 'D' && $team_array[2]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                         }
                         elseif ($team_array[3]->getName() == 'D' && $team_array[2]->getName() == 'L') {
                             $note = '*** If '.$team_array[2]->getCode().' loses 0-'.$passing_gd.' (or similar) and loses goal-for by '.$passing_gf.', '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[2]->getCode().' loses 0-'.($passing_gd + 1).' (or similar), '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***';
                         }
                         elseif ($team_array[3]->getName() == 'L' && $team_array[2]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                         }
                         elseif ($team_array[3]->getName() == 'L' && $team_array[2]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                         }
                         elseif ($team_array[3]->getName() == 'L' && $team_array[2]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Eliminated; echo '<script>alert("No#4");</script>';
+                            $qualify_status = self::Eliminated; echo '<script>alert("No#4");</script>';
                             $note = '*** If '.$team_array[3]->getCode().' catches up the goal-diff by '.($passing_gd - 1).' and passes the goal-for by '.$passing_gf.', '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[3]->getCode().' makes up the goal-diff by '.$passing_gd.', '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***';
                         }
@@ -536,45 +622,45 @@
                 }
                 elseif ($team_array[2]->getPoint() == $team_array[3]->getPoint() && $team_array[2]->getPoint() == $team_array[4]->getPoint()) {
                     if ($scenarios[$i]->getTeam1Result() == 1) {
-                        $qualify_status = QualifyStatus::Advanced;
+                        $qualify_status = self::Advanced;
                     }
                     elseif ($scenarios[$i]->getTeam1Result() == 2) {
                         $passing_gd = $team_array[2]->getGoalDiff() - $team_array[3]->getGoalDiff() + 1;
                         $passing_gf = $team_array[2]->getGoalFor() - $team_array[3]->getGoalFor() + 1;
                         if ($team_array[2]->getName() == 'W' && $team_array[3]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Advanced; echo '<script>alert("No#5");</script>';
+                            $qualify_status = self::Advanced; echo '<script>alert("No#5");</script>';
                             $note = '*** If '.$team_array[3]->getCode().' catches up the goal-diff by '.($passing_gd - 1).' and passes the goal-for by '.$passing_gf.', '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[3]->getCode().' passes the goal-diff by '.$passing_gd.', '.$team_array[2]->getCode().' will be eliminated. ***';
                         }
                         elseif ($team_array[2]->getName() == 'W' && $team_array[3]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[2]->getName() == 'W' && $team_array[3]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[2]->getName() == 'D' && $team_array[3]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Advanced; echo '<script>alert("No#6");</script>';
+                            $qualify_status = self::Advanced; echo '<script>alert("No#6");</script>';
                             $note = '*** If '.$team_array[3]->getCode().' wins by '.$passing_gd.' and passes the goal-for by '.$passing_gf.', '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[3]->getCode().' wins by '.($passing_gd + 1).', '.$team_array[2]->getCode().' will be eliminated. ***';
                         }
                         elseif ($team_array[2]->getName() == 'D' && $team_array[3]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[2]->getName() == 'D' && $team_array[3]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         elseif ($team_array[2]->getName() == 'L' && $team_array[3]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                             $note = '*** If '.$team_array[3]->getCode().' wins '.$passing_gd.'-0 (or wins goal-diff by '.($passing_gd - 1).') and scores '.($passing_gf + 1).' (or wins goal-for by '.($passing_gf + 1).'), '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[3]->getCode().' wins '.($passing_gd + 1).'-0 (or wins goal-diff by '.$passing_gd.'), '.$team_array[2]->getCode().' will be eliminated. ***';
                         }
                         elseif ($team_array[2]->getName() == 'L' && $team_array[3]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                             $note = '*** If '.$team_array[2]->getCode().' loses 0-'.$passing_gd.' (or similar) and loses goal-for by '.$passing_gf.', '.$team_array[2]->getCode().' will be eliminated. '.$team_array[3]->getCode().' will advance. ***<br>';
                             $note .= '*** If '.$team_array[2]->getCode().' loses 0-'.($passing_gd + 1).' (or similar), '.$team_array[2]->getCode().' will be eliminated. '.$team_array[3]->getCode().' will advance. ***';
                         }
                         elseif ($team_array[2]->getName() == 'L' && $team_array[3]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                             $note = '*** If '.$team_array[2]->getCode().' loses 0-'.$passing_gd.' (or loses goal-diff by '.($passing_gd - 1).') and loses goal-for by '.$passing_gf.', '.$team_array[2]->getCode().' will be eliminated. '.$team_array[3]->getCode().' will advance. ***<br>';
                             $note .= '*** If '.$team_array[2]->getCode().' loses 0-'.($passing_gd + 1).' (or loses goal-diff by '.$passing_gd.'), '.$team_array[2]->getCode().' will be eliminated. '.$team_array[3]->getCode().' will advance. ***';
                         }
@@ -583,39 +669,39 @@
                         $passing_gd = $team_array[2]->getGoalDiff() - $team_array[3]->getGoalDiff() + 1;
                         $passing_gf = $team_array[2]->getGoalFor() - $team_array[3]->getGoalFor() + 1;
                         if ($team_array[3]->getName() == 'W' && $team_array[2]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Eliminated; echo '<script>alert("No#7");</script>';
+                            $qualify_status = self::Eliminated; echo '<script>alert("No#7");</script>';
                             $note = '*** If '.$team_array[3]->getCode().' catches up the goal-diff by '.($passing_gd - 1).' and passes the goal-for by '.$passing_gf.', '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[3]->getCode().' makes up the goal-diff by '.$passing_gd.', '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***';
                         }
                         elseif ($team_array[3]->getName() == 'W' && $team_array[2]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Eliminated; echo '<script>alert("No#8");</script>';
+                            $qualify_status = self::Eliminated; echo '<script>alert("No#8");</script>';
                             $note = '*** If '.$team_array[3]->getCode().' wins by '.$passing_gd.' and passes the goal-for by '.$passing_gf.', '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[3]->getCode().' wins by '.($passing_gd+ 1).', '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***';
                         }
                         elseif ($team_array[3]->getName() == 'W' && $team_array[2]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                             $note = '*** If '.$team_array[3]->getCode().' wins '.$passing_gd.'-0 (or wins goal-diff by '.($passing_gd - 1).') and scores '.($passing_gf + 1).' (or wins goal-for by '.($passing_gf + 1).'), '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[3]->getCode().' wins '.($passing_gd+ 1).'-0 (or wins goal-diff by '.$passing_gd.'), '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***';
                         }
                         elseif ($team_array[3]->getName() == 'D' && $team_array[2]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                         }
                         elseif ($team_array[3]->getName() == 'D' && $team_array[2]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                         }
                         elseif ($team_array[3]->getName() == 'D' && $team_array[2]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                             $note = '*** If '.$team_array[2]->getCode().' loses 0-'.$passing_gd.' (or similar) and loses goal-for by '.$passing_gf.', '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[2]->getCode().' loses 0-'.($passing_gd + 1).' (or similar), '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***';
                         }
                         elseif ($team_array[3]->getName() == 'L' && $team_array[2]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                         }
                         elseif ($team_array[3]->getName() == 'L' && $team_array[2]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                         }
                         elseif ($team_array[3]->getName() == 'L' && $team_array[2]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                             $note = '*** If '.$team_array[2]->getCode().' loses 0-'.$passing_gd.' (or loses goal-diff by '.($passing_gd - 1).') and loses goal-for by '.$passing_gf.', '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[2]->getCode().' loses 0-'.($passing_gd + 1).' (or loses goal-diff by '.$passing_gd.'), '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***';
                         }
@@ -624,39 +710,39 @@
                         $passing_gd = $team_array[2]->getGoalDiff() - $team_array[4]->getGoalDiff() + 1;
                         $passing_gf = $team_array[2]->getGoalFor() - $team_array[4]->getGoalFor() + 1;
                         if ($team_array[4]->getName() == 'W' && $team_array[2]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Eliminated; echo '<script>alert("No#9");</script>';
+                            $qualify_status = self::Eliminated; echo '<script>alert("No#9");</script>';
                             $note = '*** If '.$team_array[4]->getCode().' catches up the goal-diff by '.($passing_gd - 1).' and passes the goal-for by '.$passing_gf.', '.$team_array[4]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[4]->getCode().' makes up the goal-diff by '.$passing_gd.', '.$team_array[4]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***';
                         }
                         elseif ($team_array[4]->getName() == 'W' && $team_array[2]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Eliminated; echo '<script>alert("No#10");</script>';
+                            $qualify_status = self::Eliminated; echo '<script>alert("No#10");</script>';
                             $note = '*** If '.$team_array[4]->getCode().' wins by '.$passing_gd.' and passes the goal-for by '.$passing_gf.', '.$team_array[4]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[4]->getCode().' wins by '.($passing_gd+ 1).', '.$team_array[4]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***';
                         }
                         elseif ($team_array[4]->getName() == 'W' && $team_array[2]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                             $note = '*** If '.$team_array[4]->getCode().' wins '.$passing_gd.'-0 (or wins goal-diff by '.($passing_gd - 1).') and scores '.($passing_gf + 1).' (or wins goal-for by '.($passing_gf + 1).'), '.$team_array[4]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[4]->getCode().' wins '.($passing_gd+ 1).'-0 (or wins goal-diff by '.$passing_gd.'), '.$team_array[4]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***';
                         }
                         elseif ($team_array[4]->getName() == 'D' && $team_array[2]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                         }
                         elseif ($team_array[4]->getName() == 'D' && $team_array[2]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                         }
                         elseif ($team_array[4]->getName() == 'D' && $team_array[2]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                             $note = '*** If '.$team_array[2]->getCode().' loses 0-'.$passing_gd.' (or similar) and loses goal-for by '.$passing_gf.', '.$team_array[4]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[2]->getCode().' loses 0-'.($passing_gd + 1).' (or similar), '.$team_array[4]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***';
                         }
                         elseif ($team_array[4]->getName() == 'L' && $team_array[2]->getName() == 'W') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                         }
                         elseif ($team_array[4]->getName() == 'L' && $team_array[2]->getName() == 'D') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                         }
                         elseif ($team_array[4]->getName() == 'L' && $team_array[2]->getName() == 'L') {
-                            $qualify_status = QualifyStatus::Eliminated;
+                            $qualify_status = self::Eliminated;
                             $note = '*** If '.$team_array[2]->getCode().' loses 0-'.$passing_gd.' (or loses goal-diff by '.($passing_gd - 1).') and loses goal-for by '.$passing_gf.', '.$team_array[4]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                             $note .= '*** If '.$team_array[2]->getCode().' loses 0-'.($passing_gd + 1).' (or loses goal-diff by '.$passing_gd.'), '.$team_array[4]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***';
                         }
@@ -667,54 +753,54 @@
                     $passing_gf = $team_array[2]->getGoalFor() - $team_array[3]->getGoalFor() + 1;
                     if ($scenarios[$i]->getTeam1Result() == 1) {
                         if ($team_array[1]->getPoint() > $team_array[2]->getPoint()) {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         else {
                             if ($team_array[1]->getPoint() > $team_array[3]->getPoint()) {
-                                $qualify_status = QualifyStatus::Advanced;
+                                $qualify_status = self::Advanced;
                             }
                         }
                     }
                     elseif ($scenarios[$i]->getTeam1Result() == 2) {
                         if ($team_array[2]->getPoint() > $team_array[3]->getPoint()) {
-                            $qualify_status = QualifyStatus::Advanced;
+                            $qualify_status = self::Advanced;
                         }
                         else {
                             // Cover both gd greater and equal
                             if ($team_array[2]->getName() == 'W' && $team_array[3]->getName() == 'W') {
-                                $qualify_status = QualifyStatus::Advanced;
+                                $qualify_status = self::Advanced;
                                 $note = '*** If '.$team_array[3]->getCode().' wins '.$passing_gd.'-0 (or equals goal-diff by '.($passing_gd - 1).') and scores '.($passing_gf + 1).' (or wins goal-for by '.$passing_gf.'), '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                                 $note .= '*** If '.$team_array[3]->getCode().' wins '.($passing_gd + 1).'-0 (or wins goal-diff by '.$passing_gd.'), '.$team_array[2]->getCode().' will be eliminated. *** <br>';
                             }
                             elseif ($team_array[2]->getName() == 'W' && $team_array[3]->getName() == 'D') {
-                                $qualify_status = QualifyStatus::Advanced;
+                                $qualify_status = self::Advanced;
                             }
                             elseif ($team_array[2]->getName() == 'W' && $team_array[3]->getName() == 'L') {
-                                $qualify_status = QualifyStatus::Advanced;
+                                $qualify_status = self::Advanced;
                             }
                             elseif ($team_array[2]->getName() == 'D' && $team_array[3]->getName() == 'W') {
-                                $qualify_status = QualifyStatus::Advanced;
+                                $qualify_status = self::Advanced;
                                 $note = '*** If '.$team_array[3]->getCode().' wins '.$passing_gd.'-0 (or similar) and scores '.($passing_gf + 1).' (or beats goal-for by '.($passing_gf + 1).'), '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                                 $note .= '*** If '.$team_array[3]->getCode().' wins '.($passing_gd + 1).'-0 (or similar), '.$team_array[2]->getCode().' will be eliminated. ***';
                             }
                             elseif ($team_array[2]->getName() == 'D' && $team_array[3]->getName() == 'D') {
-                                $qualify_status = QualifyStatus::Advanced;
+                                $qualify_status = self::Advanced;
                             }
                             elseif ($team_array[2]->getName() == 'D' && $team_array[3]->getName() == 'L') {
-                                $qualify_status = QualifyStatus::Advanced;
+                                $qualify_status = self::Advanced;
                             }
                             elseif ($team_array[2]->getName() == 'L' && $team_array[3]->getName() == 'W') {
-                                $qualify_status = QualifyStatus::Advanced;
+                                $qualify_status = self::Advanced;
                                 $note = '*** If '.$team_array[3]->getCode().' wins '.$passing_gd.'-0 (or equals goal-diff by '.($passing_gd + 1).') and scores '.($passing_gf + 1).' (or beats goal-for by '.($passing_gf + 1).'), '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                                 $note .= '*** If '.$team_array[3]->getCode().' wins '.($passing_gd + 1).'-0 (or wins goal-diff by '.($passing_gd + 2).'), '.$team_array[2]->getCode().' will be eliminated. ***';
                             }
                             elseif ($team_array[2]->getName() == 'L' && $team_array[3]->getName() == 'D') {
-                                $qualify_status = QualifyStatus::Advanced;
+                                $qualify_status = self::Advanced;
                                 $note = '*** If '.$team_array[2]->getCode().' loses 0-'.$passing_gd.' (or similar) and loses goal-for by '.$passing_gf.', '.$team_array[2]->getCode().' will be eliminated. '.$team_array[3]->getCode().' will advance. ***<br>';
                                 $note .= '*** If '.$team_array[2]->getCode().' loses 0-'.($passing_gd + 1).' (or similar), '.$team_array[2]->getCode().' will be eliminated. '.$team_array[3]->getCode().' will advance. ***';
                             }
                             elseif ($team_array[2]->getName() == 'L' && $team_array[3]->getName() == 'L') {
-                                $qualify_status = QualifyStatus::Advanced;
+                                $qualify_status = self::Advanced;
                                 $note = '*** If '.$team_array[2]->getCode().' loses 0-'.$passing_gd.' (or loses goal-diff by '.($passing_gd - 1).') and loses goal-for by '.$passing_gf.', '.$team_array[2]->getCode().' will be eliminated. '.$team_array[3]->getCode().' will advance. ***<br>';
                                 $note .= '*** If '.$team_array[2]->getCode().' loses 0-'.($passing_gd + 1).' (or loses goal-diff by '.$passing_gd.'), '.$team_array[2]->getCode().' will be eliminated. '.$team_array[3]->getCode().' will advance. ***';
                             }
@@ -724,39 +810,39 @@
                         if ($team_array[3]->getPoint() == $team_array[2]->getPoint()) {
                             // Cover both gd equal and smaller
                             if ($team_array[3]->getName() == 'W' && $team_array[2]->getName() == 'W') {
-                                $qualify_status = QualifyStatus::Eliminated;
+                                $qualify_status = self::Eliminated;
                                 $note = '*** If '.$team_array[3]->getCode().' wins '.$passing_gd.'-0 (or wins goal-diff by '.($passing_gd - 1).') and scores '.($passing_gf + 1).' (or wins goal-for by '.$passing_gf.'), '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                                 $note .= '*** If '.$team_array[3]->getCode().' wins '.($passing_gd + 1).'-0 (or wins goal-diff by '.$passing_gd.'), '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***';
                             }
                             elseif ($team_array[3]->getName() == 'W' && $team_array[2]->getName() == 'D') {
-                                $qualify_status = QualifyStatus::Eliminated;
+                                $qualify_status = self::Eliminated;
                                 $note = '*** If '.$team_array[3]->getCode().' wins '.$passing_gd.'-0 (or similar) and scores '.($passing_gf + 1).' (or wins goal-for by '.$passing_gf.'), '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                                 $note .= '*** If '.$team_array[3]->getCode().' wins '.($passing_gd+ 1).'-0 (or similar), '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***';
                             }
                             elseif ($team_array[3]->getName() == 'W' && $team_array[2]->getName() == 'L') {
-                                $qualify_status = QualifyStatus::Eliminated;
+                                $qualify_status = self::Eliminated;
                                 $note = '*** If '.$team_array[3]->getCode().' wins '.$passing_gd.'-0 (or wins goal-diff by '.($passing_gd - 1).') and scores '.($passing_gf + 1).' (or wins goal-for by '.$passing_gf.'), '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                                 $note .= '*** If '.$team_array[3]->getCode().' wins '.($passing_gd+ 1).'-0 (or wins goal-diff by '.$passing_gd.'), '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***';
                             }
                             elseif ($team_array[3]->getName() == 'D' && $team_array[2]->getName() == 'W') {
-                                $qualify_status = QualifyStatus::Eliminated;
+                                $qualify_status = self::Eliminated;
                             }
                             elseif ($team_array[3]->getName() == 'D' && $team_array[2]->getName() == 'D') {
-                                $qualify_status = QualifyStatus::Eliminated;
+                                $qualify_status = self::Eliminated;
                             }
                             elseif ($team_array[3]->getName() == 'D' && $team_array[2]->getName() == 'L') {
-                                $qualify_status = QualifyStatus::Eliminated;
+                                $qualify_status = self::Eliminated;
                                 $note = '*** If '.$team_array[2]->getCode().' loses 0-'.$passing_gd.' (or similar) and loses goal-for by '.$passing_gf.', '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***<br>';
                                 $note .= '*** If '.$team_array[2]->getCode().' loses 0-'.($passing_gd + 1).' (or similar), '.$team_array[3]->getCode().' will advance. '.$team_array[2]->getCode().' will be eliminated. ***';
                             }
                             elseif ($team_array[3]->getName() == 'L' && $team_array[2]->getName() == 'W') {
-                                $qualify_status = QualifyStatus::Eliminated;
+                                $qualify_status = self::Eliminated;
                             }
                             elseif ($team_array[3]->getName() == 'L' && $team_array[2]->getName() == 'D') {
-                                $qualify_status = QualifyStatus::Eliminated;
+                                $qualify_status = self::Eliminated;
                             }
                             elseif ($team_array[3]->getName() == 'L' && $team_array[2]->getName() == 'L') {
-                                $qualify_status = QualifyStatus::Eliminated;
+                                $qualify_status = self::Eliminated;
                                 $note = '*** If '.$team_array[2]->getCode().' loses 0-'.$passing_gd.' (or loses goal-diff by '.($passing_gd - 1).') and loses goal-for by '.$passing_gf.', '.$team_array[2]->getCode().' will be eliminated. '.$team_array[3]->getCode().' will advance. ***<br>';
                                 $note .= '*** If '.$team_array[2]->getCode().' loses 0-'.($passing_gd + 1).' (or loses goal-diff by '.$passing_gd.'), '.$team_array[2]->getCode().' will be eliminated. '.$team_array[3]->getCode().' will advance. ***';
                             }

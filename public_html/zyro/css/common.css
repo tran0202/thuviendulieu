@@ -156,6 +156,9 @@ body {
     height: 32px;
     border: 1px solid #c7c6c6;
 }
+.logo-md {
+    height: 32px;
+}
 .modal-md { width: 800px; }
 .modal-X { font-size: 48px; }
 .modal-close { font-size: 26px; }

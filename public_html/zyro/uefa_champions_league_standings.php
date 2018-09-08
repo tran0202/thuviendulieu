@@ -7,9 +7,9 @@
     if (isset($query_string['tid'])) $tournament_id = $query_string['tid'];
     $simulation_mode = Tournament::SIMULATION_MODE_0;
     if (isset($query_string['smid'])) $simulation_mode = $query_string['smid'];
-    $tournament = Tournament::getUCLTournamentStandings($tournament_id, $simulation_mode);
+    $tournament = Tournament::getSoccerTournamentStandingsView($tournament_id, $simulation_mode);
     $profile = $tournament->getProfile();
-    $header = $profile->getTournamentHeader();
+    $header = TournamentProfile::getTournamentHeader($profile);
     $tournament_name = $profile->getName();
     $body_html = $tournament->getBodyHtml();
     $modal_html = $tournament->getModalHtml();
