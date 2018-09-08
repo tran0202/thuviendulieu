@@ -119,7 +119,7 @@
             Soccer::updateFirstStageMatchesRanking($tournament);
 
             Soccer::getSecondStageMatchesRanking($tournament);
-            SoccerHtml::getTournamentSoccerRankingHtml($tournament);
+            SoccerHtml::getSoccerRankingHtml($tournament);
 
             return $tournament;
         }
@@ -198,11 +198,11 @@
             Match::getSoccerMatches($tournament);
 
             Soccer::getStanding($tournament);
-            SoccerHtml::getSoccerMatchesHtml($tournament, SoccerHtml::CLUB, false);
+            SoccerHtml::getSoccerMatchesOneLeagueHtml($tournament);
             if ($simulation_mode == self::SIMULATION_MODE_1) {
                 SoccerHtml::getSoccerPopoverHtml($tournament);
             }
-            SoccerHtml::getGroupModalHtml($tournament, SoccerHtml::CLUB);
+            SoccerHtml::getSoccerMatchesModalHtml($tournament);
             return $tournament;
         }
 
@@ -215,11 +215,11 @@
             Match::getSoccerMatches($tournament);
 
             Soccer::getStanding($tournament);
-            SoccerHtml::getSoccerMatchesHtml($tournament, SoccerHtml::MULTI_LEAGUE_TEAM, false);
+            SoccerHtml::getSoccerMatchesMultiLeagueHtml($tournament);
             if ($simulation_mode == self::SIMULATION_MODE_1) {
                 SoccerHtml::getSoccerPopoverHtml($tournament);
             }
-            SoccerHtml::getGroupModalHtml($tournament, SoccerHtml::MULTI_LEAGUE_TEAM);
+            SoccerHtml::getSoccerMatchesMultiLeagueModalHtml($tournament);
 
             return $tournament;
         }
