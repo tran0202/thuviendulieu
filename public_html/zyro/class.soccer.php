@@ -73,7 +73,7 @@
                 self::calculatePoint($team_array, $matches[$i], self::First);
             }
             foreach ($team_array as $name => $_team) {
-                $tmp_array[$_team->getGroupName()][$_team->getName()] = $_team;
+                $tmp_array[$_team->getParentGroupName().$_team->getGroupName()][$_team->getName()] = $_team;
             }
             foreach ($tmp_array as $group_name => $_teams) {
                 $tmp_array2 = array();

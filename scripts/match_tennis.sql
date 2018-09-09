@@ -4,6 +4,8 @@ CREATE TABLE IF NOT EXISTS `match` (
 	home_team_score TINYINT UNSIGNED,
 	away_team_id INT,
 	away_team_score TINYINT UNSIGNED,
+	home_team_first_leg_score TINYINT UNSIGNED,
+	away_team_first_leg_score TINYINT UNSIGNED,
 	tournament_id INT NOT NULL,
 	match_date DATE,
 	match_time TIME,
@@ -20,6 +22,8 @@ CREATE TABLE IF NOT EXISTS `match` (
 	stage_id INT,
 	stage_order TINYINT UNSIGNED,
 	group_id INT,
+	home_retired TINYINT UNSIGNED,
+	away_retired TINYINT UNSIGNED,
 	home_set1_score TINYINT UNSIGNED,
 	away_set1_score TINYINT UNSIGNED,
 	home_set1_tiebreak TINYINT UNSIGNED,
@@ -49,6 +53,10 @@ CREATE TABLE IF NOT EXISTS `match` (
 );
 
 # Tables to do: tournament_type, tournament, player, team_type, team, team_player, team_tournament, match
+
+SELECT * FROM `match` where tournament_id=27;
+
+SELECT * FROM `team` where team_type_id = 7 order by name;
 
 # 2018 US Open Men's Singles
 
@@ -200,6 +208,21 @@ VALUES (114, 177, 27, '2018-09-02', 113, 50, NULL, NULL, NULL, NULL, NULL, NULL,
 	   (294, 168, 27, '2018-09-02', 119, 50, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 	   (104, 127, 27, '2018-09-02', 120, 50, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
+INSERT INTO `match` (home_team_id, away_team_id, tournament_id, match_date, match_order, round_id,
+					 home_set1_score, away_set1_score, home_set1_tiebreak, away_set1_tiebreak,
+					 home_set2_score, away_set2_score, home_set2_tiebreak, away_set2_tiebreak,
+					 home_set3_score, away_set3_score, home_set3_tiebreak, away_set3_tiebreak,
+					 home_set4_score, away_set4_score, home_set4_tiebreak, away_set4_tiebreak,
+					 home_set5_score, away_set5_score, home_set5_tiebreak, away_set5_tiebreak,
+					 home_retired, away_retired)
+VALUES (114, 67, 27, '2018-09-04', 121, 43, 0, 6, NULL, NULL, 6, 4, NULL, NULL, 7, 5, NULL, NULL, 6, 7, 4, 7, 7, 6, 7, 5, NULL, NULL),
+	   (96, 154, 27, '2018-09-04', 122, 43, 6, 7, 5, 7, 6, 3, NULL, NULL, 7, 6, 7, 4, 6, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	   (161, 289, 27, '2018-09-04', 123, 43, 6, 2, NULL, NULL, 4, 6, NULL, NULL, 6, 7, 5, 7, 6, 4, NULL, NULL, 4, 6, NULL, NULL, NULL, NULL),
+	   (294, 104, 27, '2018-09-04', 124, 43, 6, 3, NULL, NULL, 6, 4, NULL, NULL, 6, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	   (114, 96, 27, '2018-09-07', 125, 44, 6, 7, 3, 7, 2, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL),
+	   (289, 294, 27, '2018-09-07', 126, 44, 3, 6, NULL, NULL, 4, 6, NULL, NULL, 2, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	   (96, 294, 27, '2018-09-09', 127, 46, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
 # 2018 US Open Women's Singles
 
 INSERT INTO `match` (home_team_id, away_team_id, tournament_id, match_date, match_order, round_id,
@@ -349,6 +372,21 @@ VALUES (414, 420, 28, '2018-09-02', 113, 50, NULL, NULL, NULL, NULL, NULL, NULL,
 	   (482, 490, 28, '2018-09-02', 118, 50, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 	   (503, 504, 28, '2018-09-02', 119, 50, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 	   (515, 522, 28, '2018-09-02', 120, 50, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+INSERT INTO `match` (home_team_id, away_team_id, tournament_id, match_date, match_order, round_id,
+					 home_set1_score, away_set1_score, home_set1_tiebreak, away_set1_tiebreak,
+					 home_set2_score, away_set2_score, home_set2_tiebreak, away_set2_tiebreak,
+					 home_set3_score, away_set3_score, home_set3_tiebreak, away_set3_tiebreak,
+					 home_set4_score, away_set4_score, home_set4_tiebreak, away_set4_tiebreak,
+					 home_set5_score, away_set5_score, home_set5_tiebreak, away_set5_tiebreak,
+					 home_retired, away_retired)
+VALUES (420, 440, 28, '2018-09-04', 121, 43, 6, 4, NULL, NULL, 6, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	   (441, 459, 28, '2018-09-04', 122, 43, 2, 6, NULL, NULL, 3, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	   (474, 482, 28, '2018-09-04', 123, 43, 4, 6, NULL, NULL, 3, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	   (504, 522, 28, '2018-09-04', 124, 43, 6, 1, NULL, NULL, 6, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	   (420, 459, 28, '2018-09-06', 125, 44, 6, 3, NULL, NULL, 6, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	   (482, 504, 28, '2018-09-06', 126, 44, 2, 6, NULL, NULL, 4, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	   (420, 504, 28, '2018-09-08', 127, 46, 2, 6, NULL, NULL, 4, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 # 2017 US Open Men's Singles
 INSERT INTO `match` (home_team_id, away_team_id, tournament_id, match_date, match_order, round_id,

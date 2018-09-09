@@ -243,7 +243,7 @@
             LEFT JOIN team pt2 ON pt2.id = t2.parent_team_id
             WHERE tou.tournament_type_id = 1
             AND m.tournament_id = 1
-            ORDER BY match_date, match_time, match_order
+            ORDER BY match_order
          */
 
         public static function getSoccerMatchSql($tournament_id, $tournament_type_id) {
@@ -284,7 +284,7 @@
                     LEFT JOIN team pt2 ON pt2.id = t2.parent_team_id
                     WHERE '.$tournament_type_id_str.'
                     AND '.$tournament_id_str.'
-                    ORDER BY match_date, match_time, match_order';
+                    ORDER BY match_order';
             return $sql;
         }
 

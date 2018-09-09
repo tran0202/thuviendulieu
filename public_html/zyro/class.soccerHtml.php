@@ -586,7 +586,7 @@
                 }
                 $output .= '</div>';
                 if ($matches_link_type == self::MATCHES_LINK_COLLAPSE) {
-                    $output .= self::getCollapseHtml($group_name.'matches', 'Matches',
+                    $output .= self::getCollapseHtml(self::getValidHtmlId($parent_group_name).$group_name.'matches', 'Matches',
                         self::getGroupMatchesCollapseHtml($tournament, $team_type, $parent_group_name, $group_name));
                 }
             }
@@ -752,7 +752,7 @@
                     $aggregate_score = '';
                     $home_team_color = '';
                     $away_team_color = '';
-                    if (self::isGoldenGoalRule($_match->getGoldenGoalRule()) && $_match->getHomeTeamPenaltyScore() == '') $aet = ' gg';
+                    if (self::isGoldenGoalRule($_match->getGoldenGoalRule()) && !Match::isFirstStage($_match) && $_match->getHomeTeamPenaltyScore() == '') $aet = ' gg';
                     if ($_match->getHomeTeamScore() != -1) {
                         if ($team_type == self::CLUB) {
                             $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();

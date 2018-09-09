@@ -67,6 +67,8 @@ ALTER TABLE `match`
 ALTER TABLE `match`
 	MODIFY COLUMN match_order SMALLINT UNSIGNED;
 
+SELECT * FROM `match` WHERE tournament_id=2 and match_order >= 66;
+
 # UNL 2018/19
 INSERT INTO `match` (home_team_id, away_team_id, tournament_id, match_date, match_time, match_order, round_id, stage_id)
 VALUES (2, 21, 25, '2018-09-06', '134500', 1, 74, 73),

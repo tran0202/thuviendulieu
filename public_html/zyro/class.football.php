@@ -1031,9 +1031,9 @@
                     </div>';
             $output .= '<script>
                             $("#pills-Division-tab").tab("show");
-                            $("#pills-Division-Preseason-tab").tab("show");
-                            $("#pills-Conference-Preseason-tab").tab("show");
-                            $("#pills-League-Preseason-tab").tab("show");
+                            $("#pills-Division-RegularSeason-tab").tab("show");
+                            $("#pills-Conference-RegularSeason-tab").tab("show");
+                            $("#pills-League-RegularSeason-tab").tab("show");
                         </script>';
             $tournament->concatBodyHtml($output);
         }
