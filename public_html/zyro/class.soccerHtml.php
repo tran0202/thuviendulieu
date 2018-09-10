@@ -843,9 +843,9 @@
                         }
                         else {
                             $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
-                            if ($_match->getStage() != Soccer::GROUP_MATCHES && $_match->getStage() != Soccer::SECOND_ROUND && $_match->getStage() != Soccer::FINAL_ROUND && $_match->getHomeTeamScore() == $_match->getAwayTeamScore()) {
+                            if ($_match->getStage() != Soccer::FIRST_STAGE && $_match->getHomeTeamScore() == $_match->getAwayTeamScore()) {
                                 $score = ($_match->getHomeTeamScore()+$_match->getHomeTeamExtraTimeScore()).
-                                    '-'.($_match->getAwayTeamScore()+$_match->getAwayTeamExtraTimeScore()).$aet;
+                                    '-'.($_match->getAwayTeamScore()+$_match->getAwayTeamExtraTimeScore()).' aet';
                                 if ($_match->getHomeTeamExtraTimeScore() == $_match->getAwayTeamExtraTimeScore()) {
                                     if ($_match->getHomeTeamPenaltyScore() != 0 || $_match->getAwayTeamPenaltyScore() != 0) {
                                         $penalty_score = ' '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore().' pen';

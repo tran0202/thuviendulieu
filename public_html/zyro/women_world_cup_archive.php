@@ -29,6 +29,7 @@
                 <div class="col-sm-7 col-sm-offset-2">
                     <h5 class="wb-stl-subtitle3">
                         <p class="border-bottom-gray5"><img src="images/wwc_logos/2015.png"/> <a href="WomenWorldCup">Canada 2015</a></p>
+                        <p class="border-bottom-gray5"><img src="images/wwc_logos/2011.png"/> <a href="WomenWorldCup?tid=34">Germany 2011</a></p>
                     </h5>
                 </div>
                 <div>
