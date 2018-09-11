@@ -752,7 +752,6 @@
                     $aggregate_score = '';
                     $home_team_color = '';
                     $away_team_color = '';
-                    if (self::isGoldenGoalRule($_match->getGoldenGoalRule()) && !Match::isFirstStage($_match) && $_match->getHomeTeamPenaltyScore() == '') $aet = ' gg';
                     if ($_match->getHomeTeamScore() != -1) {
                         if ($team_type == self::CLUB) {
                             $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
@@ -842,10 +841,12 @@
                             }
                         }
                         else {
+                            $aet = ' aet';
+                            if (self::isGoldenGoalRule($_match->getGoldenGoalRule()) && !Match::isFirstStage($_match) && $_match->getHomeTeamPenaltyScore() == '') $aet = ' gg';
                             $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
-                            if ($_match->getStage() != Soccer::FIRST_STAGE && $_match->getHomeTeamScore() == $_match->getAwayTeamScore()) {
+                            if ($_match->getStage() != Soccer::FIRST_STAGE && $_match->getStage() != Soccer::GROUP_STAGE && $_match->getHomeTeamScore() == $_match->getAwayTeamScore()) {
                                 $score = ($_match->getHomeTeamScore()+$_match->getHomeTeamExtraTimeScore()).
-                                    '-'.($_match->getAwayTeamScore()+$_match->getAwayTeamExtraTimeScore()).' aet';
+                                    '-'.($_match->getAwayTeamScore()+$_match->getAwayTeamExtraTimeScore()).$aet;
                                 if ($_match->getHomeTeamExtraTimeScore() == $_match->getAwayTeamExtraTimeScore()) {
                                     if ($_match->getHomeTeamPenaltyScore() != 0 || $_match->getAwayTeamPenaltyScore() != 0) {
                                         $penalty_score = ' '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore().' pen';
@@ -868,7 +869,7 @@
                                 style="font-size:medium;vertical-align:middle;"></span></a> ';
                     }
                     $time_zone = '';
-                    if ($_match->getTournamentId() > 1 && $_match->getTournamentId() <= 24) $time_zone = 'Local time';
+                    if ($_match->getTournamentId() != 1) $time_zone = 'Local time';
                     if ($team_type == self::CLUB) {
                         $output .= '<div class="col-sm-12 padding-tb-md">
                                         <div class="col-sm-1 padding-lr-xs">'.$_match->getMatchTimeFmt().' '.$time_zone.

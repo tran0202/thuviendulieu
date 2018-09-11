@@ -284,7 +284,7 @@
                     LEFT JOIN team pt2 ON pt2.id = t2.parent_team_id
                     WHERE '.$tournament_type_id_str.'
                     AND '.$tournament_id_str.'
-                    ORDER BY match_order';
+                    ORDER BY match_date, match_order';
             return $sql;
         }
 

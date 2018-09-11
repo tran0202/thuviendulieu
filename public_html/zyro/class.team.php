@@ -235,8 +235,10 @@
             LEFT JOIN `group` g ON g.id = tt.group_id
             LEFT JOIN nation n ON n.id = t.nation_id
             LEFT JOIN (SELECT team_id, COUNT(team_id) AS tournament_count
-                        FROM team_tournament
+                        FROM team_tournament tt2
+                        LEFT JOIN tournament tou2 ON tt2.tournament_id = tou2.id
                         WHERE (group_id <> 63 OR group_id is null)
+                            AND tou2.tournament_type_id = 1
                         GROUP BY team_id) tc ON tc.team_id = t.id
             WHERE tou.tournament_type_id = 1
             UNION
@@ -249,8 +251,10 @@
             LEFT JOIN `group` g ON g.id = tt.group_id
             LEFT JOIN nation n ON n.id = t.nation_id
             LEFT JOIN (SELECT team_id, COUNT(team_id) AS tournament_count
-                        FROM team_tournament
+                        FROM team_tournament tt2
+                        LEFT JOIN tournament tou2 ON tt2.tournament_id = tou2.id
                         WHERE (group_id <> 63 OR group_id is null)
+                            AND tou2.tournament_type_id = 1
                         GROUP BY team_id) tc ON tc.team_id = t.id
             WHERE tou.tournament_type_id = 1
          */
@@ -266,8 +270,10 @@
                     LEFT JOIN `group` g ON g.id = tt.group_id
                     LEFT JOIN nation n ON n.id = t.nation_id
                     LEFT JOIN (SELECT team_id, COUNT(team_id) AS tournament_count
-                                FROM team_tournament 
+                                FROM team_tournament tt2
+                                LEFT JOIN tournament tou2 ON tt2.tournament_id = tou2.id
                                 WHERE (group_id <> '.self::WITHDREW.' OR group_id is null) -- AND tournament_id <> 1
+                                    AND tou2.tournament_type_id = '.$tournament_type_id.'
                                 GROUP BY team_id) tc ON tc.team_id = t.id
                     WHERE tou.tournament_type_id = '.$tournament_type_id.'  -- AND tt.tournament_id <> 1
                     UNION
@@ -280,8 +286,10 @@
                     LEFT JOIN `group` g ON g.id = tt.group_id  
                     LEFT JOIN nation n ON n.id = t.nation_id 
                     LEFT JOIN (SELECT team_id, COUNT(team_id) AS tournament_count
-                                FROM team_tournament 
+                                FROM team_tournament tt2
+                                LEFT JOIN tournament tou2 ON tt2.tournament_id = tou2.id
                                 WHERE (group_id <> '.self::WITHDREW.' OR group_id is null) -- AND tournament_id <> 1
+                                    AND tou2.tournament_type_id = '.$tournament_type_id.'
                                 GROUP BY team_id) tc ON tc.team_id = t.id
                     WHERE tou.tournament_type_id = '.$tournament_type_id.'  -- AND tt.tournament_id <> 1';
             return $sql;

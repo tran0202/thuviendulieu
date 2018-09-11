@@ -575,7 +575,8 @@
         public static function compareTeams(&$team1, &$team2, $matches) {
             if (self::isEqualStanding($team1, $team2)) {
                 $still_tie = self::applyTiebreaker($team1, $team2, $matches);
-                if ($still_tie) self::fairPlayRule($team1, $team2);
+                if ($still_tie) $still_tie = self::fairPlayRule($team1, $team2);
+                if ($still_tie) self::drawingLots($team1, $team2);
             }
             elseif (self::isHigherStanding($team2, $team1)) {
                 self::swapTeam($team1, $team2);
@@ -825,6 +826,17 @@
         public static function fairPlayRule(&$t1, &$t2) {
             if ($t2->getName() == 'JAPAN' && $t2->getTournamentId() == 1) {
                self::swapTeam($t1, $t2);
+               return false;
+            }
+            return true;
+        }
+
+        public static function drawingLots(&$t1, &$t2) {
+            if ($t2->getName() == 'REPUBLIC OF IRELAND' && $t2->getTournamentId() == 11) {
+                self::swapTeam($t1, $t2);
+            }
+            elseif ($t2->getName() == 'NETHERLANDS' && $t2->getTournamentId() == 11) {
+
             }
             else {
                 self::coinToss($t1, $t2);
