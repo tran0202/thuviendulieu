@@ -31,6 +31,7 @@
                         <p class="border-bottom-gray5"><img src="images/wwc_logos/2015.png"/> <a href="WomenWorldCup">Canada 2015</a></p>
                         <p class="border-bottom-gray5"><img src="images/wwc_logos/2011.png"/> <a href="WomenWorldCup?tid=34">Germany 2011</a></p>
                         <p class="border-bottom-gray5"><img src="images/wwc_logos/2007.png"/> <a href="WomenWorldCup?tid=35">China 2007</a></p>
+                        <p class="border-bottom-gray5"><img src="images/wwc_logos/2003.png"/> <a href="WomenWorldCup?tid=36">USA 2003</a></p>
                     </h5>
                 </div>
                 <div>

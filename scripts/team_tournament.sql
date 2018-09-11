@@ -599,6 +599,21 @@ VALUES (811, 31, 1, 1),
 	   (833, 31, 6, 3),
 	   (834, 31, 6, 4);
 
+# Women's Rio 2016
+INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
+VALUES (851, 33, 5, 1),
+	   (852, 33, 5, 2),
+	   (853, 33, 5, 3),
+	   (854, 33, 5, 4),
+	   (855, 33, 6, 1),
+	   (856, 33, 6, 2),
+	   (857, 33, 6, 3),
+	   (858, 33, 6, 4),
+	   (859, 33, 7, 1),
+	   (860, 33, 7, 2),
+	   (861, 33, 7, 3),
+	   (862, 33, 7, 4);
+
 #NFL
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES 	(53, 2, 31, 1, 29, 1),
