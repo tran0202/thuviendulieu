@@ -34,6 +34,7 @@
                         <p class="border-bottom-gray5"><img src="images/wwc_logos/2003.png"/> <a href="WomenWorldCup?tid=36">USA 2003</a></p>
                         <p class="border-bottom-gray5"><img src="images/wwc_logos/1999.png"/> <a href="WomenWorldCup?tid=37">USA 1999</a></p>
                         <p class="border-bottom-gray5"><img src="images/wwc_logos/1995.png"/> <a href="WomenWorldCup?tid=38">Sweden 1995</a></p>
+                        <p class="border-bottom-gray5"><img src="images/wwc_logos/1991.png"/> <a href="WomenWorldCup?tid=39">China PR 1991</a></p>
                     </h5>
                 </div>
                 <div>
