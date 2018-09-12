@@ -93,6 +93,13 @@ VALUES ('Brazil', 4, 28), ('Denmark', 4, 56), ('Iraq', 4, 94), ('South Africa', 
 	   ('Korea Republic', 4, 103), ('Germany', 4, 76), ('Mexico', 4, 125), ('Fiji', 4, 69),
 	   ('Portugal', 4, 152), ('Honduras', 4, 87), ('Argentina', 4, 9), ('Algeria', 4, 3);
 
+# Women's Olympic
+
+INSERT INTO team (name, team_type_id, nation_id)
+VALUES ('Brazil', 5, 28), ('China PR', 5, 42), ('Sweden', 5, 183), ('South Africa', 5, 173),
+	   ('Canada', 5, 36), ('Germany', 5, 76), ('Australia', 5, 12), ('Zimbabwe', 5, 211),
+	   ('USA', 5, 203), ('France', 5, 71), ('New Zealand', 5, 137), ('Colombia', 5, 44);
+
 INSERT INTO team (name, official_name, team_type_id, nation_id, code)
 VALUES ('Atletico Madrid', 'Club Atlético de Madrid', 2, 175, 'ATM'),
 	   ('Barcelona', 'FC Barcelona', 2, 175, 'FCB'),
