@@ -32,7 +32,7 @@
                         <p class="border-bottom-gray5"><img src="images/olympic_logos/2012.png"/> <a href="OlympicFootballTournament?tid=40">London 2012</a></p>
                         <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/2008.png"/> <a href="OlympicFootballTournament?tid=41">Beijing 2008</a></p>
                         <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/2004.png"/> <a href="OlympicFootballTournament?tid=42">Athens 2004</a></p>
-                        <p class="border-bottom-gray5"><img src="images/olympic_logos/2000.png"/> <a href="OlympicFootballTournament?tid=40">Sydney 2000</a></p>
+                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/2000.png"/> <a href="OlympicFootballTournament?tid=43">Sydney 2000</a></p>
                     </h5>
                 </div>
                 <div>
