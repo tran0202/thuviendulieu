@@ -33,6 +33,7 @@
                         <p class="border-bottom-gray5"><img src="images/wwc_logos/2007.png"/> <a href="WomenWorldCup?tid=35">China 2007</a></p>
                         <p class="border-bottom-gray5"><img src="images/wwc_logos/2003.png"/> <a href="WomenWorldCup?tid=36">USA 2003</a></p>
                         <p class="border-bottom-gray5"><img src="images/wwc_logos/1999.png"/> <a href="WomenWorldCup?tid=37">USA 1999</a></p>
+                        <p class="border-bottom-gray5"><img src="images/wwc_logos/1995.png"/> <a href="WomenWorldCup?tid=38">Sweden 1995</a></p>
                     </h5>
                 </div>
                 <div>

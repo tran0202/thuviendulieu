@@ -7,6 +7,8 @@
         const MEXICO_1986 = 12;
         const CANADA_2015 = 31;
         const RIO_2016 = 33;
+        const SWEDEN_1995 = 38;
+        const CHINA_1991 = 39;
 
         const TEAM = 1;
         const CLUB = 2;
@@ -1009,7 +1011,8 @@
 
         public static function isThirdPlaceRankingTournament($tournament) {
             return ($tournament->getTournamentId() >= self::USA_1990 && $tournament->getTournamentId() <= self::MEXICO_1986) ||
-                $tournament->getTournamentId() == self::CANADA_2015 || $tournament->getTournamentId() == self::RIO_2016;
+                $tournament->getTournamentId() == self::CANADA_2015 || $tournament->getTournamentId() == self::RIO_2016 ||
+                $tournament->getTournamentId() == self::SWEDEN_1995 || $tournament->getTournamentId() == self::CHINA_1991;
         }
 
         public static function isGoldenGoalRule($golden_goal_rule) {
