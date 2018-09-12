@@ -30,6 +30,7 @@
                     <h5 class="wb-stl-subtitle3">
                         <p class="border-bottom-gray5"><img src="images/olympic_logos/2016.png"/> <a href="OlympicFootballTournament">Rio 2016</a></p>
                         <p class="border-bottom-gray5"><img src="images/olympic_logos/2012.png"/> <a href="OlympicFootballTournament?tid=40">London 2012</a></p>
+                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/2008.png"/> <a href="OlympicFootballTournament?tid=41">Beijing 2008</a></p>
                     </h5>
                 </div>
                 <div>
