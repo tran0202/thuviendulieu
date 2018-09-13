@@ -414,6 +414,16 @@
             return self::getRoundMatches($matches, Soccer::SEMIFINALS);
         }
 
+        public static function getConsolationMatches($matches) {
+            return self::getRoundMatches($matches, Soccer::CONSOLATION_ROUND);
+        }
+
+        public static function getFifthPlaceMatch($matches) {
+            $matches_tmp = self::getRoundMatches($matches, Soccer::FIFTH_PLACE_MATCH);
+            if (sizeof($matches_tmp) == 0) return null;
+            return $matches_tmp[0];
+        }
+
         public static function getBronzeMedalMatch($matches) {
             $matches_tmp = self::getRoundMatches($matches, Soccer::BRONZE_MEDAL_MATCH);
             if (sizeof($matches_tmp) == 0) return null;
@@ -470,7 +480,8 @@
                 }
             }
             for ($i = 0; $i < $match_count; $i++) {
-                if ($matches[$i]->getStage() == Soccer::SECOND_STAGE) {
+                if ($matches[$i]->getStage() == Soccer::SECOND_STAGE && $matches[$i]->getRound() != Soccer::CONSOLATION_ROUND
+                    && $matches[$i]->getRound() != Soccer::FIFTH_PLACE_MATCH) {
                     for ($j = 0; $j < sizeof($replay_matches); $j++) {
                         if ($matches[$i]->getHomeTeamName() == $replay_matches[$j]->getHomeTeamName()) {
                             $matches[$i]->setHomeTeamReplayScore($replay_matches[$j]->getHomeTeamScore());

@@ -1132,6 +1132,9 @@
                 case Soccer::ReplayQuarterfinal:
                     $best_finish = 'Quarterfinals';
                     break;
+                case Soccer::FifthPlace:
+                    $best_finish = 'Fifth Place';
+                    break;
                 case Soccer::Semifinal:
                     $best_finish = 'Fourth Place';
                     break;
