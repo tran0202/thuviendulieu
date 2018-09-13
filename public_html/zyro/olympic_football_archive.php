@@ -37,6 +37,9 @@
                         <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1992.png"/> <a href="OlympicFootballTournament?tid=45">Barcelona 1992</a></p>
                         <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1988.png"/> <a href="OlympicFootballTournament?tid=46">Seoul 1988</a></p>
                         <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1984.png"/> <a href="OlympicFootballTournament?tid=47">Los Angeles 1984</a></p>
+                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1980.png"/> <a href="OlympicFootballTournament?tid=48">Moscow 1980</a></p>
+                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1976.png"/> <a href="OlympicFootballTournament?tid=49">Montreal 1976</a></p>
+                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1972.png"/> <a href="OlympicFootballTournament?tid=50">Munich 1972</a></p>
                     </h5>
                 </div>
                 <div>
