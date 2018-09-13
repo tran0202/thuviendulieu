@@ -37,7 +37,7 @@
             $output2 .= self::getCollapseHtml('summary', 'Summary', self::getTournamentSummaryHtml($tournament));
             $matches = Match::getMatchArrayByDate($matches);
             foreach ($matches as $rounds => $_round) {
-                if ($rounds == $bracket_spot) $output2 .= $output;
+                if ($rounds == $bracket_spot && $tournament->getTournamentId() != 50) $output2 .= $output;
                 $output2 .= '<div class="col-sm-12 h2-ff1 margin-top-md">'.$rounds.'</div>';
                 $output2 .= self::getMatchesHtml($_round, self::TEAM, $look_ahead, false);
             }
@@ -101,7 +101,7 @@
                         $aet = ' gg';
                     if ($_bracket_match->getHomeTeamScore() != -1) {
                         $score = $_bracket_match->getHomeTeamScore().'-'.$_bracket_match->getAwayTeamScore();
-                        if ($_bracket_match->getHomeTeamScore() == $_bracket_match->getAwayTeamScore()) {
+                        if ($_bracket_match->getHomeTeamScore() == $_bracket_match->getAwayTeamScore() && $_bracket_match->getTournamentId() != 50 && $_bracket_match->getTournamentId() != 51) {
                             $score = ($_bracket_match->getHomeTeamScore()+$_bracket_match->getHomeTeamExtraTimeScore()).
                                 '-'.($_bracket_match->getAwayTeamScore()+$_bracket_match->getAwayTeamExtraTimeScore()).$aet;
                             if ($_bracket_match->getHomeTeamExtraTimeScore() == $_bracket_match->getAwayTeamExtraTimeScore()) {
@@ -846,7 +846,8 @@
                             $aet = ' aet';
                             if (self::isGoldenGoalRule($_match->getGoldenGoalRule()) && !Match::isFirstStage($_match) && $_match->getHomeTeamPenaltyScore() == '') $aet = ' gg';
                             $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
-                            if ($_match->getStage() != Soccer::FIRST_STAGE && $_match->getStage() != Soccer::GROUP_STAGE && $_match->getHomeTeamScore() == $_match->getAwayTeamScore()) {
+                            if ($_match->getStage() != Soccer::FIRST_STAGE && $_match->getStage() != Soccer::GROUP_STAGE &&
+                                $_match->getHomeTeamScore() == $_match->getAwayTeamScore() && $_match->getTournamentId() != 50 && $_match->getTournamentId() != 51) {
                                 $score = ($_match->getHomeTeamScore()+$_match->getHomeTeamExtraTimeScore()).
                                     '-'.($_match->getAwayTeamScore()+$_match->getAwayTeamExtraTimeScore()).$aet;
                                 if ($_match->getHomeTeamExtraTimeScore() == $_match->getAwayTeamExtraTimeScore()) {
@@ -1076,6 +1077,16 @@
                     if ($third_place_match != null && $final_match != null) {
                         if ($third_place_match->getHomeTeamName() == $team->getName() || $third_place_match->getAwayTeamName() == $team->getName() ||
                             $final_match->getHomeTeamName() == $team->getName() || $final_match->getAwayTeamName() == $team->getName()) {
+                            $result = true;
+                        }
+                    }
+                }
+                if (!$result) {
+                    $bronze_medal_match = Match::getBronzeMedalMatch($tournament->getMatches());
+                    $gold_medal_match = Match::getGoldMedalMatch($tournament->getMatches());
+                    if ($bronze_medal_match != null && $gold_medal_match != null) {
+                        if ($bronze_medal_match->getHomeTeamName() == $team->getName() || $bronze_medal_match->getAwayTeamName() == $team->getName() ||
+                            $gold_medal_match->getHomeTeamName() == $team->getName() || $gold_medal_match->getAwayTeamName() == $team->getName()) {
                             $result = true;
                         }
                     }
