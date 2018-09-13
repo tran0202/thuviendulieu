@@ -10,8 +10,8 @@ INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group
 VALUES (44, 41, 1, 39, 1),
 	   (44, 43, 1, 40, 1),
 	   (44, 44, 2, 40, 2),
-	   (44, 45, 3, 40, 3),
-	   (44, 46, 4, 40, 4);
+	   (44, 132, 3, 40, 3),
+	   (44, 133, 4, 40, 4);
 
 SELECT * FROM `team` WHERE team_type_id = 4 ORDER BY name;
 
