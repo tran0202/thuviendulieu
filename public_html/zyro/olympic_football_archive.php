@@ -34,6 +34,8 @@
                         <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/2004.png"/> <a href="OlympicFootballTournament?tid=42">Athens 2004</a></p>
                         <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/2000.png"/> <a href="OlympicFootballTournament?tid=43">Sydney 2000</a></p>
                         <p class="border-bottom-gray5"><img src="images/olympic_logos/1996.png"/> <a href="OlympicFootballTournament?tid=44">Atlanta 1996</a></p>
+                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1992.png"/> <a href="OlympicFootballTournament?tid=45">Barcelona 1992</a></p>
+                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1988.png"/> <a href="OlympicFootballTournament?tid=46">Seoul 1988</a></p>
                     </h5>
                 </div>
                 <div>
