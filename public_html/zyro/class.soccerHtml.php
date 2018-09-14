@@ -101,7 +101,8 @@
                         $aet = ' gg';
                     if ($_bracket_match->getHomeTeamScore() != -1) {
                         $score = $_bracket_match->getHomeTeamScore().'-'.$_bracket_match->getAwayTeamScore();
-                        if ($_bracket_match->getHomeTeamScore() == $_bracket_match->getAwayTeamScore() && $_bracket_match->getTournamentId() != 50 && $_bracket_match->getTournamentId() != 51) {
+                        if ($_bracket_match->getHomeTeamScore() == $_bracket_match->getAwayTeamScore() && $_bracket_match->getTournamentId() != 50
+                            && $_bracket_match->getTournamentId() != 51 && $_bracket_match->getTournamentId() != 54) {
                             $score = ($_bracket_match->getHomeTeamScore()+$_bracket_match->getHomeTeamExtraTimeScore()).
                                 '-'.($_bracket_match->getAwayTeamScore()+$_bracket_match->getAwayTeamExtraTimeScore()).$aet;
                             if ($_bracket_match->getHomeTeamExtraTimeScore() == $_bracket_match->getAwayTeamExtraTimeScore()) {
@@ -113,6 +114,14 @@
                                     $replay_score = '<br>'.$_bracket_match->getHomeTeamReplayScore().'-'.
                                         $_bracket_match->getAwayTeamReplayScore().' rep';
                                 }
+                            }
+                        }
+                        if ($_bracket_match->getHomeTeamScore() == $_bracket_match->getAwayTeamScore() && $_bracket_match->getTournamentId() == 54) {
+                            $score = ($_bracket_match->getHomeTeamScore()+$_bracket_match->getHomeTeamExtraTimeScore()).
+                                '-'.($_bracket_match->getAwayTeamScore()+$_bracket_match->getAwayTeamExtraTimeScore());
+                            if ($_bracket_match->getHomeTeamReplayScore() != null) {
+                                $replay_score = '<br>'.$_bracket_match->getHomeTeamReplayScore().'-'.
+                                    $_bracket_match->getAwayTeamReplayScore().' rep';
                             }
                         }
                     }
@@ -847,7 +856,8 @@
                             if (self::isGoldenGoalRule($_match->getGoldenGoalRule()) && !Match::isFirstStage($_match) && $_match->getHomeTeamPenaltyScore() == '') $aet = ' gg';
                             $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
                             if ($_match->getStage() != Soccer::FIRST_STAGE && $_match->getStage() != Soccer::GROUP_STAGE &&
-                                $_match->getHomeTeamScore() == $_match->getAwayTeamScore() && $_match->getTournamentId() != 50 && $_match->getTournamentId() != 51) {
+                                $_match->getHomeTeamScore() == $_match->getAwayTeamScore() && $_match->getTournamentId() != 50 && $_match->getTournamentId() != 51
+                                && $_match->getTournamentId() != 54) {
                                 $score = ($_match->getHomeTeamScore()+$_match->getHomeTeamExtraTimeScore()).
                                     '-'.($_match->getAwayTeamScore()+$_match->getAwayTeamExtraTimeScore()).$aet;
                                 if ($_match->getHomeTeamExtraTimeScore() == $_match->getAwayTeamExtraTimeScore()) {

@@ -43,6 +43,7 @@
                         <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1968.png"/> <a href="OlympicFootballTournament?tid=51">Mexico City 1968</a></p>
                         <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1964.png"/> <a href="OlympicFootballTournament?tid=52">Tokyo 1964</a></p>
                         <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1960.png"/> <a href="OlympicFootballTournament?tid=53">Roma 1960</a></p>
+                        <p class="border-bottom-gray5"><img src="images/olympic_logos/1956.png"/> <a href="OlympicFootballTournament?tid=54">Melbourne 1956</a></p>
                     </h5>
                 </div>
                 <div>

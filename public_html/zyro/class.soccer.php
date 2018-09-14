@@ -313,8 +313,8 @@
             Soccer::getFirstRoundMatchesRanking($tournament);
             Soccer::getReplayFirstRoundMatchesRanking($tournament);
             Soccer::getRound16MatchesRanking($tournament);
-            Soccer::getQuarterfinalMatchesRanking($tournament);
             Soccer::getReplayQuarterfinalMatchesRanking($tournament);
+            Soccer::getQuarterfinalMatchesRanking($tournament);
             Soccer::getSemifinalMatchesRanking($tournament);
             Soccer::getConsolationMatchesRanking($tournament);
             Soccer::getFifthPlaceMatchRanking($tournament);
