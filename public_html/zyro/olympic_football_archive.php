@@ -46,6 +46,7 @@
                         <p class="border-bottom-gray5"><img src="images/olympic_logos/1956.png"/> <a href="OlympicFootballTournament?tid=54">Melbourne 1956</a></p>
                         <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1952.png"/> <a href="OlympicFootballTournament?tid=55">Helsinki 1952</a></p>
                         <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1948.png"/> <a href="OlympicFootballTournament?tid=56">London 1948</a></p>
+                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1936.png"/> <a href="OlympicFootballTournament?tid=57">Berlin 1936</a></p>
                     </h5>
                 </div>
                 <div>
