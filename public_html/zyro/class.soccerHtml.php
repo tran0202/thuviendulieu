@@ -71,7 +71,7 @@
                 if ($bracket_round == Soccer::THIRD_PLACE || $bracket_round == Soccer::BRONZE_MEDAL_MATCH) {
                     $third_place_moving = 'style="margin-left:-25%"';
                     if ($bracket_spot == Soccer::SEMIFINALS) $third_place_moving = 'style="margin-left:-25%;margin-top:60px;"';
-                    if ($bracket_round == Soccer::BRONZE_MEDAL_MATCH) $third_place_moving = 'style="margin-left:-25%;margin-top:60px;"';
+                    if ($bracket_round == Soccer::BRONZE_MEDAL_MATCH) $third_place_moving = 'style="margin-left:-25%;margin-top:80px;"';
                 }
                 $prelim_style = '';
                 if ($bracket_round == Soccer::PRELIMINARY_ROUND) $prelim_style = 'style="padding-left:10px;padding-right:0;"';
@@ -86,6 +86,9 @@
                     if ($j != 0) $gap_height = $gap_heights[$i][1];
                     $home_team_name = $_bracket_match->getHomeTeamCode();
                     $away_team_name = $_bracket_match->getAwayTeamCode();
+                    if ($_bracket_match->getTournamentId() == 62 && $_bracket_match->getAwayTeamCode() == 'FRA'
+                        && $_bracket_match->getRound() == Soccer::QUARTERFINALS)
+                        $away_team_name = $_bracket_match->getAwayTeamCode().' B';
                     $home_flag_tmp = '<img class="flag-md" src="/images/flags/'.$_bracket_match->getHomeFlag().'">';
                     $away_flag_tmp = '<img class="flag-md" src="/images/flags/'.$_bracket_match->getAwayFlag().'">';
                     if ($_bracket_match->getHomeTeamCode() == '') {

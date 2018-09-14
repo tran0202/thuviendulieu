@@ -715,7 +715,7 @@
             }
             if (array_key_exists(self::Semifinal, $teams_tmp)) {
                 foreach ($teams_tmp[self::Semifinal] as $name => $_team) {
-                    if ($name == 'USA') {
+                    if ($name == 'USA' && $tournament->getTournamentId() == 24) {
                         $_team->setBestFinish(self::ThirdPlace);
                     }
                     if ($name == 'GERMANY DR') {
