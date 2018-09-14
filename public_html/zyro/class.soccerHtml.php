@@ -11,6 +11,7 @@
         const CHINA_1991 = 39;
         const LONDON_2012 = 63;
         const BEIJING_2008 = 64;
+        const ATHENS_2004 = 65;
 
         const TEAM = 1;
         const CLUB = 2;
@@ -1030,7 +1031,8 @@
             return ($tournament->getTournamentId() >= self::USA_1990 && $tournament->getTournamentId() <= self::MEXICO_1986)
                 || $tournament->getTournamentId() == self::CANADA_2015 || $tournament->getTournamentId() == self::RIO_2016
                 || $tournament->getTournamentId() == self::SWEDEN_1995 || $tournament->getTournamentId() == self::CHINA_1991
-                || $tournament->getTournamentId() == self::LONDON_2012 || $tournament->getTournamentId() == self::BEIJING_2008;
+                || $tournament->getTournamentId() == self::LONDON_2012 || $tournament->getTournamentId() == self::BEIJING_2008
+                || $tournament->getTournamentId() == self::ATHENS_2004;
         }
 
         public static function isGoldenGoalRule($golden_goal_rule) {
