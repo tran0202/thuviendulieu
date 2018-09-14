@@ -327,11 +327,16 @@
             Soccer::getReplayFirstRoundMatchesRanking($tournament);
             Soccer::getRound16MatchesRanking($tournament);
             Soccer::getReplayQuarterfinalMatchesRanking($tournament);
+            if ($tournament->getTournamentId() == 61) {
+                Soccer::getConsolationFinalMatchRanking($tournament);
+            };
             Soccer::getQuarterfinalMatchesRanking($tournament);
             Soccer::getSemifinalMatchesRanking($tournament);
             Soccer::getConsolationMatchesRanking($tournament);
             Soccer::getConsolationSemifinalMatchesRanking($tournament);
-            Soccer::getConsolationFinalMatchRanking($tournament);
+            if ($tournament->getTournamentId() != 61) {
+                Soccer::getConsolationFinalMatchRanking($tournament);
+            };
             Soccer::getFifthPlaceMatchRanking($tournament);
             Soccer::getBronzeMedalMatchRanking($tournament);
             Soccer::getReplayBronzeMedalMatchRanking($tournament);
@@ -824,7 +829,8 @@
                 $team->setBestFinish(self::RunnerUp);
             }
             if ($match->getRound() == self::CONSOLATION_FINAL) {
-                $team->setBestFinish(self::BronzeMedal);
+                $team->setBestFinish(self::Quarterfinal);
+                if ($match->getTournamentId() == 60) $team->setBestFinish(self::BronzeMedal);
             }
         }
 
@@ -889,7 +895,8 @@
                     $best_finish = self::ThirdPlace;
                     break;
                 case self::CONSOLATION_FINAL:
-                    $best_finish = self::SilverMedal;
+                    $best_finish = self::Quarterfinal;
+                    if ($match->getTournamentId() == 60) $best_finish = self::SilverMedal;
                     break;
                 default:
                     $best_finish = self::Champion;

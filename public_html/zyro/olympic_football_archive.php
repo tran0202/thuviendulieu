@@ -50,6 +50,7 @@
                         <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1928.jpg"/> <a href="OlympicFootballTournament?tid=58">Amsterdam 1928</a></p>
                         <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1924.png"/> <a href="OlympicFootballTournament?tid=59">Paris 1924</a></p>
                         <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1920.gif"/> <a href="OlympicFootballTournament?tid=60">Antwerp 1920</a></p>
+                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1912.gif"/> <a href="OlympicFootballTournament?tid=61">Stockholm 1912</a></p>
                     </h5>
                 </div>
                 <div>
