@@ -32,6 +32,8 @@
         const REPLAY_GOLD_MEDAL_MATCH = 'Replay Gold Medal Match';
         const REPLAY_BRONZE_MEDAL_MATCH = 'Replay Bronze Medal Match';
         const CONSOLATION_ROUND = 'Consolation Round';
+        const CONSOLATION_SEMIFINALS = 'Consolation Semifinals';
+        const CONSOLATION_FINAL = 'Consolation Final';
         const FIFTH_PLACE_MATCH = 'Fifth Place Match';
         const FIRST_STAGE = 'First Stage';
         const GROUP_STAGE = 'Group Stage';
@@ -41,6 +43,7 @@
         const Second = 2;
         const AllStages = 3;
 
+        const Disqualified = 0;
         const Group = 1;
         const Playoff = 2;
         const SecondRound = 3;
@@ -327,6 +330,8 @@
             Soccer::getQuarterfinalMatchesRanking($tournament);
             Soccer::getSemifinalMatchesRanking($tournament);
             Soccer::getConsolationMatchesRanking($tournament);
+            Soccer::getConsolationSemifinalMatchesRanking($tournament);
+            Soccer::getConsolationFinalMatchRanking($tournament);
             Soccer::getFifthPlaceMatchRanking($tournament);
             Soccer::getBronzeMedalMatchRanking($tournament);
             Soccer::getReplayBronzeMedalMatchRanking($tournament);
@@ -380,9 +385,28 @@
         }
 
         public static function getConsolationMatchesRanking($tournament) {
-            $semifinal_matches = Match::getConsolationMatches($tournament->getMatches());
-            $teams = self::getGroupRanking($tournament->getTeams(), $semifinal_matches, self::Second);
+            $consolation_matches = Match::getConsolationMatches($tournament->getMatches());
+            $teams = self::getGroupRanking($tournament->getTeams(), $consolation_matches, self::Second);
             $tournament->setTeams($teams);
+        }
+
+        public static function getConsolationSemifinalMatchesRanking($tournament) {
+            $consolation_semifinal_matches = Match::getConsolationSemifinalMatches($tournament->getMatches());
+            $teams = self::getGroupRanking($tournament->getTeams(), $consolation_semifinal_matches, self::Second);
+            $tournament->setTeams($teams);
+        }
+
+        public static function getConsolationFinalMatchRanking($tournament) {
+            $teams = Team::getTeamArrayByName($tournament->getTeams());
+            $consolation_final_match = Match::getConsolationFinalMatch($tournament->getMatches());
+            if ($consolation_final_match != null) {
+                self::calculatePoint($teams, $consolation_final_match, self::Second);
+                $teams_tmp = array();
+                foreach ($teams as $name => $_team) {
+                    array_push($teams_tmp, $_team);
+                }
+                $tournament->setTeams($teams_tmp);
+            }
         }
 
         public static function getFifthPlaceMatchRanking($tournament) {
@@ -750,6 +774,11 @@
                     array_push($result, $_team);
                 }
             }
+            if (array_key_exists(self::Disqualified, $teams_tmp)) {
+                foreach ($teams_tmp[self::Disqualified] as $name => $_team) {
+                    array_push($result, $_team);
+                }
+            }
             $tournament->setTeams($result);
         }
 
@@ -783,6 +812,7 @@
             }
             if ($match->getRound() == self::GOLD_MEDAL_MATCH) {
                 $team->setBestFinish(self::SilverMedal);
+                if ($team->getName() == 'CZECHOSLOVAKIA') $team->setBestFinish(self::Disqualified);
             }
             if ($match->getRound() == self::REPLAY_GOLD_MEDAL_MATCH) {
                 $team->setBestFinish(self::SilverMedal);
@@ -792,6 +822,9 @@
             }
             if ($match->getRound() == self::FINAL_) {
                 $team->setBestFinish(self::RunnerUp);
+            }
+            if ($match->getRound() == self::CONSOLATION_FINAL) {
+                $team->setBestFinish(self::BronzeMedal);
             }
         }
 
@@ -831,6 +864,9 @@
                 case self::CONSOLATION_ROUND:
                     $best_finish = self::Quarterfinal;
                     break;
+                case self::CONSOLATION_SEMIFINALS:
+                    $best_finish = self::Quarterfinal;
+                    break;
                 case self::FIFTH_PLACE_MATCH:
                     $best_finish = self::FifthPlace;
                     break;
@@ -851,6 +887,9 @@
                     break;
                 case self::THIRD_PLACE:
                     $best_finish = self::ThirdPlace;
+                    break;
+                case self::CONSOLATION_FINAL:
+                    $best_finish = self::SilverMedal;
                     break;
                 default:
                     $best_finish = self::Champion;

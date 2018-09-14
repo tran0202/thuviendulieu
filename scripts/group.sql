@@ -94,10 +94,13 @@ VALUES ('First Stage', 4),
 	   ('Gold Medal Match', 5),
 	   ('Consolation Round', 5),
 	   ('Fifth Place Match', 5),
-	   ('Replay Gold Medal Match', 5);
+	   ('Replay Gold Medal Match', 5),
+	   ('Replay Bronze Medal Match', 5);
 
 INSERT INTO `group` (name, group_type_id)
-VALUES ('Replay Bronze Medal Match', 5);
+VALUES ('Consolation Stage', 4),
+	   ('Consolation Semifinals', 5),
+	   ('Consolation Final', 5);
 
 INSERT INTO `group` (name, long_name, group_type_id)
 VALUES ('Preseason', null, 4),

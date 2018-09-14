@@ -422,6 +422,16 @@
             return self::getRoundMatches($matches, Soccer::CONSOLATION_ROUND);
         }
 
+        public static function getConsolationSemifinalMatches($matches) {
+            return self::getRoundMatches($matches, Soccer::CONSOLATION_SEMIFINALS);
+        }
+
+        public static function getConsolationFinalMatch($matches) {
+            $matches_tmp = self::getRoundMatches($matches, Soccer::CONSOLATION_FINAL);
+            if (sizeof($matches_tmp) == 0) return null;
+            return $matches_tmp[0];
+        }
+
         public static function getFifthPlaceMatch($matches) {
             $matches_tmp = self::getRoundMatches($matches, Soccer::FIFTH_PLACE_MATCH);
             if (sizeof($matches_tmp) == 0) return null;
