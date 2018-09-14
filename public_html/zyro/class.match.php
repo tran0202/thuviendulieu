@@ -436,6 +436,12 @@
             return $matches_tmp[0];
         }
 
+        public static function getReplayGoldMedalMatch($matches) {
+            $matches_tmp = self::getRoundMatches($matches, Soccer::REPLAY_GOLD_MEDAL_MATCH);
+            if (sizeof($matches_tmp) == 0) return null;
+            return $matches_tmp[0];
+        }
+
         public static function getThirdPlaceMatch($matches) {
             $matches_tmp = self::getRoundMatches($matches, Soccer::THIRD_PLACE);
             if (sizeof($matches_tmp) == 0) return null;
