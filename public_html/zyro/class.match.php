@@ -378,6 +378,10 @@
             return self::getRoundMatches($matches, Soccer::SECOND_ROUND);
         }
 
+        public static function getReplaySecondRoundMatches($matches) {
+            return self::getRoundMatches($matches, Soccer::REPLAY_SECOND_ROUND);
+        }
+
         public static function getFinalRoundMatches($matches) {
             return self::getRoundMatches($matches, Soccer::FINAL_ROUND);
         }
@@ -426,6 +430,12 @@
 
         public static function getBronzeMedalMatch($matches) {
             $matches_tmp = self::getRoundMatches($matches, Soccer::BRONZE_MEDAL_MATCH);
+            if (sizeof($matches_tmp) == 0) return null;
+            return $matches_tmp[0];
+        }
+
+        public static function getReplayBronzeMedalMatch($matches) {
+            $matches_tmp = self::getRoundMatches($matches, Soccer::REPLAY_BRONZE_MEDAL_MATCH);
             if (sizeof($matches_tmp) == 0) return null;
             return $matches_tmp[0];
         }
@@ -487,7 +497,8 @@
             }
             for ($i = 0; $i < $match_count; $i++) {
                 if ($matches[$i]->getStage() == Soccer::SECOND_STAGE && $matches[$i]->getRound() != Soccer::CONSOLATION_ROUND
-                    && $matches[$i]->getRound() != Soccer::FIFTH_PLACE_MATCH && $matches[$i]->getRound() != Soccer::PRELIMINARY_ROUND) {
+                    && $matches[$i]->getRound() != Soccer::FIFTH_PLACE_MATCH && $matches[$i]->getRound() != Soccer::PRELIMINARY_ROUND
+                    && $matches[$i]->getRound() != Soccer::FIRST_ROUND) {
                     for ($j = 0; $j < sizeof($replay_matches); $j++) {
                         if ($matches[$i]->getHomeTeamName() == $replay_matches[$j]->getHomeTeamName()) {
                             $matches[$i]->setHomeTeamReplayScore($replay_matches[$j]->getHomeTeamScore());

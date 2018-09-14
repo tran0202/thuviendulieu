@@ -5,6 +5,7 @@
         const GROUP_MATCHES = 'Group Matches';
         const WITHDREW = 'Withdrew';
         const SECOND_ROUND = 'Second Round';
+        const REPLAY_SECOND_ROUND = 'Replay Second Round';
         const FINAL_ROUND = 'Final Round';
         const PLAY_OFF = 'Play-off';
         const PRELIMINARY_ROUND = 'Preliminary Round';
@@ -29,6 +30,7 @@
         const BRONZE_MEDAL_MATCH = 'Bronze Medal Match';
         const GOLD_MEDAL_MATCH = 'Gold Medal Match';
         const REPLAY_GOLD_MEDAL_MATCH = 'Replay Gold Medal Match';
+        const REPLAY_BRONZE_MEDAL_MATCH = 'Replay Bronze Medal Match';
         const CONSOLATION_ROUND = 'Consolation Round';
         const FIFTH_PLACE_MATCH = 'Fifth Place Match';
         const FIRST_STAGE = 'First Stage';
@@ -242,6 +244,7 @@
         public static function getFirstStageMatchesRanking($tournament) {
             Soccer::getGroupMatchesRanking($tournament);
             Soccer::getSecondRoundMatchesRanking($tournament);
+            Soccer::getReplaySecondRoundMatchesRanking($tournament);
             Soccer::getFinalRoundMatchesRanking($tournament);
         }
 
@@ -258,6 +261,12 @@
                 $teams = self::getGroupRanking($tournament->getSecondRoundTeams(), $second_round_matches, self::First);
                 $tournament->setSecondRoundTeams($teams);
             }
+        }
+
+        public static function getReplaySecondRoundMatchesRanking($tournament) {
+            $replay_second_round_matches = Match::getReplaySecondRoundMatches($tournament->getMatches());
+            $teams = self::getGroupRanking($tournament->getTeams(), $replay_second_round_matches, self::Second);
+            $tournament->setTeams($teams);
         }
 
         public static function getFinalRoundMatchesRanking($tournament) {
@@ -320,6 +329,7 @@
             Soccer::getConsolationMatchesRanking($tournament);
             Soccer::getFifthPlaceMatchRanking($tournament);
             Soccer::getBronzeMedalMatchRanking($tournament);
+            Soccer::getReplayBronzeMedalMatchRanking($tournament);
             Soccer::getGoldMedalMatchRanking($tournament);
             Soccer::getReplayGoldMedalMatchRanking($tournament);
             Soccer::getThirdPlaceMatchRanking($tournament);
@@ -393,6 +403,19 @@
             $bronze_medal_match = Match::getBronzeMedalMatch($tournament->getMatches());
             if ($bronze_medal_match != null) {
                 self::calculatePoint($teams, $bronze_medal_match, self::Second);
+                $teams_tmp = array();
+                foreach ($teams as $name => $_team) {
+                    array_push($teams_tmp, $_team);
+                }
+                $tournament->setTeams($teams_tmp);
+            }
+        }
+
+        public static function getReplayBronzeMedalMatchRanking($tournament) {
+            $teams = Team::getTeamArrayByName($tournament->getTeams());
+            $replay_bronze_medal_match = Match::getReplayBronzeMedalMatch($tournament->getMatches());
+            if ($replay_bronze_medal_match != null) {
+                self::calculatePoint($teams, $replay_bronze_medal_match, self::Second);
                 $teams_tmp = array();
                 foreach ($teams as $name => $_team) {
                     array_push($teams_tmp, $_team);
@@ -755,6 +778,9 @@
             if ($match->getRound() == self::BRONZE_MEDAL_MATCH) {
                 $team->setBestFinish(self::Semifinal);
             }
+            if ($match->getRound() == self::REPLAY_BRONZE_MEDAL_MATCH) {
+                $team->setBestFinish(self::Semifinal);
+            }
             if ($match->getRound() == self::GOLD_MEDAL_MATCH) {
                 $team->setBestFinish(self::SilverMedal);
             }
@@ -812,6 +838,9 @@
                     $best_finish = self::Semifinal;
                     break;
                 case self::BRONZE_MEDAL_MATCH:
+                    $best_finish = self::BronzeMedal;
+                    break;
+                case self::REPLAY_BRONZE_MEDAL_MATCH:
                     $best_finish = self::BronzeMedal;
                     break;
                 case self::GOLD_MEDAL_MATCH:
