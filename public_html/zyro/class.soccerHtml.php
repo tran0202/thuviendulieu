@@ -68,9 +68,10 @@
             foreach ($bracket_matches as $bracket_round => $_bracket_matches) {
                 $gap_height = $gap_heights[$i][0];
                 $third_place_moving = '';
-                if ($bracket_round == Soccer::THIRD_PLACE) {
+                if ($bracket_round == Soccer::THIRD_PLACE || $bracket_round == Soccer::BRONZE_MEDAL_MATCH) {
                     $third_place_moving = 'style="margin-left:-25%"';
                     if ($bracket_spot == Soccer::SEMIFINALS) $third_place_moving = 'style="margin-left:-25%;margin-top:60px;"';
+                    if ($bracket_round == Soccer::BRONZE_MEDAL_MATCH) $third_place_moving = 'style="margin-left:-25%;margin-top:60px;"';
                 }
                 $prelim_style = '';
                 if ($bracket_round == Soccer::PRELIMINARY_ROUND) $prelim_style = 'style="padding-left:10px;padding-right:0;"';

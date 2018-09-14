@@ -481,7 +481,7 @@
             }
             for ($i = 0; $i < $match_count; $i++) {
                 if ($matches[$i]->getStage() == Soccer::SECOND_STAGE && $matches[$i]->getRound() != Soccer::CONSOLATION_ROUND
-                    && $matches[$i]->getRound() != Soccer::FIFTH_PLACE_MATCH) {
+                    && $matches[$i]->getRound() != Soccer::FIFTH_PLACE_MATCH && $matches[$i]->getRound() != Soccer::PRELIMINARY_ROUND) {
                     for ($j = 0; $j < sizeof($replay_matches); $j++) {
                         if ($matches[$i]->getHomeTeamName() == $replay_matches[$j]->getHomeTeamName()) {
                             $matches[$i]->setHomeTeamReplayScore($replay_matches[$j]->getHomeTeamScore());
