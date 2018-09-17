@@ -547,7 +547,7 @@
             return strpos($match->getRound(), self::REPLAY) !== false;
         }
 
-        public static function getMatchArrayByDate($matches) {
+        public static function getMatchArrayByRound($matches) {
             $result = array();
             for ($i = 0; $i < sizeof($matches); $i++) {
                 $result[$matches[$i]->getRound()][$matches[$i]->getMatchDate()][$matches[$i]->getMatchOrder()] = $matches[$i];
@@ -563,10 +563,22 @@
             return $result;
         }
 
-        public static function getMatchArrayByParentGroup($matches) {
+        public static function getFirstStageMatchArrayByGroup($matches) {
             $result = array();
             for ($i = 0; $i < sizeof($matches); $i++) {
-                $result[$matches[$i]->getParentGroupName()][$matches[$i]->getGroupName()][$matches[$i]->getMatchOrder()] = $matches[$i];
+                if ($matches[$i]->getStage() == 'First Stage' || $matches[$i]->getStage() == 'Group Stage') {
+                    $result[$matches[$i]->getGroupName()][$matches[$i]->getMatchOrder()] = $matches[$i];
+                }
+            }
+            return $result;
+        }
+
+        public static function getFirstStageMatchArrayByParentGroup($matches) {
+            $result = array();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                if ($matches[$i]->getStage() == 'First Stage' || $matches[$i]->getStage() == 'Group Stage') {
+                    $result[$matches[$i]->getParentGroupName()][$matches[$i]->getGroupName()][$matches[$i]->getMatchOrder()] = $matches[$i];
+                }
             }
             return $result;
         }
