@@ -202,9 +202,10 @@
                         elseif ($group_name == 'ThirdPlace') {
                             $table_name = 'Ranking of third-placed teams';
                         }
-                        $modal_body .= self::getTeamTableHeaderHtml();
+                        $modal_body .= self::getTeamTableHeaderHtml(false);
                         foreach ($_teams as $name => $_team) {
-                            $modal_body .= self::getTeamHtml($tournament, $_team, $team_type, $stage);
+                            $modal_body .= self::getTeamHtml($tournament, $_team, $team_type, $stage, false,
+                                null, $current_best_finish, $striped_row);
                         }
                         $output .= self::getModalHtml($group_id.'Standing', $table_name, $modal_body);
                     }
@@ -257,11 +258,14 @@
             return $output;
         }
 
-        public static function getTeamTableHeaderHtml() {
-            return '<div class="col-sm-12 row padding-top-md padding-bottom-md font-bold">
-                            <div class="col-sm-1"></div>
-                            <div class="col-sm-3"></div>
-                            <div class="col-sm-1">MP</div>
+        public static function getTeamTableHeaderHtml($all_time) {
+            $output = '';
+            $tournament_count_header = '<div class="col-sm-3"></div>';
+            if ($all_time) $tournament_count_header = '<div class="col-sm-2"></div><div class="col-sm-1">T</div>';
+            $output .= '<div class="col-sm-12 row padding-top-md padding-bottom-md font-bold">
+                            <div class="col-sm-1"></div>';
+            $output .= $tournament_count_header;
+            $output .= '    <div class="col-sm-1">MP</div>
                             <div class="col-sm-1">W</div>
                             <div class="col-sm-1">D</div>
                             <div class="col-sm-1">L</div>
@@ -270,9 +274,10 @@
                             <div class="col-sm-1">+/-</div>
                             <div class="col-sm-1">Pts</div>
                         </div>';
+            return $output;
         }
 
-        public static function getTeamHtml($tournament, $_team, $team_type, $stage) {
+        public static function getTeamHtml($tournament, $_team, $team_type, $stage, $from_ranking, $all_time, &$current_best_finish, &$striped_row) {
             $output = '';
             $goal_diff = $_team->getGoalDiff();
             if ($_team->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
@@ -298,6 +303,42 @@
                                         <div class="col-sm-1">'.$goal_diff.'</div>
                                         <div class="col-sm-1">'.$_team->getPoint().'</div>
                                     </div>';
+            if (!$from_ranking) return $output;
+
+            $output = '';
+            $tc_col = '<div class="col-sm-3" style="padding-top: 3px;">'.$_team->getName().'</div>';
+            if ($_team->getMatchPlay() != 0) {
+                if ($all_time) $tc_col = '<div class="col-sm-2" style="padding-top: 3px;">'.$_team->getName().'</div>
+                                                <div class="col-sm-1"><a id="popover_'.$_team->getCode().'" data-toggle="popover" 
+                                                    data-container="body" data-placement="right" type="button" data-html="true" 
+                                                    data-trigger="focus" tabindex="0" style="cursor:pointer;">'.$_team->getTournamentCount().'</a></div>';
+
+                $goal_diff = $_team->getGoalDiff();
+                if ($_team->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
+
+                if ($current_best_finish != $_team->getBestFinish()) {
+                    if ($striped_row == 'ranking-striped') {
+                        $striped_row = '';
+                    } else {
+                        $striped_row = 'ranking-striped';
+                    }
+                    $current_best_finish = $_team->getBestFinish();
+                }
+
+                if ($all_time) $striped_row = '';
+                $output .= '<div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md '.$striped_row.'">
+                                <div class="col-sm-1"><img class="flag-md" src="/images/flags/'.$_team->getFlagFilename().'"></div>
+                                '.$tc_col.'
+                                <div class="col-sm-1">'.$_team->getMatchPlay().'</div>
+                                <div class="col-sm-1">'.$_team->getWin().'</div>
+                                <div class="col-sm-1">'.$_team->getDraw().'</div>
+                                <div class="col-sm-1">'.$_team->getLoss().'</div>
+                                <div class="col-sm-1">'.$_team->getGoalFor().'</div>
+                                <div class="col-sm-1">'.$_team->getGoalAgainst().'</div>
+                                <div class="col-sm-1">'.$goal_diff.'</div>
+                                <div class="col-sm-1">'.$_team->getPoint().'</div>
+                            </div>';
+            }
             return $output;
         }
 
@@ -379,75 +420,31 @@
         }
 
         public static function getSoccerRankingHtml($tournament) {
-            $tournament->concatBodyHtml(self::getRankingHtml($tournament->getTeams(), false));
+            $tournament->concatBodyHtml(self::getRankingHtml($tournament, $tournament->getTeams(), false));
         }
 
         public static function getAllTimeSoccerRankingHtml($tournament) {
-            $tournament->concatBodyHtml(self::getRankingHtml($tournament->getTeams(), true));
+            $tournament->concatBodyHtml(self::getRankingHtml($tournament, $tournament->getTeams(), true));
         }
 
-        public static function getRankingHtml($teams, $all_time) {
+        public static function getRankingHtml($tournament, $teams, $all_time) {
             if (sizeof($teams) == 0) return null;
             if (!$all_time) $teams = Team::getTeamArrayByBestFinish($teams);
             $title = 'Tournament Rankings';
-            $tc_header = '<div class="col-sm-3"></div>';
             if ($all_time) {
                 $title = 'All Time Rankings';
-                $tc_header = '<div class="col-sm-2"></div><div class="col-sm-1">T</div>';
             }
 
             $output = '<div class="col-sm-12 h2-ff2 margin-top-lg">'.$title.'</div>
-                        <div class="col-sm-12 box-xl">
-                            <div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md font-bold">
-                                <div class="col-sm-1"></div>
-                                '.$tc_header.'
-                                <div class="col-sm-1">MP</div>
-                                <div class="col-sm-1">W</div>
-                                <div class="col-sm-1">D</div>
-                                <div class="col-sm-1">L</div>
-                                <div class="col-sm-1">GF</div>
-                                <div class="col-sm-1">GA</div>
-                                <div class="col-sm-1">+/-</div>
-                                <div class="col-sm-1">Pts</div>
-                            </div>';
+                        <div class="col-sm-12 h2-ff3 box-xl">';
+            $output .= self::getTeamTableHeaderHtml($all_time);
 
             $current_best_finish = $teams[0]->getBestFinish();
             $striped_row = 'ranking-striped';
 
             for ($i = 0; $i < sizeof($teams); $i++) {
-                $tc_col = '<div class="col-sm-3" style="padding-top: 3px;">'.$teams[$i]->getName().'</div>';
-                if ($teams[$i]->getMatchPlay() != 0) {
-                    if ($all_time) $tc_col = '<div class="col-sm-2" style="padding-top: 3px;">'.$teams[$i]->getName().'</div>
-                                                <div class="col-sm-1"><a id="popover_'.$teams[$i]->getCode().'" data-toggle="popover" 
-                                                    data-container="body" data-placement="right" type="button" data-html="true" 
-                                                    data-trigger="focus" tabindex="0" style="cursor:pointer;">'.$teams[$i]->getTournamentCount().'</a></div>';
-
-                    $goal_diff = $teams[$i]->getGoalDiff();
-                    if ($teams[$i]->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
-
-                    if ($current_best_finish != $teams[$i]->getBestFinish()) {
-                        if ($striped_row == 'ranking-striped') {
-                            $striped_row = '';
-                        } else {
-                            $striped_row = 'ranking-striped';
-                        }
-                        $current_best_finish = $teams[$i]->getBestFinish();
-                    }
-
-                    if ($all_time) $striped_row = '';
-                    $output .= '<div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md '.$striped_row.'">
-                                <div class="col-sm-1"><img class="flag-md" src="/images/flags/'.$teams[$i]->getFlagFilename().'"></div>
-                                '.$tc_col.'
-                                <div class="col-sm-1">'.$teams[$i]->getMatchPlay().'</div>
-                                <div class="col-sm-1">'.$teams[$i]->getWin().'</div>
-                                <div class="col-sm-1">'.$teams[$i]->getDraw().'</div>
-                                <div class="col-sm-1">'.$teams[$i]->getLoss().'</div>
-                                <div class="col-sm-1">'.$teams[$i]->getGoalFor().'</div>
-                                <div class="col-sm-1">'.$teams[$i]->getGoalAgainst().'</div>
-                                <div class="col-sm-1">'.$goal_diff.'</div>
-                                <div class="col-sm-1">'.$teams[$i]->getPoint().'</div>
-                            </div>';
-                }
+                $output .= self::getTeamHtml($tournament, $teams[$i], self::TEAM, null, true,
+                    $all_time, $current_best_finish, $striped_row);
             }
             $output .= '</div>';
             return $output;
@@ -504,9 +501,10 @@
                 }
                 $output .= '</div>
                     <div class="col-sm-12 h2-ff3 box-xl">';
-                $output .= self::getTeamTableHeaderHtml();
+                $output .= self::getTeamTableHeaderHtml(false);
                 foreach ($_teams as $name => $_team) {
-                    $output .= self::getTeamHtml($tournament, $_team, $team_type, Soccer::First);
+                    $output .= self::getTeamHtml($tournament, $_team, $team_type, Soccer::First, false,
+                        null, $current_best_finish, $striped_row);
                 }
                 $output .= '</div>';
                 if ($matches_link_type == self::MATCHES_LINK_COLLAPSE) {
