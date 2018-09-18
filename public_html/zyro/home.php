@@ -17,7 +17,7 @@
 		<div class="vbox wb_container" id="wb_main">
 			<div class="wb_cont_inner">
                 <div class="col-sm-12">
-                    <p class="wb-stl-highlight text-center">2018/19 UEFA Champions League</p>
+                    <p class="wb-stl-highlight text-center">Women's World Cup France 2019</p>
                     <p class="wb-stl-normal"> </p>
                 </div>
                 <div class="col-sm-12">

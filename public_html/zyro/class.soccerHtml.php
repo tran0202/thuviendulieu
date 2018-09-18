@@ -277,23 +277,44 @@
             return $output;
         }
 
-        public static function getTeamHtml($tournament, $_team, $team_type, $stage, $from_ranking, $all_time, &$current_best_finish, &$striped_row) {
+        public static function getTeamHtml($tournament, $_team, $team_type, $stage, $from_ranking, $all_time, &$current_best_finish, &$striped) {
             $output = '';
             $goal_diff = $_team->getGoalDiff();
             if ($_team->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
-            $striped = '';
-            if (self::isTeamAdvancedSecondRound($tournament, $_team, $stage)) $striped = 'advanced-second-round-striped';
-            $output .=     '<div class="col-sm-12 row padding-tb-md '.$striped.'">
-                                        <div class="col-sm-1 no-padding-lr">';
-            if ($team_type == self::CLUB) {
-                $output .= '<img height=32 src="/images/club_logos/'.$_team->getLogoFilename().'">';
-                $output .= '<img class="flag-sm" src="/images/flags/'.$_team->getFlagFilename().'">';
+            if (!$from_ranking) {
+                $striped = '';
+                if (self::isTeamAdvancedSecondRound($tournament, $_team, $stage)) {
+                    $striped = 'advanced-second-round-striped';
+                }
             }
             else {
-                $output .= '<img class="flag-md" src="/images/flags/'.$_team->getFlagFilename().'">';
+                if ($current_best_finish != $_team->getBestFinish()) {
+                    if ($striped == 'ranking-striped') {
+                        $striped = '';
+                    } else {
+                        $striped = 'ranking-striped';
+                    }
+                    $current_best_finish = $_team->getBestFinish();
+                }
+                if ($all_time) $striped = '';
             }
-            $output .=     '</div>
-                                        <div class="col-sm-3" style="padding-top: 3px;">'.$_team->getName().'</div>
+            $tc_col = '<div class="col-sm-3" style="padding-top: 3px;">'.$_team->getName().'</div>';
+            if ($all_time) $tc_col = '<div class="col-sm-2" style="padding-top: 3px;">'.$_team->getName().'</div>
+                                                <div class="col-sm-1"><a id="popover_'.$_team->getCode().'" data-toggle="popover"
+                                                    data-container="body" data-placement="right" type="button" data-html="true"
+                                                    data-trigger="focus" tabindex="0" style="cursor:pointer;">'.$_team->getTournamentCount().'</a></div>';
+            if (!$all_time || ($all_time && $_team->getMatchPlay() != 0)) {
+                $output .=     '<div class="col-sm-12 row padding-tb-md '.$striped.'">
+                                        <div class="col-sm-1 no-padding-lr">';
+                if ($team_type == self::CLUB) {
+                    $output .= '<img height=32 src="/images/club_logos/'.$_team->getLogoFilename().'">';
+                    $output .= '<img class="flag-sm" src="/images/flags/'.$_team->getFlagFilename().'">';
+                }
+                else {
+                    $output .= '<img class="flag-md" src="/images/flags/'.$_team->getFlagFilename().'">';
+                }
+                $output .=     '</div>
+                                        '.$tc_col.'
                                         <div class="col-sm-1">'.$_team->getMatchPlay().'</div>
                                         <div class="col-sm-1">'.$_team->getWin().'</div>
                                         <div class="col-sm-1">'.$_team->getDraw().'</div>
@@ -303,41 +324,6 @@
                                         <div class="col-sm-1">'.$goal_diff.'</div>
                                         <div class="col-sm-1">'.$_team->getPoint().'</div>
                                     </div>';
-            if (!$from_ranking) return $output;
-
-            $output = '';
-            $tc_col = '<div class="col-sm-3" style="padding-top: 3px;">'.$_team->getName().'</div>';
-            if ($_team->getMatchPlay() != 0) {
-                if ($all_time) $tc_col = '<div class="col-sm-2" style="padding-top: 3px;">'.$_team->getName().'</div>
-                                                <div class="col-sm-1"><a id="popover_'.$_team->getCode().'" data-toggle="popover" 
-                                                    data-container="body" data-placement="right" type="button" data-html="true" 
-                                                    data-trigger="focus" tabindex="0" style="cursor:pointer;">'.$_team->getTournamentCount().'</a></div>';
-
-                $goal_diff = $_team->getGoalDiff();
-                if ($_team->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
-
-                if ($current_best_finish != $_team->getBestFinish()) {
-                    if ($striped_row == 'ranking-striped') {
-                        $striped_row = '';
-                    } else {
-                        $striped_row = 'ranking-striped';
-                    }
-                    $current_best_finish = $_team->getBestFinish();
-                }
-
-                if ($all_time) $striped_row = '';
-                $output .= '<div class="col-sm-12 h2-ff3 row padding-top-md padding-bottom-md '.$striped_row.'">
-                                <div class="col-sm-1"><img class="flag-md" src="/images/flags/'.$_team->getFlagFilename().'"></div>
-                                '.$tc_col.'
-                                <div class="col-sm-1">'.$_team->getMatchPlay().'</div>
-                                <div class="col-sm-1">'.$_team->getWin().'</div>
-                                <div class="col-sm-1">'.$_team->getDraw().'</div>
-                                <div class="col-sm-1">'.$_team->getLoss().'</div>
-                                <div class="col-sm-1">'.$_team->getGoalFor().'</div>
-                                <div class="col-sm-1">'.$_team->getGoalAgainst().'</div>
-                                <div class="col-sm-1">'.$goal_diff.'</div>
-                                <div class="col-sm-1">'.$_team->getPoint().'</div>
-                            </div>';
             }
             return $output;
         }
@@ -504,7 +490,7 @@
                 $output .= self::getTeamTableHeaderHtml(false);
                 foreach ($_teams as $name => $_team) {
                     $output .= self::getTeamHtml($tournament, $_team, $team_type, Soccer::First, false,
-                        null, $current_best_finish, $striped_row);
+                        false, $current_best_finish, $striped_row);
                 }
                 $output .= '</div>';
                 if ($matches_link_type == self::MATCHES_LINK_COLLAPSE) {
