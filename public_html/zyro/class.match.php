@@ -506,9 +506,10 @@
                 }
             }
             for ($i = 0; $i < $match_count; $i++) {
-                if ($matches[$i]->getStage() == Soccer::SECOND_STAGE && $matches[$i]->getRound() != Soccer::CONSOLATION_ROUND
-                    && $matches[$i]->getRound() != Soccer::FIFTH_PLACE_MATCH && $matches[$i]->getRound() != Soccer::PRELIMINARY_ROUND
-                    && $matches[$i]->getRound() != Soccer::FIRST_ROUND) {
+                if (($matches[$i]->getTournamentId() != 59 && $matches[$i]->getStage() == Soccer::SECOND_STAGE && $matches[$i]->getRound() != Soccer::CONSOLATION_ROUND
+                    && $matches[$i]->getRound() != Soccer::FIFTH_PLACE_MATCH && $matches[$i]->getRound() != Soccer::PRELIMINARY_ROUND)
+                    || ($matches[$i]->getTournamentId() == 59 && $matches[$i]->getRound() != Soccer::FIRST_ROUND)
+                    || $matches[$i]->getTournamentId() == 23) {
                     for ($j = 0; $j < sizeof($replay_matches); $j++) {
                         if ($matches[$i]->getHomeTeamName() == $replay_matches[$j]->getHomeTeamName()) {
                             $matches[$i]->setHomeTeamReplayScore($replay_matches[$j]->getHomeTeamScore());
@@ -573,11 +574,21 @@
             return $result;
         }
 
-        public static function getFirstStageMatchArrayByParentGroup($matches) {
+        public static function getFirstStageMatchArrayByGroupRound($matches) {
             $result = array();
             for ($i = 0; $i < sizeof($matches); $i++) {
                 if ($matches[$i]->getStage() == 'First Stage' || $matches[$i]->getStage() == 'Group Stage') {
-                    $result[$matches[$i]->getParentGroupName()][$matches[$i]->getGroupName()][$matches[$i]->getMatchOrder()] = $matches[$i];
+                    $result[$matches[$i]->getGroupName()][$matches[$i]->getRound()][$matches[$i]->getMatchOrder()] = $matches[$i];
+                }
+            }
+            return $result;
+        }
+
+        public static function getFirstStageMatchArrayByParentGroupRound($matches) {
+            $result = array();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                if ($matches[$i]->getStage() == 'First Stage' || $matches[$i]->getStage() == 'Group Stage') {
+                    $result[$matches[$i]->getParentGroupName()][$matches[$i]->getGroupName()][$matches[$i]->getRound()][$matches[$i]->getMatchOrder()] = $matches[$i];
                 }
             }
             return $result;

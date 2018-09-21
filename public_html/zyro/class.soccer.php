@@ -38,6 +38,7 @@
         const FIRST_STAGE = 'First Stage';
         const GROUP_STAGE = 'Group Stage';
         const SECOND_STAGE = 'Second Stage';
+        const QUALIFYING_STAGE = 'Qualifying Stage';
 
         const First = 1;
         const Second = 2;

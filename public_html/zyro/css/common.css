@@ -175,6 +175,20 @@ a:hover.hover-pointer { cursor: pointer; }
 
 .advanced-second-round-striped { background-color: #e3fae3 }
 
+.bracket-box-height { height: 120px }
+.bracket-gap-height-00 { height: 10px }
+.bracket-gap-height-01 { height: 20px }
+.bracket-gap-height-10 { height: 80px }
+.bracket-gap-height-11 { height: 160px }
+.bracket-gap-height-20 { height: 220px }
+.bracket-gap-height-21 { height: 440px }
+.bracket-gap-height-30 { height: 410px }
+.bracket-gap-height-31 { height: 1000px }
+.bracket-gap-height-40 { height: 610px }
+.bracket-gap-height-41 { height: 2120px }
+.bracket-gap-height-50 { height: 610px }
+.bracket-gap-height-51 { height: 2120px }
+
 /* ========== Colors ========== */
 
 .blue { color: #0040ff; }
