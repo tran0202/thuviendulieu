@@ -370,42 +370,45 @@
         }
 
         public static function applyCommonGames(&$t1, &$t2, $matches) {
+            if (!Match::isFootballRegularSeasonCompleted($matches)) return true;
             if ($t1->getParentGroupName().$t1->getGroupName() != $t2->getParentGroupName().$t2->getGroupName()) return true;
             $t1_point = 0;
             $t2_point = 0;
             $opponents = $t1->getCommonOpponents();
             for ($i = 0; $i < sizeof($matches); $i++) {
-                for ($j = 0; $j < sizeof($opponents); $j++) {
-                    if ($matches[$i]->getHomeTeamName() == strtoupper($t1->getName()) && $matches[$i]->getAwayTeamName() == strtoupper($opponents[$j])) {
-                        if ($matches[$i]->getHomeTeamScore() > $matches[$i]->getAwayTeamScore()) {
-                            $t1_point = $t1_point + 1;
+                if ($matches[$i]->getHomeTeamScore() != -1) {
+                    for ($j = 0; $j < sizeof($opponents); $j++) {
+                        if ($matches[$i]->getHomeTeamName() == strtoupper($t1->getName()) && $matches[$i]->getAwayTeamName() == strtoupper($opponents[$j])) {
+                            if ($matches[$i]->getHomeTeamScore() > $matches[$i]->getAwayTeamScore()) {
+                                $t1_point = $t1_point + 1;
+                            }
+                            elseif ($matches[$i]->getHomeTeamScore() == $matches[$i]->getAwayTeamScore()) {
+                                $t1_point = $t1_point + 0.5;
+                            }
                         }
-                        elseif ($matches[$i]->getHomeTeamScore() == $matches[$i]->getAwayTeamScore()) {
-                            $t1_point = $t1_point + 0.5;
+                        if ($matches[$i]->getAwayTeamName() == strtoupper($t1->getName()) && $matches[$i]->getHomeTeamName() == strtoupper($opponents[$j])) {
+                            if ($matches[$i]->getAwayTeamScore() > $matches[$i]->getHomeTeamScore()) {
+                                $t1_point = $t1_point + 1;
+                            }
+                            elseif ($matches[$i]->getAwayTeamScore() == $matches[$i]->getHomeTeamScore()) {
+                                $t1_point = $t1_point + 0.5;
+                            }
                         }
-                    }
-                    if ($matches[$i]->getAwayTeamName() == strtoupper($t1->getName()) && $matches[$i]->getHomeTeamName() == strtoupper($opponents[$j])) {
-                        if ($matches[$i]->getAwayTeamScore() > $matches[$i]->getHomeTeamScore()) {
-                            $t1_point = $t1_point + 1;
+                        if ($matches[$i]->getHomeTeamName() == strtoupper($t2->getName()) && $matches[$i]->getAwayTeamName() == strtoupper($opponents[$j])) {
+                            if ($matches[$i]->getHomeTeamScore() > $matches[$i]->getAwayTeamScore()) {
+                                $t2_point = $t2_point + 1;
+                            }
+                            elseif ($matches[$i]->getHomeTeamScore() == $matches[$i]->getAwayTeamScore()) {
+                                $t2_point = $t2_point + 0.5;
+                            }
                         }
-                        elseif ($matches[$i]->getAwayTeamScore() == $matches[$i]->getHomeTeamScore()) {
-                            $t1_point = $t1_point + 0.5;
-                        }
-                    }
-                    if ($matches[$i]->getHomeTeamName() == strtoupper($t2->getName()) && $matches[$i]->getAwayTeamName() == strtoupper($opponents[$j])) {
-                        if ($matches[$i]->getHomeTeamScore() > $matches[$i]->getAwayTeamScore()) {
-                            $t2_point = $t2_point + 1;
-                        }
-                        elseif ($matches[$i]->getHomeTeamScore() == $matches[$i]->getAwayTeamScore()) {
-                            $t2_point = $t2_point + 0.5;
-                        }
-                    }
-                    if ($matches[$i]->getAwayTeamName() == strtoupper($t2->getName()) && $matches[$i]->getHomeTeamName() == strtoupper($opponents[$j])) {
-                        if ($matches[$i]->getAwayTeamScore() > $matches[$i]->getHomeTeamScore()) {
-                            $t2_point = $t2_point + 1;
-                        }
-                        elseif ($matches[$i]->getAwayTeamScore() == $matches[$i]->getHomeTeamScore()) {
-                            $t2_point = $t2_point + 0.5;
+                        if ($matches[$i]->getAwayTeamName() == strtoupper($t2->getName()) && $matches[$i]->getHomeTeamName() == strtoupper($opponents[$j])) {
+                            if ($matches[$i]->getAwayTeamScore() > $matches[$i]->getHomeTeamScore()) {
+                                $t2_point = $t2_point + 1;
+                            }
+                            elseif ($matches[$i]->getAwayTeamScore() == $matches[$i]->getHomeTeamScore()) {
+                                $t2_point = $t2_point + 0.5;
+                            }
                         }
                     }
                 }
@@ -1044,11 +1047,13 @@
             $teams2 = array();
             $teams3 = array();
             if ($season == self::PRESEASON) {
+                $matches = Match::getFootballPreSeasonMatches($matches);
                 $teams1 = self::getFootballTeamArrayByConfDiv($tournament->getPreseasonTeams(), $matches);
                 $teams2 = self::getFootballTeamArrayByConf($tournament->getPreseasonTeams(), $matches);
                 $teams3 = self::getFootballTeamArrayById($tournament->getPreseasonTeams(), $matches);
             }
             elseif ($season == self::REGULAR_SEASON) {
+                $matches = Match::getFootballRegularSeasonMatches($matches);
                 $teams1 = self::getFootballTeamArrayByConfDiv($tournament->getTeams(), $matches);
                 $teams2 = self::getFootballTeamArrayByConf($tournament->getTeams(), $matches);
                 $teams3 = self::getFootballTeamArrayById($tournament->getTeams(), $matches);

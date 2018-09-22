@@ -604,6 +604,39 @@
             return $result;
         }
 
+        public static function getFootballPreSeasonMatches($matches) {
+            return self::getMatchArrayBySeason($matches, Football::PRESEASON);
+        }
+
+        public static function getFootballRegularSeasonMatches($matches) {
+            return self::getMatchArrayBySeason($matches, Football::REGULAR_SEASON);
+        }
+
+        public static function getFootballPostSeasonMatches($matches) {
+            return self::getMatchArrayBySeason($matches, Football::POST_SEASON);
+        }
+
+        public static function getMatchArrayBySeason($matches, $season) {
+            $result = array();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                if ($matches[$i]->getStage() == $season) {
+                    array_push($result, $matches[$i]);
+                }
+            }
+            return $result;
+        }
+
+        public static function isFootballRegularSeasonCompleted($matches) {
+            $result = true;
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                if ($matches[$i]->getHomeTeamScore() == -1) {
+                    $result = false;
+                    break;
+                }
+            }
+            return $result;
+        }
+
         /**
          * @return mixed
          */
