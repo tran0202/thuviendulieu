@@ -279,7 +279,6 @@ a:hover.hover-pointer { cursor: pointer; }
 
 .border-top-gray5 { border-top: 1px solid #e6e7e9; }
 .border-bottom-gray5 { border-bottom: 1px solid #e6e7e9; }
-.border-bottom-gray5:last-child { border-bottom: none; }
 .border-left-gray5 { border-left: 1px solid #e6e7e9; }
 .border-right-gray5 { border-right: 1px solid #e6e7e9; }
 

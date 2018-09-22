@@ -859,7 +859,7 @@
 
         public static function getCollapseHtml($id, $name, $body) {
             $output = '<div id="accordion-'.$id.'">
-                            <div class="card col-sm-12 padding-tb-md border-bottom-gray5">
+                            <div class="card col-sm-12 padding-tb-md">
                                 <div class="card-header" id="heading-'.$id.'" style="width:100%;padding-left:0;">';
             $output .= '            <button class="btn btn-link collapsed h2-ff1 no-padding-left btn-collapse-'.$id.'" data-toggle="collapse"
                                         data-target="#collapse-'.$id.'" aria-expanded="false" aria-controls="collapse-'.$id.'">
