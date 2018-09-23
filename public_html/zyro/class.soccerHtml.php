@@ -64,7 +64,7 @@
             $output = '';
             if (!self::isThirdPlaceRankingTournament($tournament)) return $output;
             $output .= '<div class="col-sm-12 padding-tb-md border-bottom-gray5">
-                            <a class="link-modal" data-toggle="modal" data-target="#groupThirdPlaceStandingModal">
+                            <a class="link-modal" href="#" data-toggle="modal" data-target="#groupThirdPlaceStandingModal">
                                 Ranking of third-placed teams</a>
                         </div>';
             return $output;
@@ -77,6 +77,8 @@
         public static function getBracketHtml($tournament, $bracket_spot) {
             $bracket_matches = Match::getBracketMatches($tournament->getMatches());
             $output = '';
+            $output .= '<div class="col-sm-12">';
+            $output .= '<div class="row">';
             $i = 0;
             $j = 0;
             foreach ($bracket_matches as $bracket_round => $_bracket_matches) {
@@ -87,7 +89,7 @@
                     if ($bracket_round == Soccer::BRONZE_MEDAL_MATCH) $third_place_moving = 'style="margin-left:-25%;margin-top:80px;"';
                 }
                 $prelim_style = '';
-                if ($bracket_round == Soccer::PRELIMINARY_ROUND) $prelim_style = 'style="padding-left:10px;padding-right:0;"';
+                if ($bracket_round == Soccer::PRELIMINARY_ROUND) $prelim_style = 'style="padding-left:5px;padding-right:0;"';
 
                 $output .= '<div class="col-sm-3" '.$third_place_moving.'>
                             <div class="col-sm-12 bracket-gap-height-'.$i.$j.'"></div>
@@ -102,6 +104,8 @@
                 $i = $i + 1;
                 $j = 0;
             }
+            $output .= '</div>';
+            $output .= '</div>';
             return $output;
         }
 
@@ -120,16 +124,22 @@
             $gpg = 'NA';
             if ($count != 0) $gpg = round($total_goals / $count, 2, PHP_ROUND_HALF_UP);
             $output .= '<div class="col-sm-12 padding-tb-sm">
+                        <div class="row">
                             <div class="col-sm-3 h3-ff3 font-bold text-right" style="padding-top:9px">Total matches played:</div>
                             <div class="col-sm-9 wb-stl-heading1 green">'.$count.'</div>
                         </div>
+                        </div>
                         <div class="col-sm-12 padding-tb-sm">
+                        <div class="row">
                             <div class="col-sm-3 h3-ff3 font-bold text-right" style="padding-top:9px">Total goals scored:</div>
                             <div class="col-sm-9 wb-stl-heading1 green">'.$total_goals.'</div>
                         </div>
+                        </div>
                         <div class="col-sm-12 padding-tb-sm">
+                        <div class="row">
                             <div class="col-sm-3 h3-ff3 font-bold text-right" style="padding-top:9px">Average goals per game:</div>
                             <div class="col-sm-9 wb-stl-heading1 green">'.$gpg.'</div>
+                        </div>
                         </div>';
             return $output;
         }
@@ -198,7 +208,7 @@
 
         public static function getModalHtml($group_name, $table_name, $modal_body) {
             if ($group_name == '') return '';
-            $output = '<div class="modal fade" id="group'.$group_name.'Modal" tabindex="-1" role="dialog" 
+            $output = '<div class="modal fade group-modal" id="group'.$group_name.'Modal" tabindex="-1" role="dialog" 
                                     aria-labelledby="group'.$group_name.'ModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-md" role="document">
                         <div class="modal-content h3-ff3">
@@ -207,14 +217,14 @@
                                     <span class="modal-X" aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-header col-sm-12 padding-lr-lg" style="border-bottom:none;">
+                            <div class="modal-header padding-lr-lg" style="border-bottom:none;">
                                 <div class="col-sm-12 border-bottom-gray2" id="group'.$group_name.'ModalLabel">'.$table_name.'</div>
                             </div>
-                            <div class="modal-body col-sm-12 padding-lr-lg" id="group'.$group_name.'ModalBody">';
+                            <div class="modal-body padding-lr-lg" id="group'.$group_name.'ModalBody">';
             $output .= $modal_body;
             $output .= '
                             </div>
-                            <div class="modal-footer">
+                            <div class="modal-footer no-border-top">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span class="modal-close" aria-hidden="true">Close</span>
                                 </button>
@@ -227,19 +237,21 @@
 
         public static function getTeamTableHeaderHtml($all_time) {
             $output = '';
-            $tournament_count_header = '<div class="col-sm-3"></div>';
-            if ($all_time) $tournament_count_header = '<div class="col-sm-2"></div><div class="col-sm-1">T</div>';
-            $output .= '<div class="col-sm-12 row padding-top-md padding-bottom-md font-bold">
-                            <div class="col-sm-1"></div>';
+            $tournament_count_header = '<div class="col-sm-4"></div>';
+            if ($all_time) $tournament_count_header = '<div class="box-col-lg"></div><div class="box-col-sm">T</div>';
+            $output .= '<div class="col-sm-12 padding-top-md padding-bottom-md font-bold team-row">
+                        <div class="row">
+                            <div class="box-col-md" style="margin-top:-3px;padding-left:15px;"></div>';
             $output .= $tournament_count_header;
-            $output .= '    <div class="col-sm-1">MP</div>
-                            <div class="col-sm-1">W</div>
-                            <div class="col-sm-1">D</div>
-                            <div class="col-sm-1">L</div>
-                            <div class="col-sm-1">GF</div>
-                            <div class="col-sm-1">GA</div>
-                            <div class="col-sm-1">+/-</div>
-                            <div class="col-sm-1">Pts</div>
+            $output .= '    <div class="box-col-sm">MP</div>
+                            <div class="box-col-sm">W</div>
+                            <div class="box-col-sm">D</div>
+                            <div class="box-col-sm">L</div>
+                            <div class="box-col-sm">GF</div>
+                            <div class="box-col-sm">GA</div>
+                            <div class="box-col-sm">+/-</div>
+                            <div class="box-col-sm">Pts</div>
+                        </div>    
                         </div>';
             return $output;
         }
@@ -265,14 +277,15 @@
                 }
                 if ($all_time) $striped = '';
             }
-            $tc_col = '<div class="col-sm-3" style="padding-top: 3px;">'.$_team->getName().'</div>';
-            if ($all_time) $tc_col = '<div class="col-sm-2" style="padding-top: 3px;">'.$_team->getName().'</div>
-                                                <div class="col-sm-1"><a id="popover_'.$_team->getCode().'" data-toggle="popover"
-                                                    data-container="body" data-placement="right" type="button" data-html="true"
+            $tc_col = '<div class="col-sm-4">'.$_team->getName().'</div>';
+            if ($all_time) $tc_col = '<div class="box-col-lg">'.$_team->getName().'</div>
+                                                <div class="box-col-sm"><a id="popover_'.$_team->getCode().'" data-toggle="popover"
+                                                    data-container="body" data-placement="right" data-html="true"
                                                     data-trigger="focus" tabindex="0" style="cursor:pointer;">'.$_team->getTournamentCount().'</a></div>';
             if (!$all_time || ($all_time && $_team->getMatchPlay() != 0)) {
-                $output .=     '<div class="col-sm-12 row padding-tb-md '.$striped.'">
-                                        <div class="col-sm-1 no-padding-lr">';
+                $output .=     '<div class="col-sm-12 padding-tb-md team-row '.$striped.'">
+                                <div class="row">
+                                        <div class="box-col-md" style="margin-top:-3px;padding-left:15px;">';
                 if ($team_type == self::CLUB) {
                     $output .= '<img height=32 src="/images/club_logos/'.$_team->getLogoFilename().'">';
                     $output .= '<img class="flag-sm" src="/images/flags/'.$_team->getFlagFilename().'">';
@@ -282,15 +295,16 @@
                 }
                 $output .=     '</div>
                                         '.$tc_col.'
-                                        <div class="col-sm-1">'.$_team->getMatchPlay().'</div>
-                                        <div class="col-sm-1">'.$_team->getWin().'</div>
-                                        <div class="col-sm-1">'.$_team->getDraw().'</div>
-                                        <div class="col-sm-1">'.$_team->getLoss().'</div>
-                                        <div class="col-sm-1">'.$_team->getGoalFor().'</div>
-                                        <div class="col-sm-1">'.$_team->getGoalAgainst().'</div>
-                                        <div class="col-sm-1">'.$goal_diff.'</div>
-                                        <div class="col-sm-1">'.$_team->getPoint().'</div>
-                                    </div>';
+                                        <div class="box-col-sm">'.$_team->getMatchPlay().'</div>
+                                        <div class="box-col-sm">'.$_team->getWin().'</div>
+                                        <div class="box-col-sm">'.$_team->getDraw().'</div>
+                                        <div class="box-col-sm">'.$_team->getLoss().'</div>
+                                        <div class="box-col-sm">'.$_team->getGoalFor().'</div>
+                                        <div class="box-col-sm">'.$_team->getGoalAgainst().'</div>
+                                        <div class="box-col-sm">'.$goal_diff.'</div>
+                                        <div class="box-col-sm">'.$_team->getPoint().'</div>
+                                </div>    
+                                </div>';
             }
             return $output;
         }
@@ -339,10 +353,10 @@
                 $tournament_text = 'tournaments';
                 if ($teams[$i]->getTournamentCount() == 1) $tournament_text = 'tournament';
                 $output .= '
-                    <div id="popover-content-'.$teams[$i]->getCode().'" class="hide">
-                        <div>
-                            <div class="col-sm-4" style="padding-top:5px"><img class="flag-md" src="/images/flags/'.$teams[$i]->getFlagFilename().'"></div>
-                            <div class="col-sm-8"><span class="h2-ff1"><b>'.$teams[$i]->getName().'</b></span></div>
+                    <div id="popover-content-'.$teams[$i]->getCode().'" class="d-none">
+                        <div class="row">
+                            <div class="col-sm-3" style="padding-top:5px"><img class="flag-md" src="/images/flags/'.$teams[$i]->getFlagFilename().'"></div>
+                            <div class="col-sm-9"><span class="h2-ff1"><b>'.$teams[$i]->getName().'</b></span></div>
                         </div>
                         <p><span class="wb-stl-heading1 russia-2018">'.$teams[$i]->getTournamentCount().'</span> '.$tournament_text.'</p>';
                 $team_name = $teams[$i]->getName();
@@ -443,9 +457,9 @@
 
         public static function getStandingsHtml($tournament, $teams, $parent_group_name, $team_type, $matches_link_type) {
             $output = '';
-            $output .= '<div class="col-sm-12 margin-top-sm">';
+            $output .= '<div class="margin-top-sm">';
             foreach ($teams as $group_name => $_teams) {
-                $output .= '<div class="col-sm-12 margin-top-sm">
+                $output .= '<div class="col-sm-12 margin-top-md">
                         <span class="col-sm-2 h2-ff2">Group '.$group_name.'</span>';
                 if ($matches_link_type == self::MATCHES_LINK_MODAL) {
                     $output .= '<span class="col-sm-2 wb-stl-heading4 margin-left-md" style="margin-top:15px;">
@@ -506,7 +520,7 @@
             $image_type = Team::FLAG;
             if ($team_type == self::CLUB) $image_type = Team::LOGO;
             $output = '';
-            $output .= '<div class="col-sm-12 margin-top-sm">';
+            $output .= '<div class="margin-top-sm">';
             $output .= self::getCollapseFilteringTeamsHtml($tournament, $image_type);
             $output .= '<div class="tab-content" id="filter-tabContent">';
             $output .= '<div class="tab-pane fade" id="All'.self::CONTENT.'" role="tabpanel" aria-labelledby="All-tab">';
@@ -608,7 +622,7 @@
                 if ($_match->getRound() == Soccer::FINAL_ROUND) $group_name = $_match->getSecondRoundGroupName();
                 $group_id = str_replace('League ', '', $_match->getParentGroupName()).$group_name;
                 if ($group_name == Soccer::FINAL_ROUND) $group_id = 'FinalRound';
-                $group_text .= '<a class="link-modal" data-toggle="modal" data-target="#group'.$group_id.'StandingModal">'.$group_anchor.'</a>' ;
+                $group_text .= '<a class="link-modal" href="#" data-toggle="modal" data-target="#group'.$group_id.'StandingModal">'.$group_anchor.'</a>' ;
             }
             $home_flag = '';
             $away_flag = '';
@@ -651,8 +665,9 @@
                 $aet = ' aet';
                 if (self::isGoldenGoalRule($_match->getGoldenGoalRule()) && !Match::isFirstStage($_match) && $_match->getHomeTeamPenaltyScore() == '') $aet = ' gg';
                 $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
-                if ($_match->getStage() != Soccer::FIRST_STAGE && $_match->getStage() != Soccer::GROUP_STAGE && $_match->getStage() != Soccer::QUALIFYING_STAGE &&
-                    $_match->getHomeTeamScore() == $_match->getAwayTeamScore() && $_match->getTournamentId() != 50 && $_match->getTournamentId() != 51) {
+                if ($_match->getHomeTeamScore() == $_match->getAwayTeamScore() &&
+                    (($_match->getStage() != Soccer::FIRST_STAGE && $_match->getStage() != Soccer::GROUP_STAGE && $_match->getStage() != Soccer::QUALIFYING_STAGE
+                     && $_match->getTournamentId() != 50 && $_match->getTournamentId() != 51) || $_match->getRound() == Soccer::PLAY_OFF)) {
                     $score = ($_match->getHomeTeamScore()+$_match->getHomeTeamExtraTimeScore()).
                         '-'.($_match->getAwayTeamScore()+$_match->getAwayTeamExtraTimeScore()).$aet;
                     if ($_match->getHomeTeamExtraTimeScore() == $_match->getAwayTeamExtraTimeScore()) {
@@ -763,38 +778,45 @@
             }
             if ($match_view == self::MATCH_VIEW_1) {
                 $output .= '<div class="col-sm-12 padding-tb-md border-bottom-gray5">
-                                    <div class="col-sm-2 padding-lr-xs">'.$match_time.' '.$time_zone.'<br>'.$group_text.'</div>
-                                    <div class="col-sm-1 padding-lr-xs text-right" style="padding-top:6px;">'.$home_flag.'</div>
-                                    <div class="col-sm-3 h2-ff3 padding-left-lg padding-right-xs">'.$home_team_name.$advance_popover.'</div>
+                            <div class="row">
+                                    <div class="col-sm-2">'.$match_time.' '.$time_zone.'<br>'.$group_text.'</div>
+                                    <div class="col-sm-1 padding-lr-xs padding-top-xs text-right" style="padding-top:6px;">'.$home_flag.'</div>
+                                    <div class="h2-ff3 padding-left-md padding-right-xs" style="width:30%;max-width:30%;">'.$home_team_name.$advance_popover.'</div>
                                     <div class="col-sm-1 h2-ff3 padding-lr-xs">'.$score.'<br>'.$penalty_score.'</div>
-                                    <div class="col-sm-3 h2-ff3 padding-lr-xs text-right">'.$advance_popover2.$away_team_name.'</div>
-                                    <div class="col-sm-1 padding-lr-xs text-right" style="padding-top:6px;">'.$away_flag.'</div>
-                                </div>';
+                                    <div class="h2-ff3 padding-lr-xs text-right" style="width:30%;max-width:30%;">'.$advance_popover2.$away_team_name.'</div>
+                                    <div class="padding-lr-xs text-right" style="padding-top:6px;width:6%;max-width:6%;">'.$away_flag.'</div>
+                            </div>
+                            </div>';
             }
             elseif ($match_view == self::MATCH_VIEW_2) {
-                $output .= '<div class="col-sm-12 h2-ff3 padding-tb-md padding-lr-xs border-bottom-gray5">
-                            <div class="col-sm-2 padding-lr-xs">'.$home_flag.'</div>
-                            <div class="col-sm-3 padding-lr-xs" style="padding-top:3px;">'.$home_team_name.'</div>
+                $output .= '<div class="col-sm-12 h2-ff3 padding-tb-md border-bottom-gray5">
+                            <div class="row">
+                            <div class="col-sm-1">'.$home_flag.'</div>
+                            <div class="col-sm-4" style="padding-top:3px;">'.$home_team_name.'</div>
                             <div class="col-sm-2 padding-lr-xs text-center" style="padding-top:3px;">'.$score.'</div>
-                            <div class="col-sm-3 padding-lr-xs text-right" style="padding-top:3px;">'.$away_team_name.'</div>
-                            <div class="col-sm-2 padding-lr-xs text-right">'.$away_flag.'</div>
+                            <div class="col-sm-4 text-right" style="padding-top:3px;">'.$away_team_name.'</div>
+                            <div class="col-sm-1 text-right">'.$away_flag.'</div>
+                            </div>
                         </div>';
             }
             elseif ($match_view == self::MATCH_VIEW_3) {
-                $output .= '<div class="col-sm-12 h2-ff3 padding-tb-md padding-lr-xs border-bottom-gray5">
-                                    <div class="col-sm-1 h6-ff3 padding-top-sm padding-lr-xs">'.$match_date.'<br>'.$match_time.'</div>
+                $output .= '<div class="col-sm-12 h2-ff3 padding-tb-md border-bottom-gray5">
+                            <div class="row">
+                                    <div class="col-sm-1 h6-ff3 padding-top-sm no-padding-right">'.$match_date.'<br>'.$match_time.'</div>
                                     <div class="col-sm-4 h2-ff3 padding-left-xs padding-right-xs padding-top-xs text-right">'.$home_team_name.'</div>
                                     <div class="col-sm-1 padding-lr-xs text-right">'.$home_flag.'</div>
                                     <div class="col-sm-1 h2-ff3 padding-left-md padding-right-xs text-center">'.$score.'</div>
                                     <div class="col-sm-1 padding-lr-xs text-right">'.$away_flag.'</div>
                                     <div class="col-sm-4 h2-ff3 padding-right-xs padding-top-xs" style="padding-left:30px">'.$away_team_name.'</div>
-                                </div>';
+                            </div>
+                            </div>';
             }
             elseif ($match_view == self::MATCH_VIEW_5 || $match_view == self::MATCH_VIEW_6) {
                 if ($match_view == self::MATCH_VIEW_5) $match_date = '';
                 if ($match_view == self::MATCH_VIEW_6) $group_text = '';
                 $output .= '<div class="col-sm-12 padding-tb-md">
-                                        <div class="col-sm-1 padding-lr-xs">'.$match_date.' '.$match_time.' '.$time_zone.'<br>'.$group_text.'</div>
+                            <div class="row">
+                                        <div class="col-sm-1 h6-ff3">'.$match_date.' '.$match_time.' '.$time_zone.'<br>'.$group_text.'</div>
                                         <div class="col-sm-4 h2-ff3 padding-left-xs padding-right-xs text-right '.$home_team_color.'">'.
                                             $home_team_name.$advance_popover.'</div>
                                         <div class="col-sm-1 padding-lr-xs padding-top-xs text-right">'.$home_logo.$home_small_flag.'</div>
@@ -802,20 +824,25 @@
                                         <div class="col-sm-1 padding-lr-xs padding-top-xs text-right">'.$away_logo.$away_small_flag.'</div>
                                         <div class="col-sm-4 h2-ff3 padding-right-xs '.$away_team_color.'" style="padding-left:30px">'.
                                             $advance_popover2.$away_team_name.'</div>
-                                    </div>';
+                            </div>
+                            </div>';
                 if ($extra_time_score != '') {
                     $output .= '<div class="col-sm-12 padding-bottom-md border-bottom-gray5">
+                            <div class="row">
                                         <div class="col-sm-4"></div>
                                         <div class="col-sm-5 text-center">'.$extra_time_score.'</div>
                                         <div class="col-sm-3"></div>
-                                    </div>';
+                            </div>
+                            </div>';
                 }
                 if ($aggregate_score != '') {
                     $output .= '<div class="col-sm-12 padding-bottom-md border-bottom-gray5">
+                            <div class="row">
                                         <div class="col-sm-4"></div>
                                         <div class="col-sm-5 text-center">'.$aggregate_score.'</div>
                                         <div class="col-sm-3"></div>
-                                    </div>';
+                            </div>
+                            </div>';
                 }
                 if ($extra_time_score == '' && $aggregate_score == '') {
                     $output .= '<div class="col-sm-12 border-bottom-gray5">
@@ -825,9 +852,11 @@
             else {
                 $output .= '<div class="col-sm-12 '.$bracket_gap_height_class.'"></div>
                             <div class="col-sm-12 box-sm bracket-box-height">
+                            <div class="row no-margin-lr">
                                 <div class="col-sm-4 h4-ff3 margin-tb-sm text-center">'.$home_flag.$home_team_code.'</div>
                                 <div class="col-sm-4 h4-ff3 margin-tb-sm text-center">'.$score.$penalty_score.$replay_score.'</div>
                                 <div class="col-sm-4 h4-ff3 margin-tb-sm text-center">'.$away_flag.$away_team_code.'</div>
+                            </div>
                             </div>';
             }
             return $output;
@@ -859,15 +888,15 @@
 
         public static function getCollapseHtml($id, $name, $body) {
             $output = '<div id="accordion-'.$id.'">
-                            <div class="card col-sm-12 padding-tb-md">
-                                <div class="card-header" id="heading-'.$id.'" style="width:100%;padding-left:0;">';
+                            <div class="col-sm-12 padding-tb-md">
+                                <div class="card-header" id="heading-'.$id.'">';
             $output .= '            <button class="btn btn-link collapsed h2-ff1 no-padding-left btn-collapse-'.$id.'" data-toggle="collapse"
                                         data-target="#collapse-'.$id.'" aria-expanded="false" aria-controls="collapse-'.$id.'">
                                             '.$name.' <i class="fa fa-angle-double-down font-custom1"></i>
                                     </button>
                                 </div>
                                 <div id="collapse-'.$id.'" class="collapse" aria-labelledby="heading-'.$id.'" data-parent="#accordion-'.$id.'">
-                                    <div class="card-body">
+                                    <div class="">
                                         ';
             $output .= $body;
             $output .=         '
@@ -897,7 +926,7 @@
                             #'.$tournament_name.'FilterTab > li > a { width: 110px; height: 90px; }
                             #'.$tournament_name.'FilterTab > li.active > a { border: 1px solid #dddddd; }
                         </style>';
-            $output .= '<ul class="nav nav-tabs h6-ff6" id="'.$tournament_name.'FilterTab" role="tablist">';
+            $output .= '<ul class="nav nav-tabs h6-ff6 padding-top-xs" id="'.$tournament_name.'FilterTab" role="tablist">';
             $output .= '<li class="nav-item">
                             <a class="nav-link" id="All-tab" data-toggle="tab" href="#All'.self::CONTENT.'"
                                 role="tab" aria-controls="All'.self::CONTENT.'" aria-selected="true">'.
@@ -928,7 +957,7 @@
             $team_tab = str_replace('\'', '_', $team_tab);
             $team_tab = str_replace('.', '_', $team_tab);
             $team_tab = str_replace('/', '_', $team_tab);
-            return $team_tab;
+            return 'T-'.$team_tab;
         }
 
         public static function getThirdPlaceTeams($tournament) {

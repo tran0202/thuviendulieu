@@ -818,7 +818,7 @@
             }
             if ($match->getRound() == self::GOLD_MEDAL_MATCH) {
                 $team->setBestFinish(self::SilverMedal);
-                if ($team->getName() == 'CZECHOSLOVAKIA') $team->setBestFinish(self::Disqualified);
+                if ($team->getName() == 'CZECHOSLOVAKIA' && $match->getTournamentId() == 60) $team->setBestFinish(self::Disqualified);
             }
             if ($match->getRound() == self::REPLAY_GOLD_MEDAL_MATCH) {
                 $team->setBestFinish(self::SilverMedal);

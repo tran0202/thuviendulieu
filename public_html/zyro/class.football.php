@@ -677,7 +677,7 @@
         public static function getFootballScheduleHtml($tournament) {
             $teams = self::getTeamArrayByName($tournament->getTeams());
             $output = '';
-            $output .= '<div class="col-sm-12 margin-top-sm">';
+            $output .= '<div class="margin-top-sm">';
             $output .= self::getCollapseHtml('teams-filter', 'Teams', self::getFilterHead($tournament));
             $output .= '<div class="tab-content" id="filter-tabContent">';
             $output .= '<div class="tab-pane fade" id="All_content" role="tabpanel" aria-labelledby="All-tab">';
@@ -795,14 +795,16 @@
                                 $score = $_match->getHomeTeamScore().'&nbsp;&nbsp;&nbsp;&nbsp;'.$_match->getAwayTeamScore();
                             }
                             $time_zone = 'CT';
-                            $output .= '<div class="col-sm-12 padding-tb-md border-bottom-gray5">
-                                        <div class="col-sm-1 padding-lr-xs">'.self::getMatchTimeFormat($_match).' '.$time_zone.'</div>
-                                        <div class="col-sm-4 h2-ff3 padding-left-xs padding-right-xs text-right">'.$home_team_tmp.'</div>
+                            $output .= '<div class="col-sm-12 padding-tb-md border-bottom-gray5">';
+                            $output .= '<div class="row">';
+                            $output .= '<div class="col-sm-2">'.self::getMatchTimeFormat($_match).' '.$time_zone.'</div>
+                                        <div class="col-sm-3 h2-ff3 padding-left-xs padding-right-xs text-right">'.$home_team_tmp.'</div>
                                         <div class="col-sm-1 padding-lr-xs text-right" style="width:40px">'.$home_logo_tmp.'</div>
                                         <div class="col-sm-1 h2-ff3 padding-left-md padding-right-xs text-center">'.$score.'</div>
                                         <div class="col-sm-1 padding-lr-md text-right" style="width:40px">'.$away_logo_tmp.'</div>
-                                        <div class="col-sm-4 h2-ff3 padding-right-xs" style="padding-left:30px">'.$away_team_tmp.'</div>
-                                    </div>';
+                                        <div class="col-sm-4 h2-ff3 padding-right-xs" style="padding-left:30px">'.$away_team_tmp.'</div>';
+                            $output .= '</div>';
+                            $output .= '</div>';
                         }
                     }
                     $output .= '</div>';
@@ -866,14 +868,16 @@
                             $score = $_match->getHomeTeamScore().'&nbsp;&nbsp;&nbsp;&nbsp;'.$_match->getAwayTeamScore();
                         }
                         $time_zone = 'CT';
-                        $output .= '<div class="col-sm-12 padding-tb-md border-bottom-gray5">
-                                        <div class="col-sm-1 padding-lr-xs">'.self::getMatchTimeFormat($_match).' '.$time_zone.'</div>
-                                        <div class="col-sm-4 h2-ff3 padding-left-xs padding-right-xs text-right">'.$home_team_tmp.'</div>
+                        $output .= '<div class="col-sm-12 padding-tb-md border-bottom-gray5">';
+                        $output .= '<div class="row">';
+                        $output .= '    <div class="col-sm-2">'.self::getMatchTimeFormat($_match).' '.$time_zone.'</div>
+                                        <div class="col-sm-3 h2-ff3 padding-left-xs padding-right-xs text-right">'.$home_team_tmp.'</div>
                                         <div class="col-sm-1 padding-lr-xs text-right" style="width:40px">'.$home_logo_tmp.'</div>
                                         <div class="col-sm-1 h2-ff3 padding-left-md padding-right-xs text-center">'.$score.'</div>
                                         <div class="col-sm-1 padding-lr-md text-right" style="width:40px">'.$away_logo_tmp.'</div>
-                                        <div class="col-sm-4 h2-ff3 padding-right-xs" style="padding-left:30px">'.$away_team_tmp.'</div>
-                                    </div>';
+                                        <div class="col-sm-4 h2-ff3 padding-right-xs" style="padding-left:30px">'.$away_team_tmp.'</div>';
+                        $output .= '</div>';
+                        $output .= '</div>';
                         $count++;
                         $count2++;
                     }
@@ -923,12 +927,11 @@
 
         public static function getCollapseHtml($id, $name, $body) {
             $output = '<div id="accordion-'.$id.'">
-                            <div class="card col-sm-12 padding-tb-md border-bottom-gray5">
-                                <div class="card-header" id="heading-'.$id.'" style="width:100%;padding-left:0;">
-                                    <button class="btn btn-link collapsed h2-ff1 no-padding-left" data-toggle="collapse"
+                            <div class="col-sm-12 padding-tb-md">
+                                <div class="card-header" id="heading-'.$id.'">';
+            $output .= '            <button class="btn btn-link collapsed h2-ff1 no-padding-left btn-collapse-'.$id.'" data-toggle="collapse"
                                         data-target="#collapse-'.$id.'" aria-expanded="false" aria-controls="collapse-'.$id.'">
-                                            '.$name.' <i id="'.$id.'-down-arrow" class="fa fa-angle-double-down font-custom1"></i>
-                                            <i id="'.$id.'-up-arrow" class="fa fa-angle-double-up font-custom1 no-display"></i>
+                                            '.$name.' <i class="fa fa-angle-double-down font-custom1"></i>
                                     </button>
                                 </div>
                                 <div id="collapse-'.$id.'" class="collapse" aria-labelledby="heading-'.$id.'" data-parent="#accordion-'.$id.'">
@@ -942,13 +945,11 @@
                         </div>';
             $output .= '<script>
                         $(function() {
-                            $("#collapse-'.$id.'").on("shown.bs.collapse", function () {
-                                $("#'.$id.'-down-arrow").hide();
-                                $("#'.$id.'-up-arrow").show();
+                            $("#collapse-'.$id.'").on("hide.bs.collapse", function () {
+                                $(".btn-collapse-'.$id.'").html(\''.$name.' <i class="fa fa-angle-double-down font-custom1"></i>\');
                             })
-                            $("#collapse-'.$id.'").on("hidden.bs.collapse", function () {
-                                $("#'.$id.'-down-arrow").show();
-                                $("#'.$id.'-up-arrow").hide();
+                            $("#collapse-'.$id.'").on("show.bs.collapse", function () {
+                                $(".btn-collapse-'.$id.'").html(\''.$name.' <i class="fa fa-angle-double-up font-custom1"></i>\');
                             })
                         });
                         </script>';
@@ -956,7 +957,7 @@
         }
 
         public static function getFootballStandingsHtml($tournament) {
-            $output = '<ul class="nav nav-pills nfl-nav1-pills h2-ff6" id="pills-tab" role="tablist">
+            $output = '<ul class="nav nav-pills nfl-nav1-pills h2-ff6 padding-top-md" id="pills-tab" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link" id="pills-Division-tab" data-toggle="pill" href="#pills-Division" 
                                 role="tab" aria-controls="pills-Division" aria-selected="true">Division</a>
@@ -1081,44 +1082,58 @@
                                 <div class="col-sm-12 no-padding-lr h3-ff4 row padding-tb-sm font-bold">
                                     <div class="col-sm-3 no-padding-lr"></div>
                                     <div class="col-sm-2 no-padding-lr">
+                                    <div class="row">
                                         <div class="col-sm-4 no-padding-lr">W</div>
                                         <div class="col-sm-4 no-padding-lr">L</div>
                                         <div class="col-sm-4 no-padding-lr">T</div>
                                     </div>
+                                    </div>
                                     <div class="col-sm-5 no-padding-lr">
+                                    <div class="row">
                                         <div class="col-sm-3 no-padding-lr">Home</div>
                                         <div class="col-sm-3 no-padding-lr">Road</div>
                                         <div class="col-sm-3 no-padding-lr">Div</div>
                                         <div class="col-sm-3 no-padding-lr">Conf</div>
                                     </div>
+                                    </div>
                                     <div class="col-sm-2 no-padding-lr">
+                                    <div class="row">
                                         <div class="col-sm-6 no-padding-lr">Streak</div>
                                         <div class="col-sm-6 no-padding-lr">Last 5</div>
+                                    </div>
                                     </div>
                                 </div>';
                     foreach ($_divisions as $group_order => $_team) {
 
                         $output .= '<div class="col-sm-12 no-padding-lr h3-ff4 row padding-tb-sm">
                                     <div class="col-sm-3 no-padding-lr">
+                                    <div class="row">
                                         <div class="col-sm-2 no-padding-lr">
-                                            <img src="/images/nfl_logos/'.$_team->getLogoFileName().'" style="width:40px;" />
+                                            <img src="/images/nfl_logos/'.$_team->getLogoFileName().'" style="width:40px;margin-top:-8px;" />
                                         </div>
-                                        <div class="col-sm-10 no-padding-lr" style="padding-top:8px;">'.$_team->getName().'</div>
+                                        <div class="col-sm-10 no-padding-lr">'.$_team->getName().'</div>
+                                    </div>
                                     </div>
                                     <div class="col-sm-2 no-padding-lr">
+                                    <div class="row">
                                         <div class="col-sm-4 no-padding-lr">'.$_team->getWin().'</div>
                                         <div class="col-sm-4 no-padding-lr">'.$_team->getLoss().'</div>
                                         <div class="col-sm-4 no-padding-lr">'.$_team->getDraw().'</div>
                                     </div>
+                                    </div>
                                     <div class="col-sm-5 no-padding-lr">
+                                    <div class="row">
                                         <div class="col-sm-3 no-padding-lr">'.$_team->getHomeWin().'-'.$_team->getHomeLoss().'-'.$_team->getHomeTie().'</div>
                                         <div class="col-sm-3 no-padding-lr">'.$_team->getRoadWin().'-'.$_team->getRoadLoss().'-'.$_team->getRoadTie().'</div>
                                         <div class="col-sm-3 no-padding-lr">'.$_team->getDivWin().'-'.$_team->getDivLoss().'-'.$_team->getDivTie().'</div>
                                         <div class="col-sm-3 no-padding-lr">'.$_team->getConfWin().'-'.$_team->getConfLoss().'-'.$_team->getConfTie().'</div>
                                     </div>
+                                    </div>
                                     <div class="col-sm-2 no-padding-lr">
+                                    <div class="row">
                                         <div class="col-sm-6 no-padding-lr">'.self::getTeamStreak($_team->getStreak()).'</div>
                                         <div class="col-sm-6 no-padding-lr">'.self::getLast5($_team->getStreak()).'</div>
+                                    </div>
                                     </div>
                                 </div>';
                     }
@@ -1137,43 +1152,57 @@
                             <div class="col-sm-12 no-padding-lr h3-ff4 row padding-tb-sm font-bold">
                                 <div class="col-sm-3 no-padding-lr"></div>
                                 <div class="col-sm-2 no-padding-lr">
+                                <div class="row">
                                     <div class="col-sm-4 no-padding-lr">W</div>
                                     <div class="col-sm-4 no-padding-lr">L</div>
                                     <div class="col-sm-4 no-padding-lr">T</div>
                                 </div>
+                                </div>
                                 <div class="col-sm-5 no-padding-lr">
+                                <div class="row">
                                     <div class="col-sm-3 no-padding-lr">Home</div>
                                     <div class="col-sm-3 no-padding-lr">Road</div>
                                     <div class="col-sm-3 no-padding-lr">Div</div>
                                     <div class="col-sm-3 no-padding-lr">Conf</div>
                                 </div>
+                                </div>
                                 <div class="col-sm-2 no-padding-lr">
+                                <div class="row">
                                     <div class="col-sm-6 no-padding-lr">Streak</div>
                                     <div class="col-sm-6 no-padding-lr">Last 5</div>
+                                </div>
                                 </div>
                             </div>';
                 foreach ($_conferences as $group_order => $_team) {
                     $output .= '<div class="col-sm-12 no-padding-lr h3-ff4 row padding-tb-sm">
                                 <div class="col-sm-3 no-padding-lr">
+                                <div class="row">
                                     <div class="col-sm-2 no-padding-lr">
-                                        <img src="/images/nfl_logos/'.$_team->getLogoFileName().'" style="width:40px;" />
+                                        <img src="/images/nfl_logos/'.$_team->getLogoFileName().'" style="width:40px;margin-top:-8px;" />
                                     </div>
-                                    <div class="col-sm-10 no-padding-lr" style="padding-top:8px;">'.$_team->getName().'</div>
+                                    <div class="col-sm-10 no-padding-lr">'.$_team->getName().'</div>
+                                </div>
                                 </div>
                                 <div class="col-sm-2 no-padding-lr">
+                                <div class="row">
                                     <div class="col-sm-4 no-padding-lr">'.$_team->getWin().'</div>
                                     <div class="col-sm-4 no-padding-lr">'.$_team->getLoss().'</div>
                                     <div class="col-sm-4 no-padding-lr">'.$_team->getDraw().'</div>
                                 </div>
+                                </div>
                                 <div class="col-sm-5 no-padding-lr">
+                                <div class="row">
                                     <div class="col-sm-3 no-padding-lr">'.$_team->getHomeWin().'-'.$_team->getHomeLoss().'-'.$_team->getHomeTie().'</div>
                                     <div class="col-sm-3 no-padding-lr">'.$_team->getRoadWin().'-'.$_team->getRoadLoss().'-'.$_team->getRoadTie().'</div>
                                     <div class="col-sm-3 no-padding-lr">'.$_team->getDivWin().'-'.$_team->getDivLoss().'-'.$_team->getDivTie().'</div>
                                     <div class="col-sm-3 no-padding-lr">'.$_team->getConfWin().'-'.$_team->getConfLoss().'-'.$_team->getConfTie().'</div>
                                 </div>
+                                </div>
                                 <div class="col-sm-2 no-padding-lr">
+                                <div class="row">
                                     <div class="col-sm-6 no-padding-lr">'.self::getTeamStreak($_team->getStreak()).'</div>
                                     <div class="col-sm-6 no-padding-lr">'.self::getLast5($_team->getStreak()).'</div>
+                                </div>
                                 </div>
                             </div>';
                 }
@@ -1187,43 +1216,57 @@
                             <div class="col-sm-12 no-padding-lr h3-ff4 row padding-tb-sm font-bold">
                                 <div class="col-sm-3 no-padding-lr"></div>
                                 <div class="col-sm-2 no-padding-lr">
+                                <div class="row">
                                     <div class="col-sm-4 no-padding-lr">W</div>
                                     <div class="col-sm-4 no-padding-lr">L</div>
                                     <div class="col-sm-4 no-padding-lr">T</div>
                                 </div>
+                                </div>
                                 <div class="col-sm-5 no-padding-lr">
+                                <div class="row">
                                     <div class="col-sm-3 no-padding-lr">Home</div>
                                     <div class="col-sm-3 no-padding-lr">Road</div>
                                     <div class="col-sm-3 no-padding-lr">Div</div>
                                     <div class="col-sm-3 no-padding-lr">Conf</div>
                                 </div>
+                                </div>
                                 <div class="col-sm-2 no-padding-lr">
+                                <div class="row">
                                     <div class="col-sm-6 no-padding-lr">Streak</div>
                                     <div class="col-sm-6 no-padding-lr">Last 5</div>
+                                </div>
                                 </div>
                             </div>';
             foreach ($teams as $id => $_team) {
                 $output .= '<div class="col-sm-12 no-padding-lr h3-ff4 row padding-tb-sm">
                             <div class="col-sm-3 no-padding-lr">
+                            <div class="row">
                                 <div class="col-sm-2 no-padding-lr">
-                                    <img src="/images/nfl_logos/'.$_team->getLogoFileName().'" style="width:40px;" />
+                                    <img src="/images/nfl_logos/'.$_team->getLogoFileName().'" style="width:40px;margin-top:-8px;" />
                                 </div>
-                                <div class="col-sm-10 no-padding-lr" style="padding-top:8px;">'.$_team->getName().'</div>
+                                <div class="col-sm-10 no-padding-lr">'.$_team->getName().'</div>
+                            </div>
                             </div>
                             <div class="col-sm-2 no-padding-lr">
+                            <div class="row">
                                 <div class="col-sm-4 no-padding-lr">'.$_team->getWin().'</div>
                                 <div class="col-sm-4 no-padding-lr">'.$_team->getLoss().'</div>
                                 <div class="col-sm-4 no-padding-lr">'.$_team->getDraw().'</div>
                             </div>
+                            </div>
                             <div class="col-sm-5 no-padding-lr">
+                            <div class="row">
                                 <div class="col-sm-3 no-padding-lr">'.$_team->getHomeWin().'-'.$_team->getHomeLoss().'-'.$_team->getHomeTie().'</div>
                                 <div class="col-sm-3 no-padding-lr">'.$_team->getRoadWin().'-'.$_team->getRoadLoss().'-'.$_team->getRoadTie().'</div>
                                 <div class="col-sm-3 no-padding-lr">'.$_team->getDivWin().'-'.$_team->getDivLoss().'-'.$_team->getDivTie().'</div>
                                 <div class="col-sm-3 no-padding-lr">'.$_team->getConfWin().'-'.$_team->getConfLoss().'-'.$_team->getConfTie().'</div>
                             </div>
+                            </div>
                             <div class="col-sm-2 no-padding-lr">
+                            <div class="row">
                                 <div class="col-sm-6 no-padding-lr">'.self::getTeamStreak($_team->getStreak()).'</div>
                                 <div class="col-sm-6 no-padding-lr">'.self::getLast5($_team->getStreak()).'</div>
+                            </div>
                             </div>
                         </div>';
             }

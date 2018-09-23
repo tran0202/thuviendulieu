@@ -22,27 +22,37 @@
     <div class="root content">
         <div class="vbox wb_container" id="wb_main">
             <div class="wb_cont_inner">
-                <div class="col-sm-12 margin-top-lg">
-                    <p class="wb-stl-highlight text-center russia-2018">Women's Olympic Football Tournament Archive</p>
-                    <p class="wb-stl-normal"> </p>
-                </div>
-                <div class="col-sm-7 col-sm-offset-2">
-                    <h5 class="wb-stl-subtitle3">
-                        <p class="border-bottom-gray5"><img src="images/olympic_logos/2016.png"/> <a href="WomenOlympicFootballTournament">Rio 2016</a></p>
-                        <p class="border-bottom-gray5"><img src="images/olympic_logos/2012.png"/> <a href="WomenOlympicFootballTournament?tid=63">London 2012</a></p>
-                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/2008.png"/> <a href="WomenOlympicFootballTournament?tid=64">Beijing 2008</a></p>
-                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/2004.png"/> <a href="WomenOlympicFootballTournament?tid=65">Athens 2004</a></p>
-                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/2000.png"/> <a href="WomenOlympicFootballTournament?tid=66">Sydney 2000</a></p>
-                        <p class="border-bottom-gray5"><img src="images/olympic_logos/1996.png"/> <a href="WomenOlympicFootballTournament?tid=67">Atlanta 1996</a></p>
-                    </h5>
-                </div>
-                <div>
-                    <?php echo $body_html; ?>
-                    <?php echo $popover_html; ?>
-                    <p class="wb-stl-normal"> </p>
-                </div>
-                <div class="col-sm-12 margin-tb-lg">
-                    <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12 margin-top-lg">
+                            <p class="wb-stl-highlight text-center russia-2018">Women's Olympic Football Tournament Archive</p>
+                            <p class="wb-stl-normal"> </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-8 offset-sm-2">
+                            <h5 class="wb-stl-subtitle3">
+                                <p class="border-bottom-gray5"><img src="images/olympic_logos/2016.png"/> <a href="WomenOlympicFootballTournament">Rio 2016</a></p>
+                                <p class="border-bottom-gray5"><img src="images/olympic_logos/2012.png"/> <a href="WomenOlympicFootballTournament?tid=63">London 2012</a></p>
+                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/2008.png"/> <a href="WomenOlympicFootballTournament?tid=64">Beijing 2008</a></p>
+                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/2004.png"/> <a href="WomenOlympicFootballTournament?tid=65">Athens 2004</a></p>
+                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/2000.png"/> <a href="WomenOlympicFootballTournament?tid=66">Sydney 2000</a></p>
+                                <p class="border-bottom-gray5"><img src="images/olympic_logos/1996.png"/> <a href="WomenOlympicFootballTournament?tid=67">Atlanta 1996</a></p>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <?php echo $body_html; ?>
+                            <?php echo $popover_html; ?>
+                            <p class="wb-stl-normal"> </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 margin-tb-lg">
+                            <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

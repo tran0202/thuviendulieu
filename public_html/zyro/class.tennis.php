@@ -31,14 +31,17 @@
                 $j = 0;
                 $k = 0;
                 $round_end = $round_start + 2;
+                $output .= '<div class="container-fluid">';
+                $output .= '<div class="row">';
                 $output .= '<div class="col-sm-12 no-padding-lr no-display" id="view-'.$round_start.'">';
+                $output .= '<div class="row">';
                 foreach ($matches as $round => $_matches) {
                     $prev_view = $round_start - 1;
                     $next_view = $round_start + 1;
                     $left_arrow = '';
-                    if ($round_start != 0 AND $k == $round_start) $left_arrow = '<a class="blue font-custom1 hover-pointer margin-right-sm"><i class="fa fa-angle-double-left link-change-view" data-target="'.$prev_view.'"></i></a>';
+                    if ($round_start != 0 AND $k == $round_start) $left_arrow = '<a class="font-custom1 hover-pointer margin-right-sm"><i class="fa fa-angle-double-left link-change-view blue" data-target="'.$prev_view.'"></i></a>';
                     $right_arrow = '';
-                    if ($round_start != 4 AND $k == $round_end) $right_arrow = '<a class="blue font-custom1 hover-pointer margin-left-sm"><i class="fa fa-angle-double-right link-change-view" data-target="'.$next_view.'"></i></a>';
+                    if ($round_start != 4 AND $k == $round_end) $right_arrow = '<a class="font-custom1 hover-pointer margin-left-sm"><i class="fa fa-angle-double-right link-change-view blue" data-target="'.$next_view.'"></i></a>';
                     if ($k >= $round_start AND $k <= $round_end) {
                         $gap_height = $gap_heights[$i][0];
                         $output .= '<div class="col-sm-4">
@@ -117,14 +120,18 @@
                             if ($_match->getHomeSet5Tiebreak() < $_match->getAwaySet5Tiebreak()) $away_set5_tiebreak = ' <span class="h5-ff3 weight-light" style="font-weight: 400;"><sup>'.$_match->getAwaySet5Tiebreak().'</sup></span>';
                             $output .= '<div class="col-sm-12" style="height:'.$gap_height.'px;"></div>
                                     <div class="col-sm-12 box-sm" style="height:'.$box_height.'px;">
-                                        <div class="col-sm-12 h5-ff3 weight-regular margin-tb-sm no-padding-lr">
-                                            <div class="col-sm-7 no-padding-lr">
+                                        <div class="col-sm-12 h5-ff3 weight-regular margin-tb-sm no-padding-lr">';
+                            $output .= '<div class="row no-margin-lr">';
+                            $output .= '<div class="col-sm-7 no-padding-lr">';
+                            $output .= '<div class="row no-margin-lr">';
+                            $output .= '
                                                 <div class="col-sm-2 no-padding-right padding-left-sm">'.$home_flag.'</div>
                                                 <div class="col-sm-10 no-padding-right padding-left-xs" style="padding-top:2px;">';
                             if ($_match->getHomeTeamSeed() != '') $output .= $home_team_seed;
                             $output .=                  $home_team_name.$home_retired.
-                                '</div>
-                                            </div>
+                                                '</div>';
+                            $output .= '</div>';
+                            $output .= '</div>
                                             <div class="col-sm-1 no-padding-lr" style="padding-top:2px;">'.
                                 $home_set1_score;
                             if ($_match->getHomeSet1Tiebreak() != '') $output .= $home_set1_tiebreak;
@@ -144,15 +151,20 @@
                                             <div class="col-sm-1 no-padding-lr" style="padding-top:2px;">'.
                                 $home_set5_score;
                             if ($_match->getHomeSet5Tiebreak() != '') $output .= $home_set5_tiebreak;
-                            $output .=          '</div>
-                                        </div>
-                                        <div class="col-sm-12 h5-ff3 weight-regular margin-tb-sm no-padding-lr">
-                                            <div class="col-sm-7 no-padding-lr">
-                                                <div class="col-sm-2 no-padding-right padding-left-sm">'.$away_flag.'</div>
+                            $output .=          '</div>';
+                            $output .= '</div>';
+                            $output .= '</div>
+                                        <div class="col-sm-12 h5-ff3 weight-regular margin-tb-sm no-padding-lr">';
+                            $output .= '<div class="row no-margin-lr">';
+                            $output .= '   <div class="col-sm-7 no-padding-lr">';
+                            $output .= '        <div class="row no-margin-lr">';
+                            $output .= '        <div class="col-sm-2 no-padding-right padding-left-sm">'.$away_flag.'</div>
                                                 <div class="col-sm-10 no-padding-right padding-left-xs" style="padding-top:2px;">';
                             if ($_match->getAwayTeamSeed() != '') $output .= $away_team_seed;
                             $output .=                  $away_team_name.$away_retired.
-                                '</div>
+                                                '</div>';
+                            $output .= '        </div>';
+                            $output .= '
                                             </div>
                                             <div class="col-sm-1 no-padding-lr" style="padding-top:2px;">'.
                                 $away_set1_score;
@@ -173,8 +185,9 @@
                                             <div class="col-sm-1 no-padding-lr" style="padding-top:2px;">'.
                                 $away_set5_score;
                             if ($_match->getAwaySet5Tiebreak() != '') $output .= $away_set5_tiebreak;
-                            $output .=          '</div>
-                                        </div>
+                            $output .=          '</div>';
+                            $output .= '</div>';
+                            $output .= '</div>
                                     </div>';
                             $j = $j + 1;
                         }
@@ -184,6 +197,9 @@
                     }
                     $k++;
                 }
+                $output .= '</div>';
+                $output .= '</div>';
+                $output .= '</div>';
                 $output .= '</div>';
                 array_push($views, $output);
             }

@@ -28,15 +28,23 @@
 	<div class="root content">
 		<div class="vbox wb_container" id="wb_main">
 			<div class="wb_cont_inner">
-                <div>
-                    <span class="wb-stl-heading1 russia-2018"><?php echo $header; ?></span>
-                </div>
-                <div>
-                    <?php echo $body_html; ?>
-                    <p class="wb-stl-normal"> </p>
-                </div>
-                <div class="col-sm-12 margin-tb-lg">
-                    <p class="wb-stl-footer black">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <span class="wb-stl-heading1 russia-2018"><?php echo $header; ?></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <?php echo $body_html; ?>
+                            <p class="wb-stl-normal"> </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 margin-tb-lg">
+                            <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
+                        </div>
+                    </div>
                 </div>
 			</div>
 		</div>

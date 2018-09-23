@@ -33,17 +33,25 @@
 	<div class="root content">
 		<div class="vbox wb_container" id="wb_main">
 			<div class="wb_cont_inner">
-                <div>
-                    <span class="wb-stl-heading1 dark-red"><?php echo $header; ?></span>
-                    <span class="wb-stl-heading3 margin-left-lg"><a href="UEFAChampionsLeagueStandings<?php echo $qs; ?>" target="_self">Standings</a></span>
-                    <span class="wb-stl-heading3 margin-left-lg"><a href="UEFAChampionsLeagueMatches<?php echo $qs; ?>" target="_self">Matches</a></span>
-                </div>
-                <div>
-                    <?php echo $body_html; ?>
-                    <p> </p>
-                </div>
-                <div class="col-sm-12 margin-tb-lg">
-                    <p class="wb-stl-footer black">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <span class="wb-stl-heading1 dark-red"><?php echo $header; ?></span>
+                            <span class="wb-stl-heading3 margin-left-lg"><a href="UEFAChampionsLeagueStandings<?php echo $qs; ?>" target="_self">Standings</a></span>
+                            <span class="wb-stl-heading3 margin-left-lg"><a href="UEFAChampionsLeagueMatches<?php echo $qs; ?>" target="_self">Matches</a></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <?php echo $body_html; ?>
+                            <p> </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 margin-tb-lg">
+                            <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
+                        </div>
+                    </div>
                 </div>
 			</div>
 		</div>

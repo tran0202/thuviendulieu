@@ -21,8 +21,7 @@
                     <p class="wb-stl-normal"> </p>
                 </div>
                 <div class="col-sm-12">
-                    <div class="col-sm-2" style="margin-right:55px;"></div>
-                    <div class="col-sm-8 text-center">
+                    <div class="col-sm-8 offset-sm-2 text-center">
                         <div class="clock"></div>
                     </div>
                 </div>

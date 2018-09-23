@@ -22,45 +22,55 @@
     <div class="root content">
         <div class="vbox wb_container" id="wb_main">
             <div class="wb_cont_inner">
-                <div class="col-sm-12 margin-top-lg">
-                    <p class="wb-stl-highlight text-center russia-2018">Olympic Football Tournament Archive</p>
-                    <p class="wb-stl-normal"> </p>
-                </div>
-                <div class="col-sm-7 col-sm-offset-2">
-                    <h5 class="wb-stl-subtitle3">
-                        <p class="border-bottom-gray5"><img src="images/olympic_logos/2016.png"/> <a href="OlympicFootballTournament">Rio 2016</a></p>
-                        <p class="border-bottom-gray5"><img src="images/olympic_logos/2012.png"/> <a href="OlympicFootballTournament?tid=40">London 2012</a></p>
-                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/2008.png"/> <a href="OlympicFootballTournament?tid=41">Beijing 2008</a></p>
-                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/2004.png"/> <a href="OlympicFootballTournament?tid=42">Athens 2004</a></p>
-                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/2000.png"/> <a href="OlympicFootballTournament?tid=43">Sydney 2000</a></p>
-                        <p class="border-bottom-gray5"><img src="images/olympic_logos/1996.png"/> <a href="OlympicFootballTournament?tid=44">Atlanta 1996</a></p>
-                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1992.png"/> <a href="OlympicFootballTournament?tid=45">Barcelona 1992</a></p>
-                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1988.png"/> <a href="OlympicFootballTournament?tid=46">Seoul 1988</a></p>
-                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1984.png"/> <a href="OlympicFootballTournament?tid=47">Los Angeles 1984</a></p>
-                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1980.png"/> <a href="OlympicFootballTournament?tid=48">Moscow 1980</a></p>
-                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1976.png"/> <a href="OlympicFootballTournament?tid=49">Montreal 1976</a></p>
-                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1972.png"/> <a href="OlympicFootballTournament?tid=50">Munich 1972</a></p>
-                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1968.png"/> <a href="OlympicFootballTournament?tid=51">Mexico City 1968</a></p>
-                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1964.png"/> <a href="OlympicFootballTournament?tid=52">Tokyo 1964</a></p>
-                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1960.png"/> <a href="OlympicFootballTournament?tid=53">Roma 1960</a></p>
-                        <p class="border-bottom-gray5"><img src="images/olympic_logos/1956.png"/> <a href="OlympicFootballTournament?tid=54">Melbourne 1956</a></p>
-                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1952.png"/> <a href="OlympicFootballTournament?tid=55">Helsinki 1952</a></p>
-                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1948.png"/> <a href="OlympicFootballTournament?tid=56">London 1948</a></p>
-                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1936.png"/> <a href="OlympicFootballTournament?tid=57">Berlin 1936</a></p>
-                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1928.jpg"/> <a href="OlympicFootballTournament?tid=58">Amsterdam 1928</a></p>
-                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1924.png"/> <a href="OlympicFootballTournament?tid=59">Paris 1924</a></p>
-                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1920.gif"/> <a href="OlympicFootballTournament?tid=60">Antwerp 1920</a></p>
-                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1912.gif"/> <a href="OlympicFootballTournament?tid=61">Stockholm 1912</a></p>
-                        <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1908.gif"/> <a href="OlympicFootballTournament?tid=62">London 1908</a></p>
-                    </h5>
-                </div>
-                <div>
-                    <?php echo $body_html; ?>
-                    <?php echo $popover_html; ?>
-                    <p class="wb-stl-normal"> </p>
-                </div>
-                <div class="col-sm-12 margin-tb-lg">
-                    <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12 margin-top-lg">
+                            <p class="wb-stl-highlight text-center russia-2018">Olympic Football Tournament Archive</p>
+                            <p class="wb-stl-normal"> </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-8 offset-sm-2">
+                            <h5 class="wb-stl-subtitle3">
+                                <p class="border-bottom-gray5"><img src="images/olympic_logos/2016.png"/> <a href="OlympicFootballTournament">Rio 2016</a></p>
+                                <p class="border-bottom-gray5"><img src="images/olympic_logos/2012.png"/> <a href="OlympicFootballTournament?tid=40">London 2012</a></p>
+                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/2008.png"/> <a href="OlympicFootballTournament?tid=41">Beijing 2008</a></p>
+                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/2004.png"/> <a href="OlympicFootballTournament?tid=42">Athens 2004</a></p>
+                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/2000.png"/> <a href="OlympicFootballTournament?tid=43">Sydney 2000</a></p>
+                                <p class="border-bottom-gray5"><img src="images/olympic_logos/1996.png"/> <a href="OlympicFootballTournament?tid=44">Atlanta 1996</a></p>
+                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1992.png"/> <a href="OlympicFootballTournament?tid=45">Barcelona 1992</a></p>
+                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1988.png"/> <a href="OlympicFootballTournament?tid=46">Seoul 1988</a></p>
+                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1984.png"/> <a href="OlympicFootballTournament?tid=47">Los Angeles 1984</a></p>
+                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1980.png"/> <a href="OlympicFootballTournament?tid=48">Moscow 1980</a></p>
+                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1976.png"/> <a href="OlympicFootballTournament?tid=49">Montreal 1976</a></p>
+                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1972.png"/> <a href="OlympicFootballTournament?tid=50">Munich 1972</a></p>
+                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1968.png"/> <a href="OlympicFootballTournament?tid=51">Mexico City 1968</a></p>
+                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1964.png"/> <a href="OlympicFootballTournament?tid=52">Tokyo 1964</a></p>
+                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1960.png"/> <a href="OlympicFootballTournament?tid=53">Roma 1960</a></p>
+                                <p class="border-bottom-gray5"><img src="images/olympic_logos/1956.png"/> <a href="OlympicFootballTournament?tid=54">Melbourne 1956</a></p>
+                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1952.png"/> <a href="OlympicFootballTournament?tid=55">Helsinki 1952</a></p>
+                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1948.png"/> <a href="OlympicFootballTournament?tid=56">London 1948</a></p>
+                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1936.png"/> <a href="OlympicFootballTournament?tid=57">Berlin 1936</a></p>
+                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1928.jpg"/> <a href="OlympicFootballTournament?tid=58">Amsterdam 1928</a></p>
+                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1924.png"/> <a href="OlympicFootballTournament?tid=59">Paris 1924</a></p>
+                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1920.gif"/> <a href="OlympicFootballTournament?tid=60">Antwerp 1920</a></p>
+                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1912.gif"/> <a href="OlympicFootballTournament?tid=61">Stockholm 1912</a></p>
+                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/1908.gif"/> <a href="OlympicFootballTournament?tid=62">London 1908</a></p>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <?php echo $body_html; ?>
+                            <?php echo $popover_html; ?>
+                            <p class="wb-stl-normal"> </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 margin-tb-lg">
+                            <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

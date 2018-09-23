@@ -22,28 +22,38 @@
     <div class="root content">
         <div class="vbox wb_container" id="wb_main">
             <div class="wb_cont_inner">
-                <div class="col-sm-12 margin-top-lg">
-                    <p class="wb-stl-highlight text-center russia-2018">Women's World Cup Archive</p>
-                    <p class="wb-stl-normal"> </p>
-                </div>
-                <div class="col-sm-7 col-sm-offset-2">
-                    <h5 class="wb-stl-subtitle3">
-                        <p class="border-bottom-gray5"><img src="images/wwc_logos/2015.png"/> <a href="WomenWorldCup">Canada 2015</a></p>
-                        <p class="border-bottom-gray5"><img src="images/wwc_logos/2011.png"/> <a href="WomenWorldCup?tid=34">Germany 2011</a></p>
-                        <p class="border-bottom-gray5"><img src="images/wwc_logos/2007.png"/> <a href="WomenWorldCup?tid=35">China 2007</a></p>
-                        <p class="border-bottom-gray5"><img src="images/wwc_logos/2003.png"/> <a href="WomenWorldCup?tid=36">USA 2003</a></p>
-                        <p class="border-bottom-gray5"><img src="images/wwc_logos/1999.png"/> <a href="WomenWorldCup?tid=37">USA 1999</a></p>
-                        <p class="border-bottom-gray5"><img src="images/wwc_logos/1995.png"/> <a href="WomenWorldCup?tid=38">Sweden 1995</a></p>
-                        <p class="border-bottom-gray5"><img src="images/wwc_logos/1991.png"/> <a href="WomenWorldCup?tid=39">China PR 1991</a></p>
-                    </h5>
-                </div>
-                <div>
-                    <?php echo $body_html; ?>
-                    <?php echo $popover_html; ?>
-                    <p class="wb-stl-normal"> </p>
-                </div>
-                <div class="col-sm-12 margin-tb-lg">
-                    <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12 margin-top-lg">
+                            <p class="wb-stl-highlight text-center russia-2018">Women's World Cup Archive</p>
+                            <p class="wb-stl-normal"> </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-8 offset-sm-2">
+                            <h5 class="wb-stl-subtitle3">
+                                <p class="border-bottom-gray5"><img src="images/wwc_logos/2015.png"/> <a href="WomenWorldCup">Canada 2015</a></p>
+                                <p class="border-bottom-gray5"><img src="images/wwc_logos/2011.png"/> <a href="WomenWorldCup?tid=34">Germany 2011</a></p>
+                                <p class="border-bottom-gray5"><img src="images/wwc_logos/2007.png"/> <a href="WomenWorldCup?tid=35">China 2007</a></p>
+                                <p class="border-bottom-gray5"><img src="images/wwc_logos/2003.png"/> <a href="WomenWorldCup?tid=36">USA 2003</a></p>
+                                <p class="border-bottom-gray5"><img src="images/wwc_logos/1999.png"/> <a href="WomenWorldCup?tid=37">USA 1999</a></p>
+                                <p class="border-bottom-gray5"><img src="images/wwc_logos/1995.png"/> <a href="WomenWorldCup?tid=38">Sweden 1995</a></p>
+                                <p class="border-bottom-gray5"><img src="images/wwc_logos/1991.png"/> <a href="WomenWorldCup?tid=39">China PR 1991</a></p>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <?php echo $body_html; ?>
+                            <?php echo $popover_html; ?>
+                            <p class="wb-stl-normal"> </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 margin-tb-lg">
+                            <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
