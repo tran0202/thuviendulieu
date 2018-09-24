@@ -30,15 +30,67 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-8 offset-sm-2">
-                            <h5 class="wb-stl-subtitle3">
-                                <p class="border-bottom-gray5"><img src="images/olympic_logos/2016.png"/> <a href="WomenOlympicFootballTournament">Rio 2016</a></p>
-                                <p class="border-bottom-gray5"><img src="images/olympic_logos/2012.png"/> <a href="WomenOlympicFootballTournament?tid=63">London 2012</a></p>
-                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/2008.png"/> <a href="WomenOlympicFootballTournament?tid=64">Beijing 2008</a></p>
-                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/2004.png"/> <a href="WomenOlympicFootballTournament?tid=65">Athens 2004</a></p>
-                                <p class="border-bottom-gray5"><img height="100" src="images/olympic_logos/2000.png"/> <a href="WomenOlympicFootballTournament?tid=66">Sydney 2000</a></p>
-                                <p class="border-bottom-gray5"><img src="images/olympic_logos/1996.png"/> <a href="WomenOlympicFootballTournament?tid=67">Atlanta 1996</a></p>
-                            </h5>
+                        <div class="col-sm-12">
+                            <div class="card-group">
+                                <div class="card">
+                                    <span class="mx-auto">
+                                        <img class="card-img-top card-img-top-height-100 padding-top-sm" src="images/olympic_logos/2020.png" alt="Tokyo 2020">
+                                    </span>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center">Tokyo 2020</h5>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <span class="mx-auto">
+                                        <a href="WomenOlympicFootballTournament"><img class="card-img-top card-img-top-height-100 padding-top-sm" src="images/olympic_logos/2016.png" alt="Rio 2016"></a>
+                                    </span>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center"><a href="WomenOlympicFootballTournament">Rio 2016</a></h5>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <span class="mx-auto">
+                                        <a href="WomenOlympicFootballTournament?tid=63"><img class="card-img-top card-img-top-height-100 padding-top-sm" src="images/olympic_logos/2012.png" alt="London 2012"></a>
+                                    </span>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center"><a href="WomenOlympicFootballTournament?tid=63">London 2012</a></h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-group">
+                                <div class="card">
+                                    <span class="mx-auto">
+                                        <a href="WomenOlympicFootballTournament?tid=64"><img class="card-img-top card-img-top-height-100 padding-top-sm" src="images/olympic_logos/2008.png" alt="Beijing 2008"></a>
+                                    </span>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center"><a href="WomenOlympicFootballTournament?tid=64">Beijing 2008</a></h5>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <span class="mx-auto">
+                                        <a href="WomenOlympicFootballTournament?tid=65"><img class="card-img-top card-img-top-height-100 padding-top-sm" src="images/olympic_logos/2004.png" alt="Athens 2004"></a>
+                                    </span>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center"><a href="WomenOlympicFootballTournament?tid=65">Athens 2004</a></h5>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <span class="mx-auto">
+                                        <a href="WomenOlympicFootballTournament?tid=66"><img class="card-img-top card-img-top-height-100 padding-top-sm" src="images/olympic_logos/2000.png" alt="Sydney 2000"></a>
+                                    </span>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center"><a href="WomenOlympicFootballTournament?tid=66">Sydney 2000</a></h5>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <span class="mx-auto">
+                                        <a href="WomenOlympicFootballTournament?tid=67"><img class="card-img-top card-img-top-height-100 padding-top-sm" src="images/olympic_logos/1996.png" alt="Atlanta 1996"></a>
+                                    </span>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center"><a href="WomenOlympicFootballTournament?tid=67">Atlanta 1996</a></h5>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">

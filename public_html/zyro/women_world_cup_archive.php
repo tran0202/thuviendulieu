@@ -30,16 +30,75 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-8 offset-sm-2">
-                            <h5 class="wb-stl-subtitle3">
-                                <p class="border-bottom-gray5"><img src="images/wwc_logos/2015.png"/> <a href="WomenWorldCup">Canada 2015</a></p>
-                                <p class="border-bottom-gray5"><img src="images/wwc_logos/2011.png"/> <a href="WomenWorldCup?tid=34">Germany 2011</a></p>
-                                <p class="border-bottom-gray5"><img src="images/wwc_logos/2007.png"/> <a href="WomenWorldCup?tid=35">China 2007</a></p>
-                                <p class="border-bottom-gray5"><img src="images/wwc_logos/2003.png"/> <a href="WomenWorldCup?tid=36">USA 2003</a></p>
-                                <p class="border-bottom-gray5"><img src="images/wwc_logos/1999.png"/> <a href="WomenWorldCup?tid=37">USA 1999</a></p>
-                                <p class="border-bottom-gray5"><img src="images/wwc_logos/1995.png"/> <a href="WomenWorldCup?tid=38">Sweden 1995</a></p>
-                                <p class="border-bottom-gray5"><img src="images/wwc_logos/1991.png"/> <a href="WomenWorldCup?tid=39">China PR 1991</a></p>
-                            </h5>
+                        <div class="col-sm-12">
+                            <div class="card-group">
+                                <div class="card">
+                                    <span class="mx-auto">
+                                        <img class="card-img-top card-img-top-height-100 padding-top-sm" src="images/wwc_logos/2019.png" alt="France 2019">
+                                    </span>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center">France 2019</h5>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <span class="mx-auto">
+                                        <a href="WomenWorldCup"><img class="card-img-top card-img-top-height-100 padding-top-sm" src="images/wwc_logos/2015.png" alt="Canada 2015"></a>
+                                    </span>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center"><a href="WomenWorldCup">Canada 2015</a></h5>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <span class="mx-auto">
+                                        <a href="WomenWorldCup?tid=34"><img class="card-img-top card-img-top-height-100 padding-top-sm" src="images/wwc_logos/2011.png" alt="Germany 2011"></a>
+                                    </span>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center"><a href="WomenWorldCup?tid=34">Germany 2011</a></h5>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <span class="mx-auto">
+                                        <a href="WomenWorldCup?tid=35"><img class="card-img-top card-img-top-height-100 padding-top-sm" src="images/wwc_logos/2007.png" alt="China 2007"></a>
+                                    </span>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center"><a href="WomenWorldCup?tid=35">China 2007</a></h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-group">
+                                <div class="card">
+                                    <span class="mx-auto">
+                                        <a href="WomenWorldCup?tid=36"><img class="card-img-top card-img-top-height-100 padding-top-sm" src="images/wwc_logos/2003.png" alt="USA 2003"></a>
+                                    </span>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center"><a href="WomenWorldCup?tid=36">USA 2003</a></h5>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <span class="mx-auto">
+                                        <a href="WomenWorldCup?tid=37"><img class="card-img-top card-img-top-height-100 padding-top-sm" src="images/wwc_logos/1999.png" alt="USA 1999"></a>
+                                    </span>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center"><a href="WomenWorldCup?tid=37">USA 1999</a></h5>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <span class="mx-auto">
+                                        <a href="WomenWorldCup?tid=38"><img class="card-img-top card-img-top-height-100 padding-top-sm" src="images/wwc_logos/1995.png" alt="Sweden 1995"></a>
+                                    </span>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center"><a href="WomenWorldCup?tid=38">Sweden 1995</a></h5>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <span class="mx-auto">
+                                        <a href="WomenWorldCup?tid=39"><img class="card-img-top card-img-top-height-100 padding-top-sm" src="images/wwc_logos/1991.png" alt="China PR 1991"></a>
+                                    </span>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center"><a href="WomenWorldCup?tid=39">China PR 1991</a></h5>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
