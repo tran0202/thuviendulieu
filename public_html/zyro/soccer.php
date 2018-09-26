@@ -17,19 +17,6 @@
         <div class="vbox wb_container" id="wb_main">
             <div class="wb_cont_inner">
                 <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <p class="wb-stl-highlight text-center">Women's World Cup <br>France 2019</p>
-                            <p class="wb-stl-normal"> </p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="col-sm-8 offset-sm-2 text-center">
-                                <div class="clock"></div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="card-group">
                         <div class="card">
                             <img class="card-img-top card-img-top-height-200 mx-auto padding-top-sm" src="images/unl_logos/unl.jpg" alt="Russia 2018">
@@ -60,6 +47,25 @@
                         </div>
                     </div>
                     <div class="card-group">
+                        <div class="card">
+                            <span class="mx-auto">
+                                <img class="card-img-top card-img-top-height-100 mx-auto padding-top-sm" src="images/olympic_logos/2020.png" alt="Tokyo 2020">
+                                <a href="OlympicFootballTournament"><img class="card-img-top card-img-top-height-100 mx-auto padding-top-sm" src="images/olympic_logos/2016.png" alt="Rio 2016"></a>
+                                <a href="OlympicFootballTournament?tid=40"><img class="card-img-top card-img-top-height-100 mx-auto padding-top-sm" src="images/olympic_logos/2012.png" alt="Lndon 2012"></a>
+                            </span>
+                            <span class="mx-auto">
+                                <a href="OlympicFootballTournament?tid=41"><img class="card-img-top card-img-top-height-100 mx-auto padding-top-sm" src="images/olympic_logos/2008.png" alt="Beijing 2008"></a>
+                                <a href="OlympicFootballTournament?tid=42"><img class="card-img-top card-img-top-height-100 mx-auto padding-top-sm" src="images/olympic_logos/2004.png" alt="Athens 2004"></a>
+                                <a href="OlympicFootballTournament?tid=43"><img class="card-img-top card-img-top-height-100 mx-auto padding-top-sm" src="images/olympic_logos/2000.png" alt="Sydney 2000"></a>
+                            </span>
+                            <div class="card-body">
+                                <h5 class="card-title">Olympic Football Tournaments</h5>
+                                <p class="card-text">
+                                    <a href="OlympicFootballTournamentArchive" class="card-link">Men's Archive <span class="fa fa-futbol-o"></span></a>
+                                    <a href="WomenOlympicFootballTournamentArchive" class="card-link">Women's Archive <span class="fa fa-futbol-o"></span></a>
+                                </p>
+                            </div>
+                        </div>
                         <div class="card">
                             <span class="mx-auto">
                                 <a href="WorldCup"><img class="card-img-top card-img-top-height-100 padding-top-sm" src="images/wc_logos/2018.png" alt="Russia 2018"></a>
@@ -96,25 +102,6 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="card">
-                            <span class="mx-auto">
-                                <img class="card-img-top card-img-top-height-100 mx-auto padding-top-sm" src="images/olympic_logos/2020.png" alt="Tokyo 2020">
-                                <a href="OlympicFootballTournament"><img class="card-img-top card-img-top-height-100 mx-auto padding-top-sm" src="images/olympic_logos/2016.png" alt="Rio 2016"></a>
-                                <a href="OlympicFootballTournament?tid=40"><img class="card-img-top card-img-top-height-100 mx-auto padding-top-sm" src="images/olympic_logos/2012.png" alt="Lndon 2012"></a>
-                            </span>
-                            <span class="mx-auto">
-                                <a href="OlympicFootballTournament?tid=41"><img class="card-img-top card-img-top-height-100 mx-auto padding-top-sm" src="images/olympic_logos/2008.png" alt="Beijing 2008"></a>
-                                <a href="OlympicFootballTournament?tid=42"><img class="card-img-top card-img-top-height-100 mx-auto padding-top-sm" src="images/olympic_logos/2004.png" alt="Athens 2004"></a>
-                            </span>
-                            <div class="card-body">
-                                <h5 class="card-title">Olympic Football Tournaments</h5>
-                                <p class="card-text">
-                                    <a href="OlympicFootballTournamentArchive" class="card-link">Men's Archive <span class="fa fa-futbol-o"></span></a>
-                                    <a href="WomenOlympicFootballTournamentArchive" class="card-link">Women's Archive <span class="fa fa-futbol-o"></span></a>
-                                </p>
-
-                            </div>
-                        </div>
                     </div>
                     <!--                <div class="col-sm-12 margin-top-lg padding-top-lg border-top-gray5">-->
                     <!--                    <p class="wb-stl-highlight text-center">Imagination</p>-->
@@ -126,6 +113,18 @@
                     <!--                        First 2 Matches: <a href="Russia2018Groups?fid=2">Groups</a> | <a href="Russia2018Schedule?fid=2">Schedule</a>-->
                     <!--                    </h5>-->
                     <!--                </div>-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p class="wb-stl-highlight3 text-center">Women's World Cup <br>France 2019</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="col-sm-8 offset-sm-2 text-center">
+                                <div class="clock"></div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-sm-12 margin-tb-lg">
                             <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>

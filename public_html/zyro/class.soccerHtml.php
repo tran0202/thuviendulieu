@@ -291,7 +291,8 @@
                     $output .= '<img class="flag-sm" src="/images/flags/'.$_team->getFlagFilename().'">';
                 }
                 else {
-                    $output .= '<img class="flag-md" src="/images/flags/'.$_team->getFlagFilename().'">';
+                    if ($_team->getFlagFilename() == 'Olympic.png') $output .= '<img class="flag-md" style="height:25px;" src="/images/flags/Olympic.png">';
+                    else $output .= '<img class="flag-md" src="/images/flags/'.$_team->getFlagFilename().'">';
                 }
                 $output .=     '</div>
                                         '.$tc_col.'

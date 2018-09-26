@@ -91,7 +91,11 @@ INSERT INTO team (name, team_type_id, nation_id)
 VALUES ('Brazil', 4, 28), ('Denmark', 4, 56), ('Iraq', 4, 94), ('South Africa', 4, 173),
 	   ('Nigeria', 4, 140), ('Colombia', 4, 44), ('Japan', 4, 98), ('Sweden', 4, 183),
 	   ('Korea Republic', 4, 103), ('Germany', 4, 76), ('Mexico', 4, 125), ('Fiji', 4, 69),
-	   ('Portugal', 4, 152), ('Honduras', 4, 87), ('Argentina', 4, 9), ('Algeria', 4, 3);
+	   ('Portugal', 4, 152), ('Honduras', 4, 87), ('Argentina', 4, 9), ('Algeria', 4, 3),
+	   ('Spain*', 4, 222), ('Burma', 4, 223), ('United Arab Republic', 4, 224), ('Republic of China', 4, 225);
+
+INSERT INTO team (name, team_type_id, nation_id)
+VALUES ('Netherlands Antilles', 4, 226);
 
 # Women's Olympic
 

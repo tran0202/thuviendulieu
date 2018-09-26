@@ -47,6 +47,10 @@
 .wb-stl-highlight2 a { font: normal normal 72px "Capture it",sans-serif; color: #f39205; text-decoration: none; text-align: left; font-style: normal; }
 .wb-stl-highlight2 a:hover { font: normal normal 72px "Capture it",sans-serif; color: #d9f1ff; text-decoration: none; text-align: left; font-style: normal; }
 .wb-stl-highlight2 ul { list-style-image: url(''); }
+.wb-stl-highlight3 { font: normal normal 64px "Capture it",sans-serif; color: #ffffff; text-decoration: none; text-align: left; margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; text-transform: capitalize; }
+.wb-stl-highlight3 a { font: normal normal 64px "Capture it",sans-serif; color: #ffffff; text-decoration: none; text-align: left; font-style: normal; }
+.wb-stl-highlight3 a:hover { font: normal normal 64px "Capture it",sans-serif; color: #d9f1ff; text-decoration: none; text-align: left; font-style: normal; }
+.wb-stl-highlight3 ul { list-style-image: url(''); }
 .wb-stl-special { font: normal bold 14px Arial,Helvetica,sans-serif; color: #000000; text-decoration: underline; text-align: left; margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; text-transform: capitalize; }
 .wb-stl-special a { font: normal bold 14px Arial,Helvetica,sans-serif; color: #000000; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }
 .wb-stl-special a:hover { font: normal bold 14px Arial,Helvetica,sans-serif; color: #000000; text-decoration: none; text-align: left; font-weight: normal; font-style: normal; }
@@ -72,7 +76,7 @@ body {
 .bg-soccer { background: transparent url("../gallery_gen/2e2b5ed481378571fee71d28f855c5fc.jpg") repeat scroll center top; }
 .bg-tennis { background: transparent url("../gallery/tennis-fun-1-1398467.jpg") no-repeat scroll center top; }
 .root { overflow: visible; }
-#wb_header { height: 270px; }
+#wb_header { height: 250px; }
 #wb_main { height: 890px; padding-bottom: 50px; }
 
 .wb-stl-footer.black { color: #333333; }
@@ -119,7 +123,7 @@ body {
 }
 /* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
 .sticky + .content {
-    padding-top: 306px;
+    padding-top: 301px;
 }
 
 /* ========== Boxes ========== */
@@ -166,6 +170,7 @@ body {
 .modal-X { font-size: 48px; }
 .modal-close { font-size: 26px; }
 .card-img-top-height-100 { width: auto; height: 100px; }
+.card-img-top-height-150 { width: auto; height: 150px; }
 .card-img-top-height-200 { width: auto; height: 200px; }
 
 a:hover.hover-pointer { cursor: pointer; }
