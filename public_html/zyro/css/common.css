@@ -130,8 +130,8 @@ body {
 
 .box-sm { padding: 10px 0; }
 .box-xl { padding: 20px 50px; }
-.box-col-lg { width: 31%; max-width: 31%; }
-.box-col-md { width: 10%; max-width: 10%; }
+.box-col-lg { width: 29%; max-width: 29%; }
+.box-col-md { width: 12%; max-width: 12%; }
 .box-col-sm { width: 6.5%; max-width: 6.5%; }
 
 .box-sm, .box-xl {

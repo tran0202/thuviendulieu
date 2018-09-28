@@ -668,7 +668,8 @@
             if (self::isEqualStanding($team1, $team2)) {
                 $still_tie = self::applyTiebreaker($team1, $team2, $matches);
                 if ($still_tie) $still_tie = self::fairPlayRule($team1, $team2);
-                if ($still_tie) self::drawingLots($team1, $team2);
+                if ($still_tie) $still_tie = self::drawingLots($team1, $team2);
+                if ($still_tie) self::alphabetOrder($team1, $team2);
             }
             elseif (self::isHigherStanding($team2, $team1)) {
                 self::swapTeam($team1, $team2);
@@ -937,28 +938,27 @@
         }
 
         public static function applyTiebreaker(&$t1, &$t2, $matches) {
-            $still_tie = false;
             for ($i = 0; $i < sizeof($matches); $i++) {
                 if ($matches[$i]->getHomeTeamName() == $t1->getName() && $matches[$i]->getAwayTeamName() == $t2->getName()) {
                     if ($matches[$i]->getHomeTeamScore() < $matches[$i]->getAwayTeamScore()) {
                         self::swapTeam($t1, $t2);
+                        return false;
                     }
-                    elseif ($matches[$i]->getHomeTeamScore() == $matches[$i]->getAwayTeamScore()) {
-                        $still_tie = true;
+                    elseif ($matches[$i]->getHomeTeamScore() != null && $matches[$i]->getHomeTeamScore() == $matches[$i]->getAwayTeamScore()) {
+                        return true;
                     }
-                    break;
                 }
                 elseif ($matches[$i]->getAwayTeamName() == $t1->getName() && $matches[$i]->getHomeTeamName() == $t2->getName()) {
                     if ($matches[$i]->getAwayTeamScore() < $matches[$i]->getHomeTeamScore()) {
                         self::swapTeam($t1, $t2);
+                        return false;
                     }
-                    elseif ($matches[$i]->getAwayTeamScore() == $matches[$i]->getHomeTeamScore()) {
-                        $still_tie = true;
+                    elseif ($matches[$i]->getHomeTeamScore() != null && $matches[$i]->getAwayTeamScore() == $matches[$i]->getHomeTeamScore()) {
+                        return true;
                     }
-                    break;
                 }
             }
-            return $still_tie;
+            return true;
         }
 
         public static function fairPlayRule(&$t1, &$t2) {
@@ -977,8 +977,18 @@
 
             }
             else {
-                self::coinToss($t1, $t2);
+                return true;
             }
+            return false;
+        }
+
+        public static function alphabetOrder(&$t1, &$t2) {
+            if (strcasecmp(substr($t1->getName(), 0, 3) , substr($t2->getName(), 0, 3)) > 0) {
+                self::swapTeam($t1, $t2);
+            }
+//            else {
+//                self::coinToss($t1, $t2);
+//            }
         }
 
         public static function coinToss(&$t1, &$t2) {

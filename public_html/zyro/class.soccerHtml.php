@@ -180,9 +180,14 @@
                             $table_name = 'Ranking of third-placed teams';
                         }
                         $modal_body .= self::getTeamTableHeaderHtml(false);
+                        $ranking = 0;
+                        $count = 0;
+                        $previous_team = null;
                         foreach ($_teams as $name => $_team) {
+                            self::getNextRanking($_team, $previous_team, $ranking, $count, false);
                             $modal_body .= self::getTeamHtml($tournament, $_team, $team_type, $stage, false,
-                                null, $current_best_finish, $striped_row);
+                                null, $current_best_finish, $striped_row, $ranking);
+                            $previous_team = $_team;
                         }
                         $output .= self::getModalHtml($group_id.'Standing', $table_name, $modal_body);
                     }
@@ -256,7 +261,7 @@
             return $output;
         }
 
-        public static function getTeamHtml($tournament, $_team, $team_type, $stage, $from_ranking, $all_time, &$current_best_finish, &$striped) {
+        public static function getTeamHtml($tournament, $_team, $team_type, $stage, $from_ranking, $all_time, &$current_best_finish, &$striped, $ranking) {
             $output = '';
             $goal_diff = $_team->getGoalDiff();
             if ($_team->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
@@ -285,14 +290,15 @@
             if (!$all_time || ($all_time && $_team->getMatchPlay() != 0)) {
                 $output .=     '<div class="col-sm-12 padding-tb-md team-row '.$striped.'">
                                 <div class="row">
-                                        <div class="box-col-md" style="margin-top:-3px;padding-left:15px;">';
+                                        <div class="box-col-md" style="padding-left:15px;">';
+                $output .= '<span class="ranking-count"><small>'.$ranking.'&nbsp;&nbsp;</small></span>';
                 if ($team_type == self::CLUB) {
-                    $output .= '<img height=32 src="/images/club_logos/'.$_team->getLogoFilename().'">';
-                    $output .= '<img class="flag-sm" src="/images/flags/'.$_team->getFlagFilename().'">';
+                    $output .= '<img height=32 style="margin-top:-6px;" src="/images/club_logos/'.$_team->getLogoFilename().'">';
+                    $output .= '<img class="flag-sm" style="margin-top:-6px;" src="/images/flags/'.$_team->getFlagFilename().'">';
                 }
                 else {
-                    if ($_team->getFlagFilename() == 'Olympic.png') $output .= '<img class="flag-md" style="height:25px;" src="/images/flags/Olympic.png">';
-                    else $output .= '<img class="flag-md" src="/images/flags/'.$_team->getFlagFilename().'">';
+                    if ($_team->getFlagFilename() == 'Olympic.png') $output .= '<img class="flag-md" style="height:25px;margin-top:-6px;" src="/images/flags/Olympic.png">';
+                    else $output .= '<img class="flag-md" style="margin-top:-6px;" src="/images/flags/'.$_team->getFlagFilename().'">';
                 }
                 $output .=     '</div>
                                         '.$tc_col.'
@@ -374,7 +380,10 @@
                         $output2 = self::getFinishLiteral($_team->getBestFinish());
                     }
                     if ($_team->getBestFinish() == Soccer::Champion) $champ_count++;
-                    $output3 .= '<p><b>'.self::getShortTournamentName($tournament_names).':</b> <i>'.self::getFinishLiteral($_team->getBestFinish()).'</i></p>';
+                    $output3 .= '<p><b>'.self::getShortTournamentName($tournament_names).':</b> <i>'.self::getFinishLiteral($_team->getBestFinish()).'</i> ';
+                    if ($_team->getParentName() != null) {
+                        $output3 .= '<span class="gray4"><small>(as '.$_team->getName().')</small></span></p>';
+                    }
                 }
                 $champ_count_text = '';
                 if ($champ_count > 1) $champ_count_text = '('.$champ_count.')';
@@ -409,13 +418,42 @@
 
             $current_best_finish = $teams[0]->getBestFinish();
             $striped_row = 'ranking-striped';
+            $ranking = 0;
+            $count = 0;
+            $previous_team = null;
 
             for ($i = 0; $i < sizeof($teams); $i++) {
+                self::getNextRanking($teams[$i], $previous_team, $ranking, $count, $all_time);
                 $output .= self::getTeamHtml($tournament, $teams[$i], self::TEAM, null, true,
-                    $all_time, $current_best_finish, $striped_row);
+                    $all_time, $current_best_finish, $striped_row, $ranking);
+                $previous_team = $teams[$i];
             }
             $output .= '</div>';
             return $output;
+        }
+
+        public static function getNextRanking($team, $previous_team, &$ranking, &$count, $all_time) {
+            if ($all_time) {
+                if ($team->getParentName() == null) {
+                    $count++;
+                    if (!self::isSameRanking($team, $previous_team)) {
+                        $ranking = $count;
+                    }
+                }
+            }
+            else {
+                $count++;
+                if (!self::isSameRanking($team, $previous_team)) {
+                    $ranking = $count;
+                }
+            }
+        }
+
+        public static function isSameRanking($team, $previous_team) {
+            if ($previous_team == null) return false;
+            return $team->getPoint() == $previous_team->getPoint()
+                && $team->getGoalFor() == $previous_team->getGoalFor()
+                && $team->getGoalAgainst() == $previous_team->getGoalAgainst();
         }
 
         public static function getSoccerStandingsHtml($tournament) {
@@ -470,9 +508,14 @@
                 $output .= '</div>
                     <div class="col-sm-12 h2-ff3 box-xl">';
                 $output .= self::getTeamTableHeaderHtml(false);
+                $ranking = 0;
+                $count = 0;
+                $previous_team = null;
                 foreach ($_teams as $name => $_team) {
+                    self::getNextRanking($_team, $previous_team, $ranking, $count, false);
                     $output .= self::getTeamHtml($tournament, $_team, $team_type, Soccer::First, false,
-                        false, $current_best_finish, $striped_row);
+                        false, $current_best_finish, $striped_row, $ranking);
+                    $previous_team = $_team;
                 }
                 $output .= '</div>';
                 if ($matches_link_type == self::MATCHES_LINK_COLLAPSE) {
@@ -630,6 +673,8 @@
             if ($_match->getHomeTeamCode() != '') {
                 $home_flag = '<img class="flag-md" src="/images/flags/'.$_match->getHomeFlag().'">';
                 $away_flag = '<img class="flag-md" src="/images/flags/'.$_match->getAwayFlag().'">';
+                if ($_match->getHomeFlag() == 'Olympic.png') $home_flag = '<img class="flag-md" style="height:25px;margin-top:6px;" src="/images/flags/Olympic.png">';
+                if ($_match->getAwayFlag() == 'Olympic.png') $away_flag = '<img class="flag-md" style="height:25px;margin-top:6px;" src="/images/flags/Olympic.png">';
             }
             $home_team_name = $_match->getHomeTeamName();
             $away_team_name = $_match->getAwayTeamName();
@@ -868,7 +913,7 @@
             $result = $tab_array[0];
             for ($i = 0; $i < sizeof($week_start_date); $i++) {
                 $now = date_create('now');
-                if ($now->format('Y-m-d') >= $week_start_date[$i]) {
+                if (date_add($now, date_interval_create_from_date_string("1 day"))->format('Y-m-d') >= $week_start_date[$i]) {
                     if ($i == sizeof($week_start_date) - 1) $result = $tab_array[$i];
                     elseif ($now->format('Y-m-d') < $week_start_date[$i + 1]) $result = $tab_array[$i];
                 }

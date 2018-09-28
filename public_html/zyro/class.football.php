@@ -305,10 +305,10 @@
                 }
                 elseif ($matches[$i]->getAwayTeamName() == strtoupper($t1->getName()) && $matches[$i]->getHomeTeamName() == strtoupper($t2->getName())) {
                     if ($matches[$i]->getAwayTeamScore() > $matches[$i]->getHomeTeamScore()) {
-                        $t2_point = $t2_point + 1;
+                        $t1_point = $t1_point + 1;
                     }
                     if ($matches[$i]->getAwayTeamScore() < $matches[$i]->getHomeTeamScore()) {
-                        $t1_point = $t1_point + 1;
+                        $t2_point = $t2_point + 1;
                     }
                     elseif ($matches[$i]->getAwayTeamScore() == $matches[$i]->getHomeTeamScore()) {
                         $t1_point = $t1_point + 0.5;
@@ -666,7 +666,7 @@
             $result = $tab_array[0];
             for ($i = 0; $i < sizeof($week_start_date); $i++) {
                 $now = date_create('now');
-                if ($now->format('Y-m-d') >= $week_start_date[$i]) {
+                if (date_add($now, date_interval_create_from_date_string("1 day"))->format('Y-m-d') >= $week_start_date[$i]) {
                     if ($i == sizeof($week_start_date) - 1) $result = $tab_array[$i];
                     elseif ($now->format('Y-m-d') < $week_start_date[$i + 1]) $result = $tab_array[$i];
                 }
@@ -712,6 +712,13 @@
                             </li>';
             }
             $output .= '</ul>';
+            $output .= '<script>
+                            $(function() {
+                                    $(".nav-tabs a").on("shown.bs.tab", function(){
+                                        $("#collapse-teams-filter").collapse("hide");
+                                    });
+                            });
+                        </script>';
             return $output;
         }
 
@@ -890,7 +897,6 @@
         }
 
         public static function getTeamDefaultTabScript($name) {
-            $result = '';
             $now = date_create('now');
             if ($now->format('Y-m-d') < '2018-09-09') {
                 $result = '<script>
