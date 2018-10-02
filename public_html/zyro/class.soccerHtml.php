@@ -30,7 +30,11 @@
         const TEAM_VIEW_1 = 1;
         const TEAM_VIEW_2 = 2;
 
-        const CONTENT = '_content';
+        const CONTENT = '-content';
+
+        const TOURNAMENT = 1;
+        const CONFEDERATION = 2;
+        const ALL_TIME = 3;
 
         public static function getSoccerGroupHtml($tournament) {
             $teams = Team::getTeamArrayByGroup($tournament->getTeams());
@@ -179,16 +183,8 @@
                         elseif ($group_name == 'ThirdPlace') {
                             $table_name = 'Ranking of third-placed teams';
                         }
-                        $modal_body .= self::getTeamTableHeaderHtml(false);
-                        $ranking = 0;
-                        $count = 0;
-                        $previous_team = null;
-                        foreach ($_teams as $name => $_team) {
-                            self::getNextRanking($_team, $previous_team, $ranking, $count, false);
-                            $modal_body .= self::getTeamHtml($tournament, $_team, $team_type, $stage, false,
-                                null, $current_best_finish, $striped_row, $ranking);
-                            $previous_team = $_team;
-                        }
+                        $modal_body .= self::getTeamRankingTableHtml($tournament, $_teams, $team_type, $stage,
+                            false, false, $current_best_finish, $striped_row);
                         $output .= self::getModalHtml($group_id.'Standing', $table_name, $modal_body);
                     }
                 }
@@ -316,6 +312,20 @@
             return $output;
         }
 
+        public static function getTeamRankingTableHtml($tournament, $_teams, $team_type, $stage, $from_ranking, $all_time, &$current_best_finish, &$striped) {
+            $ranking = 0;
+            $count = 0;
+            $previous_team = null;
+            $output = self::getTeamTableHeaderHtml($all_time);
+            foreach ($_teams as $name => $_team) {
+                self::getNextRanking($_team, $previous_team, $ranking, $count, $all_time);
+                $output .= self::getTeamHtml($tournament, $_team, $team_type, $stage, $from_ranking,
+                    $all_time, $current_best_finish, $striped, $ranking);
+                $previous_team = $_team;
+            }
+            return $output;
+        }
+
         public static function getSoccerPopoverHtml($tournament) {
             $teams = $tournament->getTeams();
             $output = '';
@@ -380,9 +390,13 @@
                         $output2 = self::getFinishLiteral($_team->getBestFinish());
                     }
                     if ($_team->getBestFinish() == Soccer::Champion) $champ_count++;
-                    $output3 .= '<p><b>'.self::getShortTournamentName($tournament_names).':</b> <i>'.self::getFinishLiteral($_team->getBestFinish()).'</i> ';
+                    $short_tournament_name = self::getShortTournamentName($tournament_names);
+                    $output3 .= '<p><b>'.$short_tournament_name.':</b> <i>'.self::getFinishLiteral($_team->getBestFinish()).'</i> ';
                     if ($_team->getParentName() != null) {
                         $output3 .= '<span class="gray4"><small>(as '.$_team->getName().')</small></span></p>';
+                    }
+                    if ($_team->getName() == 'AUSTRALIA' || $_team->getName() == 'ISRAEL') {
+                        $output3 .= '<span class="gray4"><small>(as an '.$_team->getConfederationName().' member)</small></span></p>';
                     }
                 }
                 $champ_count_text = '';
@@ -397,63 +411,70 @@
         }
 
         public static function getSoccerRankingHtml($tournament) {
-            $tournament->concatBodyHtml(self::getRankingHtml($tournament, $tournament->getTeams(), false));
+            $tournament->concatBodyHtml(self::getRankingHtml($tournament, $tournament->getTeams(), self::TOURNAMENT));
         }
 
         public static function getAllTimeSoccerRankingHtml($tournament) {
-            $tournament->concatBodyHtml(self::getRankingHtml($tournament, $tournament->getTeams(), true));
-        }
-
-        public static function getRankingHtml($tournament, $teams, $all_time) {
-            if (sizeof($teams) == 0) return null;
-            if (!$all_time) $teams = Team::getTeamArrayByBestFinish($teams);
-            $title = 'Tournament Rankings';
-            if ($all_time) {
-                $title = 'All Time Rankings';
-            }
-
-            $output = '<div class="col-sm-12 h2-ff2 margin-top-lg">'.$title.'</div>
-                        <div class="col-sm-12 h2-ff3 box-xl">';
-            $output .= self::getTeamTableHeaderHtml($all_time);
-
-            $current_best_finish = $teams[0]->getBestFinish();
-            $striped_row = 'ranking-striped';
-            $ranking = 0;
-            $count = 0;
-            $previous_team = null;
-
-            for ($i = 0; $i < sizeof($teams); $i++) {
-                self::getNextRanking($teams[$i], $previous_team, $ranking, $count, $all_time);
-                $output .= self::getTeamHtml($tournament, $teams[$i], self::TEAM, null, true,
-                    $all_time, $current_best_finish, $striped_row, $ranking);
-                $previous_team = $teams[$i];
+            $confederations = Team::getConfederationArray($tournament->getTournamentTeams());
+            $teams = Team::getTeamArrayByConfederation($tournament);
+            $output = '';
+            $output .= '<div class="margin-top-sm">';
+            $output .= self::getCollapseFilteringConfederationsHtml($tournament);
+            $output .= '<div class="tab-content" id="filter-tabContent">';
+            $output .= '<div class="tab-pane fade" id="All'.self::CONTENT.'" role="tabpanel" aria-labelledby="All-tab">';
+            $output .= self::getAllConfederationsRankingHtml($tournament);
+            $output .= '</div>';
+            foreach ($confederations as $confederation_name => $_confederation) {
+                $confederation_tab = self::getValidHtmlId($confederation_name);
+                $output .= '<div class="tab-pane fade" id="'.$confederation_tab.self::CONTENT.'" role="tabpanel" aria-labelledby="'.$confederation_tab.'-tab">';
+                $output .= '<span class="margin-left-md">'.Team::getFilteringLogo($_confederation, Team::CONFEDERATION_LOGO).'</span>';
+                $output .= self::getConfederationRankingHtml($tournament, $teams[$confederation_name]);
+                $output .= '</div>';
             }
             $output .= '</div>';
+            $output .= '</div>';
+            $tournament->concatBodyHtml($output);
+        }
+
+        public static function getAllConfederationsRankingHtml($tournament) {
+            $output = self::getRankingHtml($tournament, $tournament->getTeams(), self::ALL_TIME);
+            $output .= self::getAllTabScript();
             return $output;
         }
 
-        public static function getNextRanking($team, $previous_team, &$ranking, &$count, $all_time) {
-            if ($all_time) {
-                if ($team->getParentName() == null) {
-                    $count++;
-                    if (!self::isSameRanking($team, $previous_team)) {
-                        $ranking = $count;
-                    }
-                }
+        public static function getConfederationRankingHtml($tournament, $teams) {
+            $teams_tmp = array();
+            foreach ($teams as $team_name => $_team) {
+                array_push($teams_tmp, $_team);
             }
-            else {
-                $count++;
-                if (!self::isSameRanking($team, $previous_team)) {
-                    $ranking = $count;
-                }
-            }
+            $teams_tmp = Soccer::sortGroupStanding($teams_tmp, $tournament->getMatches());
+            $output = self::getRankingHtml($tournament, $teams_tmp, self::CONFEDERATION);
+            return $output;
         }
 
-        public static function isSameRanking($team, $previous_team) {
-            if ($previous_team == null) return false;
-            return $team->getPoint() == $previous_team->getPoint()
-                && $team->getGoalFor() == $previous_team->getGoalFor()
-                && $team->getGoalAgainst() == $previous_team->getGoalAgainst();
+        public static function getRankingHtml($tournament, $teams, $ranking_table) {
+            if (sizeof($teams) == 0) return null;
+            switch ($ranking_table) {
+                case self::TOURNAMENT:
+                    $teams = Team::getTeamArrayByBestFinish($teams);
+                    $title = 'Tournament Rankings';
+                    break;
+                case self::CONFEDERATION:
+                    $title = 'Confederation Rankings';
+                    break;
+                default:
+                    $title = 'All Time Rankings';
+                    break;
+            }
+            $output = '<div class="col-sm-12 h2-ff2 margin-top-md">'.$title.'</div>
+                        <div class="col-sm-12 h2-ff3 box-xl">';
+            $current_best_finish = $teams[0]->getBestFinish();
+            $striped_row = 'ranking-striped';
+            $_teams = Team::getTeamArrayByName($teams);
+            $output .= self::getTeamRankingTableHtml($tournament, $_teams, self::TEAM, null,
+                true, $ranking_table != self::TOURNAMENT, $current_best_finish, $striped_row);
+            $output .= '</div>';
+            return $output;
         }
 
         public static function getSoccerStandingsHtml($tournament) {
@@ -507,16 +528,8 @@
                 }
                 $output .= '</div>
                     <div class="col-sm-12 h2-ff3 box-xl">';
-                $output .= self::getTeamTableHeaderHtml(false);
-                $ranking = 0;
-                $count = 0;
-                $previous_team = null;
-                foreach ($_teams as $name => $_team) {
-                    self::getNextRanking($_team, $previous_team, $ranking, $count, false);
-                    $output .= self::getTeamHtml($tournament, $_team, $team_type, Soccer::First, false,
-                        false, $current_best_finish, $striped_row, $ranking);
-                    $previous_team = $_team;
-                }
+                $output .= self::getTeamRankingTableHtml($tournament, $_teams, $team_type, Soccer::First,
+                    false, false, $current_best_finish, $striped_row);
                 $output .= '</div>';
                 if ($matches_link_type == self::MATCHES_LINK_COLLAPSE) {
                     $output .= self::getCollapseHtml(self::getValidHtmlId($parent_group_name).$group_name.'matches', 'Matches',
@@ -572,7 +585,17 @@
             $output .= '</div>';
             foreach ($teams as $name => $_team) {
                 $team_tab = self::getValidHtmlId($name);
+                $team_flag = '<img class="flag-md" src="/images/flags/'.$_team->getFlagFilename().'">';
+                $team_name = $_team->getName();
+                $team_logo = '<img height="32" src="/images/club_logos/'.$_team->getLogoFilename().'">';
+                $team_small_flag = '<img class="flag-sm-2" src="/images/flags/'.$_team->getFlagFilename().'">';
                 $output .= '<div class="tab-pane fade" id="'.$team_tab.self::CONTENT.'" role="tabpanel" aria-labelledby="'.$team_tab.'-tab">';
+                if ($team_type == self::MULTI_LEAGUE_TEAM || $team_type == self::TEAM) {
+                    $output .= '<span class="h2-ff3" style="margin-left:30px;">'.$team_flag.'&nbsp;&nbsp;'.$team_name.'</span>';
+                }
+                else {
+                    $output .= '<span class="h2-ff3" style="margin-left:30px;">'.$team_logo.$team_small_flag.'&nbsp;&nbsp;'.$team_name.'</span>';
+                }
                 $output .= self::getTeamMatchesHtml($tournament, $name, $team_type, $look_ahead);
                 $output .= '</div>';
             }
@@ -908,27 +931,67 @@
             return $output;
         }
 
-        public static function getDefaultTabScript($week_start_date, $tab_array) {
-            if (sizeof($tab_array) == 0) return '';
-            $result = $tab_array[0];
-            for ($i = 0; $i < sizeof($week_start_date); $i++) {
-                $now = date_create('now');
-                if (date_add($now, date_interval_create_from_date_string("1 day"))->format('Y-m-d') >= $week_start_date[$i]) {
-                    if ($i == sizeof($week_start_date) - 1) $result = $tab_array[$i];
-                    elseif ($now->format('Y-m-d') < $week_start_date[$i + 1]) $result = $tab_array[$i];
-                }
-            }
-            $result = '<script>$(function() {
-                        $("#All-tab").tab("show");
-                        $("#'.$result.'-tab").tab("show");
-                    });
-                </script>';
-            return $result;
+        public static function getCollapseFilteringTeamsHtml($tournament, $image_type) {
+            $output = self::getCollapseFilteringHtml($tournament, $image_type, 'team-filter', 'Team');
+            return $output;
         }
 
-        public static function getCollapseFilteringTeamsHtml($tournament, $image_type) {
-            $id = 'filter';
-            $output = self::getCollapseHtml($id, 'Filter by', self::getFilteringTeams($tournament, $id, $image_type));
+        public static function getCollapseFilteringConfederationsHtml($tournament) {
+            $output = self::getCollapseFilteringHtml($tournament, Team::CONFEDERATION_LOGO, 'confederation-filter', 'Confederation');
+            return $output;
+        }
+
+        public static function getCollapseFilteringHtml($tournament, $image_type, $id, $name) {
+            $output = self::getCollapseHtml($id, $name, self::getFilteringHtml($tournament, $id, $image_type));
+            return $output;
+        }
+
+        public static function getFilteringHtml($tournament, $id, $image_type) {
+            if ($image_type == Team::CONFEDERATION_LOGO) {
+                $tab_width = 'width: 162px;';
+                $tournament_name = 'Confederation';
+                $icons = Team::getConfederationArray($tournament->getTournamentTeams());
+            }
+            else {
+                $tab_width = 'width: 110px;';
+                $tournament_name = 'Tournament'.self::getValidHtmlId($tournament->getProfile()->getName());
+                $icons = Team::getTeamArrayByName($tournament->getTeams());
+            }
+            ksort($icons);
+            $output = '';
+            $output .= '<style>';
+            $output .= '    #'.$tournament_name.'FilterTab > li > a { '.$tab_width.' height: 90px; }';
+            $output .= '    #'.$tournament_name.'FilterTab > li.active > a { border: 1px solid #dddddd; }
+                        </style>';
+            $output .= '<ul class="nav nav-tabs h6-ff6 padding-top-xs" id="'.$tournament_name.'FilterTab" role="tablist">';
+            $output .= '<li class="nav-item text-center">
+                            <a class="nav-link" id="All-tab" data-toggle="tab" href="#All'.self::CONTENT.'"
+                                role="tab" aria-controls="All'.self::CONTENT.'" aria-selected="true">';
+            $output .=     TournamentProfile::getTournamentLogo($tournament->getProfile(), 32);
+            $output .=     '<br>'.TournamentProfile::getAllFilteringText($tournament->getProfile(), $image_type).'</a>';
+            $output .= '    </li>';
+            foreach ($icons as $name => $_icon) {
+                if ($name != null) {
+                    $show_name = $name;
+                    if ($image_type == Team::CONFEDERATION_LOGO) {
+                        $show_name = '';
+                    }
+                    $icon_tab = self::getValidHtmlId($name);
+                    $output .= '<li class="nav-item text-center">
+                                <a class="nav-link" id="'.$icon_tab.'-tab" data-toggle="tab" href="#'.$icon_tab.self::CONTENT.'" 
+                                    role="tab" aria-controls="'.$icon_tab.self::CONTENT.'" aria-selected="true">';
+                    $output .= Team::getFilteringLogo($_icon, $image_type).'<br>'.$show_name.'</a>';
+                    $output .= '</li>';
+                }
+            }
+            $output .= '</ul>';
+            $output .= '<script>
+                            $(function() {
+                                    $(".nav-tabs a").on("shown.bs.tab", function(){
+                                        $("#collapse-'.$id.'").collapse("hide");
+                                    });
+                            });
+                        </script>';
             return $output;
         }
 
@@ -963,39 +1026,55 @@
             return $output;
         }
 
-        public static function getFilteringTeams($tournament, $id, $image_type) {
-            $teams = Team::getTeamArrayByName($tournament->getTeams());
-            $tournament_name = 'Tournament'.self::getValidHtmlId($tournament->getProfile()->getName());
-            ksort($teams);
-            $output = '';
-            $output .= '<style>
-                            #'.$tournament_name.'FilterTab > li > a { width: 110px; height: 90px; }
-                            #'.$tournament_name.'FilterTab > li.active > a { border: 1px solid #dddddd; }
-                        </style>';
-            $output .= '<ul class="nav nav-tabs h6-ff6 padding-top-xs" id="'.$tournament_name.'FilterTab" role="tablist">';
-            $output .= '<li class="nav-item">
-                            <a class="nav-link" id="All-tab" data-toggle="tab" href="#All'.self::CONTENT.'"
-                                role="tab" aria-controls="All'.self::CONTENT.'" aria-selected="true">'.
-                                TournamentProfile::getTournamentLogo($tournament->getProfile(), 32).
-                                '<br>'.TournamentProfile::getAllFilteringText($tournament->getProfile()).'</a>
-                        </li>';
-            foreach ($teams as $name => $_team) {
-                $team_tab = self::getValidHtmlId($name);
-                $output .= '<li class="nav-item">
-                                <a class="nav-link" id="'.$team_tab.'-tab" data-toggle="tab" href="#'.$team_tab.self::CONTENT.'" 
-                                    role="tab" aria-controls="'.$team_tab.self::CONTENT.'" aria-selected="true">'.
-                                    Team::getFilteringLogo($_team, $image_type).'<br>'.$name.'</a>
-                            </li>';
+        public static function getNextRanking($team, $previous_team, &$ranking, &$count, $all_time) {
+            if ($all_time) {
+                if ($team->getParentName() == null) {
+                    $count++;
+                    if (!self::isSameRanking($team, $previous_team)) {
+                        $ranking = $count;
+                    }
+                }
             }
-            $output .= '</ul>';
-            $output .= '<script>
-                            $(function() {
-                                    $(".nav-tabs a").on("shown.bs.tab", function(){
-                                        $("#collapse-'.$id.'").collapse("hide");
-                                    });
-                            });
-                        </script>';
-            return $output;
+            else {
+                $count++;
+                if (!self::isSameRanking($team, $previous_team)) {
+                    $ranking = $count;
+                }
+            }
+        }
+
+        public static function isSameRanking($team, $previous_team) {
+            if ($previous_team == null) return false;
+            return $team->getPoint() == $previous_team->getPoint()
+                && $team->getGoalFor() == $previous_team->getGoalFor()
+                && $team->getGoalAgainst() == $previous_team->getGoalAgainst();
+        }
+
+        public static function getAllTabScript() {
+            return '<script>
+                    $(function() {
+                        $("#All-tab").tab("show");
+                    });
+                </script>';
+        }
+
+        public static function getDefaultTabScript($week_start_date, $tab_array) {
+            if (sizeof($tab_array) == 0) return '';
+            $result = $tab_array[0];
+            for ($i = 0; $i < sizeof($week_start_date); $i++) {
+                $now = date_create('now');
+                if (date_add($now, date_interval_create_from_date_string("1 day"))->format('Y-m-d') >= $week_start_date[$i]) {
+                    if ($i == sizeof($week_start_date) - 1) $result = $tab_array[$i];
+                    elseif ($now->format('Y-m-d') < $week_start_date[$i + 1]) $result = $tab_array[$i];
+                }
+            }
+            $result = self::getAllTabScript().'
+                <script>
+                    $(function() {
+                        $("#'.$result.'-tab").tab("show");
+                    });
+                </script>';
+            return $result;
         }
 
         public static function getValidHtmlId($name) {
@@ -1133,8 +1212,7 @@
         }
 
         public static function getFinishLiteral($finish) {
-            switch($finish)
-            {
+            switch ($finish) {
                 case Soccer::Group:
                     $best_finish = 'First Round';
                     break;

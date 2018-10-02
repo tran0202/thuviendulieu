@@ -42,11 +42,11 @@
         }
 
         public static function getTournamentLogo($profile, $logo_height = 0) {
+            if ($profile == null) return '<img class="logo-lg" src="/images/logos/FIFA.png">';
             $default_logo_height = 100;
             $logo_dir = 'logos/';
             $logo_filename = $profile->getLogoFilename();
-            switch($profile->getTournamentTypeId())
-            {
+            switch ($profile->getTournamentTypeId()) {
                 case self::WORLD_CUP:
                     $logo_dir = 'wc_logos/';
                     break;
@@ -90,10 +90,9 @@
             return self::getTournamentLogo($profile).'&nbsp;&nbsp;'.$profile->getName();
         }
 
-        public static function getAllFilteringText($profile) {
-
-            switch($profile->getTournamentTypeId())
-            {
+        public static function getAllFilteringText($profile, $image_type) {
+            if ($image_type == Team::CONFEDERATION_LOGO) return 'ALL CONFEDERATIONS';
+            switch ($profile->getTournamentTypeId()) {
                 case self::NATIONS_LEAGUE:
                     $text = 'ALL NATIONS';
                     break;

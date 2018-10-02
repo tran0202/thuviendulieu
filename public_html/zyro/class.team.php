@@ -6,6 +6,7 @@
 
         const FLAG = 1;
         const LOGO = 2;
+        const CONFEDERATION_LOGO = 3;
 
         private $id;
         private $name;
@@ -23,6 +24,8 @@
         private $tournament_id;
         private $tournament_name;
         private $tournament_count;
+        private $confederation_name;
+        private $confederation_logo_filename;
         private $match_play;
         private $win;
         private $draw;
@@ -58,6 +61,7 @@
         public static function CreateTeam($id, $name, $l_name, $code, $group_name, $group_order,
             $parent_id, $parent_name, $parent_group_name, $parent_group_long_name, $parent_group_order,
             $flag_filename, $logo_filename, $tournament_id, $tournament_name, $tournament_count,
+                                          $confederation_name, $confederation_logo_filename,
             $match_play, $win, $draw, $loss, $home_win, $home_tie, $home_loss, $road_win, $road_tie, $road_loss,
             $div_win, $div_tie, $div_loss, $conf_win, $conf_tie, $conf_loss, $last5_win, $last5_tie, $last5_loss, $streak,
             $opponents, $common_opponents, $goal_for, $goal_against, $goal_diff, $point, $best_finish, $scenarios)
@@ -79,6 +83,8 @@
             $t->tournament_id = $tournament_id;
             $t->tournament_name = $tournament_name;
             $t->tournament_count = $tournament_count;
+            $t->confederation_name = $confederation_name;
+            $t->confederation_logo_filename = $confederation_logo_filename;
             $t->match_play = $match_play;
             $t->win = $win;
             $t->draw = $draw;
@@ -112,10 +118,10 @@
 
         public static function CreateSoccerTeam($id, $name, $l_name, $code, $parent_id, $parent_name,
                 $group_name, $group_order, $parent_group_name, $parent_group_long_name, $parent_group_order,
-                $flag_filename, $logo_filename, $tournament_id, $tournament_name, $tournament_count) {
+                $flag_filename, $logo_filename, $tournament_id, $tournament_name, $tournament_count, $confederation_name, $confederation_logo_filename) {
             return self::CreateTeam($id, $name, $l_name, $code, $group_name, $group_order,
                 $parent_id, $parent_name, $parent_group_name, $parent_group_long_name, $parent_group_order, $flag_filename, $logo_filename,
-                $tournament_id, $tournament_name, $tournament_count, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                $tournament_id, $tournament_name, $tournament_count, $confederation_name, $confederation_logo_filename, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, array(), array(), array(),
                 0, 0, 0, 0, null, null);
         }
@@ -124,7 +130,7 @@
                                              $match_play, $win, $draw, $loss, $goal_for, $goal_against, $goal_diff, $point) {
             return self::CreateTeam($id, $name, '', $code, $group_name, $group_order,
                 0, '', '', '', 0, '', '',
-                0, '', 0, $match_play, $win, $draw, $loss, 0, 0, 0, 0, 0, 0,
+                0, '', 0, '', '', $match_play, $win, $draw, $loss, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, array(), array(), array(),
                 $goal_for, $goal_against, $goal_diff, $point, null, null);
         }
@@ -135,7 +141,7 @@
         {
             return self::CreateTeam($id, $name, '', '', $group_name, $group_order,
                 0, '', $parent_group_name, $parent_group_long_name, $parent_group_order, '', $logo_filename,
-                0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, '', 0, '', '',0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, array(), array(), array(),
                 0, 0, 0, 0, null, null);
         }
@@ -202,7 +208,8 @@
                         $row['parent_team_id'], $row['parent_team_name'],
                         $row['group_name'], $row['group_order'],
                         $row['parent_group_name'], $row['parent_group_long_name'], $row['parent_group_order'],
-                        $row['flag_filename'], $row['logo_filename'], $row['tournament_id'], '', 1);
+                        $row['flag_filename'], $row['logo_filename'], $row['tournament_id'], '', 1,
+                        '', '');
                     array_push($teams, $team);
 
                     $second_round_team = Team::CreateSoccerTeam(
@@ -210,7 +217,8 @@
                         $row['parent_team_id'], $row['parent_team_name'],
                         '', $row['group_order'],
                         $row['parent_group_name'], $row['parent_group_long_name'], $row['parent_group_order'],
-                        $row['flag_filename'], $row['logo_filename'], $row['tournament_id'], '', 1);
+                        $row['flag_filename'], $row['logo_filename'], $row['tournament_id'], '', 1,
+                        '', '');
                     array_push($second_round_teams, $second_round_team);
                 }
                 $tournament->setTeams($teams);
@@ -284,7 +292,7 @@
                     LEFT JOIN team_tournament tt ON tt.team_id = t2.id
                     LEFT JOIN tournament tou ON tou.id = tt.tournament_id
                     LEFT JOIN `group` g ON g.id = tt.group_id  
-                    LEFT JOIN nation n ON n.id = t.nation_id 
+                    LEFT JOIN nation n ON n.id = t.nation_id
                     LEFT JOIN (SELECT team_id, COUNT(team_id) AS tournament_count
                                 FROM team_tournament tt2
                                 LEFT JOIN tournament tou2 ON tt2.tournament_id = tou2.id
@@ -313,7 +321,8 @@
                         $row['id'], $row['name'], '', $row['code'], $row['parent_team_id'], $row['parent_team_name'],
                         '', '',
                         '', '', 0,
-                        $row['flag_filename'], '', 0,'', $row['tournament_count']);
+                        $row['flag_filename'], '', 0,'', $row['tournament_count'],
+                        '', '');
                     array_push($teams, $team);
                 }
                 $tournament->setTeams($teams);
@@ -330,26 +339,30 @@
         /*
             SELECT t.id, UCASE(t.name) AS name,
                 t.parent_team_id, UCASE(t2.name) AS parent_team_name,
-                n.flag_filename, n.code, tou.name AS tournament_name
+                n.flag_filename, n.code, tou.name AS tournament_name,
+                g2.name AS confederation_name, g2.group_logo AS confederation_logo_filename
             FROM team t
             LEFT JOIN team_tournament tt ON tt.team_id = t.id
             LEFT JOIN tournament tou ON tou.id = tt.tournament_id
             LEFT JOIN team t2 ON t2.id = t.parent_team_id
             LEFT JOIN `group` g ON g.id = tt.group_id
             LEFT JOIN nation n ON n.id = t.nation_id
+            LEFT JOIN `group` g2 ON g2.id = tt.confederation_id
             WHERE tou.tournament_type_id = 1
          */
 
         public static function getAllTimeSoccerTeamTournamentSql($tournament_type_id) {
             $sql = 'SELECT t.id, UCASE(t.name) AS name, 
                         t.parent_team_id, UCASE(t2.name) AS parent_team_name,
-                        n.flag_filename, n.code, tou.name AS tournament_name
+                        n.flag_filename, n.code, tou.name AS tournament_name,
+                        g2.name AS confederation_name, g2.group_logo AS confederation_logo_filename
                     FROM team t
                     LEFT JOIN team_tournament tt ON tt.team_id = t.id
                     LEFT JOIN tournament tou ON tou.id = tt.tournament_id  
                     LEFT JOIN team t2 ON t2.id = t.parent_team_id 
                     LEFT JOIN `group` g ON g.id = tt.group_id
                     LEFT JOIN nation n ON n.id = t.nation_id
+                    LEFT JOIN `group` g2 ON g2.id = tt.confederation_id
                     WHERE tou.tournament_type_id = '.$tournament_type_id; // AND tt.tournament_id <> 1'
             return $sql;
         }
@@ -373,14 +386,16 @@
                         $row['id'], $row['name'], '', $row['code'], $row['parent_team_id'], $row['parent_team_name'],
                         '', '',
                         '', '', 0,
-                        $row['flag_filename'], '', 0, $row['tournament_name'], 0);
+                        $row['flag_filename'], '', 0, $row['tournament_name'], 0,
+                        $row['confederation_name'], $row['confederation_logo_filename']);
                     array_push($teams, $team);
 
                     $second_round_team = Team::CreateSoccerTeam(
                         $row['id'], $row['name'], '', $row['code'], $row['parent_team_id'], $row['parent_team_name'],
                         '', '',
                         '', '', 0,
-                        $row['flag_filename'], '', 0, $row['tournament_name'], 0);
+                        $row['flag_filename'], '', 0, $row['tournament_name'], 0,
+                        $row['confederation_name'], $row['confederation_logo_filename']);
                     array_push($second_round_teams, $second_round_team);
                 }
                 $tournament->setTournamentTeams($teams);
@@ -443,14 +458,50 @@
             return $result;
         }
 
+        public static function getConfederationArray($teams) {
+            $result = array();
+            for ($i = 0; $i < sizeof($teams); $i++) {
+                if (!array_key_exists($teams[$i]->getConfederationName(), $result)
+                    && $teams[$i]->getConfederationName() != null) {
+                    $result[$teams[$i]->getConfederationName()] = $teams[$i];
+                }
+            }
+            return $result;
+        }
+
+        public static function getTeamArrayByConfederation($tournament) {
+            $result = array();
+            $teams = self::getTeamArrayByName($tournament->getTeams());
+            $tournament_teams = $tournament->getTournamentTeams();
+            for ($i = 0; $i < sizeof($tournament_teams); $i++) {
+                if ($tournament_teams[$i]->getConfederationName() != null) {
+                    $team_name = $tournament_teams[$i]->getName();
+                    if ($tournament_teams[$i]->getParentName() != null) {
+                        $team_name = $tournament_teams[$i]->getParentName();
+                    }
+                    $result[$tournament_teams[$i]->getConfederationName()][$team_name] = $teams[$team_name];
+                }
+            }
+            return $result;
+        }
+
         public static function getFilteringLogo($team, $image_type) {
-            $image_class = 'flag-md';
-            $image_dir = 'flags';
-            $image_file = $team->getFlagFilename();
-            if ($image_type == self::LOGO) {
-                $image_class = 'logo-md';
-                $image_dir = 'club_logos';
-                $image_file = $team->getLogoFilename();
+            switch ($image_type) {
+                case self::LOGO:
+                    $image_class = 'logo-md';
+                    $image_dir = 'club_logos';
+                    $image_file = $team->getLogoFilename();
+                    break;
+                case self::CONFEDERATION_LOGO:
+                    $image_class = 'logo-lg';
+                    $image_dir = 'logos';
+                    $image_file = $team->getConfederationLogoFilename();
+                    break;
+                default:
+                    $image_class = 'flag-md';
+                    $image_dir = 'flags';
+                    $image_file = $team->getFlagFilename();
+                    break;
             }
             $result = '<img class="'.$image_class.'" src="/images/'.$image_dir.'/'.$image_file.'">';
             return $result;
@@ -662,6 +713,38 @@
         public function setLogoFilename($logo_filename)
         {
             $this->logo_filename = $logo_filename;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getConfederationName()
+        {
+            return $this->confederation_name;
+        }
+
+        /**
+         * @param mixed $confederation_name
+         */
+        public function setConfederationName($confederation_name)
+        {
+            $this->confederation_name = $confederation_name;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getConfederationLogoFilename()
+        {
+            return $this->confederation_logo_filename;
+        }
+
+        /**
+         * @param mixed $confederation_logo_filename
+         */
+        public function setConfederationLogoFilename($confederation_logo_filename)
+        {
+            $this->confederation_logo_filename = $confederation_logo_filename;
         }
 
         /**

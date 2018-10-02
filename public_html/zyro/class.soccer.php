@@ -837,8 +837,7 @@
         }
 
         public static function getFinish($match) {
-            switch($match->getRound())
-            {
+            switch ($match->getRound()) {
                 case self::GROUP_MATCHES:
                     $best_finish = self::Group;
                     break;

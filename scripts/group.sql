@@ -1,10 +1,45 @@
 CREATE TABLE IF NOT EXISTS `group` (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR(255) NOT NULL UNIQUE,
+	name VARCHAR(255) NOT NULL,
 	long_name VARCHAR(255),
 	group_type_id INT,
+	group_logo VARCHAR(255),
 	FOREIGN KEY (group_type_id) REFERENCES group_type(id)
 );
+
+ALTER TABLE `group` DROP INDEX `name`;
+
+UPDATE `group`
+SET name = SUBSTRING(name, 7, 1);
+
+UPDATE `group`
+SET group_type_id = 1;
+
+SHOW INDEX FROM `group`;
+
+DROP INDEX tournament_id ON `group`;
+
+ALTER TABLE `group`
+	CHANGE tournament_id long_name CHAR(255);
+
+ALTER TABLE `group`
+	MODIFY COLUMN long_name VARCHAR(255);
+
+ALTER TABLE `group`
+	ADD COLUMN group_logo VARCHAR(255);
+
+ALTER TABLE `group`
+	ADD CONSTRAINT `group_ibfk_2`
+FOREIGN KEY (group_type_id) REFERENCES group_type(id);
+
+ALTER TABLE `group`
+	DROP FOREIGN KEY group_ibfk_2;
+
+ALTER TABLE `group`
+	ADD UNIQUE (name);
+
+DELETE FROM `group`
+WHERE id >= 35;
 
 INSERT INTO `group` (name, long_name, group_type_id)
 VALUES ('A', 'Group A', 1),
@@ -26,13 +61,19 @@ VALUES ('A', 'Group A', 1),
 	   ('League A', 'League A', 8),
 	   ('League B', 'League B', 8),
 	   ('League C', 'League C', 8),
-	   ('League D', 'League D', 8);
-
-INSERT INTO `group` (name, long_name, group_type_id)
-VALUES ('I', 'Group I', 1),
+	   ('League D', 'League D', 8),
+	   ('I', 'Group I', 1),
 	   ('J', 'Group J', 1),
 	   ('K', 'Group K', 1),
 	   ('L', 'Group L', 1);
+
+INSERT INTO `group` (name, long_name, group_type_id, group_logo)
+VALUES ('AFC', 'Asian Football Confederation', 9, 'AFC.png'),
+	   ('CAF', 'Confederation of African Football', 9, 'CAF.png'),
+	   ('CONCACAF', 'Confederation of North, Central American and Caribbean Association Football', 9, 'CONCACAF.png'),
+	   ('CONMEBOL', 'South American Football Confederation', 9, 'CONMEBOL.png'),
+	   ('OFC', 'Oceania Football Confederation', 9, 'OFC.png'),
+	   ('UEFA', 'Union of European Football Associations', 9, 'UEFA.png');
 
 INSERT INTO `group` (name, tournament_id, group_type_id)
 VALUES ('AFC', 2, 2),
@@ -135,35 +176,3 @@ VALUES ('First Round', 'Round of 128', 5),
 	('Second Round', 'Round of 64', 5),
 	('Third Round', 'Round of 32', 5),
 	('Fourth Round', 'Round of 16', 5);
-
-UPDATE `group`
-SET name = SUBSTRING(name, 7, 1);
-
-UPDATE `group`
-SET group_type_id = 1;
-
-SHOW INDEX FROM `group`;
-
-DROP INDEX tournament_id ON `group`;
-
-ALTER TABLE `group`
-CHANGE tournament_id long_name CHAR(255);
-
-ALTER TABLE `group`
-MODIFY COLUMN long_name VARCHAR(255);
-
-ALTER TABLE `group`
-ADD COLUMN group_type_id INT;
-
-ALTER TABLE `group`
-ADD CONSTRAINT `group_ibfk_2`
-FOREIGN KEY (group_type_id) REFERENCES group_type(id);
-
-ALTER TABLE `group`
-DROP FOREIGN KEY group_ibfk_2;
-
-ALTER TABLE `group`
-ADD UNIQUE (name);
-
-DELETE FROM `group`
-WHERE id >= 35;
