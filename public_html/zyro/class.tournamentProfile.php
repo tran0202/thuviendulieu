@@ -87,7 +87,12 @@
         }
 
         public static function getTournamentHeader($profile) {
-            return self::getTournamentLogo($profile).'&nbsp;&nbsp;'.$profile->getName();
+            return self::getTournamentLogo($profile).'&nbsp;&nbsp;'.self::getTournamentTitle($profile);
+        }
+
+        public static function getTournamentTitle($profile) {
+            return '<span class="'.str_replace('T-', 'class_', SoccerHtml::getValidHtmlId($profile->getName()))
+                .'">'.$profile->getName().'</span>';
         }
 
         public static function getAllFilteringText($profile, $image_type) {

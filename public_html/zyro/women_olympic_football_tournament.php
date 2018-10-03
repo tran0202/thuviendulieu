@@ -31,7 +31,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-12">
-                            <span class="wb-stl-heading1 russia-2018"><?php echo $header; ?></span>
+                            <span class="wb-stl-heading1"><?php echo $header; ?></span>
                         </div>
                     </div>
                     <div class="row">

@@ -20,7 +20,7 @@ VALUES ('2018 FIFA World Cup Russia', '2018-06-14', '2018-07-15', 1),
 INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_filename)
 VALUES ('2010 FIFA World Cup South Africa', '2010-06-11', '2010-07-11', 1, '2010.png'),
 	('2006 FIFA World Cup Germany', '2006-06-09', '2006-07-09', 1, '2006.png'),
-	('2002 FIFA World Cup Korea/Japan', '2002-05-31', '2002-06-20', 1, '2002.png'),
+	('2002 FIFA World Cup Korea-Japan', '2002-05-31', '2002-06-20', 1, '2002.png'),
 	('1998 FIFA World Cup France', '1998-06-10', '1998-07-12', 1, '1998.png'),
 	('1994 FIFA World Cup USA', '1994-06-17', '1994-07-17', 1, '1994.png'),
 	('1990 FIFA World Cup Italy', '1990-06-08', '1990-07-08', 1, '1990.png');

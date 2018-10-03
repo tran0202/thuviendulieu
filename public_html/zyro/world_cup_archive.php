@@ -68,10 +68,10 @@
                                 </div>
                                 <div class="card">
                                     <span class="mx-auto">
-                                        <a href="WorldCup?tid=8"><img class="card-img-top card-img-top-height-100 padding-top-sm" src="images/wc_logos/2002.png" alt="Korea/Japan 2002"></a>
+                                        <a href="WorldCup?tid=8"><img class="card-img-top card-img-top-height-100 padding-top-sm" src="images/wc_logos/2002.png" alt="Korea-Japan 2002"></a>
                                     </span>
                                     <div class="card-body">
-                                        <h5 class="card-title text-center"><a href="WorldCup?tid=8">Korea/Japan 2002</a></h5>
+                                        <h5 class="card-title text-center"><a href="WorldCup?tid=8">Korea-Japan 2002</a></h5>
                                     </div>
                                 </div>
                                 <div class="card">

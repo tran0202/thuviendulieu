@@ -19,15 +19,6 @@
                 <div class="container-fluid">
                     <div class="card-group">
                         <div class="card">
-                            <img class="card-img-top card-img-top-height-200 mx-auto margin-top-sm" src="images/unl_logos/unl.jpg" alt="Russia 2018">
-                            <div class="card-body">
-                                <h5 class="card-title">2018/19 UEFA Nations League</h5>
-                                <p class="card-text">
-                                    <a href="UEFANationsLeagueStandings" class="card-link">Standings</a> <a href="UEFANationsLeagueMatches" class="card-link">Matches</a>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="card">
                             <img class="card-img-top card-img-top-height-200 mx-auto margin-top-sm" src="images/club_logos/UCL.svg" alt="France 2019">
                             <div class="card-body">
                                 <h5 class="card-title">2018/19 UEFA Champions League</h5>
@@ -42,6 +33,35 @@
                                 <h5 class="card-title">2018/19 UEFA Europa League</h5>
                                 <p class="card-text">
                                     <a href="UEFAEuropaLeagueStandings" class="card-link">Standings</a> <a href="UEFAEuropaLeagueMatches" class="card-link">Matches</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-group">
+                        <div class="card">
+                            <img class="card-img-top card-img-top-height-200 mx-auto margin-top-sm" src="images/unl_logos/unl.jpg" alt="Russia 2018">
+                            <div class="card-body">
+                                <h5 class="card-title">2018/19 UEFA Nations League</h5>
+                                <p class="card-text">
+                                    <a href="UEFANationsLeagueStandings" class="card-link">Standings</a> <a href="UEFANationsLeagueMatches" class="card-link">Matches</a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <span class="mx-auto">
+                                <img class="card-img-top card-img-top-height-100 margin-top-sm margin-lr-md" src="images/logos/Euro_2020.png" alt="Pan-European 2020">
+                                <a href="Euro"><img class="card-img-top card-img-top-height-100 margin-top-sm margin-lr-md" src="images/logos/Euro_2016.png" alt="France 2016"></a>
+                                <a href="Euro?tid=69"><img class="card-img-top card-img-top-height-100 margin-top-sm margin-lr-md" src="images/logos/Euro_2012.png" alt="Poland-Ukraine 2012"></a>
+                            </span>
+                            <span class="mx-auto">
+                                <a href="Euro?tid=70"><img class="card-img-top card-img-top-height-100 margin-top-sm margin-lr-md" src="images/logos/Euro_2008.png" alt="Austria-Switzerland 2008"></a>
+                                <a href="Euro?tid=71"><img class="card-img-top card-img-top-height-100 margin-top-sm margin-lr-md" src="images/logos/Euro_2004.png" alt="Portugal 2004"></a>
+                                <a href="Euro?tid=72"><img class="card-img-top card-img-top-height-100 margin-top-sm margin-lr-md" src="images/logos/Euro_2000.png" alt="Belgium-Netherlands 2000"></a>
+                            </span>
+                            <div class="card-body">
+                                <h5 class="card-title">UEFA European Championship</h5>
+                                <p class="card-text">
+                                    <a href="EuroArchive" class="card-link">Archive <span class="fa fa-futbol-o"></span></a>
                                 </p>
                             </div>
                         </div>
