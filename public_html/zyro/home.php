@@ -41,11 +41,7 @@
                             <img alt="gallery/ball_1" src="gallery_gen/740438132c8336073d625b0136159e8e_300x310.png">
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-12 margin-tb-lg">
-                            <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>
-                        </div>
-                    </div>
+                    <?php include_once('footer.inc.php'); ?>
                 </div>
 			</div>
 		</div>

@@ -415,23 +415,28 @@
         }
 
         public static function getAllTimeSoccerRankingHtml($tournament) {
-            $confederations = Team::getConfederationArray($tournament->getTournamentTeams());
-            $teams = Team::getTeamArrayByConfederation($tournament);
             $output = '';
             $output .= '<div class="margin-top-sm">';
-            $output .= self::getCollapseFilteringConfederationsHtml($tournament);
-            $output .= '<div class="tab-content" id="filter-tabContent">';
-            $output .= '<div class="tab-pane fade" id="All'.self::CONTENT.'" role="tabpanel" aria-labelledby="All-tab">';
-            $output .= self::getAllConfederationsRankingHtml($tournament);
-            $output .= '</div>';
-            foreach ($confederations as $confederation_name => $_confederation) {
-                $confederation_tab = self::getValidHtmlId($confederation_name);
-                $output .= '<div class="tab-pane fade" id="'.$confederation_tab.self::CONTENT.'" role="tabpanel" aria-labelledby="'.$confederation_tab.'-tab">';
-                $output .= '<span class="margin-left-md">'.Team::getFilteringLogo($_confederation, Team::CONFEDERATION_LOGO).'</span>';
-                $output .= self::getConfederationRankingHtml($tournament, $teams[$confederation_name]);
+            if ($tournament->getTournamentTypeId() == Tournament::EURO) {
+                $output .= self::getAllConfederationsRankingHtml($tournament);
+            }
+            else {
+                $output .= self::getCollapseFilteringConfederationsHtml($tournament);
+                $output .= '<div class="tab-content" id="filter-tabContent">';
+                $output .= '<div class="tab-pane fade" id="All'.self::CONTENT.'" role="tabpanel" aria-labelledby="All-tab">';
+                $output .= self::getAllConfederationsRankingHtml($tournament);
+                $output .= '</div>';
+                $teams = Team::getTeamArrayByConfederation($tournament);
+                $confederations = Team::getConfederationArray($tournament->getTournamentTeams());
+                foreach ($confederations as $confederation_name => $_confederation) {
+                    $confederation_tab = self::getValidHtmlId($confederation_name);
+                    $output .= '<div class="tab-pane fade" id="'.$confederation_tab.self::CONTENT.'" role="tabpanel" aria-labelledby="'.$confederation_tab.'-tab">';
+                    $output .= '<span class="margin-left-md">'.Team::getFilteringLogo($_confederation, Team::CONFEDERATION_LOGO).'</span>';
+                    $output .= self::getConfederationRankingHtml($tournament, $teams[$confederation_name]);
+                    $output .= '</div>';
+                }
                 $output .= '</div>';
             }
-            $output .= '</div>';
             $output .= '</div>';
             $tournament->concatBodyHtml($output);
         }

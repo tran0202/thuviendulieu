@@ -1,19 +1,15 @@
 <?php
     include_once('class.tournament.php');
-    $qs = '';
-    if ($_SERVER['QUERY_STRING'] != '') $qs = '?'.$_SERVER['QUERY_STRING'];
     parse_str($_SERVER['QUERY_STRING'], $query_string);
-    $tournament_id = 30;
+    $tournament_id = 68;
     if (isset($query_string['tid'])) $tournament_id = $query_string['tid'];
-    $simulation_mode = Tournament::SIMULATION_MODE_0;
-    if (isset($query_string['smid'])) $simulation_mode = $query_string['smid'];
-    $tournament = Tournament::getSoccerTournamentMatchesView($tournament_id, $simulation_mode);
+    $tournament = Tournament::getSoccerTournament($tournament_id);
     $profile = $tournament->getProfile();
     $header = TournamentProfile::getTournamentHeader($profile);
-    $tournament_name = $profile->getName();
+    $tournament_name = '';
+    if ($profile != null) $tournament_name = $profile->getName();
     $body_html = $tournament->getBodyHtml();
     $modal_html = $tournament->getModalHtml();
-    $popover_html = $tournament->getPopoverHtml();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,15 +32,12 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-12">
-                            <span class="wb-stl-heading1 dark-red"><?php echo $header; ?></span>
-                            <span class="wb-stl-heading3 margin-left-lg"><a href="UEFAEuropaLeagueStandings<?php echo $qs; ?>" target="_self">Standings</a></span>
-                            <span class="wb-stl-heading3 margin-left-lg"><a href="UEFAEuropaLeagueMatches<?php echo $qs; ?>" target="_self">Matches</a></span>
+                            <span class="wb-stl-heading1"><?php echo $header; ?></span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
                             <?php echo $body_html; ?>
-                            <?php echo $popover_html; ?>
                             <p class="wb-stl-normal"> </p>
                         </div>
                     </div>

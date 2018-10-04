@@ -91,6 +91,7 @@
         }
 
         public static function getTournamentTitle($profile) {
+            if ($profile == null) return '<span class="dark-red">FIFA World Cup</span>';
             return '<span class="'.str_replace('T-', 'class_', SoccerHtml::getValidHtmlId($profile->getName()))
                 .'">'.$profile->getName().'</span>';
         }

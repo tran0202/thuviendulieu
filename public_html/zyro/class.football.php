@@ -663,6 +663,7 @@
         }
 
         public static function getDefaultTab($week_start_date, $tab_array) {
+            if (sizeof($tab_array) == 0) return '';
             $result = $tab_array[0];
             for ($i = 0; $i < sizeof($week_start_date); $i++) {
                 $now = date_create('now');
