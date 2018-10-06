@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS team (
 	name VARCHAR(255) NOT NULL UNIQUE,
 	team_type_id INT,
 	nation_id INT,
+	parent_team_id INT,
 	FOREIGN KEY (team_type_id) REFERENCES team_type(id),
 	FOREIGN KEY (nation_id) REFERENCES nation(id),
 	FOREIGN KEY (parent_team_id) REFERENCES team(id),

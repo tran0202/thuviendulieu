@@ -16,6 +16,7 @@
         const POLAND_UKRAINE_2012 = 69;
         const AUSTRIA_SWITZERLAND_2008 = 70;
         const PORTUGAL_2004 = 71;
+        const BELGIUM_NETHERLANDS_2000 = 72;
 
         const TEAM = 1;
         const CLUB = 2;
@@ -1157,7 +1158,8 @@
 
         public static function noThirdPlacePlayoffById($tournament_id) {
             return $tournament_id == self::FRANCE_2016 || $tournament_id == self::POLAND_UKRAINE_2012
-                || $tournament_id == self::AUSTRIA_SWITZERLAND_2008 || $tournament_id == self::PORTUGAL_2004;
+                || $tournament_id == self::AUSTRIA_SWITZERLAND_2008 || $tournament_id == self::PORTUGAL_2004
+                || $tournament_id == self::BELGIUM_NETHERLANDS_2000;
         }
 
         public static function isGoldenGoalRule($golden_goal_rule) {
