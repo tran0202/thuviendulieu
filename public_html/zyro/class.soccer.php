@@ -511,7 +511,7 @@
             $tournament->setTeams($teams);
         }
 
-        public static function getAllTimeTournamentRanking($tournament) {
+        public static function getAllTimeTeamTournamentRanking($tournament) {
             $tt = array();
             $srtt = array();
             $tm = array();
@@ -538,11 +538,13 @@
                 array_push($tm[$tournament_matches[$i]->getTournamentName()], $tournament_matches[$i]);
             }
             foreach ($tt as $tournament_name => $_teams) {
-                $t = Tournament::CreateSoccerTournamentByTeams($tt[$tournament_name], $srtt[$tournament_name], $tm[$tournament_name]);
-                self::getFirstStageMatchesRanking($t);
-                Soccer::updateFirstStageMatchesRanking($t);
-                Soccer::getSecondStageMatchesRanking($t);
-                $tt[$tournament_name] = $t->getTeams();
+                if (array_key_exists($tournament_name, $tm)) {
+                    $t = Tournament::CreateSoccerTournamentByTeams($tt[$tournament_name], $srtt[$tournament_name], $tm[$tournament_name]);
+                    self::getFirstStageMatchesRanking($t);
+                    Soccer::updateFirstStageMatchesRanking($t);
+                    Soccer::getSecondStageMatchesRanking($t);
+                    $tt[$tournament_name] = $t->getTeams();
+                }
             }
             foreach ($tt as $tournament_name => $_teams) {
                 for ($i = 0; $i < sizeof($_teams); $i++ ) {

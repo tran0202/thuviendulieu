@@ -227,7 +227,7 @@
             self::getTournamentCount($tournament);
             Soccer::getAllTimeRanking($tournament);
             SoccerHtml::getAllTimeSoccerRankingHtml($tournament);
-            Soccer::getAllTimeTournamentRanking($tournament);
+            Soccer::getAllTimeTeamTournamentRanking($tournament);
             SoccerHtml::getAllTimeSoccerPopoverHtml($tournament);
 
             return $tournament;
