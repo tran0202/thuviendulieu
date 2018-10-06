@@ -20,6 +20,7 @@
         const ENGLAND_1996 = 73;
         const SWEDEN_1992 = 74;
         const WEST_GERMANY_1988 = 75;
+        const FRANCE_1984 = 76;
 
         const TEAM = 1;
         const CLUB = 2;
@@ -1163,7 +1164,8 @@
             return $tournament_id == self::FRANCE_2016 || $tournament_id == self::POLAND_UKRAINE_2012
                 || $tournament_id == self::AUSTRIA_SWITZERLAND_2008 || $tournament_id == self::PORTUGAL_2004
                 || $tournament_id == self::BELGIUM_NETHERLANDS_2000 || $tournament_id == self::ENGLAND_1996
-                || $tournament_id == self::SWEDEN_1992 || $tournament_id == self::WEST_GERMANY_1988;
+                || $tournament_id == self::SWEDEN_1992 || $tournament_id == self::WEST_GERMANY_1988
+                || $tournament_id == self::FRANCE_1984;
         }
 
         public static function isGoldenGoalRule($golden_goal_rule) {

@@ -1,15 +1,15 @@
 # Insert new tournament
 # Replace all the tournament_id
 
-# Euro 1988 West Germany
+# Euro 1984 France
 
 INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_filename, golden_goal_rule, points_for_win)
-VALUES ('UEFA Euro 1988 West Germany', '1988-06-10', '1988-06-25', 11, 'Euro_1988.png', null, 2);
+VALUES ('UEFA Euro 1984 France', '1984-06-12', '1984-06-27', 11, 'Euro_1984.png', null, 2);
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
-VALUES (75, 41, 1, 39, 1),
-	   (75, 44, 1, 40, 1),
-	   (75, 46, 2, 40, 2);
+VALUES (76, 41, 1, 39, 1),
+	   (76, 44, 1, 40, 1),
+	   (76, 46, 2, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 
@@ -17,35 +17,35 @@ SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 # VALUES ('CIS', 1, 228, 23);
 
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
-VALUES (231, 75, 1, 1),
-	   (203, 75, 1, 2),
-	   (6, 75, 1, 3),
-	   (19, 75, 1, 4),
-	   (228, 75, 2, 1),
-	   (204, 75, 2, 2),
-	   (217, 75, 2, 3),
-	   (20, 75, 2, 4);
+VALUES (21, 76, 1, 1),
+	   (19, 76, 1, 2),
+	   (5, 76, 1, 3),
+	   (224, 76, 1, 4),
+	   (6, 76, 2, 1),
+	   (4, 76, 2, 2),
+	   (231, 76, 2, 3),
+	   (226, 76, 2, 4);
 
 INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id)
-VALUES (231, 1, 203, 1, 75, '1988-06-10', '201500', 1, 41, 39),
-	   (19, 2, 6, 3, 75, '1988-06-11', '153000', 2, 41, 39),
-	   (20, 0, 217, 1, 75, '1988-06-12', '153000', 3, 41, 39),
-	   (204, 0, 228, 1, 75, '1988-06-12', '201500', 4, 41, 39),
-	   (231, 2, 19, 0, 75, '1988-06-14', '171500', 5, 41, 39),
-	   (203, 1, 6, 0, 75, '1988-06-14', '201500', 6, 41, 39),
-	   (20, 1, 204, 3, 75, '1988-06-15', '171500', 7, 41, 39),
-	   (217, 1, 228, 1, 75, '1988-06-15', '201500', 8, 41, 39),
-	   (231, 2, 6, 0, 75, '1988-06-17', '201500', 9, 41, 39),
-	   (203, 2, 19, 0, 75, '1988-06-17', '201500', 10, 41, 39),
-	   (20, 1, 228, 3, 75, '1988-06-18', '153000', 11, 41, 39),
-	   (217, 0, 204, 1, 75, '1988-06-18', '153000', 12, 41, 39);
+VALUES (21, 1, 19, 0, 76, '1984-06-12', '203000', 1, 41, 39),
+	   (5, 2, 224, 0, 76, '1984-06-13', '203000', 2, 41, 39),
+	   (231, 0, 4, 0, 76, '1984-06-14', '171500', 3, 41, 39),
+	   (226, 1, 6, 1, 76, '1984-06-14', '203000', 4, 41, 39),
+	   (21, 5, 5, 0, 76, '1984-06-16', '171500', 5, 41, 39),
+	   (19, 5, 224, 0, 76, '1984-06-16', '203000', 6, 41, 39),
+	   (231, 2, 226, 1, 76, '1984-06-17', '171500', 7, 41, 39),
+	   (4, 1, 6, 1, 76, '1984-06-17', '203000', 8, 41, 39),
+	   (21, 3, 224, 2, 76, '1984-06-19', '203000', 9, 41, 39),
+	   (19, 3, 5, 2, 76, '1984-06-19', '203000', 10, 41, 39),
+	   (231, 0, 6, 1, 76, '1984-06-20', '203000', 11, 41, 39),
+	   (4, 1, 226, 0, 76, '1984-06-20', '203000', 12, 41, 39);
 
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
-VALUES (231, 1, null, null, 204, 2, null, null, 75, '1988-06-21', '201500', 13, 44, 40, 14),
-	   (228, 2, null, null, 203, 0, null, null, 75, '1988-06-22', '201500', 14, 44, 40, 13),
-	   (228, 0, null, null, 204, 2, null, null, 75, '1988-06-25', '153000', 15, 46, 40, 15);
+VALUES (21, 1, 2, null, 4, 1, 1, null, 76, '1984-06-23', '200000', 13, 44, 40, 13),
+	   (19, 1, 0, 4, 6, 1, 0, 5, 76, '1984-06-24', '200000', 14, 44, 40, 14),
+	   (21, 2, null, null, 6, 0, null, null, 76, '1984-06-27', '200000', 15, 46, 40, 15);
 
 CREATE TABLE IF NOT EXISTS tournament (
 	id INT AUTO_INCREMENT PRIMARY KEY,
