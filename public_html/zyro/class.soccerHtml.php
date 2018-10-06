@@ -15,6 +15,7 @@
         const FRANCE_2016 = 68;
         const POLAND_UKRAINE_2012 = 69;
         const AUSTRIA_SWITZERLAND_2008 = 70;
+        const PORTUGAL_2004 = 71;
 
         const TEAM = 1;
         const CLUB = 2;
@@ -99,7 +100,7 @@
                 }
                 $prelim_style = '';
                 if ($bracket_round == Soccer::PRELIMINARY_ROUND) $prelim_style = 'style="padding-left:5px;padding-right:0;"';
-                if ($bracket_round == Soccer::FINAL_ && self::noThirdPlacePlayoff($tournament)) $extra_height = 'bracket-gap-height-32';
+                if ($bracket_round == Soccer::FINAL_ && $tournament->getTournamentId() == self::FRANCE_2016) $extra_height = 'bracket-gap-height-32';
 
                 $output .= '<div class="col-sm-3" '.$third_place_moving.'>
                             <div class="col-sm-12 bracket-gap-height-'.$i.$j.' '.$extra_height.'"></div>
@@ -1156,7 +1157,7 @@
 
         public static function noThirdPlacePlayoffById($tournament_id) {
             return $tournament_id == self::FRANCE_2016 || $tournament_id == self::POLAND_UKRAINE_2012
-                || $tournament_id == self::AUSTRIA_SWITZERLAND_2008;
+                || $tournament_id == self::AUSTRIA_SWITZERLAND_2008 || $tournament_id == self::PORTUGAL_2004;
         }
 
         public static function isGoldenGoalRule($golden_goal_rule) {
