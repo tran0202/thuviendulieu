@@ -339,7 +339,7 @@
         /*
             SELECT t.id, UCASE(t.name) AS name,
                 t.parent_team_id, UCASE(t2.name) AS parent_team_name,
-                n.flag_filename, n.code, tou.name AS tournament_name,
+                n.flag_filename, n.code, tt.tournament_id, tou.name AS tournament_name,
                 g2.name AS confederation_name, g2.group_logo AS confederation_logo_filename
             FROM team t
             LEFT JOIN team_tournament tt ON tt.team_id = t.id
@@ -354,7 +354,7 @@
         public static function getAllTimeSoccerTeamTournamentSql($tournament_type_id) {
             $sql = 'SELECT t.id, UCASE(t.name) AS name, 
                         t.parent_team_id, UCASE(t2.name) AS parent_team_name,
-                        n.flag_filename, n.code, tou.name AS tournament_name,
+                        n.flag_filename, n.code, tt.tournament_id, tou.name AS tournament_name,
                         g2.name AS confederation_name, g2.group_logo AS confederation_logo_filename
                     FROM team t
                     LEFT JOIN team_tournament tt ON tt.team_id = t.id
@@ -386,7 +386,7 @@
                         $row['id'], $row['name'], '', $row['code'], $row['parent_team_id'], $row['parent_team_name'],
                         '', '',
                         '', '', 0,
-                        $row['flag_filename'], '', 0, $row['tournament_name'], 0,
+                        $row['flag_filename'], '', $row['tournament_id'], $row['tournament_name'], 0,
                         $row['confederation_name'], $row['confederation_logo_filename']);
                     array_push($teams, $team);
 
@@ -394,7 +394,7 @@
                         $row['id'], $row['name'], '', $row['code'], $row['parent_team_id'], $row['parent_team_name'],
                         '', '',
                         '', '', 0,
-                        $row['flag_filename'], '', 0, $row['tournament_name'], 0,
+                        $row['flag_filename'], '', $row['tournament_id'], $row['tournament_name'], 0,
                         $row['confederation_name'], $row['confederation_logo_filename']);
                     array_push($second_round_teams, $second_round_team);
                 }

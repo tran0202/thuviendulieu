@@ -2,8 +2,8 @@
 
     class SoccerHtml {
 
-        const USA_1990 = 10;
-        const ITALY_1994 = 11;
+        const USA_1994 = 10;
+        const ITALY_1990 = 11;
         const MEXICO_1986 = 12;
         const CANADA_2015 = 31;
         const RIO_2016 = 33;
@@ -12,6 +12,7 @@
         const LONDON_2012 = 63;
         const BEIJING_2008 = 64;
         const ATHENS_2004 = 65;
+        const FRANCE_2016 = 68;
 
         const TEAM = 1;
         const CLUB = 2;
@@ -47,10 +48,10 @@
         public static function getSoccerScheduleHtml($tournament) {
             $matches = $tournament->getMatches();
             $bracket_spot = self::getBracketSpot($matches);
-            $output2 = '';
+            $third_place_table_spot = self::getThirdPlaceTableSpot($matches);
             $output = '';
+            $output2 = '';
             if ($bracket_spot != '') {
-                $output .= self::getThirdPlaceRankingHtml($tournament);
                 $output .= self::getCollapseHtml('bracket', 'Bracket', self::getBracketHtml($tournament, $bracket_spot));
             }
             $output2 .= self::getCollapseHtml('summary', 'Summary', self::getTournamentSummaryHtml($tournament));
@@ -60,6 +61,7 @@
                 $output2 .= '<div class="col-sm-12 h2-ff1 margin-top-md">'.$rounds.'</div>';
                 $output2 .= self::getMatchesHtml($_round, self::TEAM,
                     $tournament->getSimulationMode() == Tournament::SIMULATION_MODE_1, false);
+                if ($rounds == $third_place_table_spot) $output2 .= self::getThirdPlaceRankingHtml($tournament);
             }
             $tournament->concatBodyHtml($output2);
         }
@@ -80,6 +82,7 @@
 
         public static function getBracketHtml($tournament, $bracket_spot) {
             $bracket_matches = Match::getBracketMatches($tournament->getMatches());
+            $extra_height = '';
             $output = '';
             $output .= '<div class="col-sm-12">';
             $output .= '<div class="row">';
@@ -94,9 +97,10 @@
                 }
                 $prelim_style = '';
                 if ($bracket_round == Soccer::PRELIMINARY_ROUND) $prelim_style = 'style="padding-left:5px;padding-right:0;"';
+                if ($bracket_round == Soccer::FINAL_ && self::noThirdPlacePlayoff($tournament)) $extra_height = 'bracket-gap-height-32';
 
                 $output .= '<div class="col-sm-3" '.$third_place_moving.'>
-                            <div class="col-sm-12 bracket-gap-height-'.$i.$j.'"></div>
+                            <div class="col-sm-12 bracket-gap-height-'.$i.$j.' '.$extra_height.'"></div>
                             <div class="col-sm-12 margin-top-sm" '.$prelim_style.'>
                                 <span class="h2-ff1">'.$bracket_round.'</span>
                             </div>';
@@ -382,16 +386,16 @@
                 }
                 $tmp_finish = Soccer::Group;
                 $champ_count = 0;
-                $output2 = self::getFinishLiteral($tmp_finish);
+                $output2 = self::getFinishLiteral($teams[$i]->getTournamentId(), $tmp_finish);
                 $output3 = '';
                 foreach ($tt[$team_name] as $tournament_names => $_team) {
                     if ($tmp_finish < $_team->getBestFinish()) {
                         $tmp_finish = $_team->getBestFinish();
-                        $output2 = self::getFinishLiteral($_team->getBestFinish());
+                        $output2 = self::getFinishLiteral($_team->getTournamentId(), $_team->getBestFinish());
                     }
                     if ($_team->getBestFinish() == Soccer::Champion) $champ_count++;
                     $short_tournament_name = self::getShortTournamentName($tournament_names);
-                    $output3 .= '<p><b>'.$short_tournament_name.':</b> <i>'.self::getFinishLiteral($_team->getBestFinish()).'</i> ';
+                    $output3 .= '<p><b>'.$short_tournament_name.':</b> <i>'.self::getFinishLiteral($_team->getTournamentId(), $_team->getBestFinish()).'</i> ';
                     if ($_team->getParentName() != null) {
                         $output3 .= '<span class="gray4"><small>(as '.$_team->getName().')</small></span></p>';
                     }
@@ -1125,12 +1129,31 @@
             return $spot;
         }
 
+        public static function getThirdPlaceTableSpot($matches) {
+            $spot = '';
+            for ($i = sizeof($matches) - 1; $i >= 0; $i--) {
+                if ($matches[$i]->getStage() == Soccer::FIRST_STAGE) {
+                    $spot = $matches[$i]->getRound();
+                    break;
+                }
+            }
+            return $spot;
+        }
+
         public static function isThirdPlaceRankingTournament($tournament) {
-            return ($tournament->getTournamentId() >= self::USA_1990 && $tournament->getTournamentId() <= self::MEXICO_1986)
+            return ($tournament->getTournamentId() >= self::USA_1994 && $tournament->getTournamentId() <= self::MEXICO_1986)
                 || $tournament->getTournamentId() == self::CANADA_2015 || $tournament->getTournamentId() == self::RIO_2016
                 || $tournament->getTournamentId() == self::SWEDEN_1995 || $tournament->getTournamentId() == self::CHINA_1991
                 || $tournament->getTournamentId() == self::LONDON_2012 || $tournament->getTournamentId() == self::BEIJING_2008
-                || $tournament->getTournamentId() == self::ATHENS_2004;
+                || $tournament->getTournamentId() == self::ATHENS_2004 || $tournament->getTournamentId() == self::FRANCE_2016;
+        }
+
+        public static function noThirdPlacePlayoff($tournament) {
+            return self::noThirdPlacePlayoffById($tournament->getTournamentId());
+        }
+
+        public static function noThirdPlacePlayoffById($tournament_id) {
+            return $tournament_id == self::FRANCE_2016;
         }
 
         public static function isGoldenGoalRule($golden_goal_rule) {
@@ -1216,7 +1239,7 @@
             return $round == Soccer::PRELIMINARY_ROUND1 || $round == Soccer::PRELIMINARY_ROUND2;
         }
 
-        public static function getFinishLiteral($finish) {
+        public static function getFinishLiteral($tournament_id, $finish) {
             switch ($finish) {
                 case Soccer::Group:
                     $best_finish = 'First Round';
@@ -1253,6 +1276,7 @@
                     break;
                 case Soccer::Semifinal:
                     $best_finish = 'Fourth Place';
+                    if (self::noThirdPlacePlayoffById($tournament_id)) $best_finish = 'Semifinals';
                     break;
                 case Soccer::BronzeMedal:
                     $best_finish = 'Bronze Medal';
@@ -1285,6 +1309,7 @@
             $result = str_replace(' FIFA Women\'s World Cup ', '', $result);
             $result = str_replace('Women\'s Olympic Football Tournament ', '', $result);
             $result = str_replace('Olympic Football Tournament ', '', $result);
+            $result = str_replace('UEFA Euro ', '', $result);
             if (!$olympic_tournament) $result = substr($result, -(strlen($result) - 4)).' '.substr($result, 0, 4);
             return $result;
         }
