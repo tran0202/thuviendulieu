@@ -129,3 +129,6 @@ VALUES ('Netherlands Antilles', 'Netherlands_Antilles.png', 6, 'ANT');
 
 INSERT INTO nation (name, flag_filename, parent_nation_id, nation_type_id, code)
 VALUES ('FR Yugoslavia', 'Serbia_and_Montenegro.svg', 165, 6, 'YUG');
+
+INSERT INTO nation (name, alternative_name, flag_filename, parent_nation_id, nation_type_id, code)
+VALUES ('CIS', 'Commonwealth of Independent States', 'CIS.png', 157, 6, 'CIS');

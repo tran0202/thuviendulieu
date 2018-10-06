@@ -121,7 +121,7 @@
                                         <a href="Euro?tid=77"><img class="card-img-top card-img-top-height-100 padding-top-sm" src="images/logos/Euro_1980.png" alt="Italy 1980"></a>
                                     </span>
                                     <div class="card-body">
-                                        <h5 class="card-title text-center"><a href="Euro?tid=77">Italy 198</a></h5>
+                                        <h5 class="card-title text-center"><a href="Euro?tid=77">Italy 1980</a></h5>
                                     </div>
                                 </div>
                                 <div class="card">
