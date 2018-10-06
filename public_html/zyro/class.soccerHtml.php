@@ -13,6 +13,7 @@
         const BEIJING_2008 = 64;
         const ATHENS_2004 = 65;
         const FRANCE_2016 = 68;
+        const POLAND_UKRAINE_2012 = 69;
 
         const TEAM = 1;
         const CLUB = 2;
@@ -1153,7 +1154,7 @@
         }
 
         public static function noThirdPlacePlayoffById($tournament_id) {
-            return $tournament_id == self::FRANCE_2016;
+            return $tournament_id == self::FRANCE_2016 || $tournament_id == self::POLAND_UKRAINE_2012;
         }
 
         public static function isGoldenGoalRule($golden_goal_rule) {
