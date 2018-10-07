@@ -255,8 +255,19 @@
 
         public static function getGroupMatchesRanking($tournament) {
             $group_matches = Match::getGroupMatches($tournament->getMatches());
-            $teams = self::getGroupRanking($tournament->getTeams(), $group_matches, self::First);
-            $tournament->setTeams($teams);
+            $result = array();
+            $teams_tmp = Team::getTeamArrayByGroup($tournament->getTeams());
+            foreach ($teams_tmp as $group_name => $_teams) {
+                $teams_tmp2 = array();
+                foreach ($_teams as $team_name => $_team) {
+                    array_push($teams_tmp2, $_team);
+                }
+                $teams = self::getGroupRanking($teams_tmp2, $group_matches, self::First);
+                for ($i = 0; $i < sizeof($teams); $i++) {
+                    array_push($result, $teams[$i]);
+                }
+            }
+            $tournament->setTeams($result);
         }
 
         public static function getSecondRoundMatchesRanking($tournament) {
@@ -270,8 +281,10 @@
 
         public static function getReplaySecondRoundMatchesRanking($tournament) {
             $replay_second_round_matches = Match::getReplaySecondRoundMatches($tournament->getMatches());
-            $teams = self::getGroupRanking($tournament->getTeams(), $replay_second_round_matches, self::Second);
-            $tournament->setTeams($teams);
+            if (sizeof($replay_second_round_matches) > 0) {
+                $teams = self::getGroupRanking($tournament->getTeams(), $replay_second_round_matches, self::Second);
+                $tournament->setTeams($teams);
+            }
         }
 
         public static function getFinalRoundMatchesRanking($tournament) {
@@ -584,7 +597,6 @@
         public static function calculatePoint(&$teams, $match, $stage) {
             if ($match->getSecondRoundGroupName() == self::WITHDREW) return;
             if ($match->getHomeTeamScore() == -1) return;
-//            if (!$all_time_ranking && strpos($match->getRound(), 'Replay') !== false) { echo 'yes';return;}
             $all_time_ranking = $stage == self::AllStages;
             $points_for_win = 3;
             if ($match->getPointsForWin() == 2 && !$all_time_ranking) $points_for_win = 2;
@@ -597,6 +609,7 @@
             if ($all_time_ranking && $match->getAwayParentTeamName() != null) {
                 $away_name = $match->getAwayParentTeamName();
             }
+            if (!array_key_exists($home_name, $teams) || !array_key_exists($away_name, $teams)) return;
             $home_team = $teams[$home_name];
             $away_team = $teams[$away_name];
             $home_score = $match->getHomeTeamScore();
@@ -684,13 +697,24 @@
         public static function compareTeams(&$team1, &$team2, $matches) {
             if (self::isEqualStanding($team1, $team2)) {
                 $still_tie = self::applyTiebreaker($team1, $team2, $matches);
-                if ($still_tie) $still_tie = self::fairPlayRule($team1, $team2);
-                if ($still_tie) $still_tie = self::drawingLots($team1, $team2);
-                if ($still_tie) self::alphabetOrder($team1, $team2);
+                if (self::isTieBreakerHead2HeadFirst($team1->getTournamentId())) {
+                    if ($still_tie && self::isHigherStanding($team2, $team1)) {
+                        self::swapTeam($team1, $team2);
+                    }
+                }
+                else {
+                    if ($still_tie) $still_tie = self::fairPlayRule($team1, $team2);
+                    if ($still_tie) $still_tie = self::drawingLots($team1, $team2);
+                    if ($still_tie) self::alphabetOrder($team1, $team2);
+                }
             }
             elseif (self::isHigherStanding($team2, $team1)) {
                 self::swapTeam($team1, $team2);
             }
+        }
+
+        public static function isTieBreakerHead2HeadFirst($tournament_id) {
+            return $tournament_id >= SoccerHtml::FRANCE_2016 && $tournament_id <= SoccerHtml::ENGLAND_1996;
         }
 
         public static function sortTournamentStanding($tournament) {
@@ -955,32 +979,38 @@
         }
 
         public static function isEqualStanding($t1, $t2) {
-            return $t1->getPoint() == $t2->getPoint() && $t1->getGoalDiff() == $t2->getGoalDiff()
-                && $t1->getGoalFor() == $t2->getGoalFor();
+            if (self::isTieBreakerHead2HeadFirst($t1->getTournamentId()))
+                return $t1->getPoint() == $t2->getPoint();
+            else
+                return $t1->getPoint() == $t2->getPoint() && $t1->getGoalDiff() == $t2->getGoalDiff()
+                    && $t1->getGoalFor() == $t2->getGoalFor();
         }
 
         public static function applyTiebreaker(&$t1, &$t2, $matches) {
-            for ($i = 0; $i < sizeof($matches); $i++) {
+            $still_tie = true;
+            $i = 0;
+            while ($still_tie && $i != sizeof($matches)) {
                 if ($matches[$i]->getHomeTeamName() == $t1->getName() && $matches[$i]->getAwayTeamName() == $t2->getName()) {
                     if ($matches[$i]->getHomeTeamScore() < $matches[$i]->getAwayTeamScore()) {
                         self::swapTeam($t1, $t2);
-                        return false;
+                        $still_tie = false;
                     }
-                    elseif ($matches[$i]->getHomeTeamScore() != null && $matches[$i]->getHomeTeamScore() == $matches[$i]->getAwayTeamScore()) {
-                        return true;
+                    elseif ($matches[$i]->getHomeTeamScore() > $matches[$i]->getAwayTeamScore()) {
+                        $still_tie = false;
                     }
                 }
                 elseif ($matches[$i]->getAwayTeamName() == $t1->getName() && $matches[$i]->getHomeTeamName() == $t2->getName()) {
                     if ($matches[$i]->getAwayTeamScore() < $matches[$i]->getHomeTeamScore()) {
                         self::swapTeam($t1, $t2);
-                        return false;
+                        $still_tie = false;
                     }
-                    elseif ($matches[$i]->getHomeTeamScore() != null && $matches[$i]->getAwayTeamScore() == $matches[$i]->getHomeTeamScore()) {
-                        return true;
+                    elseif ($matches[$i]->getAwayTeamScore() > $matches[$i]->getHomeTeamScore()) {
+                        $still_tie = false;
                     }
                 }
+                $i++;
             }
-            return true;
+            return $still_tie;
         }
 
         public static function fairPlayRule(&$t1, &$t2) {

@@ -338,7 +338,7 @@
 
         /*
             SELECT t.id, UCASE(t.name) AS name,
-                t.parent_team_id, UCASE(t2.name) AS parent_team_name,
+                t.parent_team_id, UCASE(t2.name) AS parent_team_name, UCASE(g.name) AS group_name,
                 n.flag_filename, n.code, tt.tournament_id, tou.name AS tournament_name,
                 g2.name AS confederation_name, g2.group_logo AS confederation_logo_filename
             FROM team t
@@ -353,7 +353,7 @@
 
         public static function getAllTimeSoccerTeamTournamentSql($tournament_type_id) {
             $sql = 'SELECT t.id, UCASE(t.name) AS name, 
-                        t.parent_team_id, UCASE(t2.name) AS parent_team_name,
+                        t.parent_team_id, UCASE(t2.name) AS parent_team_name, UCASE(g.name) AS group_name,
                         n.flag_filename, n.code, tt.tournament_id, tou.name AS tournament_name,
                         g2.name AS confederation_name, g2.group_logo AS confederation_logo_filename
                     FROM team t
@@ -384,7 +384,7 @@
                 while ($row = $query->fetch(\PDO::FETCH_ASSOC)) {
                     $team = Team::CreateSoccerTeam(
                         $row['id'], $row['name'], '', $row['code'], $row['parent_team_id'], $row['parent_team_name'],
-                        '', '',
+                        $row['group_name'], '',
                         '', '', 0,
                         $row['flag_filename'], '', $row['tournament_id'], $row['tournament_name'], 0,
                         $row['confederation_name'], $row['confederation_logo_filename']);
@@ -392,7 +392,7 @@
 
                     $second_round_team = Team::CreateSoccerTeam(
                         $row['id'], $row['name'], '', $row['code'], $row['parent_team_id'], $row['parent_team_name'],
-                        '', '',
+                        $row['group_name'], '',
                         '', '', 0,
                         $row['flag_filename'], '', $row['tournament_id'], $row['tournament_name'], 0,
                         $row['confederation_name'], $row['confederation_logo_filename']);
