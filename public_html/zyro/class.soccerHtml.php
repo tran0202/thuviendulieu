@@ -1213,6 +1213,16 @@
                             }
                         }
                     }
+                    if (!$result) {
+                        $third_place_match = Match::getThirdPlaceMatch($tournament->getMatches());
+                        $final_match = Match::getFinalMatch($tournament->getMatches());
+                        if ($third_place_match != null && $final_match != null) {
+                            if ($third_place_match->getHomeTeamName() == $team->getName() || $third_place_match->getAwayTeamName() == $team->getName() ||
+                                $final_match->getHomeTeamName() == $team->getName() || $final_match->getAwayTeamName() == $team->getName()) {
+                                $result = true;
+                            }
+                        }
+                    }
                 }
             }
             else {
