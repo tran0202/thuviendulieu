@@ -474,6 +474,12 @@
             return $matches_tmp[0];
         }
 
+        public static function getReplayFinalMatch($matches) {
+            $matches_tmp = self::getRoundMatches($matches, Soccer::REPLAY_FINAL);
+            if (sizeof($matches_tmp) == 0) return null;
+            return $matches_tmp[0];
+        }
+
         public static function getRoundMatches($matches, $round) {
             $result = array();
             for ($i = 0; $i < sizeof($matches); $i++) {
@@ -511,7 +517,8 @@
                     || ($matches[$i]->getTournamentId() == 59 && $matches[$i]->getRound() != Soccer::FIRST_ROUND)
                     || $matches[$i]->getTournamentId() == 23) {
                     for ($j = 0; $j < sizeof($replay_matches); $j++) {
-                        if ($matches[$i]->getHomeTeamName() == $replay_matches[$j]->getHomeTeamName()) {
+                        if ($matches[$i]->getHomeTeamName() == $replay_matches[$j]->getHomeTeamName()
+                            && $matches[$i]->getAwayTeamName() == $replay_matches[$j]->getAwayTeamName()) {
                             $matches[$i]->setHomeTeamReplayScore($replay_matches[$j]->getHomeTeamScore());
                             $matches[$i]->setAwayTeamReplayScore($replay_matches[$j]->getAwayTeamScore());
                             break;

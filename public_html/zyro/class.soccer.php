@@ -27,6 +27,7 @@
         const SEMIFINALS = 'Semifinals';
         const THIRD_PLACE = 'Third place';
         const FINAL_ = 'Final';
+        const REPLAY_FINAL = 'Replay Final';
         const BRONZE_MEDAL_MATCH = 'Bronze Medal Match';
         const GOLD_MEDAL_MATCH = 'Gold Medal Match';
         const REPLAY_GOLD_MEDAL_MATCH = 'Replay Gold Medal Match';
@@ -345,6 +346,7 @@
             Soccer::getReplayGoldMedalMatchRanking($tournament);
             Soccer::getThirdPlaceMatchRanking($tournament);
             Soccer::getFinalMatchRanking($tournament);
+            Soccer::getReplayFinalMatchRanking($tournament);
             Soccer::sortTournamentStanding($tournament);
         }
 
@@ -498,6 +500,19 @@
             $champion_match = Match::getFinalMatch($tournament->getMatches());
             if ($champion_match != null) {
                 self::calculatePoint($teams, $champion_match, self::Second);
+                $teams_tmp = array();
+                foreach ($teams as $name => $_team) {
+                    array_push($teams_tmp, $_team);
+                }
+                $tournament->setTeams($teams_tmp);
+            }
+        }
+
+        public static function getReplayFinalMatchRanking($tournament) {
+            $teams = Team::getTeamArrayByName($tournament->getTeams());
+            $replay_final_match = Match::getReplayFinalMatch($tournament->getMatches());
+            if ($replay_final_match != null) {
+                self::calculatePoint($teams, $replay_final_match, self::Second);
                 $teams_tmp = array();
                 foreach ($teams as $name => $_team) {
                     array_push($teams_tmp, $_team);
@@ -832,6 +847,9 @@
             if ($match->getRound() == self::FINAL_) {
                 $team->setBestFinish(self::RunnerUp);
             }
+            if ($match->getRound() == self::REPLAY_FINAL) {
+                $team->setBestFinish(self::RunnerUp);
+            }
             if ($match->getRound() == self::CONSOLATION_FINAL) {
                 $team->setBestFinish(self::Quarterfinal);
                 if ($match->getTournamentId() == 60) $team->setBestFinish(self::BronzeMedal);
@@ -900,6 +918,9 @@
                 case self::CONSOLATION_FINAL:
                     $best_finish = self::Quarterfinal;
                     if ($match->getTournamentId() == 60) $best_finish = self::SilverMedal;
+                    break;
+                case self::REPLAY_FINAL:
+                    $best_finish = self::Champion;
                     break;
                 default:
                     $best_finish = self::Champion;
