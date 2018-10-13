@@ -28,6 +28,8 @@
         const THIRD_PLACE = 'Third place';
         const FINAL_ = 'Final';
         const REPLAY_FINAL = 'Replay Final';
+        const FINALS = 'Finals';
+        const FINAL_PLAYOFF = 'Final Play-off';
         const BRONZE_MEDAL_MATCH = 'Bronze Medal Match';
         const GOLD_MEDAL_MATCH = 'Gold Medal Match';
         const REPLAY_GOLD_MEDAL_MATCH = 'Replay Gold Medal Match';
@@ -319,7 +321,9 @@
                 $teams[$final_round_teams[0]->getName()]->setBestFinish(self::Champion);
                 $teams[$final_round_teams[1]->getName()]->setBestFinish(self::RunnerUp);
                 $teams[$final_round_teams[2]->getName()]->setBestFinish(self::ThirdPlace);
-                $teams[$final_round_teams[3]->getName()]->setBestFinish(self::Semifinal);
+                if (sizeof($final_round_teams) > 3) {
+                    $teams[$final_round_teams[3]->getName()]->setBestFinish(self::Semifinal);
+                }
                 $result = array();
                 foreach ($teams as $name => $_team) {
                     array_push($result, $_team);
@@ -360,6 +364,8 @@
             Soccer::getThirdPlaceMatchRanking($tournament);
             Soccer::getFinalMatchRanking($tournament);
             Soccer::getReplayFinalMatchRanking($tournament);
+            Soccer::getFinalMatchesRanking($tournament);
+            Soccer::getFinalPlayoffMatchRanking($tournament);
             Soccer::sortTournamentStanding($tournament);
         }
 
@@ -534,6 +540,25 @@
             }
         }
 
+        public static function getFinalMatchesRanking($tournament) {
+            $final_matches = Match::getFinalMatches($tournament->getMatches());
+            $teams = self::getGroupRanking($tournament->getTeams(), $final_matches, self::Second);
+            $tournament->setTeams($teams);
+        }
+
+        public static function getFinalPlayoffMatchRanking($tournament) {
+            $teams = Team::getTeamArrayByName($tournament->getTeams());
+            $final_playoff_match = Match::getFinalPlayoffMatch($tournament->getMatches());
+            if ($final_playoff_match != null) {
+                self::calculatePoint($teams, $final_playoff_match, self::Second);
+                $teams_tmp = array();
+                foreach ($teams as $name => $_team) {
+                    array_push($teams_tmp, $_team);
+                }
+                $tournament->setTeams($teams_tmp);
+            }
+        }
+
         public static function getAllTimeRanking($tournament) {
             $teams = self::getGroupRanking($tournament->getTeams(), $tournament->getMatches(), self::AllStages);
             $tournament->setTeams($teams);
@@ -665,6 +690,10 @@
                         else {
                             self::resetBestFinish($match, $home_team);
                         }
+                        if ($match->getTournamentId() == SoccerHtml::COPA_1979 && $match->getHomeTeamName() == 'PARAGUAY') {
+                            $home_team->setBestFinish(self::Champion);
+                            $away_team->setBestFinish(self::RunnerUp);
+                        }
                     }
                 }
             }
@@ -681,6 +710,62 @@
                 $away_team->setGoalFor($away_team->getGoalFor() + $away_extra_time_score);
                 $away_team->setGoalAgainst($away_team->getGoalAgainst() + $home_extra_time_score);
                 $away_team->setGoalDiff($away_team->getGoalDiff() + $away_extra_time_score - $home_extra_time_score);
+            }
+            if ($match->getTournamentId() == SoccerHtml::PERU_1953) {
+                if ($match->getHomeTeamName() == 'PERU' && $match->getAwayTeamName() == 'PARAGUAY') {
+                    $home_team->setWin($home_team->getWin() + 1);
+                    $home_team->setDraw($home_team->getDraw() - 1);
+                    $home_team->setPoint($home_team->getPoint() + 1);
+                    $away_team->setDraw($away_team->getDraw() - 1);
+                    $away_team->setLoss($away_team->getLoss() + 1);
+                    $away_team->setPoint($away_team->getPoint() - 1);
+                }
+                if ($match->getHomeTeamName() == 'CHILE' && $match->getAwayTeamName() == 'BOLIVIA') {
+                    $home_team->setWin($home_team->getWin() + 1);
+                    $home_team->setDraw($home_team->getDraw() - 1);
+                    $home_team->setPoint($home_team->getPoint() + 1);
+                    $away_team->setDraw($away_team->getDraw() - 1);
+                    $away_team->setLoss($away_team->getLoss() + 1);
+                    $away_team->setPoint($away_team->getPoint() - 1);
+                }
+                if ($match->getRound() == self::PLAY_OFF) {
+                    $home_team->setBestFinish(self::Champion);
+                    $away_team->setBestFinish(self::RunnerUp);
+                }
+            }
+            if ($match->getTournamentId() == SoccerHtml::BRAZIL_1949) {
+                if ($match->getRound() == self::PLAY_OFF) {
+                    $home_team->setBestFinish(self::Champion);
+                    $away_team->setBestFinish(self::RunnerUp);
+                }
+            }
+            if ($match->getTournamentId() == SoccerHtml::URUGUAY_1942) {
+                if ($match->getHomeTeamName() == 'ARGENTINA' && $match->getAwayTeamName() == 'CHILE') {
+                    $home_team->setWin($home_team->getWin() + 1);
+                    $home_team->setDraw($home_team->getDraw() - 1);
+                    $home_team->setPoint($home_team->getPoint() + 1);
+                    $away_team->setDraw($away_team->getDraw() - 1);
+                    $away_team->setLoss($away_team->getLoss() + 1);
+                    $away_team->setPoint($away_team->getPoint() - 1);
+                }
+            }
+            if ($match->getTournamentId() == SoccerHtml::ARGENTINA_1937) {
+                if ($match->getRound() == self::PLAY_OFF) {
+                    $home_team->setBestFinish(self::Champion);
+                    $away_team->setBestFinish(self::RunnerUp);
+                }
+            }
+            if ($match->getTournamentId() == SoccerHtml::BRAZIL_1922) {
+                if ($match->getRound() == self::PLAY_OFF) {
+                    $home_team->setBestFinish(self::Champion);
+                    $away_team->setBestFinish(self::RunnerUp);
+                }
+            }
+            if ($match->getTournamentId() == SoccerHtml::BRAZIL_1919) {
+                if ($match->getRound() == self::PLAY_OFF) {
+                    $home_team->setBestFinish(self::Champion);
+                    $away_team->setBestFinish(self::RunnerUp);
+                }
             }
         }
 
@@ -874,6 +959,12 @@
             if ($match->getRound() == self::REPLAY_FINAL) {
                 $team->setBestFinish(self::RunnerUp);
             }
+            if ($match->getRound() == self::FINALS) {
+                $team->setBestFinish(self::RunnerUp);
+            }
+            if ($match->getRound() == self::FINAL_PLAYOFF) {
+                $team->setBestFinish(self::RunnerUp);
+            }
             if ($match->getRound() == self::CONSOLATION_FINAL) {
                 $team->setBestFinish(self::Quarterfinal);
                 if ($match->getTournamentId() == 60) $team->setBestFinish(self::BronzeMedal);
@@ -944,6 +1035,12 @@
                     if ($match->getTournamentId() == 60) $best_finish = self::SilverMedal;
                     break;
                 case self::REPLAY_FINAL:
+                    $best_finish = self::Champion;
+                    break;
+                case self::FINALS:
+                    $best_finish = self::Champion;
+                    break;
+                case self::FINAL_PLAYOFF:
                     $best_finish = self::Champion;
                     break;
                 default:

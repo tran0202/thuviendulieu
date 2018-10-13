@@ -21,10 +21,12 @@
         '17'	=> array('id' => '18', 'alias' => 'WomenOlympicFootballTournamentArchive', 'file' => 'women_olympic_football_archive.php','controllers' => array()),
         '18'	=> array('id' => '19', 'alias' => 'Euro', 'file' => 'euro_tournament.php','controllers' => array()),
         '19'	=> array('id' => '20', 'alias' => 'EuroArchive', 'file' => 'euro_archive.php','controllers' => array()),
-        '20'	=> array('id' => '21', 'alias' => 'NFL', 'file' => 'football.php','controllers' => array()),
-        '21'	=> array('id' => '22', 'alias' => 'NFLStandings', 'file' => 'football_standings.php','controllers' => array()),
-        '22' => array('id' => '23', 'alias' => 'Tennis', 'file' => 'tennis.php','controllers' => array()),
-        '23' => array('id' => '24', 'alias' => 'TennisTournament', 'file' => 'tennis_tournament.php','controllers' => array())
+        '20'	=> array('id' => '21', 'alias' => 'CopaAmerica', 'file' => 'copa_america_tournament.php','controllers' => array()),
+        '21'	=> array('id' => '22', 'alias' => 'CopaAmericaArchive', 'file' => 'copa_america_archive.php','controllers' => array()),
+        '22'	=> array('id' => '23', 'alias' => 'NFL', 'file' => 'football.php','controllers' => array()),
+        '23'	=> array('id' => '24', 'alias' => 'NFLStandings', 'file' => 'football_standings.php','controllers' => array()),
+        '24' => array('id' => '25', 'alias' => 'Tennis', 'file' => 'tennis.php','controllers' => array()),
+        '25' => array('id' => '26', 'alias' => 'TennisTournament', 'file' => 'tennis_tournament.php','controllers' => array())
 //		'4'	=> array('id' => '4', 'alias' => 'New-Link', 'file' => 'tennis.php','controllers' => array())
 	);
 	$forms = array(

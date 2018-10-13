@@ -36,7 +36,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-12">
-                            <span class="wb-stl-heading1 russia-2018"><?php echo $header; ?></span>
+                            <span class="wb-stl-heading1 dark-red"><?php echo $header; ?></span>
                             <span class="wb-stl-heading3 margin-left-lg"><a href="WorldCupGroups<?php echo $qs; ?>" target="_self">Groups</a></span>
                             <span class="wb-stl-heading3 margin-left-lg"><a href="WorldCupSchedule<?php echo $qs; ?>" target="_self">Schedule</a></span>
                         </div>

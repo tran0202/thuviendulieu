@@ -25,7 +25,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-12 margin-top-lg">
-                            <p class="wb-stl-highlight text-center russia-2018">Women's World Cup Archive</p>
+                            <p class="wb-stl-highlight text-center dark-red">Women's World Cup Archive</p>
                             <p class="wb-stl-normal"> </p>
                         </div>
                     </div>

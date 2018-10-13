@@ -480,6 +480,16 @@
             return $matches_tmp[0];
         }
 
+        public static function getFinalMatches($matches) {
+            return self::getRoundMatches($matches, Soccer::FINALS);
+        }
+
+        public static function getFinalPlayoffMatch($matches) {
+            $matches_tmp = self::getRoundMatches($matches, Soccer::FINAL_PLAYOFF);
+            if (sizeof($matches_tmp) == 0) return null;
+            return $matches_tmp[0];
+        }
+
         public static function getRoundMatches($matches, $round) {
             $result = array();
             for ($i = 0; $i < sizeof($matches); $i++) {

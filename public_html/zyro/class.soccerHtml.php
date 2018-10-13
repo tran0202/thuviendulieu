@@ -21,6 +21,37 @@
         const SWEDEN_1992 = 74;
         const WEST_GERMANY_1988 = 75;
         const FRANCE_1984 = 76;
+        const CHILE_2015 = 84;
+        const ARGENTINA_2011 = 85;
+        const VENEZUELA_2007 = 86;
+        const PERU_2004 = 87;
+        const COLOMBIA_2001 = 88;
+        const PARAGUAY_1999 = 89;
+        const BOLIVIA_1997 = 90;
+        const URUGUAY_1995 = 91;
+        const ECUADOR_1993 = 92;
+        const COPA_1983 = 96;
+        const COPA_1979 = 97;
+        const COPA_1975 = 98;
+        const URUGUAY_1967 = 99;
+        const BOLIVIA_1963 = 100;
+        const ECUADOR_1959 = 101;
+        const ARGENTINA_1959 = 102;
+        const PERU_1957 = 103;
+        const URUGUAY_1956 = 104;
+        const CHILE_1955 = 105;
+        const PERU_1953 = 106;
+        const BRAZIL_1949 = 107;
+        const ECUADOR_1947 = 108;
+        const ARGENTINA_1946 = 109;
+        const CHILE_1945 = 110;
+        const URUGUAY_1942 = 111;
+        const CHILE_1941 = 112;
+        const PERU_1939 = 113;
+        const ARGENTINA_1937 = 114;
+        const CHILE_1926 = 118;
+        const BRAZIL_1922 = 122;
+        const BRAZIL_1919 = 125;
 
         const TEAM = 1;
         const CLUB = 2;
@@ -387,7 +418,7 @@
                             <div class="col-sm-3" style="padding-top:5px"><img class="flag-md" src="/images/flags/'.$teams[$i]->getFlagFilename().'"></div>
                             <div class="col-sm-9"><span class="h2-ff1"><b>'.$teams[$i]->getName().'</b></span></div>
                         </div>
-                        <p><span class="wb-stl-heading1 russia-2018">'.$teams[$i]->getTournamentCount().'</span> '.$tournament_text.'</p>';
+                        <p><span class="wb-stl-heading1 dark-red">'.$teams[$i]->getTournamentCount().'</span> '.$tournament_text.'</p>';
                 $team_name = $teams[$i]->getName();
                 if ($teams[$i]->getParentName() != null) {
                     $team_name =  $teams[$i]->getParentName();
@@ -429,7 +460,7 @@
         public static function getAllTimeSoccerRankingHtml($tournament) {
             $output = '';
             $output .= '<div class="margin-top-sm">';
-            if ($tournament->getTournamentTypeId() == Tournament::EURO) {
+            if (!self::hasConfederationFilter($tournament)) {
                 $output .= self::getAllConfederationsRankingHtml($tournament);
             }
             else {
@@ -707,6 +738,10 @@
                 $group_id = str_replace('League ', '', $_match->getParentGroupName()).$group_name;
                 if ($group_name == Soccer::FINAL_ROUND) $group_id = 'FinalRound';
                 $group_text .= '<a class="link-modal" href="#" data-toggle="modal" data-target="#group'.$group_id.'StandingModal">'.$group_anchor.'</a>' ;
+                if ($_match->getTournamentId() == self::PERU_1953 || $_match->getTournamentId() == self::BRAZIL_1949
+                    || $_match->getTournamentId() == self::ARGENTINA_1937 || $_match->getTournamentId() == self::BRAZIL_1922
+                    || $_match->getTournamentId() == self::BRAZIL_1919)
+                    $group_text = '';
             }
             $home_flag = '';
             $away_flag = '';
@@ -754,6 +789,7 @@
                 if ($_match->getHomeTeamScore() == $_match->getAwayTeamScore() &&
                     (($_match->getStage() != Soccer::FIRST_STAGE && $_match->getStage() != Soccer::GROUP_STAGE && $_match->getStage() != Soccer::QUALIFYING_STAGE
                      && $_match->getTournamentId() != 50 && $_match->getTournamentId() != 51) || $_match->getRound() == Soccer::PLAY_OFF)) {
+                    if ($_match->getHomeTeamExtraTimeScore() == null) $aet = '&nbsp;&nbsp;&nbsp;&nbsp;';
                     $score = ($_match->getHomeTeamScore()+$_match->getHomeTeamExtraTimeScore()).
                         '-'.($_match->getAwayTeamScore()+$_match->getAwayTeamExtraTimeScore()).$aet;
                     if ($_match->getHomeTeamExtraTimeScore() == $_match->getAwayTeamExtraTimeScore()) {
@@ -1153,7 +1189,12 @@
                 || $tournament->getTournamentId() == self::CANADA_2015 || $tournament->getTournamentId() == self::RIO_2016
                 || $tournament->getTournamentId() == self::SWEDEN_1995 || $tournament->getTournamentId() == self::CHINA_1991
                 || $tournament->getTournamentId() == self::LONDON_2012 || $tournament->getTournamentId() == self::BEIJING_2008
-                || $tournament->getTournamentId() == self::ATHENS_2004 || $tournament->getTournamentId() == self::FRANCE_2016;
+                || $tournament->getTournamentId() == self::ATHENS_2004 || $tournament->getTournamentId() == self::FRANCE_2016
+                || $tournament->getTournamentId() == self::CHILE_2015 || $tournament->getTournamentId() == self::ARGENTINA_2011
+                || $tournament->getTournamentId() == self::VENEZUELA_2007 || $tournament->getTournamentId() == self::PERU_2004
+                || $tournament->getTournamentId() == self::COLOMBIA_2001 || $tournament->getTournamentId() == self::PARAGUAY_1999
+                || $tournament->getTournamentId() == self::BOLIVIA_1997 || $tournament->getTournamentId() == self::URUGUAY_1995
+                || $tournament->getTournamentId() == self::ECUADOR_1993;
         }
 
         public static function noThirdPlacePlayoff($tournament) {
@@ -1165,7 +1206,8 @@
                 || $tournament_id == self::AUSTRIA_SWITZERLAND_2008 || $tournament_id == self::PORTUGAL_2004
                 || $tournament_id == self::BELGIUM_NETHERLANDS_2000 || $tournament_id == self::ENGLAND_1996
                 || $tournament_id == self::SWEDEN_1992 || $tournament_id == self::WEST_GERMANY_1988
-                || $tournament_id == self::FRANCE_1984;
+                || $tournament_id == self::FRANCE_1984 || $tournament_id == self::COPA_1983
+                || $tournament_id == self::COPA_1979 || $tournament_id == self::COPA_1975;
         }
 
         public static function isGoldenGoalRule($golden_goal_rule) {
@@ -1274,6 +1316,16 @@
                     break;
                 case Soccer::FinalRound:
                     $best_finish = 'Second Round';
+                    if ($tournament_id == self::URUGUAY_1967 || $tournament_id == self::BOLIVIA_1963
+                        || $tournament_id == self::ECUADOR_1959 || $tournament_id == self::ARGENTINA_1959
+                        || $tournament_id == self::PERU_1957 || $tournament_id == self::URUGUAY_1956
+                        || $tournament_id == self::CHILE_1955 || $tournament_id == self::PERU_1953
+                        || $tournament_id == self::BRAZIL_1949 || $tournament_id == self::ECUADOR_1947
+                        || $tournament_id == self::ARGENTINA_1946 || $tournament_id == self::CHILE_1945
+                        || $tournament_id == self::URUGUAY_1942 || $tournament_id == self::CHILE_1941
+                        || $tournament_id == self::PERU_1939 || $tournament_id == self::ARGENTINA_1937
+                        || $tournament_id == self::CHILE_1926 || $tournament_id == self::BRAZIL_1922)
+                        $best_finish = 'Final Round';
                     break;
                 case Soccer::PreliminaryRound:
                     $best_finish = 'First Round';
@@ -1332,7 +1384,15 @@
             $result = str_replace('Women\'s Olympic Football Tournament ', '', $result);
             $result = str_replace('Olympic Football Tournament ', '', $result);
             $result = str_replace('UEFA Euro ', '', $result);
+            $result = str_replace(' Copa America ', '', $result);
+            $result = str_replace('Centenario ', '', $result);
+            $result = str_replace(' South American Championship ', '', $result);
             if (!$olympic_tournament) $result = substr($result, -(strlen($result) - 4)).' '.substr($result, 0, 4);
             return $result;
+        }
+
+        public static function hasConfederationFilter($tournament) {
+            return $tournament->getTournamentTypeId() == Tournament::WORLD_CUP || $tournament->getTournamentTypeId() == Tournament::WOMENS_WORLD_CUP
+                || $tournament->getTournamentTypeId() == Tournament::OLYMPIC || $tournament->getTournamentTypeId() == Tournament::WOMENS_OLYMPIC;
         }
     }

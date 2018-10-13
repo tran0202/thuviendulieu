@@ -2,17 +2,6 @@
 
     class TournamentProfile {
 
-        const WORLD_CUP = 1;
-        const FOOTBALL = 2;
-        const ATP_MENS_SINGLES = 3;
-        const NATIONS_LEAGUE = 4;
-        const WTA_WOMENS_SINGLES = 5;
-        const CHAMPIONS_LEAGUE = 6;
-        const EUROPA_LEAGUE = 7;
-        const WOMENS_WORLD_CUP = 8;
-        const OLYMPIC = 9;
-        const WOMENS_OLYMPIC = 10;
-
         private $id;
         private $name;
         private $logo_filename;
@@ -47,36 +36,39 @@
             $logo_dir = 'logos/';
             $logo_filename = $profile->getLogoFilename();
             switch ($profile->getTournamentTypeId()) {
-                case self::WORLD_CUP:
+                case Tournament::WORLD_CUP:
                     $logo_dir = 'wc_logos/';
                     break;
-                case self::FOOTBALL:
+                case Tournament::FOOTBALL:
                     $logo_dir = 'nfl_logos/';
                     $logo_filename = 'NFL.svg';
                     break;
-                case self::ATP_MENS_SINGLES:
+                case Tournament::MENS_TENNIS:
                     $default_logo_height = 40;
                     break;
-                case self::NATIONS_LEAGUE:
+                case Tournament::NATIONS_LEAGUE:
                     $logo_dir = 'unl_logos/';
                     break;
-                case self::WTA_WOMENS_SINGLES:
+                case Tournament::WOMENS_TENNIS:
                     $default_logo_height = 40;
                     break;
-                case self::CHAMPIONS_LEAGUE:
+                case Tournament::CHAMPIONS_LEAGUE:
                     $logo_dir = 'club_logos/';
                     break;
-                case self::EUROPA_LEAGUE:
+                case Tournament::EUROPA_LEAGUE:
                     $logo_dir = 'club_logos/';
                     break;
-                case self::WOMENS_WORLD_CUP:
+                case Tournament::WOMENS_WORLD_CUP:
                     $logo_dir = 'wwc_logos/';
                     break;
-                case self::OLYMPIC:
+                case Tournament::OLYMPIC:
                     $logo_dir = 'olympic_logos/';
                     break;
-                case self::WOMENS_OLYMPIC:
+                case Tournament::WOMENS_OLYMPIC:
                     $logo_dir = 'olympic_logos/';
+                    break;
+                case Tournament::COPA_AMERICA:
+                    $logo_dir = 'copa_logos/';
                     break;
                 default:
                     break;
@@ -99,13 +91,13 @@
         public static function getAllFilteringText($profile, $image_type) {
             if ($image_type == Team::CONFEDERATION_LOGO) return 'ALL CONFEDERATIONS';
             switch ($profile->getTournamentTypeId()) {
-                case self::NATIONS_LEAGUE:
+                case Tournament::NATIONS_LEAGUE:
                     $text = 'ALL NATIONS';
                     break;
-                case self::CHAMPIONS_LEAGUE:
+                case Tournament::CHAMPIONS_LEAGUE:
                     $text = 'ALL CHAMPIONS';
                     break;
-                case self::EUROPA_LEAGUE:
+                case Tournament::EUROPA_LEAGUE:
                     $text = 'ALL EUROPA';
                     break;
                 default:

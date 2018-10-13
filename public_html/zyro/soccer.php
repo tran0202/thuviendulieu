@@ -65,6 +65,24 @@
                                 </p>
                             </div>
                         </div>
+                        <div class="card">
+                            <span class="mx-auto">
+                                <a href="WorldCup"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/wc_logos/2018.png" alt="Russia 2018"></a>
+                                <a href="WorldCup?tid=5"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/wc_logos/2014.png" alt="Brazil 2014"></a>
+                                <a href="WorldCup?tid=6"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/wc_logos/2010.png" alt="South Africa 2010"></a>
+                            </span>
+                            <span class="mx-auto">
+                                <a href="WorldCup?tid=7"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/wc_logos/2006.png" alt="Germany 2006"></a>
+                                <a href="WorldCup?tid=8"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/wc_logos/2002.png" alt="Korea/Japan 2002"></a>
+                                <a href="WorldCup?tid=9"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/wc_logos/1998.png" alt="France 1998"></a>
+                            </span>
+                            <div class="card-body">
+                                <h5 class="card-title">FIFA World Cup</h5>
+                                <p class="card-text">
+                                    <a href="WorldCupArchive" class="card-link">Archive <span class="fa fa-futbol-o"></span></a>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-group">
                         <div class="card">
@@ -88,19 +106,18 @@
                         </div>
                         <div class="card">
                             <span class="mx-auto">
-                                <a href="WorldCup"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/wc_logos/2018.png" alt="Russia 2018"></a>
-                                <a href="WorldCup?tid=5"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/wc_logos/2014.png" alt="Brazil 2014"></a>
-                                <a href="WorldCup?tid=6"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/wc_logos/2010.png" alt="South Africa 2010"></a>
+                                <img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-2019.png" alt="Brazil 2019">
+                                <a href="CopaAmerica"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-centenario.png" alt="United States 2016 Centenario"></a>
+                                <a href="CopaAmerica?tid=84"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-2015.png" alt="Chile 2015"></a>
                             </span>
                             <span class="mx-auto">
-                                <a href="WorldCup?tid=7"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/wc_logos/2006.png" alt="Germany 2006"></a>
-                                <a href="WorldCup?tid=8"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/wc_logos/2002.png" alt="Korea/Japan 2002"></a>
-                                <a href="WorldCup?tid=9"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/wc_logos/1998.png" alt="France 1998"></a>
+                                <a href="CopaAmerica?tid=85"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-2011.png" alt="Argentina 2011"></a>
+                                <a href="CopaAmerica?tid=86"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-2007.png" alt="Venezuela 2007"></a>
                             </span>
                             <div class="card-body">
-                                <h5 class="card-title">FIFA World Cup</h5>
+                                <h5 class="card-title">Copa America</h5>
                                 <p class="card-text">
-                                    <a href="WorldCupArchive" class="card-link">Archive <span class="fa fa-futbol-o"></span></a>
+                                    <a href="CopaAmericaArchive" class="card-link">Archive <span class="fa fa-futbol-o"></span></a>
                                 </p>
                             </div>
                         </div>

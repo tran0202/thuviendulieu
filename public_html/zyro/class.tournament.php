@@ -22,6 +22,7 @@
         const OLYMPIC = 9;
         const WOMENS_OLYMPIC = 10;
         const EURO = 11;
+        const COPA_AMERICA = 12;
 
         const SIMULATION_MODE_0 = 0;
         const SIMULATION_MODE_1 = 1;
