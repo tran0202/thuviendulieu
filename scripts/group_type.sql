@@ -10,7 +10,7 @@ VALUES ('Group'),
 	('Stage'),
 	('Round'),
 	('Nation'),
-	('Association'),
+	('Territory'),
 	   ('League');
 
 INSERT INTO group_type (name)

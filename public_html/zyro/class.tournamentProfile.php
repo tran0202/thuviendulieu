@@ -70,6 +70,9 @@
                 case Tournament::COPA_AMERICA:
                     $logo_dir = 'copa_logos/';
                     break;
+                case Tournament::GOLD_CUP:
+                    $logo_dir = 'gc_logos/';
+                    break;
                 default:
                     break;
             }

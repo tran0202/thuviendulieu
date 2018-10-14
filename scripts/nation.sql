@@ -120,12 +120,13 @@ VALUES ('Afghanistan', 'Afghanistan.png', 6, 'AFG'), ('Albania', 'Albania.png', 
 	('Vietnam', 'Vietnam.png', 6, 'VIE'), ('Wales', 'Wales.png', 6, 'WAL'),
 	('Yemen', 'Yemen.png', 6, 'YEM'), ('Zambia', 'Zambia.png', 6, 'ZAM'), ('Zimbabwe', 'Zimbabwe.png', 6, 'ZIM'),
 	('Great Britain', 'Great_Britain.png', 6, 'GBR'), ('Serbia and Montenegro', 'Serbia_and_Montenegro.svg', 6, 'SCG'), ('Yugoslavia', 'yug.png', 6, 'YUG'),
-	('Germany FR', 'Germany.png', 6, 'GER'), ('Soviet Union', 'urs.png', 6, 'URS'), ('Czechoslovakia', 'tch.png', 6, 'TCH'),
-	('Germany DR', 'gdr.png', 6, 'GDR'), ('Zaire', 'zai.png', 6, 'ZAI'), ('Dutch East Indies', 'inh.png', 6, 'INH'), ('Spain*', 'Olympic.png', 6, 'OLY'),
-	   ('Burma', 'Burma.png', 6, 'BIR'), ('United Arab Republic', 'United_Arab_Republic.png', 6, 'UAR'), ('Republic of China', 'Republic_of_China.png', 6, 'ROC');
+	('Germany FR', 'Germany.png', 6, 'FRG'), ('Soviet Union', 'urs.png', 6, 'URS'), ('Czechoslovakia', 'tch.png', 6, 'TCH'),
+	('Germany DR', 'gdr.png', 6, 'GDR'), ('Zaire', 'zai.png', 6, 'ZAI'), ('Dutch East Indies', 'inh.png', 6, 'INH'), ('Spain*', 'Olympic.png', 6, 'IOC'),
+	   ('Burma', 'Burma.png', 6, 'BUR'), ('United Arab Republic', 'United_Arab_Republic.png', 6, 'UAR'), ('Republic of China', 'Republic_of_China.png', 6, 'ROC'), ('Netherlands Antilles', 'Netherlands_Antilles.png', 6, 'ANT');
 
 INSERT INTO nation (name, flag_filename, nation_type_id, code)
-VALUES ('Netherlands Antilles', 'Netherlands_Antilles.png', 6, 'ANT');
+VALUES ('French Guiana', 'French_Guiana.png', 7, 'GUF'),
+	   ('Martinique', 'Martinique.png', 7, 'MTQ');
 
 INSERT INTO nation (name, flag_filename, parent_nation_id, nation_type_id, code)
 VALUES ('FR Yugoslavia', 'Serbia_and_Montenegro.svg', 165, 6, 'YUG');

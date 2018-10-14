@@ -36,8 +36,6 @@
                                 </p>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-group">
                         <div class="card">
                             <img class="card-img-top card-img-top-height-200 mx-auto margin-top-sm" src="images/unl_logos/unl.jpg" alt="Russia 2018">
                             <div class="card-body">
@@ -47,6 +45,8 @@
                                 </p>
                             </div>
                         </div>
+                    </div>
+                    <div class="card-group">
                         <div class="card">
                             <span class="mx-auto">
                                 <img class="card-img-top card-img-top-height-100 margin-top-sm margin-lr-md" src="images/logos/Euro_2020.png" alt="Pan-European 2020">
@@ -80,6 +80,24 @@
                                 <h5 class="card-title">FIFA World Cup</h5>
                                 <p class="card-text">
                                     <a href="WorldCupArchive" class="card-link">Archive <span class="fa fa-futbol-o"></span></a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <span class="mx-auto">
+                                <img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/wwc_logos/2019.png" alt="France 2019">
+                                <a href="WomenWorldCup"><img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/wwc_logos/2015.png" alt="Canada 2015"></a>
+                                <a href="WomenWorldCup?tid=34"><img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/wwc_logos/2011.png" alt="Germany 2011"></a>
+                            </span>
+                            <span class="mx-auto">
+                                <a href="WomenWorldCup?tid=35"><img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/wwc_logos/2007.png" alt="China 2007"></a>
+                                <a href="WomenWorldCup?tid=36"><img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/wwc_logos/2003.png" alt="USA 2003"></a>
+                                <a href="WomenWorldCup?tid=37"><img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/wwc_logos/1999.png" alt="USA 1999"></a>
+                            </span>
+                            <div class="card-body">
+                                <h5 class="card-title">FIFA Women's World Cup</h5>
+                                <p class="card-text">
+                                    <a href="WomenWorldCupArchive" class="card-link">Archive <span class="fa fa-futbol-o"></span></a>
                                 </p>
                             </div>
                         </div>
@@ -123,19 +141,17 @@
                         </div>
                         <div class="card">
                             <span class="mx-auto">
-                                <img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/wwc_logos/2019.png" alt="France 2019">
-                                <a href="WomenWorldCup"><img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/wwc_logos/2015.png" alt="Canada 2015"></a>
-                                <a href="WomenWorldCup?tid=34"><img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/wwc_logos/2011.png" alt="Germany 2011"></a>
+                                <img class="card-img-top card-img-top-height-85 mx-auto margin-top-sm" style="margin-top:25px;" src="images/gc_logos/gc_2019.png" alt="United States 2019">
+                                <a href="GoldCup"><img class="card-img-top card-img-top-height-85 mx-auto margin-top-sm" style="margin-top:25px;" src="images/gc_logos/gc_2017.png" alt="United States 2017"></a>
                             </span>
                             <span class="mx-auto">
-                                <a href="WomenWorldCup?tid=35"><img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/wwc_logos/2007.png" alt="China 2007"></a>
-                                <a href="WomenWorldCup?tid=36"><img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/wwc_logos/2003.png" alt="USA 2003"></a>
-                                <a href="WomenWorldCup?tid=37"><img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/wwc_logos/1999.png" alt="USA 1999"></a>
+                                <a href="GoldCup?tid=129"><img class="card-img-top card-img-top-height-85 mx-auto margin-top-sm" style="margin-top:25px;" src="images/gc_logos/gc_2015.png" alt="United States-Canada 2015"></a>
+                                <a href="GoldCup?tid=130"><img class="card-img-top card-img-top-height-85 mx-auto margin-top-sm" style="margin-top:25px;" src="images/gc_logos/gc_2013.png" alt="United States 2013"></a>
                             </span>
                             <div class="card-body">
-                                <h5 class="card-title">FIFA Women's World Cup</h5>
+                                <h5 class="card-title">Gold Cup</h5>
                                 <p class="card-text">
-                                    <a href="WomenWorldCupArchive" class="card-link">Archive <span class="fa fa-futbol-o"></span></a>
+                                    <a href="GoldCupArchive" class="card-link">Archive <span class="fa fa-futbol-o"></span></a>
                                 </p>
                             </div>
                         </div>

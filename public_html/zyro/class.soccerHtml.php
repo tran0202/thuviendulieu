@@ -52,6 +52,7 @@
         const CHILE_1926 = 118;
         const BRAZIL_1922 = 122;
         const BRAZIL_1919 = 125;
+        const GOLD_CUP_2017 = 125;
 
         const TEAM = 1;
         const CLUB = 2;
@@ -1194,7 +1195,7 @@
                 || $tournament->getTournamentId() == self::VENEZUELA_2007 || $tournament->getTournamentId() == self::PERU_2004
                 || $tournament->getTournamentId() == self::COLOMBIA_2001 || $tournament->getTournamentId() == self::PARAGUAY_1999
                 || $tournament->getTournamentId() == self::BOLIVIA_1997 || $tournament->getTournamentId() == self::URUGUAY_1995
-                || $tournament->getTournamentId() == self::ECUADOR_1993;
+                || $tournament->getTournamentId() == self::ECUADOR_1993 || $tournament->getTournamentId() == self::GOLD_CUP_2017;
         }
 
         public static function noThirdPlacePlayoff($tournament) {
@@ -1207,7 +1208,8 @@
                 || $tournament_id == self::BELGIUM_NETHERLANDS_2000 || $tournament_id == self::ENGLAND_1996
                 || $tournament_id == self::SWEDEN_1992 || $tournament_id == self::WEST_GERMANY_1988
                 || $tournament_id == self::FRANCE_1984 || $tournament_id == self::COPA_1983
-                || $tournament_id == self::COPA_1979 || $tournament_id == self::COPA_1975;
+                || $tournament_id == self::COPA_1979 || $tournament_id == self::COPA_1975
+                || $tournament_id == self::GOLD_CUP_2017;
         }
 
         public static function isGoldenGoalRule($golden_goal_rule) {
@@ -1387,6 +1389,8 @@
             $result = str_replace(' Copa America ', '', $result);
             $result = str_replace('Centenario ', '', $result);
             $result = str_replace(' South American Championship ', '', $result);
+            $result = str_replace(' Gold Cup ', '', $result);
+            $result = str_replace(' CONCACAF Championship ', '', $result);
             if (!$olympic_tournament) $result = substr($result, -(strlen($result) - 4)).' '.substr($result, 0, 4);
             return $result;
         }

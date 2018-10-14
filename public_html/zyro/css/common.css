@@ -172,6 +172,7 @@ body {
 .modal-md { max-width: 800px; }
 .modal-X { font-size: 48px; }
 .modal-close { font-size: 26px; }
+.card-img-top-height-85 { width: auto; height: 85px; }
 .card-img-top-height-100 { width: auto; height: 100px; }
 .card-img-top-height-150 { width: auto; height: 150px; }
 .card-img-top-height-200 { width: auto; height: 200px; }
@@ -549,3 +550,28 @@ a:hover.hover-pointer { cursor: pointer; }
 .class_1919_South_American_Championship_Brazil { color:#005ca4; }
 .class_1917_South_American_Championship_Uruguay { color:#005ca4; }
 .class_1916_South_American_Championship_Argentina { color:#005ca4; }
+.class_2019_Gold_Cup_United_States { color:#e6bf7a; }
+.class_2017_Gold_Cup_United_States { color:#e6bf7a; }
+.class_2015_Gold_Cup_United_States-Canada { color:#e6bf7a; }
+.class_2013_Gold_Cup_United_States { color:#e6bf7a; }
+.class_2011_Gold_Cup_United_States { color:#e6bf7a; }
+.class_2009_Gold_Cup_United_States { color:#1c3f94; }
+.class_2007_Gold_Cup_United_States { color:#1c3f94; }
+.class_2005_Gold_Cup_United_States { color:#1c3f94; }
+.class_2003_Gold_Cup_United_States-Mexico { color:#1c3f94; }
+.class_2002_Gold_Cup_United_States { color:#1c3f94; }
+.class_2000_Gold_Cup_United_States { color:#eb1821; }
+.class_1998_Gold_Cup_United_States { color:#eb1821; }
+.class_1996_Gold_Cup_United_States { color:#eb1821; }
+.class_1993_Gold_Cup_United_States-Mexico { color:#eb1821; }
+.class_1991_Gold_Cup_United_States { color:#eb1821; }
+.class_1989_CONCACAF_Championship { color:#d5ba81; }
+.class_1985_CONCACAF_Championship { color:#d5ba81; }
+.class_1981_CONCACAF_Championship_Honduras { color:#d5ba81; }
+.class_1977_CONCACAF_Championship_Mexico { color:#d5ba81; }
+.class_1973_CONCACAF_Championship_Haiti { color:#d5ba81; }
+.class_1972_CONCACAF_Championship_Trinidad_and_Tobago { color:#d5ba81; }
+.class_1969_CONCACAF_Championship_Costa_Rica { color:#d5ba81; }
+.class_1967_CONCACAF_Championship_Honduras { color:#d5ba81; }
+.class_1965_CONCACAF_Championship_Guatemala { color:#d5ba81; }
+.class_1963_CONCACAF_Championship_El_Salvador { color:#d5ba81; }
