@@ -323,6 +323,8 @@
                 $teams[$final_round_teams[2]->getName()]->setBestFinish(self::ThirdPlace);
                 if (sizeof($final_round_teams) > 3) {
                     $teams[$final_round_teams[3]->getName()]->setBestFinish(self::Semifinal);
+                    if ($teams[$final_round_teams[3]->getName()]->getTournamentId() == SoccerHtml::CONCACAF_CHAMPIONSHIP_1985)
+                        $teams[$final_round_teams[3]->getName()]->setBestFinish(self::Group);
                 }
                 $result = array();
                 foreach ($teams as $name => $_team) {
@@ -616,7 +618,8 @@
             foreach ($teams_tmp as $name => $_team) {
                 array_push($result, $_team);
             }
-            return self::sortGroupStanding($result, $matches);
+            $result2 = self::sortGroupStanding($result, $matches);
+            return $result2;
         }
 
         public static function calculatePoint(&$teams, $match, $stage) {
@@ -781,6 +784,7 @@
 
         public static function compareTeams(&$team1, &$team2, $matches) {
             if (self::isEqualStanding($team1, $team2)) {
+                if ($team1->getTournamentId() == SoccerHtml::GOLD_CUP_2002 &&  $team1->getName() == 'CANADA') return;
                 $still_tie = self::applyTiebreaker($team1, $team2, $matches);
                 if (self::isTieBreakerHead2HeadFirst($team1->getTournamentId())) {
                     if ($still_tie && self::isHigherStanding($team2, $team1)) {
@@ -799,7 +803,8 @@
         }
 
         public static function isTieBreakerHead2HeadFirst($tournament_id) {
-            return $tournament_id >= SoccerHtml::FRANCE_2016 && $tournament_id <= SoccerHtml::ENGLAND_1996;
+            return ($tournament_id >= SoccerHtml::FRANCE_2016 && $tournament_id <= SoccerHtml::ENGLAND_1996)
+                || $tournament_id == SoccerHtml::GOLD_CUP_2009 || $tournament_id == SoccerHtml::GOLD_CUP_2007;
         }
 
         public static function sortTournamentStanding($tournament) {
@@ -952,6 +957,7 @@
             }
             if ($match->getRound() == self::THIRD_PLACE) {
                 $team->setBestFinish(self::Semifinal);
+                if ($match->getTournamentId() == SoccerHtml::GOLD_CUP_1993) $team->setBestFinish(self::ThirdPlace);
             }
             if ($match->getRound() == self::FINAL_) {
                 $team->setBestFinish(self::RunnerUp);
@@ -1051,6 +1057,8 @@
         }
 
         public static function isHigherStanding($t1, $t2) {
+            if ($t1->getMatchPlay() == 0) return false;
+            if ($t2->getMatchPlay() == 0) return true;
             if ($t1->getPoint() > $t2->getPoint()) {
                 return true;
             }
@@ -1119,16 +1127,15 @@
         }
 
         public static function drawingLots(&$t1, &$t2) {
+            $still_tie = true;
             if ($t2->getName() == 'REPUBLIC OF IRELAND' && $t2->getTournamentId() == 11) {
                 self::swapTeam($t1, $t2);
+                $still_tie = false;
             }
             elseif ($t2->getName() == 'NETHERLANDS' && $t2->getTournamentId() == 11) {
-
+                $still_tie = false;
             }
-            else {
-                return true;
-            }
-            return false;
+            return $still_tie;
         }
 
         public static function alphabetOrder(&$t1, &$t2) {

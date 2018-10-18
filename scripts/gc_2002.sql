@@ -1,69 +1,66 @@
 # Insert new tournament
 # Replace all the tournament_id
 
-# 2017 Gold Cup United States
+# 2002 Gold Cup United States
 
 INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_filename, golden_goal_rule, points_for_win)
-VALUES ('2017 Gold Cup United States', '2017-07-07', '2017-07-26', 13, 'gc_2017.png', null, null);
+VALUES ('2002 Gold Cup United States', '2002-01-18', '2002-02-02', 13, 'gc_2002.png', 1, null);
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
-VALUES (128, 41, 1, 39, 1),
-	   (128, 43, 1, 40, 1),
-	   (128, 44, 2, 40, 2),
-	   (128, 46, 3, 40, 3);
+VALUES (136, 41, 1, 39, 1),
+	   (136, 43, 1, 40, 1),
+	   (136, 44, 2, 40, 2),
+	   (136, 45, 3, 40, 3),
+	   (136, 46, 4, 40, 4);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 
-INSERT INTO team (name, team_type_id, nation_id)
-VALUES ('French Guiana', 1, 229),
-	   ('Martinique', 1, 230),
-	   ('Nicaragua', 1, 138),
-	   ('Curaçao', 1, 53);
+# INSERT INTO nation (name, flag_filename, nation_type_id, code)
+# VALUES ('Guadeloupe', 'Guadeloupe.png', 7, 'GLP');
+#
+# INSERT INTO team (name, team_type_id, nation_id)
+# VALUES ('Grenada', 1, 80),
+# 	   ('Guadeloupe', 1, 231);
 
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
-VALUES (27, 128, 1, 1),
-	   (232, 128, 1, 2),
-	   (197, 128, 1, 3),
-	   (964, 128, 1, 4),
-	   (198, 128, 2, 1),
-	   (29, 128, 2, 2),
-	   (965, 128, 2, 3),
-	   (966, 128, 2, 4),
-	   (28, 128, 3, 1),
-	   (225, 128, 3, 2),
-	   (236, 128, 3, 3),
-	   (967, 128, 3, 4);
+VALUES (28, 136, 1, 1),
+	   (236, 136, 1, 2),
+	   (968, 136, 1, 3),
+	   (198, 136, 2, 1),
+	   (16, 136, 2, 2),
+	   (246, 136, 2, 3),
+	   (27, 136, 3, 1),
+	   (965, 136, 3, 2),
+	   (211, 136, 3, 3),
+	   (232, 136, 4, 1),
+	   (240, 136, 4, 2),
+	   (200, 136, 4, 3);
 
 INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id)
-VALUES (964, 2, 232, 4, 128, '2017-07-07', '190000', 1, 41, 39),
-	   (197, 0, 27, 1, 128, '2017-07-07', '210000', 2, 41, 39),
-	   (198, 1, 29, 1, 128, '2017-07-08', '163000', 3, 41, 39),
-	   (965, 2, 966, 0, 128, '2017-07-08', '190000', 4, 41, 39),
-	   (967, 0, 225, 2, 128, '2017-07-09', '190000', 5, 41, 39),
-	   (28, 3, 236, 1, 128, '2017-07-09', '210000', 6, 41, 39),
-	   (27, 1, 232, 1, 128, '2017-07-11', '193000', 7, 41, 39),
-	   (197, 3, 964, 0, 128, '2017-07-11', '220000', 8, 41, 39),
-	   (29, 2, 966, 1, 128, '2017-07-12', '183000', 9, 41, 39),
-	   (198, 3, 965, 2, 128, '2017-07-12', '203000', 10, 41, 39),
-	   (236, 2, 967, 0, 128, '2017-07-13', '200000', 11, 41, 39),
-	   (28, 0, 225, 0, 128, '2017-07-13', '220000', 12, 41, 39),
-	   (27, 3, 964, 0, 128, '2017-07-14', '193000', 13, 41, 39),
-	   (232, 0, 197, 0, 128, '2017-07-14', '220000', 14, 41, 39),
-	   (29, 3, 965, 0, 128, '2017-07-15', '163000', 15, 41, 39),
-	   (966, 0, 198, 3, 128, '2017-07-15', '190000', 16, 41, 39),
-	   (225, 1, 236, 1, 128, '2017-07-16', '180000', 17, 41, 39),
-	   (967, 0, 28, 2, 128, '2017-07-16', '200000', 18, 41, 39);
+VALUES (965, 0, 27, 2, 136, '2002-01-17', '190000', 1, 41, 39),
+	   (240, 0, 232, 2, 136, '2002-01-17', '190000', 2, 41, 39),
+	   (236, 0, 28, 1, 136, '2002-01-18', '190000', 3, 41, 39),
+	   (198, 2, 16, 1, 136, '2002-01-18', '190000', 4, 41, 39),
+	   (27, 1, 211, 1, 136, '2002-01-19', '190000', 5, 41, 39),
+	   (200, 0, 240, 2, 136, '2002-01-19', '190000', 6, 41, 39),
+	   (28, 3, 968, 1, 136, '2002-01-20', '190000', 7, 41, 39),
+	   (246, 0, 198, 1, 136, '2002-01-20', '190000', 8, 41, 39),
+	   (211, 0, 965, 1, 136, '2002-01-21', '190000', 9, 41, 39),
+	   (232, 0, 200, 2, 136, '2002-01-21', '190000', 10, 41, 39),
+	   (968, 0, 236, 1, 136, '2002-01-22', '190000', 11, 41, 39),
+	   (16, 0, 246, 0, 136, '2002-01-22', '190000', 12, 41, 39);
 
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
-VALUES 	(27, 1, null, null, 29, 0, null, null, 128, '2017-07-19', '180000', 19, 43, 40, 19),
-		(198, 2, null, null, 236, 0, null, null, 128, '2017-07-19', '210000', 20, 43, 40, 20),
-		(225, 2, null, null, 232, 1, null, null, 128, '2017-07-20', '193000', 21, 43, 40, 21),
-		(28, 1, null, null, 197, 0, null, null, 128, '2017-07-20', '223000', 22, 43, 40, 22),
-		(27, 0, null, null, 198, 2, null, null, 128, '2017-07-22', '220000', 23, 44, 40, 23),
-		(28, 0, null, null, 225, 1, null, null, 128, '2017-07-23', '210000', 24, 44, 40, 24),
-		(198, 2, null, null, 225, 1, null, null, 128, '2017-07-26', '213000', 25, 46, 40, 25);
+VALUES (27, 1, 1, null, 240, 1, 0, null, 136, '2002-01-26', '190000', 13, 43, 40, 13),
+	   (232, 1, 0, 6, 965, 1, 0, 5, 136, '2002-01-26', '190000', 15, 43, 40, 14),
+	   (28, 0, 0, 2, 16, 0, 0, 4, 136, '2002-01-27', '190000', 14, 43, 40, 15),
+	   (198, 4, null, null, 236, 0, null, null, 136, '2002-01-27', '190000', 16, 43, 40, 16),
+	   (27, 3, null, null, 16, 1, null, null, 136, '2002-01-30', '190000', 17, 44, 40, 17),
+	   (232, 0, 0, 2, 198, 0, 0, 4, 136, '2002-01-30', '190000', 18, 44, 40, 18),
+	   (232, 2, null, null, 16, 1, null, null, 136, '2002-02-02', '190000', 19, 45, 40, 20),
+	   (198, 2, null, null, 27, 0, null, null, 136, '2002-02-02', '190000', 20, 46, 40, 19);
 
 CREATE TABLE IF NOT EXISTS tournament (
 	id INT AUTO_INCREMENT PRIMARY KEY,
@@ -171,4 +168,17 @@ CREATE TABLE IF NOT EXISTS group_tournament (
 	FOREIGN KEY (tournament_id) REFERENCES tournament(id),
 	FOREIGN KEY (group_id) REFERENCES `group`(id),
 	FOREIGN KEY (parent_group_id) REFERENCES `group`(id)
+);
+
+CREATE TABLE IF NOT EXISTS nation (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(255) NOT NULL UNIQUE,
+	alternative_name VARCHAR(255),
+	code VARCHAR(255),
+	flag_filename VARCHAR(255),
+	alternative_flag_filename VARCHAR(255),
+	parent_nation_id INT,
+	nation_type_id INT,
+	FOREIGN KEY (parent_nation_id) REFERENCES nation(id),
+	FOREIGN KEY (nation_type_id) REFERENCES group_type(id)
 );

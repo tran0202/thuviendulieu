@@ -1,69 +1,70 @@
 # Insert new tournament
 # Replace all the tournament_id
 
-# 2017 Gold Cup United States
+# 2011 Gold Cup United States
 
 INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_filename, golden_goal_rule, points_for_win)
-VALUES ('2017 Gold Cup United States', '2017-07-07', '2017-07-26', 13, 'gc_2017.png', null, null);
+VALUES ('2011 Gold Cup United States', '2011-06-05', '2011-06-25', 13, 'gc_2011.png', null, null);
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
-VALUES (128, 41, 1, 39, 1),
-	   (128, 43, 1, 40, 1),
-	   (128, 44, 2, 40, 2),
-	   (128, 46, 3, 40, 3);
+VALUES (131, 41, 1, 39, 1),
+	   (131, 43, 1, 40, 1),
+	   (131, 44, 2, 40, 2),
+	   (131, 46, 3, 40, 3);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 
+INSERT INTO nation (name, flag_filename, nation_type_id, code)
+VALUES ('Guadeloupe', 'Guadeloupe.png', 7, 'GLP');
+
 INSERT INTO team (name, team_type_id, nation_id)
-VALUES ('French Guiana', 1, 229),
-	   ('Martinique', 1, 230),
-	   ('Nicaragua', 1, 138),
-	   ('Curaçao', 1, 53);
+VALUES ('Grenada', 1, 80),
+	   ('Guadeloupe', 1, 231);
 
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
-VALUES (27, 128, 1, 1),
-	   (232, 128, 1, 2),
-	   (197, 128, 1, 3),
-	   (964, 128, 1, 4),
-	   (198, 128, 2, 1),
-	   (29, 128, 2, 2),
-	   (965, 128, 2, 3),
-	   (966, 128, 2, 4),
-	   (28, 128, 3, 1),
-	   (225, 128, 3, 2),
-	   (236, 128, 3, 3),
-	   (967, 128, 3, 4);
+VALUES (28, 131, 1, 1),
+	   (27, 131, 1, 2),
+	   (236, 131, 1, 3),
+	   (246, 131, 1, 4),
+	   (225, 131, 2, 1),
+	   (197, 131, 2, 2),
+	   (968, 131, 2, 3),
+	   (970, 131, 2, 4),
+	   (29, 131, 3, 1),
+	   (198, 131, 3, 2),
+	   (232, 131, 3, 3),
+	   (971, 131, 3, 4);
 
 INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id)
-VALUES (964, 2, 232, 4, 128, '2017-07-07', '190000', 1, 41, 39),
-	   (197, 0, 27, 1, 128, '2017-07-07', '210000', 2, 41, 39),
-	   (198, 1, 29, 1, 128, '2017-07-08', '163000', 3, 41, 39),
-	   (965, 2, 966, 0, 128, '2017-07-08', '190000', 4, 41, 39),
-	   (967, 0, 225, 2, 128, '2017-07-09', '190000', 5, 41, 39),
-	   (28, 3, 236, 1, 128, '2017-07-09', '210000', 6, 41, 39),
-	   (27, 1, 232, 1, 128, '2017-07-11', '193000', 7, 41, 39),
-	   (197, 3, 964, 0, 128, '2017-07-11', '220000', 8, 41, 39),
-	   (29, 2, 966, 1, 128, '2017-07-12', '183000', 9, 41, 39),
-	   (198, 3, 965, 2, 128, '2017-07-12', '203000', 10, 41, 39),
-	   (236, 2, 967, 0, 128, '2017-07-13', '200000', 11, 41, 39),
-	   (28, 0, 225, 0, 128, '2017-07-13', '220000', 12, 41, 39),
-	   (27, 3, 964, 0, 128, '2017-07-14', '193000', 13, 41, 39),
-	   (232, 0, 197, 0, 128, '2017-07-14', '220000', 14, 41, 39),
-	   (29, 3, 965, 0, 128, '2017-07-15', '163000', 15, 41, 39),
-	   (966, 0, 198, 3, 128, '2017-07-15', '190000', 16, 41, 39),
-	   (225, 1, 236, 1, 128, '2017-07-16', '180000', 17, 41, 39),
-	   (967, 0, 28, 2, 128, '2017-07-16', '200000', 18, 41, 39);
+VALUES (27, 5, 246, 0, 131, '2011-05-05', '180000', 1, 41, 39),
+	   (28, 5, 236, 0, 131, '2011-05-05', '200000', 2, 41, 39),
+	   (225, 4, 970, 0, 131, '2011-05-06', '210000', 3, 41, 39),
+	   (197, 0, 968, 0, 131, '2011-05-06', '230000', 4, 41, 39),
+	   (29, 3, 971, 2, 131, '2011-05-07', '180000', 5, 41, 39),
+	   (198, 2, 232, 0, 131, '2011-05-07', '200000', 6, 41, 39),
+	   (27, 1, 236, 1, 131, '2011-05-09', '190000', 7, 41, 39),
+	   (246, 0, 28, 5, 131, '2011-05-09', '210000', 8, 41, 39),
+	   (225, 2, 968, 0, 131, '2011-05-10', '190000', 9, 41, 39),
+	   (970, 1, 197, 7, 131, '2011-05-10', '210000', 10, 41, 39),
+	   (232, 1, 971, 0, 131, '2011-05-11', '180000', 11, 41, 39),
+	   (198, 1, 29, 2, 131, '2011-05-11', '200000', 12, 41, 39),
+	   (236, 6, 246, 1, 131, '2011-05-12', '180000', 13, 41, 39),
+	   (28, 4, 27, 1, 131, '2011-05-12', '200000', 14, 41, 39),
+	   (968, 4, 970, 0, 131, '2011-05-13', '190000', 15, 41, 39),
+	   (197, 0, 225, 1, 131, '2011-05-13', '210000', 16, 41, 39),
+	   (232, 1, 29, 1, 131, '2011-05-14', '190000', 17, 41, 39),
+	   (971, 0, 198, 1, 131, '2011-05-14', '210000', 18, 41, 39);
 
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
-VALUES 	(27, 1, null, null, 29, 0, null, null, 128, '2017-07-19', '180000', 19, 43, 40, 19),
-		(198, 2, null, null, 236, 0, null, null, 128, '2017-07-19', '210000', 20, 43, 40, 20),
-		(225, 2, null, null, 232, 1, null, null, 128, '2017-07-20', '193000', 21, 43, 40, 21),
-		(28, 1, null, null, 197, 0, null, null, 128, '2017-07-20', '223000', 22, 43, 40, 22),
-		(27, 0, null, null, 198, 2, null, null, 128, '2017-07-22', '220000', 23, 44, 40, 23),
-		(28, 0, null, null, 225, 1, null, null, 128, '2017-07-23', '210000', 24, 44, 40, 24),
-		(198, 2, null, null, 225, 1, null, null, 128, '2017-07-26', '213000', 25, 46, 40, 25);
+VALUES (27, 1, 0, 2, 197, 1, 0, 4, 131, '2011-05-18', '170000', 19, 43, 40, 19),
+	   (28, 2, null, null, 968, 1, null, null, 131, '2011-05-18', '200000', 20, 43, 40, 20),
+	   (225, 0, null, null, 198, 2, null, null, 131, '2011-05-19', '150000', 21, 43, 40, 21),
+	   (29, 1, 0, 5, 236, 1, 0, 3, 131, '2011-05-19', '180000', 22, 43, 40, 22),
+	   (198, 1, null, null, 29, 0, null, null, 131, '2011-05-22', '190000', 23, 44, 40, 23),
+	   (197, 0, 0, null, 28, 0, 2, null, 131, '2011-05-22', '220000', 24, 44, 40, 24),
+	   (198, 2, null, null, 28, 4, null, null, 131, '2011-05-25', '210000', 25, 46, 40, 25);
 
 CREATE TABLE IF NOT EXISTS tournament (
 	id INT AUTO_INCREMENT PRIMARY KEY,
@@ -171,4 +172,17 @@ CREATE TABLE IF NOT EXISTS group_tournament (
 	FOREIGN KEY (tournament_id) REFERENCES tournament(id),
 	FOREIGN KEY (group_id) REFERENCES `group`(id),
 	FOREIGN KEY (parent_group_id) REFERENCES `group`(id)
+);
+
+CREATE TABLE IF NOT EXISTS nation (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(255) NOT NULL UNIQUE,
+	alternative_name VARCHAR(255),
+	code VARCHAR(255),
+	flag_filename VARCHAR(255),
+	alternative_flag_filename VARCHAR(255),
+	parent_nation_id INT,
+	nation_type_id INT,
+	FOREIGN KEY (parent_nation_id) REFERENCES nation(id),
+	FOREIGN KEY (nation_type_id) REFERENCES group_type(id)
 );

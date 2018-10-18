@@ -52,7 +52,27 @@
         const CHILE_1926 = 118;
         const BRAZIL_1922 = 122;
         const BRAZIL_1919 = 125;
-        const GOLD_CUP_2017 = 125;
+        const GOLD_CUP_2017 = 128;
+        const GOLD_CUP_2015 = 129;
+        const GOLD_CUP_2013 = 130;
+        const GOLD_CUP_2011 = 131;
+        const GOLD_CUP_2009 = 132;
+        const GOLD_CUP_2007 = 133;
+        const GOLD_CUP_2005 = 134;
+        const GOLD_CUP_2002 = 136;
+        const GOLD_CUP_2000 = 137;
+        const GOLD_CUP_1996 = 139;
+        const GOLD_CUP_1993 = 140;
+        const CONCACAF_CHAMPIONSHIP_1989 = 142;
+        const CONCACAF_CHAMPIONSHIP_1985 = 143;
+        const HONDURAS_1981 = 144;
+        const MEXICO_1977 = 145;
+        const HAITI_1973 = 146;
+        const TRINIDAD_1971 = 147;
+        const COSTA_RICA_1969 = 148;
+        const HONDURAS_1967 = 149;
+        const GUATEMALA_1965 = 150;
+        const EL_SALVADOR_1963 = 151;
 
         const TEAM = 1;
         const CLUB = 2;
@@ -109,9 +129,15 @@
         public static function getThirdPlaceRankingHtml($tournament) {
             $output = '';
             if (!self::isThirdPlaceRankingTournament($tournament)) return $output;
+            $link_text = 'third';
+            $group_text = 'Third';
+            if (self::isSecondPlaceRankingTournament($tournament)) {
+                $link_text = 'second';
+                $group_text = 'Second';
+            }
             $output .= '<div class="col-sm-12 padding-tb-md border-bottom-gray5">
-                            <a class="link-modal" href="#" data-toggle="modal" data-target="#groupThirdPlaceStandingModal">
-                                Ranking of third-placed teams</a>
+                            <a class="link-modal" href="#" data-toggle="modal" data-target="#group'.$group_text.'PlaceStandingModal">
+                                Ranking of '.$link_text.'-placed teams</a>
                         </div>';
             return $output;
         }
@@ -195,7 +221,9 @@
         public static function getSoccerGroupModalHtml($tournament) {
             self::getGroupModalHtml($tournament, $tournament->getTeams(), self::TEAM, Soccer::First);
             if (self::isThirdPlaceRankingTournament($tournament)) {
-                self::getGroupModalHtml($tournament, self::getThirdPlaceTeams($tournament), self::TEAM, Soccer::First);
+                $teams = self::getThirdPlaceTeams($tournament, 3);
+                if (self::isSecondPlaceRankingTournament($tournament)) $teams = self::getThirdPlaceTeams($tournament, 2);
+                self::getGroupModalHtml($tournament, $teams, self::TEAM, Soccer::First);
             }
             self::getGroupModalHtml($tournament, $tournament->getSecondRoundTeams(), self::TEAM, Soccer::Second);
         }
@@ -226,6 +254,9 @@
                         }
                         elseif ($group_name == 'ThirdPlace') {
                             $table_name = 'Ranking of third-placed teams';
+                        }
+                        elseif ($group_name == 'SecondPlace') {
+                            $table_name = 'Ranking of second-placed teams';
                         }
                         $modal_body .= self::getTeamRankingTableHtml($tournament, $_teams, $team_type, $stage,
                             false, false, $current_best_finish, $striped_row);
@@ -786,6 +817,7 @@
             if ($_match->getHomeTeamScore() != -1) {
                 $aet = ' aet';
                 if (self::isGoldenGoalRule($_match->getGoldenGoalRule()) && !Match::isFirstStage($_match) && $_match->getHomeTeamPenaltyScore() == '') $aet = ' gg';
+                if ($_match->getTournamentId() == self::GOLD_CUP_1993 && $_match->getRound() == Soccer::THIRD_PLACE) $aet = ' aet';
                 $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
                 if ($_match->getHomeTeamScore() == $_match->getAwayTeamScore() &&
                     (($_match->getStage() != Soccer::FIRST_STAGE && $_match->getStage() != Soccer::GROUP_STAGE && $_match->getStage() != Soccer::QUALIFYING_STAGE
@@ -1139,12 +1171,14 @@
             return 'T-'.$team_tab;
         }
 
-        public static function getThirdPlaceTeams($tournament) {
+        public static function getThirdPlaceTeams($tournament, $rank) {
             $result = array();
             $teams_tmp = array();
             $teams = $tournament->getTeams();
+            $group_name = 'ThirdPlace';
+            if (self::isSecondPlaceRankingTournament($tournament)) $group_name = 'SecondPlace';
             for ($i = 0; $i < sizeof($teams); $i++) {
-                $team = Team::CloneSoccerTeam($teams[$i]->getId(), $teams[$i]->getName(), $teams[$i]->getCode(), 'ThirdPlace',
+                $team = Team::CloneSoccerTeam($teams[$i]->getId(), $teams[$i]->getName(), $teams[$i]->getCode(), $group_name,
                     $teams[$i]->getGroupOrder(), $teams[$i]->getMatchPlay(), $teams[$i]->getWin(), $teams[$i]->getDraw(), $teams[$i]->getLoss(),
                     $teams[$i]->getGoalFor(), $teams[$i]->getGoalAgainst(), $teams[$i]->getGoalDiff(), $teams[$i]->getPoint());
                 $team->setFlagFilename($teams[$i]->getFlagFilename());
@@ -1153,7 +1187,7 @@
             foreach ($teams_tmp as $group_name => $_teams) {
                 $i = 1;
                 foreach ($_teams as $name => $_team) {
-                    if ($i == 3) array_push( $result, $_team);
+                    if ($i == $rank) array_push( $result, $_team);
                     $i++;
                 }
             }
@@ -1195,7 +1229,15 @@
                 || $tournament->getTournamentId() == self::VENEZUELA_2007 || $tournament->getTournamentId() == self::PERU_2004
                 || $tournament->getTournamentId() == self::COLOMBIA_2001 || $tournament->getTournamentId() == self::PARAGUAY_1999
                 || $tournament->getTournamentId() == self::BOLIVIA_1997 || $tournament->getTournamentId() == self::URUGUAY_1995
-                || $tournament->getTournamentId() == self::ECUADOR_1993 || $tournament->getTournamentId() == self::GOLD_CUP_2017;
+                || $tournament->getTournamentId() == self::ECUADOR_1993 || $tournament->getTournamentId() == self::GOLD_CUP_2017
+                || $tournament->getTournamentId() == self::GOLD_CUP_2015 || $tournament->getTournamentId() == self::GOLD_CUP_2013
+                || $tournament->getTournamentId() == self::GOLD_CUP_2011 || $tournament->getTournamentId() == self::GOLD_CUP_2009
+                || $tournament->getTournamentId() == self::GOLD_CUP_2007 || $tournament->getTournamentId() == self::GOLD_CUP_2005
+                || self::isSecondPlaceRankingTournament($tournament);
+        }
+
+        public static function isSecondPlaceRankingTournament($tournament) {
+            return $tournament->getTournamentId() == self::GOLD_CUP_1996;
         }
 
         public static function noThirdPlacePlayoff($tournament) {
@@ -1209,7 +1251,10 @@
                 || $tournament_id == self::SWEDEN_1992 || $tournament_id == self::WEST_GERMANY_1988
                 || $tournament_id == self::FRANCE_1984 || $tournament_id == self::COPA_1983
                 || $tournament_id == self::COPA_1979 || $tournament_id == self::COPA_1975
-                || $tournament_id == self::GOLD_CUP_2017;
+                || $tournament_id == self::GOLD_CUP_2017 || $tournament_id == self::GOLD_CUP_2013
+                || $tournament_id == self::GOLD_CUP_2011 || $tournament_id == self::GOLD_CUP_2009
+                || $tournament_id == self::GOLD_CUP_2007 || $tournament_id == self::GOLD_CUP_2005
+                || $tournament_id == self::GOLD_CUP_2000;
         }
 
         public static function isGoldenGoalRule($golden_goal_rule) {
@@ -1326,7 +1371,11 @@
                         || $tournament_id == self::ARGENTINA_1946 || $tournament_id == self::CHILE_1945
                         || $tournament_id == self::URUGUAY_1942 || $tournament_id == self::CHILE_1941
                         || $tournament_id == self::PERU_1939 || $tournament_id == self::ARGENTINA_1937
-                        || $tournament_id == self::CHILE_1926 || $tournament_id == self::BRAZIL_1922)
+                        || $tournament_id == self::CHILE_1926 || $tournament_id == self::BRAZIL_1922
+                        || $tournament_id == self::CONCACAF_CHAMPIONSHIP_1989 || $tournament_id == self::HONDURAS_1981
+                        || $tournament_id == self::MEXICO_1977 || $tournament_id == self::HAITI_1973
+                        || $tournament_id == self::TRINIDAD_1971 || $tournament_id == self::COSTA_RICA_1969
+                        || $tournament_id == self::HONDURAS_1967 || $tournament_id == self::GUATEMALA_1965)
                         $best_finish = 'Final Round';
                     break;
                 case Soccer::PreliminaryRound:
