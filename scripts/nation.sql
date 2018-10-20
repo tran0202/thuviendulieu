@@ -56,7 +56,7 @@ VALUES ('Afghanistan', 'Afghanistan.png', 6, 'AFG'), ('Albania', 'Albania.png', 
 	('Ghana', 'Ghana.png', 6, 'GHA'), ('Gibraltar', 'Gibraltar.png', 7, 'GIB'),
 	('Greece', 'Greece.png', 6, 'GRE'), ('Grenada', 'Grenada.png', 6, 'GRN'),
 	('Guam', 'Guam.png', 6, 'GUM'), ('Guatemala', 'Guatemala.png', 6, 'GUA'),
-	('Guinea', 'Guinea.png', 6, 'GUI'), ('Guinea-Bissau', 'Guinea-Bissau.png', 6, 'GNB'),
+	('Guinea', 'Guinea.png', 6, 'GUI'), ('Guinea-Bissau', 'Guinea_Bissau.png', 6, 'GNB'),
 	('Guyana', 'Guyana.png', 6, 'GUY'), ('Haiti', 'Haiti.png', 6, 'HAI'),
 	('Honduras', 'Honduras.png', 6, 'HON'), ('Hong Kong', 'Hong_Kong.png', 7, 'HKG'),
 	('Hungary', 'Hungary.png', 6, 'HUN'), ('Iceland', 'Iceland.png', 6, 'ISL'),
@@ -123,13 +123,16 @@ VALUES ('Afghanistan', 'Afghanistan.png', 6, 'AFG'), ('Albania', 'Albania.png', 
 	('Germany FR', 'Germany.png', 6, 'FRG'), ('Soviet Union', 'urs.png', 6, 'URS'), ('Czechoslovakia', 'tch.png', 6, 'TCH'),
 	('Germany DR', 'gdr.png', 6, 'GDR'), ('Zaire', 'zai.png', 6, 'ZAI'), ('Dutch East Indies', 'inh.png', 6, 'INH'), ('Spain*', 'Olympic.png', 6, 'IOC'),
 	   ('Burma', 'Burma.png', 6, 'BUR'), ('United Arab Republic', 'United_Arab_Republic.png', 6, 'UAR'), ('Republic of China', 'Republic_of_China.png', 6, 'ROC'), ('Netherlands Antilles', 'Netherlands_Antilles.png', 6, 'ANT'),
-	   ('French Guiana', 'French_Guiana.png', 7, 'GUF'), ('Martinique', 'Martinique.png', 7, 'MTQ');
+	   ('French Guiana', 'French_Guiana.png', 7, 'GUF'), ('Martinique', 'Martinique.png', 7, 'MTQ'), ('Guadeloupe', 'Guadeloupe.png', 7, 'GLP');
 
 INSERT INTO nation (name, flag_filename, nation_type_id, code)
 VALUES ('Guadeloupe', 'Guadeloupe.png', 7, 'GLP');
 
 INSERT INTO nation (name, flag_filename, parent_nation_id, nation_type_id, code)
 VALUES ('FR Yugoslavia', 'Serbia_and_Montenegro.svg', 165, 6, 'YUG');
+
+INSERT INTO nation (name, flag_filename, parent_nation_id, nation_type_id, code)
+VALUES ('Upper Volta', 'Upper_Volta.png', 32, 6, 'UPV');
 
 INSERT INTO nation (name, alternative_name, flag_filename, parent_nation_id, nation_type_id, code)
 VALUES ('CIS', 'Commonwealth of Independent States', 'CIS.png', 157, 6, 'CIS');

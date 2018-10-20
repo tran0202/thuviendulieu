@@ -2,11 +2,13 @@
 
     class SoccerHtml {
 
+        const RUSSIA_2018 = 1;
         const USA_1994 = 10;
         const ITALY_1990 = 11;
         const MEXICO_1986 = 12;
         const CANADA_2015 = 31;
-        const RIO_2016 = 33;
+        const MENS_RIO_2016 = 32;
+        const WOMENS_RIO_2016 = 33;
         const SWEDEN_1995 = 38;
         const CHINA_1991 = 39;
         const LONDON_2012 = 63;
@@ -21,6 +23,7 @@
         const SWEDEN_1992 = 74;
         const WEST_GERMANY_1988 = 75;
         const FRANCE_1984 = 76;
+        const USA_2016_CENTENARIO = 83;
         const CHILE_2015 = 84;
         const ARGENTINA_2011 = 85;
         const VENEZUELA_2007 = 86;
@@ -73,6 +76,10 @@
         const HONDURAS_1967 = 149;
         const GUATEMALA_1965 = 150;
         const EL_SALVADOR_1963 = 151;
+        const GABON_2017 = 152;
+        const EQUATORIAL_GUINEA_2015 = 153;
+        const ANGOLA_2010 = 156;
+        const TUNISIA_1965 = 180;
 
         const TEAM = 1;
         const CLUB = 2;
@@ -1116,14 +1123,14 @@
             if ($all_time) {
                 if ($team->getParentName() == null) {
                     $count++;
-                    if (!self::isSameRanking($team, $previous_team)) {
+                    if (!self::isSameRanking($team, $previous_team) || !self::isSameBestFinish($team, $previous_team)) {
                         $ranking = $count;
                     }
                 }
             }
             else {
                 $count++;
-                if (!self::isSameRanking($team, $previous_team)) {
+                if (!self::isSameRanking($team, $previous_team) || !self::isSameBestFinish($team, $previous_team)) {
                     $ranking = $count;
                 }
             }
@@ -1134,6 +1141,11 @@
             return $team->getPoint() == $previous_team->getPoint()
                 && $team->getGoalFor() == $previous_team->getGoalFor()
                 && $team->getGoalAgainst() == $previous_team->getGoalAgainst();
+        }
+
+        public static function isSameBestFinish($team, $previous_team) {
+            if ($previous_team == null) return false;
+            return $team->getBestFinish() == $previous_team->getBestFinish();
         }
 
         public static function getAllTabScript() {
@@ -1221,7 +1233,7 @@
 
         public static function isThirdPlaceRankingTournament($tournament) {
             return ($tournament->getTournamentId() >= self::USA_1994 && $tournament->getTournamentId() <= self::MEXICO_1986)
-                || $tournament->getTournamentId() == self::CANADA_2015 || $tournament->getTournamentId() == self::RIO_2016
+                || $tournament->getTournamentId() == self::CANADA_2015 || $tournament->getTournamentId() == self::WOMENS_RIO_2016
                 || $tournament->getTournamentId() == self::SWEDEN_1995 || $tournament->getTournamentId() == self::CHINA_1991
                 || $tournament->getTournamentId() == self::LONDON_2012 || $tournament->getTournamentId() == self::BEIJING_2008
                 || $tournament->getTournamentId() == self::ATHENS_2004 || $tournament->getTournamentId() == self::FRANCE_2016
@@ -1440,6 +1452,8 @@
             $result = str_replace(' South American Championship ', '', $result);
             $result = str_replace(' Gold Cup ', '', $result);
             $result = str_replace(' CONCACAF Championship ', '', $result);
+            $result = str_replace(' Africa Cup of Nations ', '', $result);
+            $result = str_replace(' African Cup of Nations ', '', $result);
             if (!$olympic_tournament) $result = substr($result, -(strlen($result) - 4)).' '.substr($result, 0, 4);
             return $result;
         }

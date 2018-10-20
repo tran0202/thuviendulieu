@@ -25,10 +25,12 @@
         '21'	=> array('id' => '22', 'alias' => 'CopaAmericaArchive', 'file' => 'copa_america_archive.php','controllers' => array()),
         '22'	=> array('id' => '23', 'alias' => 'GoldCup', 'file' => 'gold_cup_tournament.php','controllers' => array()),
         '23'	=> array('id' => '24', 'alias' => 'GoldCupArchive', 'file' => 'gold_cup_archive.php','controllers' => array()),
-        '24'	=> array('id' => '25', 'alias' => 'NFL', 'file' => 'football.php','controllers' => array()),
-        '25'	=> array('id' => '26', 'alias' => 'NFLStandings', 'file' => 'football_standings.php','controllers' => array()),
-        '26' => array('id' => '27', 'alias' => 'Tennis', 'file' => 'tennis.php','controllers' => array()),
-        '27' => array('id' => '28', 'alias' => 'TennisTournament', 'file' => 'tennis_tournament.php','controllers' => array())
+        '24'	=> array('id' => '25', 'alias' => 'AfricaCup', 'file' => 'africa_cup_tournament.php','controllers' => array()),
+        '25'	=> array('id' => '26', 'alias' => 'AfricaCupArchive', 'file' => 'africa_cup_archive.php','controllers' => array()),
+        '26'	=> array('id' => '27', 'alias' => 'NFL', 'file' => 'football.php','controllers' => array()),
+        '27'	=> array('id' => '28', 'alias' => 'NFLStandings', 'file' => 'football_standings.php','controllers' => array()),
+        '28' => array('id' => '29', 'alias' => 'Tennis', 'file' => 'tennis.php','controllers' => array()),
+        '29' => array('id' => '30', 'alias' => 'TennisTournament', 'file' => 'tennis_tournament.php','controllers' => array())
 //		'4'	=> array('id' => '4', 'alias' => 'New-Link', 'file' => 'tennis.php','controllers' => array())
 	);
 	$forms = array(

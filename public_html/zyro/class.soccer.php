@@ -785,11 +785,13 @@
         public static function compareTeams(&$team1, &$team2, $matches) {
             if (self::isEqualStanding($team1, $team2)) {
                 if ($team1->getTournamentId() == SoccerHtml::GOLD_CUP_2002 &&  $team1->getName() == 'CANADA') return;
+                if ($team1->getTournamentId() == SoccerHtml::ANGOLA_2010 &&  $team1->getGroupName() == 'D' &&  $team2->getGroupName() == 'D') return;
                 $still_tie = self::applyTiebreaker($team1, $team2, $matches);
                 if (self::isTieBreakerHead2HeadFirst($team1->getTournamentId())) {
                     if ($still_tie && self::isHigherStanding($team2, $team1)) {
                         self::swapTeam($team1, $team2);
                     }
+                    if (self::isAlwaysEqualStanding($team1, $team2)) self::alphabetOrder($team1, $team2);
                 }
                 else {
                     if ($still_tie) $still_tie = self::fairPlayRule($team1, $team2);
@@ -798,13 +800,15 @@
                 }
             }
             elseif (self::isHigherStanding($team2, $team1)) {
+                if ($team1->getTournamentId() == SoccerHtml::TUNISIA_1965 &&  $team1->getName() == 'TUNISIA') return;
                 self::swapTeam($team1, $team2);
             }
         }
 
         public static function isTieBreakerHead2HeadFirst($tournament_id) {
             return ($tournament_id >= SoccerHtml::FRANCE_2016 && $tournament_id <= SoccerHtml::ENGLAND_1996)
-                || $tournament_id == SoccerHtml::GOLD_CUP_2009 || $tournament_id == SoccerHtml::GOLD_CUP_2007;
+                || $tournament_id == SoccerHtml::GOLD_CUP_2009 || $tournament_id == SoccerHtml::GOLD_CUP_2007
+                || $tournament_id == SoccerHtml::EQUATORIAL_GUINEA_2015 || $tournament_id == SoccerHtml::ANGOLA_2010;
         }
 
         public static function sortTournamentStanding($tournament) {
@@ -1087,8 +1091,12 @@
             if (self::isTieBreakerHead2HeadFirst($t1->getTournamentId()))
                 return $t1->getPoint() == $t2->getPoint();
             else
-                return $t1->getPoint() == $t2->getPoint() && $t1->getGoalDiff() == $t2->getGoalDiff()
-                    && $t1->getGoalFor() == $t2->getGoalFor();
+                return self::isAlwaysEqualStanding($t1, $t2);
+        }
+
+        public static function isAlwaysEqualStanding($t1, $t2) {
+            return $t1->getPoint() == $t2->getPoint() && $t1->getGoalDiff() == $t2->getGoalDiff()
+                && $t1->getGoalFor() == $t2->getGoalFor();
         }
 
         public static function applyTiebreaker(&$t1, &$t2, $matches) {

@@ -73,6 +73,9 @@
                 case Tournament::GOLD_CUP:
                     $logo_dir = 'gc_logos/';
                     break;
+                case Tournament::AFRICA_CUP_OF_NATIONS:
+                    $logo_dir = 'afcon_logos/';
+                    break;
                 default:
                     break;
             }

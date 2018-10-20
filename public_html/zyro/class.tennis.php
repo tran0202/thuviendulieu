@@ -2,6 +2,8 @@
 
     class Tennis {
 
+        const MENS_US_OPEN_2017 = 4;
+
         private $id;
 
         protected function __construct() { }

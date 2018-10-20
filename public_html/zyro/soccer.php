@@ -36,6 +36,8 @@
                                 </p>
                             </div>
                         </div>
+                    </div>
+                    <div class="card-group">
                         <div class="card">
                             <img class="card-img-top card-img-top-height-200 mx-auto margin-top-sm" src="images/unl_logos/unl.jpg" alt="Russia 2018">
                             <div class="card-body">
@@ -45,8 +47,6 @@
                                 </p>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-group">
                         <div class="card">
                             <span class="mx-auto">
                                 <img class="card-img-top card-img-top-height-100 margin-top-sm margin-lr-md" src="images/logos/Euro_2020.png" alt="Pan-European 2020">
@@ -65,6 +65,8 @@
                                 </p>
                             </div>
                         </div>
+                    </div>
+                    <div class="card-group">
                         <div class="card">
                             <span class="mx-auto">
                                 <a href="WorldCup"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/wc_logos/2018.png" alt="Russia 2018"></a>
@@ -101,13 +103,11 @@
                                 </p>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-group">
                         <div class="card">
                             <span class="mx-auto">
                                 <img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/olympic_logos/2020.png" alt="Tokyo 2020">
                                 <a href="OlympicFootballTournament"><img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/olympic_logos/2016.png" alt="Rio 2016"></a>
-                                <a href="OlympicFootballTournament?tid=40"><img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/olympic_logos/2012.png" alt="Lndon 2012"></a>
+                                <a href="OlympicFootballTournament?tid=40"><img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/olympic_logos/2012.png" alt="London 2012"></a>
                             </span>
                             <span class="mx-auto">
                                 <a href="OlympicFootballTournament?tid=41"><img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/olympic_logos/2008.png" alt="Beijing 2008"></a>
@@ -119,6 +119,26 @@
                                 <p class="card-text">
                                     <a href="OlympicFootballTournamentArchive" class="card-link">Men's Archive <span class="fa fa-futbol-o"></span></a>
                                     <a href="WomenOlympicFootballTournamentArchive" class="card-link">Women's Archive <span class="fa fa-futbol-o"></span></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-group">
+                        <div class="card">
+                            <span class="mx-auto">
+                                <img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/afcon_logos/afcon_2019.png" alt="Cameroon 2019">
+                                <a href="AfricaCup"><img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/afcon_logos/afcon_2017.png" alt="Gabon 2017"></a>
+                                <a href="AfricaCup?tid=153"><img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/afcon_logos/afcon_2015.png" alt="Equatorial Guinea 2015"></a>
+                            </span>
+                            <span class="mx-auto">
+                                <a href="AfricaCup?tid=154"><img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/afcon_logos/afcon_2013.png" alt="South Africa 2013"></a>
+                                <a href="AfricaCup?tid=155"><img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/afcon_logos/afcon_2012.png" alt="Gabon-Equatorial Guinea 2012"></a>
+                                <a href="AfricaCup?tid=156"><img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/afcon_logos/afcon_2010.png" alt="Angola 2010"></a>
+                            </span>
+                            <div class="card-body">
+                                <h5 class="card-title">Africa Cup of Nations</h5>
+                                <p class="card-text">
+                                    <a href="AfricaCupArchive" class="card-link">Archive <span class="fa fa-futbol-o"></span></a>
                                 </p>
                             </div>
                         </div>

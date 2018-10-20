@@ -1,7 +1,7 @@
 <?php
     include_once('class.tournament.php');
     parse_str($_SERVER['QUERY_STRING'], $query_string);
-    $tournament_id = 4;
+    $tournament_id = Tennis::MENS_US_OPEN_2017;
     if (isset($query_string['tid'])) $tournament_id = $query_string['tid'];
     $tournament = Tournament::getTennisTournament($tournament_id);
     $profile = $tournament->getProfile();

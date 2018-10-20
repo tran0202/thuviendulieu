@@ -1,7 +1,7 @@
 <?php
     include_once('class.tournament.php');
     parse_str($_SERVER['QUERY_STRING'], $query_string);
-    $tournament_id = 68;
+    $tournament_id = SoccerHtml::FRANCE_2016;
     if (isset($query_string['tid'])) $tournament_id = $query_string['tid'];
     $tournament = Tournament::getSoccerTournament($tournament_id);
     $profile = $tournament->getProfile();
