@@ -76,6 +76,9 @@
                 case Tournament::AFRICA_CUP_OF_NATIONS:
                     $logo_dir = 'afcon_logos/';
                     break;
+                case Tournament::ASIAN_CUP:
+                    $logo_dir = 'aac_logos/';
+                    break;
                 default:
                     break;
             }

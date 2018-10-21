@@ -20,10 +20,11 @@ VALUES ('FIFA World Cup', 1, 1),
 	   ('Women''s Olympic Football Tournament', 5, 1),
 	   ('UEFA European Championship', 1, 1),
 	   ('CONMEBOL Copa America', 1, 1),
-	   ('CONCACAF Gold Cup', 1, 1);
+	   ('CONCACAF Gold Cup', 1, 1),
+	   ('CAF Africa Cup of Nations', 1, 1);
 
 INSERT INTO tournament_type (name, team_type_id, sport_id)
-VALUES ('CAF Africa Cup of Nations', 1, 1);
+VALUES ('AFC Asian Cup', 1, 1);
 
 ALTER TABLE tournament_type
 ADD COLUMN sport_id INT;

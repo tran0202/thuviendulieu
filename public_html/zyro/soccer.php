@@ -65,6 +65,23 @@
                                 </p>
                             </div>
                         </div>
+                        <div class="card">
+                            <span class="mx-auto">
+                                <img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-2019.png" alt="Brazil 2019">
+                                <a href="CopaAmerica"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-centenario.png" alt="United States 2016 Centenario"></a>
+                                <a href="CopaAmerica?tid=84"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-2015.png" alt="Chile 2015"></a>
+                            </span>
+                            <span class="mx-auto">
+                                <a href="CopaAmerica?tid=85"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-2011.png" alt="Argentina 2011"></a>
+                                <a href="CopaAmerica?tid=86"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-2007.png" alt="Venezuela 2007"></a>
+                            </span>
+                            <div class="card-body">
+                                <h5 class="card-title">Copa America</h5>
+                                <p class="card-text">
+                                    <a href="CopaAmericaArchive" class="card-link">Archive <span class="fa fa-futbol-o"></span></a>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-group">
                         <div class="card">
@@ -144,18 +161,19 @@
                         </div>
                         <div class="card">
                             <span class="mx-auto">
-                                <img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-2019.png" alt="Brazil 2019">
-                                <a href="CopaAmerica"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-centenario.png" alt="United States 2016 Centenario"></a>
-                                <a href="CopaAmerica?tid=84"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-2015.png" alt="Chile 2015"></a>
+                                <img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2019.png" alt="United Arab Emirates 2019">
+                                <a href="AsianCup"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2015.png" alt="Australia 2015"></a>
+                                <a href="AsianCup?tid=186"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2011.png" alt="Qatar 2011"></a>
                             </span>
                             <span class="mx-auto">
-                                <a href="CopaAmerica?tid=85"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-2011.png" alt="Argentina 2011"></a>
-                                <a href="CopaAmerica?tid=86"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-2007.png" alt="Venezuela 2007"></a>
+                                <a href="AsianCup?tid=187"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2007.png" alt="Indonesia-Malaysia-Thailand-Vietnam 2007"></a>
+                                <a href="AsianCup?tid=188"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2004.png" alt="China 2004"></a>
+                                <a href="AsianCup?tid=189"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2000.png" alt="Lebanon 2000"></a>
                             </span>
                             <div class="card-body">
-                                <h5 class="card-title">Copa America</h5>
+                                <h5 class="card-title">Asian Cup</h5>
                                 <p class="card-text">
-                                    <a href="CopaAmericaArchive" class="card-link">Archive <span class="fa fa-futbol-o"></span></a>
+                                    <a href="AsianCupArchive" class="card-link">Archive <span class="fa fa-futbol-o"></span></a>
                                 </p>
                             </div>
                         </div>

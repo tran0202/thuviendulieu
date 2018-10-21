@@ -3,9 +3,14 @@
     class SoccerHtml {
 
         const RUSSIA_2018 = 1;
+        const BRAZIL_2014 = 5;
+        const SOUTH_AFRICA_2010 = 6;
+        const GERMANY_2006 = 7;
         const USA_1994 = 10;
         const ITALY_1990 = 11;
         const MEXICO_1986 = 12;
+        const GERMANY_1974 = 15;
+        const MEXICO_1970 = 16;
         const CANADA_2015 = 31;
         const MENS_RIO_2016 = 32;
         const WOMENS_RIO_2016 = 33;
@@ -80,6 +85,10 @@
         const EQUATORIAL_GUINEA_2015 = 153;
         const ANGOLA_2010 = 156;
         const TUNISIA_1965 = 180;
+        const AUSTRALIA_2015 = 185;
+        const LEBANON_2000 = 189;
+        const UAE_1996 = 190;
+        const IRAN_1968 = 197;
 
         const TEAM = 1;
         const CLUB = 2;
@@ -477,7 +486,11 @@
                     if ($_team->getParentName() != null) {
                         $output3 .= '<span class="gray4"><small>(as '.$_team->getName().')</small></span></p>';
                     }
-                    if ($_team->getName() == 'AUSTRALIA' || $_team->getName() == 'ISRAEL') {
+                    if (($_team->getName() == 'AUSTRALIA'
+                            && ($_team->getTournamentId() == self::RUSSIA_2018 || $_team->getTournamentId() == self::BRAZIL_2014
+                                || $_team->getTournamentId() == self::SOUTH_AFRICA_2010 || $_team->getTournamentId() == self::GERMANY_2006
+                                || $_team->getTournamentId() == self::GERMANY_1974))
+                        || ($_team->getName() == 'ISRAEL' && $_team->getTournamentId() == self::MEXICO_1970)) {
                         $output3 .= '<span class="gray4"><small>(as an '.$_team->getConfederationName().' member)</small></span></p>';
                     }
                 }
@@ -781,6 +794,7 @@
                     || $_match->getTournamentId() == self::ARGENTINA_1937 || $_match->getTournamentId() == self::BRAZIL_1922
                     || $_match->getTournamentId() == self::BRAZIL_1919)
                     $group_text = '';
+                if ($_match->getRound() == Soccer::PRELIMINARY_ROUND) $group_text = '';
             }
             $home_flag = '';
             $away_flag = '';
@@ -1245,6 +1259,7 @@
                 || $tournament->getTournamentId() == self::GOLD_CUP_2015 || $tournament->getTournamentId() == self::GOLD_CUP_2013
                 || $tournament->getTournamentId() == self::GOLD_CUP_2011 || $tournament->getTournamentId() == self::GOLD_CUP_2009
                 || $tournament->getTournamentId() == self::GOLD_CUP_2007 || $tournament->getTournamentId() == self::GOLD_CUP_2005
+                || $tournament->getTournamentId() == self::LEBANON_2000 || $tournament->getTournamentId() == self::UAE_1996
                 || self::isSecondPlaceRankingTournament($tournament);
         }
 
@@ -1387,7 +1402,8 @@
                         || $tournament_id == self::CONCACAF_CHAMPIONSHIP_1989 || $tournament_id == self::HONDURAS_1981
                         || $tournament_id == self::MEXICO_1977 || $tournament_id == self::HAITI_1973
                         || $tournament_id == self::TRINIDAD_1971 || $tournament_id == self::COSTA_RICA_1969
-                        || $tournament_id == self::HONDURAS_1967 || $tournament_id == self::GUATEMALA_1965)
+                        || $tournament_id == self::HONDURAS_1967 || $tournament_id == self::GUATEMALA_1965
+                        || $tournament_id == self::IRAN_1968)
                         $best_finish = 'Final Round';
                     break;
                 case Soccer::PreliminaryRound:
@@ -1454,6 +1470,7 @@
             $result = str_replace(' CONCACAF Championship ', '', $result);
             $result = str_replace(' Africa Cup of Nations ', '', $result);
             $result = str_replace(' African Cup of Nations ', '', $result);
+            $result = str_replace(' AFC Asian Cup ', '', $result);
             if (!$olympic_tournament) $result = substr($result, -(strlen($result) - 4)).' '.substr($result, 0, 4);
             return $result;
         }

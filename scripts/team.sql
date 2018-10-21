@@ -36,7 +36,7 @@ WHERE tt.tournament_id = 2
 ORDER BY parent_group_name, group_id, group_order;
 
 DELETE FROM `team`
-WHERE id = 1002;
+WHERE id = 1014 or id = 1015 or id = 1016 or id = 1017 or id = 1018 or id = 1019;
 
 INSERT INTO team (name, team_type_id)
 VALUES ('Brazil', 1), ('Germany', 1), ('Argentina', 1),	('Portugal', 1),
