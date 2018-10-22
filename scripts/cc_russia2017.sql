@@ -1,62 +1,56 @@
 # Insert new tournament
 # Replace all the tournament_id
 
-# 2012 OFC Nations Cup Solomon Islands
+# 2017 FIFA Confederations Cup Russia
 
 INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_filename, golden_goal_rule, points_for_win)
-VALUES ('2012 OFC Nations Cup Solomon Islands', '2012-06-01', '2012-06-10', 16, 'OFCcup.png', null, null);
+VALUES ('2017 FIFA Confederations Cup Russia', '2017-06-17', '2017-07-02', 17, 'cc_2017.png', null, null);
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
-VALUES (202, 41, 1, 39, 1),
-	   (202, 44, 1, 40, 1),
-	   (202, 45, 2, 40, 2),
-	   (202, 46, 3, 40, 3);
+VALUES (211, 41, 1, 39, 1),
+	   (211, 44, 1, 40, 1),
+	   (211, 45, 2, 40, 2),
+	   (211, 46, 3, 40, 3);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 
 # INSERT INTO nation (name, flag_filename, parent_nation_id, nation_type_id, code)
 # VALUES ('Upper Volta', 'Upper_Volta.png', 32, 6, 'UPV');
 #
-INSERT INTO team (name, team_type_id, nation_id, parent_team_id)
-VALUES ('Papua New Guinea', 1, 147, null),
-	   ('New Caledonia', 1, 136, null),
-	   ('Tahiti', 1, 186, null),
-	   ('Samoa', 1, 159, null),
-	   ('Solomon Islands', 1, 171, null),
-	   ('Fiji', 1, 69, null),
-	   ('Vanuatu', 1, 205, null);
+# INSERT INTO team (name, team_type_id, nation_id, parent_team_id)
+# VALUES ('Papua New Guinea', 1, 147, null);
 
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
-VALUES (1039, 202, 1, 1),
-	   (1038, 202, 1, 2),
-	   (1043, 202, 1, 3),
-	   (1040, 202, 1, 4),
-	   (208, 202, 2, 1),
-	   (1041, 202, 2, 2),
-	   (1042, 202, 2, 3),
-	   (1037, 202, 2, 4);
+VALUES (4, 211, 1, 1),
+	   (28, 211, 1, 2),
+	   (23, 211, 1, 3),
+	   (208, 211, 1, 4),
+	   (2, 211, 2, 1),
+	   (199, 211, 2, 2),
+	   (13, 211, 2, 3),
+	   (194, 211, 2, 4);
 
 INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id)
-VALUES (1040, 1, 1039, 10, 202, '2012-06-01', '120000', 1, 41, 39),
-	   (1043, 2, 1038, 5, 202, '2012-06-01', '150000', 2, 41, 39),
-	   (1042, 0, 208, 1, 202, '2012-06-02', '120000', 3, 41, 39),
-	   (1041, 1, 1037, 0, 202, '2012-06-02', '150000', 4, 41, 39),
-	   (1043, 5, 1040, 0, 202, '2012-06-03', '120000', 5, 41, 39),
-	   (1039, 4, 1038, 3, 202, '2012-06-03', '150000', 6, 41, 39),
-	   (1037, 1, 208, 2, 202, '2012-06-04', '120000', 7, 41, 39),
-	   (1042, 0, 1041, 0, 202, '2012-06-04', '150000', 8, 41, 39),
-	   (1038, 9, 1040, 0, 202, '2012-06-05', '120000', 9, 41, 39),
-	   (1039, 4, 1043, 1, 202, '2012-06-05', '150000', 10, 41, 39),
-	   (1037, 1, 1042, 1, 202, '2012-06-06', '120000', 11, 41, 39),
-	   (208, 1, 1041, 1, 202, '2012-06-06', '150000', 12, 41, 39);
+VALUES (23, 2, 208, 0, 211, '2017-06-17', '180000', 1, 41, 39),
+	   (4, 2, 28, 2, 211, '2017-06-18', '180000', 2, 41, 39),
+	   (194, 0, 199, 2, 211, '2017-06-18', '210000', 3, 41, 39),
+	   (13, 2, 2, 3, 211, '2017-06-19', '180000', 4, 41, 39),
+	   (23, 0, 4, 1, 211, '2017-06-21', '180000', 5, 41, 39),
+	   (28, 2, 208, 1, 211, '2017-06-21', '210000', 6, 41, 39),
+	   (194, 1, 13, 1, 211, '2017-06-22', '180000', 7, 41, 39),
+	   (2, 1, 199, 1, 211, '2017-06-22', '210000', 8, 41, 39),
+	   (28, 2, 23, 1, 211, '2017-06-24', '180000', 9, 41, 39),
+	   (208, 0, 4, 4, 211, '2017-06-24', '180000', 10, 41, 39),
+	   (2, 3, 194, 1, 211, '2017-06-25', '180000', 11, 41, 39),
+	   (199, 1, 13, 1, 211, '2017-06-25', '180000', 12, 41, 39);
 
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
-VALUES (1039, 1, null, null, 1041, 0, null, null, 202, '2012-06-08', '110000', 13, 44, 40, 13),
-	   (208, 0, null, null, 1038, 2, null, null, 202, '2012-06-08', '150000', 14, 44, 40, 14),
-	   (1041, 3, null, null, 208, 4, null, null, 202, '2012-06-10', '110000', 15, 45, 40, 16),
-	   (1039, 1, null, null, 1038, 0, null, null, 202, '2012-06-10', '150000', 16, 46, 40, 15);
+VALUES (4, 0, 0, 0, 199, 0, 0, 3, 211, '2017-06-28', '210000', 13, 44, 40, 13),
+	   (2, 4, null, null, 28, 1, null, null, 211, '2017-06-29', '210000', 14, 44, 40, 14),
+	   (4, 1, 1, null, 28, 1, 0, null, 211, '2017-07-02', '150000', 15, 45, 40, 16),
+	   (199, 0, null, null, 2, 1, null, null, 211, '2017-07-02', '210000', 16, 46, 40, 15);
 
 CREATE TABLE IF NOT EXISTS tournament (
 	id INT AUTO_INCREMENT PRIMARY KEY,

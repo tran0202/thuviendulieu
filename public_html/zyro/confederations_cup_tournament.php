@@ -1,7 +1,7 @@
 <?php
     include_once('class.tournament.php');
     parse_str($_SERVER['QUERY_STRING'], $query_string);
-    $tournament_id = SoccerHtml::RUSSIA_2018;
+    $tournament_id = SoccerHtml::RUSSIA_2017;
     if (isset($query_string['tid'])) $tournament_id = $query_string['tid'];
     $tournament = Tournament::getSoccerTournament($tournament_id);
     $profile = $tournament->getProfile();

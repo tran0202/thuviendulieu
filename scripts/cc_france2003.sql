@@ -1,16 +1,16 @@
 # Insert new tournament
 # Replace all the tournament_id
 
-# 2005 FIFA Confederations Cup Germany
+# 2003 FIFA Confederations Cup France
 
 INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_filename, golden_goal_rule, points_for_win)
-VALUES ('2005 FIFA Confederations Cup Germany', '2005-06-15', '2005-06-29', 17, 'cc_2005.jpg', null, null);
+VALUES ('2003 FIFA Confederations Cup France', '2003-06-18', '2003-06-29', 17, 'cc_2003.jpg', 1, null);
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
-VALUES (214, 41, 1, 39, 1),
-	   (214, 44, 1, 40, 1),
-	   (214, 45, 2, 40, 2),
-	   (214, 46, 3, 40, 3);
+VALUES (215, 41, 1, 39, 1),
+	   (215, 44, 1, 40, 1),
+	   (215, 45, 2, 40, 2),
+	   (215, 46, 3, 40, 3);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 
@@ -21,36 +21,36 @@ SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 # VALUES ('Papua New Guinea', 1, 147, null);
 
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
-VALUES (2, 214, 1, 1),
-	   (3, 214, 1, 2),
-	   (12, 214, 1, 3),
-	   (13, 214, 1, 4),
-	   (28, 214, 2, 1),
-	   (1, 214, 2, 2),
-	   (15, 214, 2, 3),
-	   (202, 214, 2, 4);
+VALUES (21, 215, 1, 1),
+	   (30, 215, 1, 2),
+	   (15, 215, 1, 3),
+	   (208, 215, 1, 4),
+	   (194, 215, 2, 1),
+	   (218, 215, 2, 2),
+	   (1, 215, 2, 3),
+	   (198, 215, 2, 4);
 
 INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id)
-VALUES (3, 2, 12, 1, 214, '2005-06-15', '180000', 1, 41, 39),
-	   (2, 4, 13, 3, 214, '2005-06-15', '180000', 2, 41, 39),
-	   (15, 1, 28, 2, 214, '2005-06-16', '210000', 3, 41, 39),
-	   (1, 3, 202, 0, 214, '2005-06-16', '180000', 4, 41, 39),
-	   (12, 0, 2, 3, 214, '2005-06-18', '180000', 5, 41, 39),
-	   (13, 2, 3, 4, 214, '2005-06-18', '210000', 6, 41, 39),
-	   (202, 0, 15, 1, 214, '2005-06-19', '180000', 7, 41, 39),
-	   (28, 1, 1, 0, 214, '2005-06-19', '210000', 8, 41, 39),
-	   (13, 0, 12, 2, 214, '2005-06-21', '180000', 9, 41, 39),
-	   (3, 2, 2, 2, 214, '2005-06-21', '180000', 10, 41, 39),
-	   (202, 0, 28, 0, 214, '2005-06-22', '180000', 11, 41, 39),
-	   (15, 2, 1, 2, 214, '2005-06-22', '180000', 12, 41, 39);
+VALUES (208, 0, 15, 3, 215, '2003-06-18', '180000', 1, 41, 39),
+	   (21, 1, 30, 0, 215, '2003-06-18', '210000', 2, 41, 39),
+	   (218, 2, 198, 1, 215, '2003-06-19', '190000', 3, 41, 39),
+	   (1, 0, 194, 1, 215, '2003-06-19', '210000', 4, 41, 39),
+	   (30, 3, 208, 1, 215, '2003-06-20', '190000', 5, 41, 39),
+	   (21, 2, 15, 1, 215, '2003-06-20', '210000', 6, 41, 39),
+	   (194, 1, 218, 0, 215, '2003-06-21', '190000', 7, 41, 39),
+	   (1, 1, 198, 0, 215, '2003-06-21', '210000', 8, 41, 39),
+	   (21, 5, 208, 0, 215, '2003-06-22', '210000', 9, 41, 39),
+	   (15, 0, 30, 1, 215, '2003-06-22', '210000', 10, 41, 39),
+	   (1, 2, 218, 2, 215, '2003-06-23', '210000', 11, 41, 39),
+	   (198, 0, 194, 0, 215, '2003-06-23', '210000', 12, 41, 39);
 
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
-VALUES (2, 2, null, null, 1, 3, null, null, 214, '2005-06-25', '180000', 13, 44, 40, 13),
-	   (28, 0, 1, 5, 3, 0, 1, 6, 214, '2005-06-26', '180000', 14, 44, 40, 14),
-	   (2, 3, 1, null, 28, 3, 0, null, 214, '2005-06-29', '180000', 15, 45, 40, 16),
-	   (1, 4, null, null, 3, 1, null, null, 214, '2005-06-29', '204500', 16, 46, 40, 15);
+VALUES (194, 1, null, null, 30, 0, null, null, 215, '2003-06-26', '180000', 13, 44, 40, 13),
+	   (21, 3, null, null, 218, 2, null, null, 215, '2003-06-26', '210000', 14, 44, 40, 14),
+	   (30, 1, null, null, 218, 2, null, null, 215, '2003-06-28', '180000', 15, 45, 40, 16),
+	   (194, 0, 0, null, 21, 0, 1, null, 215, '2003-06-29', '210000', 16, 46, 40, 15);
 
 CREATE TABLE IF NOT EXISTS tournament (
 	id INT AUTO_INCREMENT PRIMARY KEY,

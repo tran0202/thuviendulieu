@@ -19,15 +19,6 @@
                 <div class="container-fluid">
                     <div class="card-group">
                         <div class="card">
-                            <img class="card-img-top card-img-top-height-200 mx-auto margin-top-sm" src="images/unl_logos/unl.jpg" alt="Russia 2018">
-                            <div class="card-body">
-                                <h5 class="card-title">2018/19 UEFA Nations League</h5>
-                                <p class="card-text">
-                                    <a href="UEFANationsLeagueStandings" class="card-link">Standings</a> <a href="UEFANationsLeagueMatches" class="card-link">Matches</a>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="card">
                             <img class="card-img-top card-img-top-height-200 mx-auto margin-top-sm" src="images/club_logos/UCL.svg" alt="France 2019">
                             <div class="card-body">
                                 <h5 class="card-title">2018/19 UEFA Champions League</h5>
@@ -48,6 +39,15 @@
                     </div>
                     <div class="card-group">
                         <div class="card">
+                            <img class="card-img-top card-img-top-height-200 mx-auto margin-top-sm" src="images/unl_logos/unl.jpg" alt="Russia 2018">
+                            <div class="card-body">
+                                <h5 class="card-title">2018/19 UEFA Nations League</h5>
+                                <p class="card-text">
+                                    <a href="UEFANationsLeagueStandings" class="card-link">Standings</a> <a href="UEFANationsLeagueMatches" class="card-link">Matches</a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="card">
                             <span class="mx-auto">
                                 <img class="card-img-top card-img-top-height-100 margin-top-sm margin-lr-md" src="images/logos/Euro_2020.png" alt="Pan-European 2020">
                                 <a href="Euro"><img class="card-img-top card-img-top-height-100 margin-top-sm margin-lr-md" src="images/logos/Euro_2016.png" alt="France 2016"></a>
@@ -65,43 +65,26 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="card">
-                            <span class="mx-auto">
-                                <img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-2019.png" alt="Brazil 2019">
-                                <a href="CopaAmerica"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-centenario.png" alt="United States 2016 Centenario"></a>
-                                <a href="CopaAmerica?tid=84"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-2015.png" alt="Chile 2015"></a>
-                            </span>
-                            <span class="mx-auto">
-                                <a href="CopaAmerica?tid=85"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-2011.png" alt="Argentina 2011"></a>
-                                <a href="CopaAmerica?tid=86"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-2007.png" alt="Venezuela 2007"></a>
-                            </span>
-                            <div class="card-body">
-                                <h5 class="card-title">Copa America</h5>
-                                <p class="card-text">
-                                    <a href="CopaAmericaArchive" class="card-link">Archive <span class="fa fa-futbol-o"></span></a>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <span class="mx-auto">
-                                <img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2019.png" alt="United Arab Emirates 2019">
-                                <a href="AsianCup"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2015.png" alt="Australia 2015"></a>
-                                <a href="AsianCup?tid=186"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2011.png" alt="Qatar 2011"></a>
-                            </span>
-                            <span class="mx-auto">
-                                <a href="AsianCup?tid=187"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2007.png" alt="Indonesia-Malaysia-Thailand-Vietnam 2007"></a>
-                                <a href="AsianCup?tid=188"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2004.png" alt="China 2004"></a>
-                                <a href="AsianCup?tid=189"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2000.png" alt="Lebanon 2000"></a>
-                            </span>
-                            <div class="card-body">
-                                <h5 class="card-title">Asian Cup</h5>
-                                <p class="card-text">
-                                    <a href="AsianCupArchive" class="card-link">Archive <span class="fa fa-futbol-o"></span></a>
-                                </p>
-                            </div>
-                        </div>
                     </div>
                     <div class="card-group">
+                        <div class="card">
+                            <span class="mx-auto">
+                                <a href="ConfederationsCup"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/cc_logos/cc_2017.png" alt="Russia 2017"></a>
+                                <a href="ConfederationsCup?tid=212"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/cc_logos/cc_2013.png" alt="Brazil 2013"></a>
+                                <a href="ConfederationsCup?tid=213"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/cc_logos/cc_2009.png" alt="South Africa 2009"></a>
+                            </span>
+                            <span class="mx-auto">
+                                <a href="ConfederationsCup?tid=214"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/cc_logos/cc_2005.jpg" alt="Germany 2005"></a>
+                                <a href="ConfederationsCup?tid=215"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/cc_logos/cc_2003.jpg" alt="France 2003"></a>
+                                <a href="ConfederationsCup?tid=216"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/cc_logos/cc_2001.jpg" alt="Korea/Japan 2001"></a>
+                            </span>
+                            <div class="card-body">
+                                <h5 class="card-title">FIFA Confederations Cup</h5>
+                                <p class="card-text">
+                                    <a href="ConfederationsCupArchive" class="card-link">Archive <span class="fa fa-futbol-o"></span></a>
+                                </p>
+                            </div>
+                        </div>
                         <div class="card">
                             <span class="mx-auto">
                                 <a href="WorldCup"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/wc_logos/2018.png" alt="Russia 2018"></a>
@@ -138,6 +121,8 @@
                                 </p>
                             </div>
                         </div>
+                    </div>
+                    <div class="card-group">
                         <div class="card">
                             <span class="mx-auto">
                                 <img class="card-img-top card-img-top-height-100 mx-auto margin-top-sm" src="images/olympic_logos/2020.png" alt="Tokyo 2020">
@@ -154,6 +139,41 @@
                                 <p class="card-text">
                                     <a href="OlympicFootballTournamentArchive" class="card-link">Men's Archive <span class="fa fa-futbol-o"></span></a>
                                     <a href="WomenOlympicFootballTournamentArchive" class="card-link">Women's Archive <span class="fa fa-futbol-o"></span></a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <span class="mx-auto">
+                                <img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-2019.png" alt="Brazil 2019">
+                                <a href="CopaAmerica"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-centenario.png" alt="United States 2016 Centenario"></a>
+                                <a href="CopaAmerica?tid=84"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-2015.png" alt="Chile 2015"></a>
+                            </span>
+                            <span class="mx-auto">
+                                <a href="CopaAmerica?tid=85"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-2011.png" alt="Argentina 2011"></a>
+                                <a href="CopaAmerica?tid=86"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/copa_logos/copa-2007.png" alt="Venezuela 2007"></a>
+                            </span>
+                            <div class="card-body">
+                                <h5 class="card-title">Copa America</h5>
+                                <p class="card-text">
+                                    <a href="CopaAmericaArchive" class="card-link">Archive <span class="fa fa-futbol-o"></span></a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <span class="mx-auto">
+                                <img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2019.png" alt="United Arab Emirates 2019">
+                                <a href="AsianCup"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2015.png" alt="Australia 2015"></a>
+                                <a href="AsianCup?tid=186"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2011.png" alt="Qatar 2011"></a>
+                            </span>
+                            <span class="mx-auto">
+                                <a href="AsianCup?tid=187"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2007.png" alt="Indonesia-Malaysia-Thailand-Vietnam 2007"></a>
+                                <a href="AsianCup?tid=188"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2004.png" alt="China 2004"></a>
+                                <a href="AsianCup?tid=189"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2000.png" alt="Lebanon 2000"></a>
+                            </span>
+                            <div class="card-body">
+                                <h5 class="card-title">Asian Cup</h5>
+                                <p class="card-text">
+                                    <a href="AsianCupArchive" class="card-link">Archive <span class="fa fa-futbol-o"></span></a>
                                 </p>
                             </div>
                         </div>

@@ -79,6 +79,9 @@
                 case Tournament::ASIAN_CUP:
                     $logo_dir = 'aac_logos/';
                     break;
+                case Tournament::CONFEDERATIONS_CUP:
+                    $logo_dir = 'cc_logos/';
+                    break;
                 default:
                     break;
             }

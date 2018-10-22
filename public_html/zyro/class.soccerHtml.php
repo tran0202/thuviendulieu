@@ -91,6 +91,8 @@
         const IRAN_1968 = 197;
         const PAPUA_NEW_GUINEA_2016 = 201;
         const OFC_NATIONS_CUP_1996 = 208;
+        const RUSSIA_2017 = 211;
+        const SAUDI_ARABIA_1995 = 219;
 
         const TEAM = 1;
         const CLUB = 2;
@@ -857,6 +859,11 @@
                         }
                     }
                 }
+                if ($_match->getTournamentId() == self::SAUDI_ARABIA_1995 && $_match->getHomeTeamName() == 'DENMARK'
+                    && $_match->getAwayTeamName() == 'MEXICO') {
+                    $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore().' aet';
+                    $penalty_score = ' '.$_match->getHomeTeamPenaltyScore().'-'.$_match->getAwayTeamPenaltyScore().' pen';
+                }
                 if (self::isShowOvertimeScore($_match->getRound())) {
                     if ($_match->getHomeTeamScore() > $_match->getAwayTeamScore()) {
                         $away_team_color = 'gray3';
@@ -1476,6 +1483,8 @@
             $result = str_replace(' African Cup of Nations ', '', $result);
             $result = str_replace(' AFC Asian Cup ', '', $result);
             $result = str_replace(' OFC Nations Cup ', '', $result);
+            $result = str_replace(' FIFA Confederations Cup ', '', $result);
+            $result = str_replace(' King Fahd Cup ', '', $result);
             if (!$olympic_tournament) $result = substr($result, -(strlen($result) - 4)).' '.substr($result, 0, 4);
             return $result;
         }

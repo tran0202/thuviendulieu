@@ -37,7 +37,7 @@
                                         <a href="WorldCup"><img class="card-img-top card-img-top-height-100 padding-top-sm" src="images/wc_logos/2018.png" alt="Russia 2018"></a>
                                     </span>
                                     <div class="card-body">
-                                        <h5 class="card-title text-center"><a href="WorldCup"">Russia 2018</a></h5>
+                                        <h5 class="card-title text-center"><a href="WorldCup">Russia 2018</a></h5>
                                     </div>
                                 </div>
                                 <div class="card">

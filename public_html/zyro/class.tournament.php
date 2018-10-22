@@ -27,6 +27,7 @@
         const AFRICA_CUP_OF_NATIONS = 14;
         const ASIAN_CUP = 15;
         const OFC_NATIONS_CUP = 16;
+        const CONFEDERATIONS_CUP = 17;
 
         const SIMULATION_MODE_0 = 0;
         const SIMULATION_MODE_1 = 1;

@@ -1,16 +1,16 @@
 # Insert new tournament
 # Replace all the tournament_id
 
-# 2017 FIFA Confederations Cup Russia
+# 2013 FIFA Confederations Cup Brazil
 
 INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_filename, golden_goal_rule, points_for_win)
-VALUES ('2017 FIFA Confederations Cup Russia', '2017-06-17', '2017-07-02', 17, 'cc_2017.png', null, null);
+VALUES ('2013 FIFA Confederations Cup Brazil', '2013-06-15', '2013-06-30', 17, 'cc_2013.png', null, null);
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
-VALUES (211, 41, 1, 39, 1),
-	   (211, 44, 1, 40, 1),
-	   (211, 45, 2, 40, 2),
-	   (211, 46, 3, 40, 3);
+VALUES (212, 41, 1, 39, 1),
+	   (212, 44, 1, 40, 1),
+	   (212, 45, 2, 40, 2),
+	   (212, 46, 3, 40, 3);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 
@@ -21,36 +21,36 @@ SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 # VALUES ('Papua New Guinea', 1, 147, null);
 
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
-VALUES (4, 211, 1, 1),
-	   (28, 211, 1, 2),
-	   (23, 211, 1, 3),
-	   (208, 211, 1, 4),
-	   (2, 211, 2, 1),
-	   (199, 211, 2, 2),
-	   (13, 211, 2, 3),
-	   (194, 211, 2, 4);
+VALUES (1, 212, 1, 1),
+	   (203, 212, 1, 2),
+	   (28, 212, 1, 3),
+	   (15, 212, 1, 4),
+	   (6, 212, 2, 1),
+	   (32, 212, 2, 2),
+	   (10, 212, 2, 3),
+	   (1039, 212, 2, 4);
 
 INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id)
-VALUES (23, 2, 208, 0, 211, '2017-06-17', '180000', 1, 41, 39),
-	   (4, 2, 28, 2, 211, '2017-06-18', '180000', 2, 41, 39),
-	   (194, 0, 199, 2, 211, '2017-06-18', '210000', 3, 41, 39),
-	   (13, 2, 2, 3, 211, '2017-06-19', '180000', 4, 41, 39),
-	   (23, 0, 4, 1, 211, '2017-06-21', '180000', 5, 41, 39),
-	   (28, 2, 208, 1, 211, '2017-06-21', '210000', 6, 41, 39),
-	   (194, 1, 13, 1, 211, '2017-06-22', '180000', 7, 41, 39),
-	   (2, 1, 199, 1, 211, '2017-06-22', '210000', 8, 41, 39),
-	   (28, 2, 23, 1, 211, '2017-06-24', '180000', 9, 41, 39),
-	   (208, 0, 4, 4, 211, '2017-06-24', '180000', 10, 41, 39),
-	   (2, 3, 194, 1, 211, '2017-06-25', '180000', 11, 41, 39),
-	   (199, 1, 13, 1, 211, '2017-06-25', '180000', 12, 41, 39);
+VALUES (1, 3, 15, 0, 212, '2013-06-15', '180000', 1, 41, 39),
+	   (28, 1, 203, 2, 212, '2013-06-16', '180000', 2, 41, 39),
+	   (6, 2, 32, 1, 212, '2013-06-16', '210000', 3, 41, 39),
+	   (1039, 1, 10, 6, 212, '2013-06-17', '180000', 4, 41, 39),
+	   (1, 2, 28, 0, 212, '2013-06-19', '180000', 5, 41, 39),
+	   (203, 4, 15, 3, 212, '2013-06-19', '210000', 6, 41, 39),
+	   (6, 10, 1039, 0, 212, '2013-06-20', '180000', 7, 41, 39),
+	   (10, 1, 32, 2, 212, '2013-06-20', '210000', 8, 41, 39),
+	   (203, 2, 1, 4, 212, '2013-06-22', '180000', 9, 41, 39),
+	   (15, 1, 28, 2, 212, '2013-06-22', '180000', 10, 41, 39),
+	   (10, 0, 6, 3, 212, '2013-06-23', '180000', 11, 41, 39),
+	   (32, 8, 1039, 0, 212, '2013-06-23', '180000', 12, 41, 39);
 
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
-VALUES (4, 0, 0, 0, 199, 0, 0, 3, 211, '2017-06-28', '210000', 13, 44, 40, 13),
-	   (2, 4, null, null, 28, 1, null, null, 211, '2017-06-29', '210000', 14, 44, 40, 14),
-	   (4, 1, 1, null, 28, 1, 0, null, 211, '2017-07-02', '150000', 15, 45, 40, 16),
-	   (199, 0, null, null, 2, 1, null, null, 211, '2017-07-02', '210000', 16, 46, 40, 15);
+VALUES (1, 2, null, null, 32, 1, null, null, 212, '2013-06-26', '160000', 13, 44, 40, 13),
+	   (6, 0, 0, 7, 203, 0, 0, 6, 212, '2013-06-27', '160000', 14, 44, 40, 14),
+	   (32, 2, 0, 2, 203, 2, 0, 3, 212, '2013-06-30', '130000', 15, 45, 40, 16),
+	   (1, 3, null, null, 6, 0, null, null, 212, '2013-06-30', '190000', 16, 46, 40, 15);
 
 CREATE TABLE IF NOT EXISTS tournament (
 	id INT AUTO_INCREMENT PRIMARY KEY,
