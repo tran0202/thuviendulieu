@@ -89,6 +89,8 @@
         const LEBANON_2000 = 189;
         const UAE_1996 = 190;
         const IRAN_1968 = 197;
+        const PAPUA_NEW_GUINEA_2016 = 201;
+        const OFC_NATIONS_CUP_1996 = 208;
 
         const TEAM = 1;
         const CLUB = 2;
@@ -1225,7 +1227,8 @@
             $spot = '';
             for ($i = 0; $i < sizeof($matches); $i++) {
                 if ($matches[$i]->getStage() == Soccer::SECOND_STAGE) {
-                    if ($matches[$i]->getRound() != Soccer::THIRD_PLACE && $matches[$i]->getRound() != Soccer::FINAL_) {
+                    if ($matches[$i]->getRound() != Soccer::THIRD_PLACE && $matches[$i]->getRound() != Soccer::FINAL_
+                        && $matches[$i]->getRound() != Soccer::FINALS) {
                         $spot = $matches[$i]->getRound();
                     }
                     break;
@@ -1281,7 +1284,8 @@
                 || $tournament_id == self::GOLD_CUP_2017 || $tournament_id == self::GOLD_CUP_2013
                 || $tournament_id == self::GOLD_CUP_2011 || $tournament_id == self::GOLD_CUP_2009
                 || $tournament_id == self::GOLD_CUP_2007 || $tournament_id == self::GOLD_CUP_2005
-                || $tournament_id == self::GOLD_CUP_2000;
+                || $tournament_id == self::GOLD_CUP_2000 || $tournament_id == self::PAPUA_NEW_GUINEA_2016
+                || $tournament_id == self::OFC_NATIONS_CUP_1996;
         }
 
         public static function isGoldenGoalRule($golden_goal_rule) {
@@ -1471,6 +1475,7 @@
             $result = str_replace(' Africa Cup of Nations ', '', $result);
             $result = str_replace(' African Cup of Nations ', '', $result);
             $result = str_replace(' AFC Asian Cup ', '', $result);
+            $result = str_replace(' OFC Nations Cup ', '', $result);
             if (!$olympic_tournament) $result = substr($result, -(strlen($result) - 4)).' '.substr($result, 0, 4);
             return $result;
         }

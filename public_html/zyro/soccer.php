@@ -19,6 +19,15 @@
                 <div class="container-fluid">
                     <div class="card-group">
                         <div class="card">
+                            <img class="card-img-top card-img-top-height-200 mx-auto margin-top-sm" src="images/unl_logos/unl.jpg" alt="Russia 2018">
+                            <div class="card-body">
+                                <h5 class="card-title">2018/19 UEFA Nations League</h5>
+                                <p class="card-text">
+                                    <a href="UEFANationsLeagueStandings" class="card-link">Standings</a> <a href="UEFANationsLeagueMatches" class="card-link">Matches</a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="card">
                             <img class="card-img-top card-img-top-height-200 mx-auto margin-top-sm" src="images/club_logos/UCL.svg" alt="France 2019">
                             <div class="card-body">
                                 <h5 class="card-title">2018/19 UEFA Champions League</h5>
@@ -38,15 +47,6 @@
                         </div>
                     </div>
                     <div class="card-group">
-                        <div class="card">
-                            <img class="card-img-top card-img-top-height-200 mx-auto margin-top-sm" src="images/unl_logos/unl.jpg" alt="Russia 2018">
-                            <div class="card-body">
-                                <h5 class="card-title">2018/19 UEFA Nations League</h5>
-                                <p class="card-text">
-                                    <a href="UEFANationsLeagueStandings" class="card-link">Standings</a> <a href="UEFANationsLeagueMatches" class="card-link">Matches</a>
-                                </p>
-                            </div>
-                        </div>
                         <div class="card">
                             <span class="mx-auto">
                                 <img class="card-img-top card-img-top-height-100 margin-top-sm margin-lr-md" src="images/logos/Euro_2020.png" alt="Pan-European 2020">
@@ -79,6 +79,24 @@
                                 <h5 class="card-title">Copa America</h5>
                                 <p class="card-text">
                                     <a href="CopaAmericaArchive" class="card-link">Archive <span class="fa fa-futbol-o"></span></a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <span class="mx-auto">
+                                <img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2019.png" alt="United Arab Emirates 2019">
+                                <a href="AsianCup"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2015.png" alt="Australia 2015"></a>
+                                <a href="AsianCup?tid=186"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2011.png" alt="Qatar 2011"></a>
+                            </span>
+                            <span class="mx-auto">
+                                <a href="AsianCup?tid=187"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2007.png" alt="Indonesia-Malaysia-Thailand-Vietnam 2007"></a>
+                                <a href="AsianCup?tid=188"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2004.png" alt="China 2004"></a>
+                                <a href="AsianCup?tid=189"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2000.png" alt="Lebanon 2000"></a>
+                            </span>
+                            <div class="card-body">
+                                <h5 class="card-title">Asian Cup</h5>
+                                <p class="card-text">
+                                    <a href="AsianCupArchive" class="card-link">Archive <span class="fa fa-futbol-o"></span></a>
                                 </p>
                             </div>
                         </div>
@@ -161,19 +179,19 @@
                         </div>
                         <div class="card">
                             <span class="mx-auto">
-                                <img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2019.png" alt="United Arab Emirates 2019">
-                                <a href="AsianCup"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2015.png" alt="Australia 2015"></a>
-                                <a href="AsianCup?tid=186"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2011.png" alt="Qatar 2011"></a>
+                                <a href="OFCNationsCup"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/logos/OFCcup.png" alt="Papua New Guinea 2016"></a>
+                                <a href="OFCNationsCup?tid=202"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/logos/OFCcup.png" alt="Solomon Islands 2012"></a>
+                                <a href="OFCNationsCup?tid=203"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/logos/OFCcup.png" alt="Pan-Oceania 2008"></a>
                             </span>
                             <span class="mx-auto">
-                                <a href="AsianCup?tid=187"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2007.png" alt="Indonesia-Malaysia-Thailand-Vietnam 2007"></a>
-                                <a href="AsianCup?tid=188"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2004.png" alt="China 2004"></a>
-                                <a href="AsianCup?tid=189"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2000.png" alt="Lebanon 2000"></a>
+                                <a href="OFCNationsCup?tid=204"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/logos/OFCcup.png" alt="Australia 2004"></a>
+                                <a href="OFCNationsCup?tid=205"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/logos/OFCcup.png" alt="New Zealand 2002"></a>
+                                <a href="OFCNationsCup?tid=206"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/logos/OFCcup.png" alt="Tahiti 2000"></a>
                             </span>
                             <div class="card-body">
-                                <h5 class="card-title">Asian Cup</h5>
+                                <h5 class="card-title">OFC Nations Cup</h5>
                                 <p class="card-text">
-                                    <a href="AsianCupArchive" class="card-link">Archive <span class="fa fa-futbol-o"></span></a>
+                                    <a href="OFCNationsCupArchive" class="card-link">Archive <span class="fa fa-futbol-o"></span></a>
                                 </p>
                             </div>
                         </div>
