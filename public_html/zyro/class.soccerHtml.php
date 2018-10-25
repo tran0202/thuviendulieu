@@ -9,13 +9,18 @@
         const USA_1994 = 10;
         const ITALY_1990 = 11;
         const MEXICO_1986 = 12;
+        const ARGENTINA_1978 = 14;
         const GERMANY_1974 = 15;
         const MEXICO_1970 = 16;
+        const SWEDEN_1958 = 19;
+        const SWITZERLAND_1954 = 20;
         const CANADA_2015 = 31;
         const MENS_RIO_2016 = 32;
         const WOMENS_RIO_2016 = 33;
         const SWEDEN_1995 = 38;
         const CHINA_1991 = 39;
+        const ANTWERP_1920 = 60;
+        const LONDON_1908 = 62;
         const LONDON_2012 = 63;
         const BEIJING_2008 = 64;
         const ATHENS_2004 = 65;
@@ -85,12 +90,15 @@
         const EQUATORIAL_GUINEA_2015 = 153;
         const ANGOLA_2010 = 156;
         const TUNISIA_1965 = 180;
+        const GHANA_1963 = 181;
         const AUSTRALIA_2015 = 185;
         const LEBANON_2000 = 189;
         const UAE_1996 = 190;
         const IRAN_1968 = 197;
         const PAPUA_NEW_GUINEA_2016 = 201;
         const OFC_NATIONS_CUP_1996 = 208;
+        const NEW_CALEDONIA_1980 = 209;
+        const NEW_ZEALAND_1973 = 210;
         const RUSSIA_2017 = 211;
         const SAUDI_ARABIA_1995 = 219;
 
@@ -352,7 +360,7 @@
             return $output;
         }
 
-        public static function getTeamHtml($tournament, $_team, $team_type, $stage, $from_ranking, $all_time, &$current_best_finish, &$striped, $ranking) {
+        public static function getTeamHtml($tournament, $_team, $team_type, $stage, $from_ranking, $all_time, &$current_best_finish, &$striped, $ranking, $count) {
             $output = '';
             $goal_diff = $_team->getGoalDiff();
             if ($_team->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
@@ -360,6 +368,14 @@
                 $striped = '';
                 if (self::isTeamAdvancedSecondRound($tournament, $_team, $stage)) {
                     $striped = 'advanced-second-round-striped';
+                    if ($count == 2 && $_team->getBestFinish() == Soccer::SecondRound
+                        && ($_team->getTournamentId() == self::ARGENTINA_1978 || $_team->getTournamentId() == self::GERMANY_1974))
+                        $striped = 'advanced-third-place-striped';
+                    if ($count == 2 && ($_team->getTournamentId() == self::SAUDI_ARABIA_1995 || $_team->getTournamentId() == self::GHANA_1963
+                        || $_team->getTournamentId() == self::TUNISIA_1965 || $_team->getTournamentId() == self::NEW_CALEDONIA_1980))
+                        $striped = 'advanced-third-place-striped';
+                    if (($count == 3 || $count == 4) && ($_team->getTournamentId() == self::NEW_ZEALAND_1973))
+                        $striped = 'advanced-third-place-striped';
                 }
             }
             else {
@@ -373,13 +389,19 @@
                 }
                 if ($all_time) $striped = '';
             }
+            $top3_bg = '';
+            if (!$all_time) {
+                if ($_team->getBestFinish() == Soccer::Champion || $_team->getBestFinish() == Soccer::GoldMedal || ($count == 1 && $_team->getBestFinish() == Soccer::FinalRound)) $top3_bg = 'gold';
+                elseif ($_team->getBestFinish() == Soccer::RunnerUp || $_team->getBestFinish() == Soccer::SilverMedal || ($count == 2 && $_team->getBestFinish() == Soccer::FinalRound)) $top3_bg = 'silver';
+                elseif ($_team->getBestFinish() == Soccer::ThirdPlace || $_team->getBestFinish() == Soccer::BronzeMedal || ($count == 3 && $_team->getBestFinish() == Soccer::FinalRound)) $top3_bg = 'bronze';
+            }
             $tc_col = '<div class="col-sm-4">'.$_team->getName().'</div>';
             if ($all_time) $tc_col = '<div class="box-col-lg">'.$_team->getName().'</div>
                                                 <div class="box-col-sm"><a id="popover_'.$_team->getCode().'" data-toggle="popover"
                                                     data-container="body" data-placement="right" data-html="true"
                                                     data-trigger="focus" tabindex="0" style="cursor:pointer;">'.$_team->getTournamentCount().'</a></div>';
             if (!$all_time || ($all_time && $_team->getMatchPlay() != 0)) {
-                $output .=     '<div class="col-sm-12 padding-tb-md team-row '.$striped.'">
+                $output .=     '<div class="col-sm-12 padding-tb-md team-row '.$striped.' '.$top3_bg.'">
                                 <div class="row">
                                         <div class="box-col-md" style="padding-left:15px;">';
                 $output .= '<span class="ranking-count"><small>'.$ranking.'&nbsp;&nbsp;</small></span>';
@@ -415,7 +437,7 @@
             foreach ($_teams as $name => $_team) {
                 self::getNextRanking($_team, $previous_team, $ranking, $count, $all_time);
                 $output .= self::getTeamHtml($tournament, $_team, $team_type, $stage, $from_ranking,
-                    $all_time, $current_best_finish, $striped, $ranking);
+                    $all_time, $current_best_finish, $striped, $ranking, $count);
                 $previous_team = $_team;
             }
             return $output;
@@ -1335,6 +1357,15 @@
                         $semifinal_matches = Match::getSemifinalMatches($tournament->getMatches());
                         for ($i = 0; $i < sizeof($semifinal_matches); $i++) {
                             if ($semifinal_matches[$i]->getHomeTeamName() == $team->getName() || $semifinal_matches[$i]->getAwayTeamName() == $team->getName()) {
+                                $result = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!$result) {
+                        $final_matches = Match::getFinalMatches($tournament->getMatches());
+                        for ($i = 0; $i < sizeof($final_matches); $i++) {
+                            if ($final_matches[$i]->getHomeTeamName() == $team->getName() || $final_matches[$i]->getAwayTeamName() == $team->getName()) {
                                 $result = true;
                                 break;
                             }

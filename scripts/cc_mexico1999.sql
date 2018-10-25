@@ -4,7 +4,7 @@
 # 1999 FIFA Confederations Cup Mexico
 
 INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_filename, golden_goal_rule, points_for_win)
-VALUES ('1999 FIFA Confederations Cup Mexico', '1999-07-24', '1999-08-04', 17, 'cc_1999.png', 1, null);
+VALUES ('1999 FIFA Confederations Cup Mexico', '1999-07-24', '1999-08-04', 17, 'cc_1999.jpg', 1, null);
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (217, 41, 1, 39, 1),
@@ -39,7 +39,7 @@ VALUES (1, 4, 2, 0, 217, '1999-07-24', '120000', 1, 41, 39),
 	   (28, 2, 8, 2, 217, '1999-07-27', '203000', 6, 41, 39),
 	   (2, 1, 208, 2, 217, '1999-07-28', '180000', 7, 41, 39),
 	   (1, 1, 198, 0, 217, '1999-07-28', '203000', 8, 41, 39),
-	   (8, 4, 17, 0, 217, '1999-07-29', '180000', 9, 41, 39),
+	   (8, 1, 17, 5, 217, '1999-07-29', '180000', 9, 41, 39),
 	   (28, 1, 227, 0, 217, '1999-07-29', '203000', 10, 41, 39),
 	   (198, 2, 2, 0, 217, '1999-07-30', '180000', 11, 41, 39),
 	   (208, 0, 1, 2, 217, '1999-07-30', '203000', 12, 41, 39);

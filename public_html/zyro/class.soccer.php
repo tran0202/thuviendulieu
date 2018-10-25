@@ -798,10 +798,21 @@
                     if ($still_tie) $still_tie = self::drawingLots($team1, $team2);
                     if ($still_tie) self::alphabetOrder($team1, $team2);
                 }
+                if ($team1->getTournamentId() == SoccerHtml::SWEDEN_1958 &&  $team1->getName() == 'ENGLAND' &&  $team2->getName() == 'SOVIET UNION')
+                    self::swapTeam($team1, $team2);
             }
             elseif (self::isHigherStanding($team2, $team1)) {
+                if ($team1->getTournamentId() == SoccerHtml::SWITZERLAND_1954 &&  $team1->getName() == 'GERMANY FR' &&  $team2->getName() == 'TURKEY') return;
+                if ($team1->getTournamentId() == SoccerHtml::SWITZERLAND_1954 &&  $team1->getName() == 'SWITZERLAND' &&  $team2->getName() == 'ITALY') return;
+                if ($team1->getTournamentId() == SoccerHtml::SWEDEN_1958 &&  $team1->getName() == 'NORTHERN IRELAND' &&  $team2->getName() == 'CZECHOSLOVAKIA') return;
                 if ($team1->getTournamentId() == SoccerHtml::TUNISIA_1965 &&  $team1->getName() == 'TUNISIA') return;
-                self::swapTeam($team1, $team2);
+                    self::swapTeam($team1, $team2);
+            }
+            else {
+                if ($team1->getTournamentId() == SoccerHtml::SWEDEN_1958 &&  $team1->getName() == 'HUNGARY')
+                    self::swapTeam($team1, $team2);
+                if ($team1->getTournamentId() == SoccerHtml::SWITZERLAND_1954 &&  $team1->getName() == 'TURKEY' &&  $team2->getName() == 'GERMANY FR')
+                    self::swapTeam($team1, $team2);
             }
         }
 
@@ -948,13 +959,14 @@
             }
             if ($match->getRound() == self::BRONZE_MEDAL_MATCH) {
                 $team->setBestFinish(self::Semifinal);
+                if ($team->getName() == 'SWEDEN' && $match->getTournamentId() == SoccerHtml::LONDON_1908) $team->setBestFinish(self::Quarterfinal);
             }
             if ($match->getRound() == self::REPLAY_BRONZE_MEDAL_MATCH) {
                 $team->setBestFinish(self::Semifinal);
             }
             if ($match->getRound() == self::GOLD_MEDAL_MATCH) {
                 $team->setBestFinish(self::SilverMedal);
-                if ($team->getName() == 'CZECHOSLOVAKIA' && $match->getTournamentId() == 60) $team->setBestFinish(self::Disqualified);
+                if ($team->getName() == 'CZECHOSLOVAKIA' && $match->getTournamentId() == SoccerHtml::ANTWERP_1920) $team->setBestFinish(self::Disqualified);
             }
             if ($match->getRound() == self::REPLAY_GOLD_MEDAL_MATCH) {
                 $team->setBestFinish(self::SilverMedal);
@@ -977,7 +989,7 @@
             }
             if ($match->getRound() == self::CONSOLATION_FINAL) {
                 $team->setBestFinish(self::Quarterfinal);
-                if ($match->getTournamentId() == 60) $team->setBestFinish(self::BronzeMedal);
+                if ($match->getTournamentId() == SoccerHtml::ANTWERP_1920) $team->setBestFinish(self::BronzeMedal);
             }
         }
 

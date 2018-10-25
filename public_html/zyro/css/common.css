@@ -186,10 +186,13 @@ a:hover.hover-pointer { cursor: pointer; }
 .padding-top-logo { padding-top: 30px; }
 
 .scenario-striped { background-color: #e6e7e9 }
-
 .ranking-striped { background-color: #ebebeb }
-
 .advanced-second-round-striped { background-color: #e3fae3 }
+.advanced-third-place-striped { background-color: #bbf3ff }
+
+.gold { background-color: gold }
+.silver { background-color: silver }
+.bronze { background-color: rgb(204, 153, 102) }
 
 .bracket-box-height { height: 120px }
 .bracket-gap-height-00 { height: 10px }

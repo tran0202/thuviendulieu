@@ -24,12 +24,12 @@ VALUES (208, 208, 1, 1),
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
-VALUES (208, 0, null, null, 13, 0, null, null, 208, '1996-11-13', '190000', 1, 44, 40, 1),
-	   (13, 3, null, null, 208, 0, null, null, 208, '1996-11-13', '190000', 2, 44, 40, 2),
-	   (1041, 0, null, null, 1039, 1, null, null, 208, '1996-11-20', '190000', 3, 44, 40, 3),
-	   (1039, 2, null, null, 1041, 1, null, null, 208, '1996-11-20', '190000', 4, 44, 40, 4),
-	   (1039, 0, null, null, 13, 6, null, null, 208, '1996-11-27', '190000', 5, 154, 40, 5),
-	   (13, 5, null, null, 1039, 0, null, null, 208, '1983-11-04', '190000', 6, 154, 40, 6);
+VALUES (208, 0, null, null, 13, 0, null, null, 208, '1995-11-10', '190000', 1, 44, 40, 1),
+	   (13, 3, null, null, 208, 0, null, null, 208, '1995-11-15', '190000', 2, 44, 40, 2),
+	   (1041, 0, null, null, 1039, 1, null, null, 208, '1995-11-17', '190000', 3, 44, 40, 3),
+	   (1039, 2, null, null, 1041, 1, null, null, 208, '1996-05-11', '190000', 4, 44, 40, 4),
+	   (1039, 0, null, null, 13, 6, null, null, 208, '1996-10-27', '190000', 5, 154, 40, 5),
+	   (13, 5, null, null, 1039, 0, null, null, 208, '1996-11-01', '190000', 6, 154, 40, 6);
 
 CREATE TABLE IF NOT EXISTS tournament (
 	id INT AUTO_INCREMENT PRIMARY KEY,
