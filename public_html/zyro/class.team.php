@@ -339,7 +339,7 @@
         /*
             SELECT t.id, UCASE(t.name) AS name,
                 t.parent_team_id, UCASE(t2.name) AS parent_team_name, UCASE(g.name) AS group_name,
-                n.flag_filename, n.code, tt.tournament_id, tou.name AS tournament_name,
+                n.flag_filename, n2.flag_filename AS parent_flag_filename, n.code, tt.tournament_id, tou.name AS tournament_name,
                 g2.name AS confederation_name, g2.group_logo AS confederation_logo_filename
             FROM team t
             LEFT JOIN team_tournament tt ON tt.team_id = t.id
@@ -347,6 +347,7 @@
             LEFT JOIN team t2 ON t2.id = t.parent_team_id
             LEFT JOIN `group` g ON g.id = tt.group_id
             LEFT JOIN nation n ON n.id = t.nation_id
+            LEFT JOIN nation n2 ON n2.id = t2.nation_id
             LEFT JOIN `group` g2 ON g2.id = tt.confederation_id
             WHERE tou.tournament_type_id = 1
          */
@@ -354,7 +355,7 @@
         public static function getAllTimeSoccerTeamTournamentSql($tournament_type_id) {
             $sql = 'SELECT t.id, UCASE(t.name) AS name, 
                         t.parent_team_id, UCASE(t2.name) AS parent_team_name, UCASE(g.name) AS group_name,
-                        n.flag_filename, n.code, tt.tournament_id, tou.name AS tournament_name,
+                        n.flag_filename, n2.flag_filename AS parent_flag_filename, n.code, tt.tournament_id, tou.name AS tournament_name,
                         g2.name AS confederation_name, g2.group_logo AS confederation_logo_filename
                     FROM team t
                     LEFT JOIN team_tournament tt ON tt.team_id = t.id
@@ -362,6 +363,7 @@
                     LEFT JOIN team t2 ON t2.id = t.parent_team_id 
                     LEFT JOIN `group` g ON g.id = tt.group_id
                     LEFT JOIN nation n ON n.id = t.nation_id
+                    LEFT JOIN nation n2 ON n2.id = t2.nation_id
                     LEFT JOIN `group` g2 ON g2.id = tt.confederation_id
                     WHERE tou.tournament_type_id = '.$tournament_type_id; // AND tt.tournament_id <> 1'
             return $sql;
@@ -408,6 +410,14 @@
             $result = array();
             for ($i = 0; $i < sizeof($teams); $i++) {
                 $result[$teams[$i]->getName()] = $teams[$i];
+            }
+            return $result;
+        }
+
+        public static function getTeamArrayById($teams) {
+            $result = array();
+            for ($i = 0; $i < sizeof($teams); $i++) {
+                $result[$teams[$i]->getId()] = $teams[$i];
             }
             return $result;
         }
@@ -471,15 +481,15 @@
 
         public static function getTeamArrayByConfederation($tournament) {
             $result = array();
-            $teams = self::getTeamArrayByName($tournament->getTeams());
+            $teams = self::getTeamArrayById($tournament->getTeams());
             $tournament_teams = $tournament->getTournamentTeams();
             for ($i = 0; $i < sizeof($tournament_teams); $i++) {
                 if ($tournament_teams[$i]->getConfederationName() != null) {
-                    $team_name = $tournament_teams[$i]->getName();
-                    if ($tournament_teams[$i]->getParentName() != null) {
-                        $team_name = $tournament_teams[$i]->getParentName();
+                    $team_id = $tournament_teams[$i]->getId();
+                    if ($tournament_teams[$i]->getParentId() != null) {
+                        $team_id = $tournament_teams[$i]->getParentId();
                     }
-                    $result[$tournament_teams[$i]->getConfederationName()][$team_name] = $teams[$team_name];
+                    $result[$tournament_teams[$i]->getConfederationName()][$team_id] = $teams[$team_id];
                 }
             }
             return $result;

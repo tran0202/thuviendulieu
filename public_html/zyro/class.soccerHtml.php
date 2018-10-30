@@ -12,8 +12,11 @@
         const ARGENTINA_1978 = 14;
         const GERMANY_1974 = 15;
         const MEXICO_1970 = 16;
+        const ENGLAND_1966 = 17;
+        const CHILE_1962 = 18;
         const SWEDEN_1958 = 19;
         const SWITZERLAND_1954 = 20;
+        const URUGUAY_1930 = 24;
         const CANADA_2015 = 31;
         const MENS_RIO_2016 = 32;
         const WOMENS_RIO_2016 = 33;
@@ -339,10 +342,13 @@
             return $output;
         }
 
-        public static function getTeamTableHeaderHtml($all_time) {
+        public static function getTeamTableHeaderHtml($tournament, $stage, $all_time) {
             $output = '';
             $tournament_count_header = '<div class="col-sm-4"></div>';
             if ($all_time) $tournament_count_header = '<div class="box-col-lg"></div><div class="box-col-sm">T</div>';
+            $gd_header = '+/-';
+            if (self::getGoalAverageStat($tournament, $stage))
+                $gd_header = 'GAv';
             $output .= '<div class="col-sm-12 padding-top-md padding-bottom-md font-bold team-row">
                         <div class="row">
                             <div class="box-col-md" style="margin-top:-3px;padding-left:15px;"></div>';
@@ -353,17 +359,28 @@
                             <div class="box-col-sm">L</div>
                             <div class="box-col-sm">GF</div>
                             <div class="box-col-sm">GA</div>
-                            <div class="box-col-sm">+/-</div>
+                            <div class="box-col-sm">'.$gd_header.'</div>
                             <div class="box-col-sm">Pts</div>
                         </div>    
                         </div>';
             return $output;
         }
 
+        public static function getGoalAverageStat($tournament, $stage) {
+            return $stage == Soccer::First &&
+                    ($tournament->getTournamentId() == self::SWEDEN_1958 || $tournament->getTournamentId() == self::CHILE_1962
+                        || $tournament->getTournamentId() == self::ENGLAND_1966);
+        }
+
         public static function getTeamHtml($tournament, $_team, $team_type, $stage, $from_ranking, $all_time, &$current_best_finish, &$striped, $ranking, $count) {
             $output = '';
             $goal_diff = $_team->getGoalDiff();
             if ($_team->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
+            if (self::getGoalAverageStat($tournament, $stage))
+                if ($_team->getGoalAgainst() != 0)
+                    $goal_diff = round($_team->getGoalFor() / $_team->getGoalAgainst(), 2, PHP_ROUND_HALF_UP);
+                else
+                    $goal_diff = '-';
             if (!$from_ranking) {
                 $striped = '';
                 if (self::isTeamAdvancedSecondRound($tournament, $_team, $stage)) {
@@ -395,7 +412,11 @@
                 elseif ($_team->getBestFinish() == Soccer::RunnerUp || $_team->getBestFinish() == Soccer::SilverMedal || ($count == 2 && $_team->getBestFinish() == Soccer::FinalRound)) $top3_bg = 'silver';
                 elseif ($_team->getBestFinish() == Soccer::ThirdPlace || $_team->getBestFinish() == Soccer::BronzeMedal || ($count == 3 && $_team->getBestFinish() == Soccer::FinalRound)) $top3_bg = 'bronze';
             }
-            $tc_col = '<div class="col-sm-4">'.$_team->getName().'</div>';
+            $note = '';
+            if ($stage == Soccer::First) {
+                $note = self::getNote($_team);
+            }
+            $tc_col = '<div class="col-sm-4">'.$_team->getName().$note.'</div>';
             if ($all_time) $tc_col = '<div class="box-col-lg">'.$_team->getName().'</div>
                                                 <div class="box-col-sm"><a id="popover_'.$_team->getCode().'" data-toggle="popover"
                                                     data-container="body" data-placement="right" data-html="true"
@@ -429,11 +450,50 @@
             return $output;
         }
 
+        public static function getNote($_team) {
+            $note = '';
+            $tmp1 = '<br><span class="gray4"><small>(ahead ';
+            $tmp2 = ')</small></span>';
+            if ($_team->getTournamentId() == self::SWITZERLAND_1954) {
+                if ($_team->getName() == 'BRAZIL' || $_team->getName() == 'URUGUAY')
+                    $note = $tmp1.'on drawing lots'.$tmp2;
+                elseif ($_team->getName() == 'WEST GERMANY' || $_team->getName() == 'SWITZERLAND')
+                    $note = $tmp1.'by winning play-off'.$tmp2;
+            }
+            elseif ($_team->getTournamentId() == self::SWEDEN_1958) {
+                if ($_team->getName() == 'NORTHERN IRELAND' || $_team->getName() == 'WALES' || $_team->getName() == 'SOVIET UNION')
+                    $note = $tmp1.'by winning play-off'.$tmp2;
+                elseif ($_team->getName() == 'FRANCE')
+                    $note = $tmp1.'on goal average'.$tmp2;
+            }
+            elseif ($_team->getTournamentId() == self::CHILE_1962) {
+                if ($_team->getName() == 'ENGLAND')
+                    $note = $tmp1.'on goal average'.$tmp2;
+            }
+            elseif ($_team->getTournamentId() == self::ENGLAND_1966) {
+                if ($_team->getName() == 'WEST GERMANY')
+                    $note = $tmp1.'on goal average'.$tmp2;
+            }
+            elseif ($_team->getTournamentId() == self::MEXICO_1970) {
+                if ($_team->getName() == 'SOVIET UNION')
+                    $note = $tmp1.'on drawing lots'.$tmp2;
+            }
+            elseif ($_team->getTournamentId() == self::ITALY_1990) {
+                if ($_team->getName() == 'REPUBLIC OF IRELAND')
+                    $note = $tmp1.'on drawing lots'.$tmp2;
+            }
+            elseif ($_team->getTournamentId() == self::RUSSIA_2018) {
+                if ($_team->getName() == 'JAPAN')
+                    $note = $tmp1.'on fair play points'.$tmp2;
+            }
+            return $note;
+        }
+
         public static function getTeamRankingTableHtml($tournament, $_teams, $team_type, $stage, $from_ranking, $all_time, &$current_best_finish, &$striped) {
             $ranking = 0;
             $count = 0;
             $previous_team = null;
-            $output = self::getTeamTableHeaderHtml($all_time);
+            $output = self::getTeamTableHeaderHtml($tournament, $stage, $all_time);
             foreach ($_teams as $name => $_team) {
                 self::getNextRanking($_team, $previous_team, $ranking, $count, $all_time);
                 $output .= self::getTeamHtml($tournament, $_team, $team_type, $stage, $from_ranking,
@@ -510,7 +570,8 @@
                     $short_tournament_name = self::getShortTournamentName($tournament_names);
                     $output3 .= '<p><b>'.$short_tournament_name.':</b> <i>'.self::getFinishLiteral($_team->getTournamentId(), $_team->getBestFinish()).'</i> ';
                     if ($_team->getParentName() != null) {
-                        $output3 .= '<span class="gray4"><small>(as '.$_team->getName().')</small></span></p>';
+                        $output3 .= '<span class="gray4"><small>(as '.$_team->getName();
+                        $output3 .= '&nbsp;<img class="flag-xs" src="/images/flags/'.$_team->getFlagFilename().'">)</small></span></p>';
                     }
                     if (($_team->getName() == 'AUSTRALIA'
                             && ($_team->getTournamentId() == self::RUSSIA_2018 || $_team->getTournamentId() == self::BRAZIL_2014
@@ -596,7 +657,7 @@
                         <div class="col-sm-12 h2-ff3 box-xl">';
             $current_best_finish = $teams[0]->getBestFinish();
             $striped_row = 'ranking-striped';
-            $_teams = Team::getTeamArrayByName($teams);
+            $_teams = Team::getTeamArrayById($teams);
             $output .= self::getTeamRankingTableHtml($tournament, $_teams, self::TEAM, null,
                 true, $ranking_table != self::TOURNAMENT, $current_best_finish, $striped_row);
             $output .= '</div>';
@@ -867,8 +928,11 @@
                 if ($_match->getTournamentId() == self::GOLD_CUP_1993 && $_match->getRound() == Soccer::THIRD_PLACE) $aet = ' aet';
                 $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
                 if ($_match->getHomeTeamScore() == $_match->getAwayTeamScore() &&
-                    (($_match->getStage() != Soccer::FIRST_STAGE && $_match->getStage() != Soccer::GROUP_STAGE && $_match->getStage() != Soccer::QUALIFYING_STAGE
-                     && $_match->getTournamentId() != 50 && $_match->getTournamentId() != 51) || $_match->getRound() == Soccer::PLAY_OFF)) {
+                    (($_match->getStage() != Soccer::FIRST_STAGE && $_match->getStage() != Soccer::GROUP_STAGE
+                        && $_match->getStage() != Soccer::QUALIFYING_STAGE && $_match->getTournamentId() != 50
+                        && $_match->getTournamentId() != 51)
+                        || $_match->getRound() == Soccer::PLAY_OFF
+                        || $_match->getTournamentId() == self::SWITZERLAND_1954)) {
                     if ($_match->getHomeTeamExtraTimeScore() == null) $aet = '&nbsp;&nbsp;&nbsp;&nbsp;';
                     $score = ($_match->getHomeTeamScore()+$_match->getHomeTeamExtraTimeScore()).
                         '-'.($_match->getAwayTeamScore()+$_match->getAwayTeamExtraTimeScore()).$aet;

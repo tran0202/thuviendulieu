@@ -34,3 +34,9 @@ CREATE TRIGGER before_insert_team
   	SET new.uuid = uuid();
 
 DROP TRIGGER before_insert_team;
+
+SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
+
+SELECT * FROM `team_tournament` WHERE tournament_id = 1;
+
+SELECT * FROM `match` WHERE tournament_id = 1;

@@ -38,6 +38,29 @@ ORDER BY parent_group_name, group_id, group_order;
 DELETE FROM `team`
 WHERE id = 1014 or id = 1015 or id = 1016 or id = 1017 or id = 1018 or id = 1019;
 
+INSERT INTO team (name, team_type_id, nation_id, parent_team_id)
+VALUES ('Yugoslavia', 1, 241, 24),
+	   ('Italy', 1, 244, 203),
+	   ('Germany', 1, 245, 2),
+	   ('Spain', 1, 247, 6),
+	   ('Spain', 1, 252, 6),
+	   ('Spain', 1, 267, 6),
+	   ('Hungary', 1, 248, 233),
+	   ('Hungary', 1, 254, 233),
+	   ('Egypt', 1, 249, 8),
+	   ('Germany', 1, 246, 2),
+	   ('Wales', 1, 256, 243),
+	   ('Bulgaria', 1, 258, 223),
+	   ('Bulgaria', 1, 259, 223),
+	   ('Bulgaria', 1, 260, 223),
+	   ('Romania', 1, 264, 226),
+	   ('Haiti', 1, 265, 240),
+	   ('Iran', 1, 266, 14),
+	   ('Iraq', 1, 268, null);
+
+INSERT INTO team (name, team_type_id, nation_id, parent_team_id)
+VALUES ('Iraq', 1, 275, 1064);
+
 INSERT INTO team (name, team_type_id)
 VALUES ('Brazil', 1), ('Germany', 1), ('Argentina', 1),	('Portugal', 1),
 		('Belgium', 1),	('Spain', 1), ('Poland', 1), ('Egypt', 1),

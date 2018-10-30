@@ -1,18 +1,26 @@
 CREATE TABLE IF NOT EXISTS nation (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR(255) NOT NULL UNIQUE,
-	alternative_name VARCHAR(255),
+	name VARCHAR(255) NOT NULL,
+	official_name VARCHAR(255),
 	code VARCHAR(255),
 	flag_filename VARCHAR(255),
 	alternative_flag_filename VARCHAR(255),
 	parent_nation_id INT,
 	nation_type_id INT,
 	FOREIGN KEY (parent_nation_id) REFERENCES nation(id),
-	FOREIGN KEY (nation_type_id) REFERENCES group_type(id)
+	FOREIGN KEY (nation_type_id) REFERENCES group_type(id),
+	start_date DATE,
+	end_date DATE
 );
 
 ALTER TABLE nation
-	ADD COLUMN code VARCHAR(255);
+	ADD COLUMN start_date DATE,
+	ADD COLUMN end_date DATE;
+
+ALTER TABLE `nation`
+	CHANGE alternative_name official_name VARCHAR(255);
+
+DROP INDEX name ON `nation`;
 
 INSERT INTO nation (name, flag_filename, nation_type_id, code)
 VALUES ('Afghanistan', 'Afghanistan.png', 6, 'AFG'), ('Albania', 'Albania.png', 6, 'ALB'),
@@ -134,5 +142,42 @@ VALUES ('FR Yugoslavia', 'Serbia_and_Montenegro.svg', 165, 6, 'YUG');
 INSERT INTO nation (name, flag_filename, parent_nation_id, nation_type_id, code)
 VALUES ('Upper Volta', 'Upper_Volta.png', 32, 6, 'UPV');
 
-INSERT INTO nation (name, alternative_name, flag_filename, parent_nation_id, nation_type_id, code)
+INSERT INTO nation (name, official_name, flag_filename, parent_nation_id, nation_type_id, code)
 VALUES ('CIS', 'Commonwealth of Independent States', 'CIS.png', 157, 6, 'CIS');
+
+INSERT INTO nation (name, official_name, start_date, end_date, flag_filename, parent_nation_id, nation_type_id, code)
+VALUES ('Yugoslavia', 'Kingdom of Serbs, Croats and Slovenes', '1918-01-01', '1929-10-03', 'Kingdom_of_Yugoslavia.png', 165, 6, 'YUG'),
+	   ('Yugoslavia', 'Kingdom of Yugoslavia', '1929-10-03', '1943-11-29', 'Kingdom_of_Yugoslavia.png', 165, 6, 'YUG'),
+	   ('Yugoslavia', 'Democratic Federal Yugoslavia', '1943-11-29', '1945-11-29', 'yug.png', 165, 6, 'YUG'),
+	   ('Yugoslavia', 'Federal People''s Republic of Yugoslavia', '1945-11-29', '1963-04-07', 'yug.png', 165, 6, 'YUG'),
+	   ('Italy', 'Kingdom of Italy', '1861-03-17', '1946-06-02', 'Kingdom_of_Italy.png', 96, 6, 'ITA'),
+	   ('Germany', 'Germany', '1933-01-30', '1935-09-15', 'Germany_1933_1935.png', 76, 6, 'GER'),
+	   ('Germany', 'Germany', '1935-09-15', '1945-05-08', 'Germany_1935_1945.png', 76, 6, 'GER'),
+	   ('Spain', 'Second Spanish Republic', '1931-04-27', '1939-04-01', 'Spain_1931_1939.png', 175, 6, 'ESP'),
+	   ('Spain', 'Spanish State', '1939-04-01', '1977-01-21', 'Spanish_State.png', 175, 6, 'ESP'),
+	   ('Spain', 'Spain', '1977-01-21', '1981-10-05', 'Spain_1977_1981.png', 175, 6, 'ESP'),
+	   ('Hungary', 'Kingdom of Hungary', '1920-02-29', '1946-02-01', 'Kingdom_of_Hungary.png', 89, 6, 'HUN'),
+	   ('Hungary', 'Second Hungarian Republic', '1946-02-01', '1949-08-20', 'Second_Hungarian_Republic.png', 89, 6, 'HUN'),
+	   ('Hungary', 'Hungarian People''s Republic', '1949-08-20', '1956-10-23', 'Hungarian_People_Republic.png', 89, 6, 'HUN'),
+	   ('Hungary', 'Hungarian People''s Republic', '1957-05-23', '1989-10-23', 'Hungary.png', 89, 6, 'HUN'),
+	   ('Egypt', 'Kingdom of Egypt', '1922-02-28', '1953-06-18', 'Kingdom_of_Egypt.png', 61, 6, 'EGY'),
+	   ('Egypt', 'Republic of Egypt', '1953-06-18', '1958-02-22', 'Republic_of_Egypt', 61, 6, 'EGY'),
+	   ('Egypt', 'Federation of Arab Republics', '1972-01-01', '1977-11-19', 'Federation_of_Arab_Republics.png', 61, 6, 'EGY'),
+	   ('Wales', 'Wales', '1953-03-11', '1959-01-01', 'Wales_1953_1959.png', 208, 6, 'WAL'),
+	   ('Bulgaria', 'People''s Republic of Bulgaria', '1946-09-15', '1948-01-27', 'Bulgaria_1946_1948.png', 31, 6, 'BUL'),
+	   ('Bulgaria', 'People''s Republic of Bulgaria', '1948-01-27', '1967-06-14', 'Bulgaria_1948_1967.png', 31, 6, 'BUL'),
+	   ('Bulgaria', 'People''s Republic of Bulgaria', '1967-06-14', '1971-05-21', 'Bulgaria_1967_1971.png', 31, 6, 'BUL'),
+	   ('Bulgaria', 'People''s Republic of Bulgaria', '1971-05-21', '1990-11-15', 'Bulgaria_1971_1990.png', 31, 6, 'BUL'),
+	   ('Romania', 'Romanian People''s Republic', '1947-12-30', '1948-04-13', 'Romania_1947_1948.png', 156, 6, 'ROU'),
+	   ('Romania', 'Romanian People''s Republic', '1948-04-13', '1952-09-24', 'Romania_1948_1952.png', 156, 6, 'ROU'),
+	   ('Romania', 'Romanian People''s Republic', '1952-09-24', '1965-08-21', 'Romania_1952_1965.png', 156, 6, 'ROU'),
+	   ('Romania', 'Socialist Republic of Romania', '1965-08-21', '1989-12-22', 'Romania_1965_1989.png', 156, 6, 'ROU'),
+	   ('Haiti', 'Haiti', '1964-01-01', '1986-02-26', 'Haiti_1964_1986.png', 86, 6, 'HAI'),
+	   ('Iran', 'Iran', '1964-01-01', '1980-01-01', 'Iran_1964_1980.png', 93, 6, 'IRN');
+
+INSERT INTO nation (name, official_name, start_date, end_date, flag_filename, parent_nation_id, nation_type_id, code)
+VALUES ('Iraq', 'Kingdom of Iraq', '1921-04-23', '1959-01-11', 'Kingdom_of_Iraq.png', 268, 6, 'IRQ'),
+	   ('Iraq', 'Iraq', '1959-01-11', '1963-10-31', 'Iraq_1959_1963.png', 268, 6, 'IRQ'),
+	   ('Iraq', 'Iraq', '1963-10-31', '1991-04-01', 'Iraq_1963_1991.png', 268, 6, 'IRQ'),
+	   ('Iraq', 'Iraq', '2004-08-05', '2008-01-22', 'Iraq_2004_2008.png', 268, 6, 'IRQ'),
+	   ('Iraq', 'Iraq', '2008-01-22', null, 'Iraq.png', null, 6, 'IRQ');

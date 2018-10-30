@@ -149,6 +149,10 @@ body {
 
 /* ========== Miscellaneous ========== */
 
+.flag-xs {
+    height: 12px;
+    border: 1px solid #c7c6c6;
+}
 .flag-sm {
     width: 24px;
     height: 16px;

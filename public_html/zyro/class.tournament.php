@@ -280,13 +280,13 @@
 
         public static function getTournamentCount($tournament) {
             $teams = $tournament->getTeams();
-            $teams_copy = Team::getTeamArrayByName($teams);
+            $teams_copy = Team::getTeamArrayById($teams);
 
             for ($i = 0; $i < sizeof($teams); $i++ ) {
-                $parent_team_name = $teams[$i]->getParentName();
-                if ($parent_team_name != null) {
-                    $tc = $teams_copy[$parent_team_name]->getTournamentCount();
-                    $teams_copy[$parent_team_name]->setTournamentCount($tc + $teams[$i]->getTournamentCount());
+                $parent_team_id = $teams[$i]->getParentId();
+                if ($parent_team_id != null) {
+                    $tc = $teams_copy[$parent_team_id]->getTournamentCount();
+                    $teams_copy[$parent_team_id]->setTournamentCount($tc + $teams[$i]->getTournamentCount());
                 }
             }
         }
