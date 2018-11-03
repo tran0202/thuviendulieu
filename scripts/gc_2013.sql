@@ -54,12 +54,12 @@ VALUES (232, 0, 965, 1, 130, '2013-07-07', '173000', 1, 41, 39),
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
-VALUES (29, 6, null, null, 246, 1, null, null, 130, '2013-07-20', '153000', 19, 43, 40, 19),
-	   (28, 1, null, null, 211, 0, null, null, 130, '2013-07-20', '183000', 20, 43, 40, 20),
-	   (198, 5, null, null, 236, 1, null, null, 130, '2013-07-21', '160000', 21, 43, 40, 21),
-	   (197, 1, null, null, 27, 0, null, null, 130, '2013-07-21', '190000', 22, 43, 40, 22),
-	   (198, 3, null, null, 197, 1, null, null, 130, '2013-07-24', '190000', 23, 44, 40, 23),
-	   (29, 2, null, null, 28, 1, null, null, 130, '2013-07-24', '220000', 24, 44, 40, 24),
+VALUES (29, 6, null, null, 246, 1, null, null, 130, '2013-07-20', '153000', 19, 43, 40, 20),
+	   (28, 1, null, null, 211, 0, null, null, 130, '2013-07-20', '183000', 20, 43, 40, 19),
+	   (198, 5, null, null, 236, 1, null, null, 130, '2013-07-21', '160000', 21, 43, 40, 22),
+	   (197, 1, null, null, 27, 0, null, null, 130, '2013-07-21', '190000', 22, 43, 40, 21),
+	   (198, 3, null, null, 197, 1, null, null, 130, '2013-07-24', '190000', 23, 44, 40, 24),
+	   (29, 2, null, null, 28, 1, null, null, 130, '2013-07-24', '220000', 24, 44, 40, 23),
 	   (198, 1, null, null, 29, 0, null, null, 130, '2013-07-28', '160000', 25, 46, 40, 25);
 
 CREATE TABLE IF NOT EXISTS tournament (

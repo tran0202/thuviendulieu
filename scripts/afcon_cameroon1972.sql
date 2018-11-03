@@ -21,36 +21,36 @@ INSERT INTO team (name, team_type_id, nation_id, parent_team_id)
 VALUES ('Mauritius', 1, 124, null);
 
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
-VALUES (194, 177, 1, 1),
+VALUES (1101, 177, 1, 1),
 	   (979, 177, 1, 2),
 	   (996, 177, 1, 3),
 	   (214, 177, 1, 4),
 	   (239, 177, 2, 1),
-	   (981, 177, 2, 2),
+	   (1102, 177, 2, 2),
 	   (9, 177, 2, 3),
 	   (989, 177, 2, 4);
 
 INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id)
-VALUES (194, 2, 996, 1, 177, '1972-02-23', '190000', 1, 41, 39),
+VALUES (1101, 2, 996, 1, 177, '1972-02-23', '190000', 1, 41, 39),
 	   (979, 3, 214, 3, 177, '1972-02-24', '190000', 2, 41, 39),
-	   (981, 1, 9, 1, 177, '1972-02-25', '190000', 3, 41, 39),
+	   (1102, 1, 9, 1, 177, '1972-02-25', '190000', 3, 41, 39),
 	   (239, 1, 989, 1, 177, '1972-02-25', '190000', 4, 41, 39),
 	   (979, 1, 996, 1, 177, '1972-02-26', '190000', 5, 41, 39),
-	   (194, 2, 214, 0, 177, '1972-02-26', '190000', 6, 41, 39),
+	   (1101, 2, 214, 0, 177, '1972-02-26', '190000', 6, 41, 39),
 	   (9, 1, 989, 1, 177, '1972-02-27', '190000', 7, 41, 39),
-	   (239, 2, 981, 0, 177, '1972-02-27', '190000', 8, 41, 39),
+	   (239, 2, 1102, 0, 177, '1972-02-27', '190000', 8, 41, 39),
 	   (214, 1, 996, 1, 177, '1972-02-28', '190000', 9, 41, 39),
-	   (194, 1, 979, 1, 177, '1972-02-28', '190000', 10, 41, 39),
+	   (1101, 1, 979, 1, 177, '1972-02-28', '190000', 10, 41, 39),
 	   (9, 1, 239, 1, 177, '1972-02-29', '190000', 11, 41, 39),
-	   (981, 4, 989, 2, 177, '1972-02-29', '190000', 12, 41, 39);
+	   (1102, 4, 989, 2, 177, '1972-02-29', '190000', 12, 41, 39);
 
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
-VALUES (194, 0, null, null, 981, 1, null, null, 177, '1972-03-02', '190000', 13, 44, 40, 13),
+VALUES (1101, 0, null, null, 1102, 1, null, null, 177, '1972-03-02', '190000', 13, 44, 40, 13),
 	   (239, 3, 0, null, 979, 3, 1, null, 177, '1972-03-02', '190000', 14, 44, 40, 14),
-	   (194, 5, null, null, 239, 2, null, null, 177, '1972-03-04', '190000', 15, 45, 40, 16),
-	   (981, 3, null, null, 979, 2, null, null, 177, '1972-03-05', '190000', 16, 46, 40, 15);
+	   (1101, 5, null, null, 239, 2, null, null, 177, '1972-03-04', '190000', 15, 45, 40, 16),
+	   (1102, 3, null, null, 979, 2, null, null, 177, '1972-03-05', '190000', 16, 46, 40, 15);
 
 # INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id, group_id)
 # VALUES (985, 1, 10, 1, 177, '1972-02-09', '190000', 13, 58, 39, 58),

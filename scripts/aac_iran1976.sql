@@ -24,25 +24,25 @@ INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
 VALUES (237, 195, 1, 1),
 	   (219, 195, 1, 2),
 	   (1023, 195, 1, 3),
-	   (14, 195, 2, 1),
-	   (235, 195, 2, 2),
+	   (1062, 195, 2, 1),
+	   (1065, 195, 2, 2),
 	   (1028, 195, 2, 3);
 
 INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id)
 VALUES (237, 2, 1023, 0, 195, '1976-06-03', '190000', 1, 41, 39),
-	   (14, 2, 235, 0, 195, '1976-06-04', '190000', 2, 41, 39),
+	   (1062, 2, 1065, 0, 195, '1976-06-04', '190000', 2, 41, 39),
 	   (219, 1, 1023, 1, 195, '1976-06-05', '190000', 3, 41, 39),
-	   (235, 1, 1028, 0, 195, '1976-06-06', '190000', 4, 41, 39),
+	   (1065, 1, 1028, 0, 195, '1976-06-06', '190000', 4, 41, 39),
 	   (237, 1, 219, 0, 195, '1976-06-07', '190000', 5, 41, 39),
-	   (14, 8, 1028, 0, 195, '1976-06-08', '190000', 6, 41, 39);
+	   (1062, 8, 1028, 0, 195, '1976-06-08', '190000', 6, 41, 39);
 
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
-VALUES (237, 2, 1, null, 235, 2, 0, null, 195, '1976-06-11', '190000', 7, 44, 40, 7),
-	   (14, 0, 2, null, 219, 0, 0, null, 195, '1976-06-11', '190000', 8, 44, 40, 8),
-	   (235, 0, null, null, 219, 1, null, null, 195, '1976-06-13', '190000', 9, 45, 40, 10),
-	   (14, 1, null, null, 237, 0, null, null, 195, '1976-06-13', '190000', 10, 46, 40, 9);
+VALUES (237, 2, 1, null, 1065, 2, 0, null, 195, '1976-06-11', '190000', 7, 44, 40, 7),
+	   (1062, 0, 2, null, 219, 0, 0, null, 195, '1976-06-11', '190000', 8, 44, 40, 8),
+	   (1065, 0, null, null, 219, 1, null, null, 195, '1976-06-13', '190000', 9, 45, 40, 10),
+	   (1062, 1, null, null, 237, 0, null, null, 195, '1976-06-13', '190000', 10, 46, 40, 9);
 
 CREATE TABLE IF NOT EXISTS tournament (
 	id INT AUTO_INCREMENT PRIMARY KEY,

@@ -23,16 +23,16 @@ VALUES ('Myanmar', 1, 132, null),
 
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
 VALUES (242, 198, 1, 1),
-	   (1035, 198, 1, 2),
+	   (1094, 198, 1, 2),
 	   (16, 198, 1, 3),
 	   (1021, 198, 1, 4);
 
 INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id)
-VALUES (242, 1, 1035, 0, 198, '1964-05-26', '190000', 1, 58, 39),
+VALUES (242, 1, 1094, 0, 198, '1964-05-26', '190000', 1, 58, 39),
 	   (16, 0, 1021, 2, 198, '1964-05-27', '190000', 2, 58, 39),
 	   (242, 2, 1021, 0, 198, '1964-05-29', '190000', 3, 58, 39),
-	   (16, 1, 1035, 0, 198, '1964-05-30', '190000', 4, 58, 39),
-	   (1021, 3, 1035, 1, 198, '1964-06-02', '190000', 5, 58, 39),
+	   (16, 1, 1094, 0, 198, '1964-05-30', '190000', 4, 58, 39),
+	   (1021, 3, 1094, 1, 198, '1964-06-02', '190000', 5, 58, 39),
 	   (16, 1, 242, 2, 198, '1964-06-03', '190000', 6, 58, 39);
 
 # INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,

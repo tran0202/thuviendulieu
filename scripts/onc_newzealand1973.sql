@@ -29,28 +29,28 @@ SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
 VALUES (208, 210, 1, 1),
-	   (1039, 210, 1, 2),
-	   (1038, 210, 1, 3),
+	   (1108, 210, 1, 2),
+	   (1109, 210, 1, 3),
 	   (1046, 210, 1, 4),
 	   (1042, 210, 1, 5);
 
 INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id)
-VALUES (1039, 2, 1038, 1, 210, '1973-02-17', '190000', 1, 41, 39),
+VALUES (1108, 2, 1109, 1, 210, '1973-02-17', '190000', 1, 41, 39),
 	   (208, 5, 1042, 1, 210, '1973-02-17', '190000', 2, 41, 39),
-	   (1038, 4, 1046, 1, 210, '1973-02-18', '190000', 3, 41, 39),
-	   (208, 1, 1039, 1, 210, '1973-02-18', '190000', 4, 41, 39),
-	   (1038, 2, 1042, 0, 210, '1973-02-20', '190000', 5, 41, 39),
-	   (1039, 0, 1046, 0, 210, '1973-02-20', '190000', 6, 41, 39),
+	   (1109, 4, 1046, 1, 210, '1973-02-18', '190000', 3, 41, 39),
+	   (208, 1, 1108, 1, 210, '1973-02-18', '190000', 4, 41, 39),
+	   (1109, 2, 1042, 0, 210, '1973-02-20', '190000', 5, 41, 39),
+	   (1108, 0, 1046, 0, 210, '1973-02-20', '190000', 6, 41, 39),
 	   (1046, 2, 1042, 1, 210, '1973-02-21', '190000', 7, 41, 39),
-	   (208, 2, 1038, 1, 210, '1973-02-21', '190000', 8, 41, 39),
-	   (1039, 4, 1042, 0, 210, '1973-02-23', '190000', 9, 41, 39),
+	   (208, 2, 1109, 1, 210, '1973-02-21', '190000', 8, 41, 39),
+	   (1108, 4, 1042, 0, 210, '1973-02-23', '190000', 9, 41, 39),
 	   (208, 3, 1046, 1, 210, '1973-02-23', '190000', 10, 41, 39);
 
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
-VALUES (1038, 2, null, null, 1046, 1, null, null, 210, '1973-02-24', '190000', 11, 45, 40, 12),
-	   (208, 2, null, null, 1039, 0, null, null, 210, '1973-02-24', '190000', 12, 46, 40, 11);
+VALUES (1109, 2, null, null, 1046, 1, null, null, 210, '1973-02-24', '190000', 11, 45, 40, 12),
+	   (208, 2, null, null, 1108, 0, null, null, 210, '1973-02-24', '190000', 12, 46, 40, 11);
 
 CREATE TABLE IF NOT EXISTS tournament (
 	id INT AUTO_INCREMENT PRIMARY KEY,

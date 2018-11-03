@@ -22,24 +22,24 @@ VALUES ('Congo-Léopoldville', 1, 47, 241);
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
 VALUES (12, 180, 1, 1),
 	   (11, 180, 1, 2),
-	   (987, 180, 1, 3),
-	   (195, 180, 2, 1),
+	   (1097, 180, 1, 3),
+	   (1100, 180, 2, 1),
 	   (196, 180, 2, 2),
 	   (1007, 180, 2, 3);
 
 INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id)
-VALUES (12, 4, 987, 0, 180, '1965-11-12', '190000', 1, 41, 39),
-	   (195, 5, 1007, 2, 180, '1965-11-12', '190000', 2, 41, 39),
+VALUES (12, 4, 1097, 0, 180, '1965-11-12', '190000', 1, 41, 39),
+	   (1100, 5, 1007, 2, 180, '1965-11-12', '190000', 2, 41, 39),
 	   (11, 0, 12, 0, 180, '1965-11-14', '190000', 3, 41, 39),
 	   (196, 3, 1007, 0, 180, '1965-11-14', '190000', 4, 41, 39),
-	   (11, 5, 987, 1, 180, '1965-11-19', '190000', 5, 41, 39),
-	   (195, 4, 196, 1, 180, '1965-11-19', '190000', 6, 41, 39);
+	   (11, 5, 1097, 1, 180, '1965-11-19', '190000', 5, 41, 39),
+	   (1100, 4, 196, 1, 180, '1965-11-19', '190000', 6, 41, 39);
 
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
 VALUES (11, 0, null, null, 196, 1, null, null, 180, '1965-11-21', '190000', 7, 45, 40, 8),
-	   (195, 2, 1, null, 12, 2, 0, null, 180, '1965-11-21', '190000', 8, 46, 40, 7);
+	   (1100, 2, 1, null, 12, 2, 0, null, 180, '1965-11-21', '190000', 8, 46, 40, 7);
 
 # INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id, group_id)
 # VALUES (985, 1, 10, 1, 180, '1965-11-09', '190000', 13, 58, 39, 58),

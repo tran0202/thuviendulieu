@@ -19,13 +19,13 @@ SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
 VALUES (1004, 183, 1, 1),
-	   (989, 183, 1, 2),
-	   (987, 183, 1, 3);
+	   (1098, 183, 1, 2),
+	   (1097, 183, 1, 3);
 
 INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id)
-VALUES (1004, 4, 987, 0, 183, '1959-05-22', '190000', 1, 58, 39),
-	   (989, 1, 987, 0, 183, '1959-05-25', '190000', 2, 58, 39),
-	   (1004, 2, 989, 1, 183, '1959-05-29', '190000', 3, 58, 39);
+VALUES (1004, 4, 1097, 0, 183, '1959-05-22', '190000', 1, 58, 39),
+	   (1098, 1, 1097, 0, 183, '1959-05-25', '190000', 2, 58, 39),
+	   (1004, 2, 1098, 1, 183, '1959-05-29', '190000', 3, 58, 39);
 
 # INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 # 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,

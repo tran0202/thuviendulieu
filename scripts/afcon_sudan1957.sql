@@ -19,9 +19,9 @@ SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 # VALUES ('Congo-Léopoldville', 1, 47, 241);
 
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
-VALUES (989, 184, 1, 1),
-	   (8, 184, 1, 2),
-	   (987, 184, 1, 3);
+VALUES (1098, 184, 1, 1),
+	   (1096, 184, 1, 2),
+	   (1097, 184, 1, 3);
 
 # INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id)
 # VALUES (195, 1, 12, 1, 182, '1962-01-24', '190000', 1, 41, 39),
@@ -34,8 +34,8 @@ VALUES (989, 184, 1, 1),
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
-VALUES (989, 1, null, null, 8, 2, null, null, 184, '1957-02-10', '190000', 1, 44, 40, 1),
-	   (8, 4, null, null, 987, 0, null, null, 184, '1957-02-15', '190000', 2, 46, 40, 2);
+VALUES (1098, 1, null, null, 1096, 2, null, null, 184, '1957-02-10', '190000', 1, 44, 40, 1),
+	   (1096, 4, null, null, 1097, 0, null, null, 184, '1957-02-15', '190000', 2, 46, 40, 2);
 
 # INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id, group_id)
 # VALUES (985, 1, 10, 1, 182, '1962-01-09', '190000', 13, 58, 39, 58),

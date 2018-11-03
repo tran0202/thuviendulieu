@@ -741,7 +741,7 @@ VALUES (811, 31, 1, 1),
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
 VALUES (835, 32, 1, 1),
 	   (836, 32, 1, 2),
-	   (837, 32, 1, 3),
+	   (1090, 32, 1, 3),
 	   (838, 32, 1, 4),
 	   (839, 32, 2, 1),
 	   (840, 32, 2, 2),

@@ -20,8 +20,8 @@ INSERT INTO team (name, team_type_id, nation_id)
 VALUES ('Afghanistan', 4, 1), ('Republic of Ireland', 4, 155);
 
 INSERT INTO team_tournament (team_id, tournament_id)
-VALUES (936, 56), (939, 56), (885, 56), (940, 56),
-	   (911, 56), (836, 56), (877, 56), (871, 56),
+VALUES (936, 56), (1077, 56), (885, 56), (940, 56),
+	   (911, 56), (836, 56), (1075, 56), (871, 56),
 	   (902, 56), (934, 56), (931, 56), (888, 56),
 	   (842, 56), (937, 56), (843, 56), (845, 56),
 	   (889, 56), (886, 56);
@@ -29,10 +29,10 @@ VALUES (936, 56), (939, 56), (885, 56), (940, 56),
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
-VALUES (936, 6, null, null, 939, 0, null, null, 56, '1948-07-26', '180000', 1, 60, 40, null),
+VALUES (936, 6, null, null, 1077, 0, null, null, 56, '1948-07-26', '180000', 1, 60, 40, null),
 	   (885, 3, null, null, 940, 1, null, null, 56, '1948-07-26', '180000', 2, 60, 40, null),
 	   (911, 6, null, null, 936, 1, null, null, 56, '1948-07-31', '183000', 3, 47, 40, 3),
-	   (836, 1, 2, null, 877, 1, 0, null, 56, '1948-07-31', '183000', 4, 47, 40, 9),
+	   (836, 1, 2, null, 1075, 1, 0, null, 56, '1948-07-31', '183000', 4, 47, 40, 9),
 	   (871, 3, 1, null, 885, 3, 0, null, 56, '1948-07-31', '183000', 5, 47, 40, 5),
 	   (902, 2, null, null, 934, 1, null, null, 56, '1948-07-31', '183000', 6, 47, 40, 6),
 	   (931, 4, null, null, 888, 0, null, null, 56, '1948-08-02', '183000', 7, 47, 40, 4),

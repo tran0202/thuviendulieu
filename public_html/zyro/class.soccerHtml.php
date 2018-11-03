@@ -22,6 +22,9 @@
         const WOMENS_RIO_2016 = 33;
         const SWEDEN_1995 = 38;
         const CHINA_1991 = 39;
+        const MUNICH_1972 = 50;
+        const ROMA_1960 = 53;
+        const BERLIN_1936 = 57;
         const ANTWERP_1920 = 60;
         const LONDON_1908 = 62;
         const LONDON_2012 = 63;
@@ -36,6 +39,8 @@
         const SWEDEN_1992 = 74;
         const WEST_GERMANY_1988 = 75;
         const FRANCE_1984 = 76;
+        const ITALY_1980 = 77;
+        const ITALY_1968 = 80;
         const USA_2016_CENTENARIO = 83;
         const CHILE_2015 = 84;
         const ARGENTINA_2011 = 85;
@@ -92,6 +97,9 @@
         const GABON_2017 = 152;
         const EQUATORIAL_GUINEA_2015 = 153;
         const ANGOLA_2010 = 156;
+        const SENEGAL_1992 = 167;
+        const MOROCCO_1988 = 169;
+        const GHANA_1978 = 174;
         const TUNISIA_1965 = 180;
         const GHANA_1963 = 181;
         const AUSTRALIA_2015 = 185;
@@ -389,7 +397,8 @@
                         && ($_team->getTournamentId() == self::ARGENTINA_1978 || $_team->getTournamentId() == self::GERMANY_1974))
                         $striped = 'advanced-third-place-striped';
                     if ($count == 2 && ($_team->getTournamentId() == self::SAUDI_ARABIA_1995 || $_team->getTournamentId() == self::GHANA_1963
-                        || $_team->getTournamentId() == self::TUNISIA_1965 || $_team->getTournamentId() == self::NEW_CALEDONIA_1980))
+                            || $_team->getTournamentId() == self::TUNISIA_1965 || $_team->getTournamentId() == self::NEW_CALEDONIA_1980
+                            || $_team->getTournamentId() == self::ITALY_1980 || $_team->getTournamentId() == self::MUNICH_1972))
                         $striped = 'advanced-third-place-striped';
                     if (($count == 3 || $count == 4) && ($_team->getTournamentId() == self::NEW_ZEALAND_1973))
                         $striped = 'advanced-third-place-striped';
@@ -456,7 +465,7 @@
             $tmp2 = ')</small></span>';
             if ($_team->getTournamentId() == self::SWITZERLAND_1954) {
                 if ($_team->getName() == 'BRAZIL' || $_team->getName() == 'URUGUAY')
-                    $note = $tmp1.'on drawing lots'.$tmp2;
+                    $note = $tmp1.'on drawing lot'.$tmp2;
                 elseif ($_team->getName() == 'WEST GERMANY' || $_team->getName() == 'SWITZERLAND')
                     $note = $tmp1.'by winning play-off'.$tmp2;
             }
@@ -476,15 +485,73 @@
             }
             elseif ($_team->getTournamentId() == self::MEXICO_1970) {
                 if ($_team->getName() == 'SOVIET UNION')
-                    $note = $tmp1.'on drawing lots'.$tmp2;
+                    $note = $tmp1.'on drawing lot'.$tmp2;
             }
             elseif ($_team->getTournamentId() == self::ITALY_1990) {
                 if ($_team->getName() == 'REPUBLIC OF IRELAND')
-                    $note = $tmp1.'on drawing lots'.$tmp2;
+                    $note = $tmp1.'on drawing lot'.$tmp2;
             }
             elseif ($_team->getTournamentId() == self::RUSSIA_2018) {
                 if ($_team->getName() == 'JAPAN')
                     $note = $tmp1.'on fair play points'.$tmp2;
+            }
+            elseif ($_team->getTournamentId() == self::ENGLAND_1996) {
+                if ($_team->getName() == 'CZECH REPUBLIC')
+                    $note = $tmp1.'on head-to-head match'.$tmp2;
+            }
+            elseif ($_team->getTournamentId() == self::BELGIUM_NETHERLANDS_2000) {
+                if ($_team->getName() == 'YUGOSLAVIA')
+                    $note = $tmp1.'on head-to-head match'.$tmp2;
+            }
+            elseif ($_team->getTournamentId() == self::PORTUGAL_2004) {
+                if ($_team->getName() == 'SWEDEN')
+                    $note = $tmp1.'on head-to-head goals. Sweden 3-3, Denmark 2-2, Italy 1-1. Tied on head-to-head points 2 and goal difference 0'.$tmp2;
+            }
+            elseif ($_team->getTournamentId() == self::AUSTRIA_SWITZERLAND_2008) {
+                if ($_team->getName() == 'PORTUGAL' || $_team->getName() == 'CZECH REPUBLIC')
+                    $note = $tmp1.'on head-to-head match'.$tmp2;
+            }
+            elseif ($_team->getTournamentId() == self::POLAND_UKRAINE_2012) {
+                if ($_team->getName() == 'GREECE')
+                    $note = $tmp1.'on head-to-head match'.$tmp2;
+            }
+            elseif ($_team->getTournamentId() == self::FRANCE_2016) {
+                if ($_team->getName() == 'ITALY')
+                    $note = $tmp1.'on head-to-head match'.$tmp2;
+            }
+            elseif ($_team->getTournamentId() == self::MOROCCO_1988) {
+                if ($_team->getName() == 'ALGERIA')
+                    $note = $tmp1.'on drawing lot'.$tmp2;
+            }
+            elseif ($_team->getTournamentId() == self::ANGOLA_2010) {
+                if ($_team->getName() == 'ALGERIA')
+                    $note = $tmp1.'on head-to-head match'.$tmp2;
+                elseif ($_team->getName() == 'TOGO') {
+                    $note = $tmp1.'disqualified'.$tmp2;
+                    $note = str_replace('ahead ', '', $note);
+                }
+                elseif ($_team->getName() == 'ZAMBIA')
+                    $note = $tmp1.'on head-to-head goals. Zambia 4-4, Cameroon 3-3, Gabon 2-2. Tied on head-to-head points 2 and goal difference 0'.$tmp2;
+            }
+            elseif ($_team->getTournamentId() == self::EQUATORIAL_GUINEA_2015) {
+                if ($_team->getName() == 'GUINEA')
+                    $note = $tmp1.'on drawing lot'.$tmp2;
+                elseif ($_team->getName() == 'GHANA')
+                    $note = $tmp1.'on head-to-head match'.$tmp2;
+            }
+            elseif ($_team->getTournamentId() == self::GOLD_CUP_2000) {
+                if ($_team->getName() == 'CANADA')
+                    $note = $tmp1.'on a coin toss'.$tmp2;
+            }
+            elseif ($_team->getTournamentId() == self::GOLD_CUP_2002) {
+                if ($_team->getName() == 'CANADA') {
+                    $note = $tmp1.'Canada and Haiti advanced on drawing lots'.$tmp2;
+                    $note = str_replace('ahead ', '', $note);
+                }
+            }
+            elseif ($_team->getTournamentId() == self::GOLD_CUP_2009) {
+                if ($_team->getName() == 'JAMAICA')
+                    $note = $tmp1.'on head-to-head match'.$tmp2;
             }
             return $note;
         }
@@ -924,7 +991,10 @@
             $away_team_color = '';
             if ($_match->getHomeTeamScore() != -1) {
                 $aet = ' aet';
-                if (self::isGoldenGoalRule($_match->getGoldenGoalRule()) && !Match::isFirstStage($_match) && $_match->getHomeTeamPenaltyScore() == '') $aet = ' gg';
+                if (self::isGoldenGoalRule($_match->getGoldenGoalRule()) && !Match::isFirstStage($_match) && $_match->getHomeTeamPenaltyScore() == '') {
+                    $aet = ' gg';
+                    if ($_match->getTournamentId() == self::PORTUGAL_2004) $aet = ' sg';
+                }
                 if ($_match->getTournamentId() == self::GOLD_CUP_1993 && $_match->getRound() == Soccer::THIRD_PLACE) $aet = ' aet';
                 $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
                 if ($_match->getHomeTeamScore() == $_match->getAwayTeamScore() &&
@@ -1047,8 +1117,66 @@
                 $home_team_code = '['.$_match->getWaitingHomeTeam().']';
                 $away_team_code = '['.$_match->getWaitingAwayTeam().']';
             }
+            $special_score = '';
+            $special_score2 = '';
+            if ($_match->getTournamentId() == self::ITALY_1968 && $_match->getHomeTeamName() == 'ITALY'
+                && $_match->getAwayTeamName() == 'SOVIET UNION') {
+                $special_score = 'Italy won on coin toss';
+                $special_score2 = ' <span class="small">ITA won coin toss</span>';
+            }
+            if ($_match->getTournamentId() == self::BERLIN_1936 && $_match->getHomeTeamName() == 'PERU'
+                && $_match->getAwayTeamName() == 'AUSTRIA') {
+                $special_score = 'Peru withdrew';
+                $special_score2 = ' <span class="small">PER withdrew</span>';
+            }
+            if ($_match->getTournamentId() == self::ROMA_1960 && $_match->getHomeTeamName() == 'ITALY'
+                && $_match->getAwayTeamName() == 'YUGOSLAVIA') {
+                $special_score = 'Italy won by drawing lot';
+                $special_score2 = ' <span class="small">ITA won lot</span>';
+            }
+            if ($_match->getTournamentId() == self::MUNICH_1972 && $_match->getHomeTeamName() == 'EAST GERMANY'
+                && $_match->getAwayTeamName() == 'SOVIET UNION') {
+                $special_score = 'Bronze medals shared';
+                $special_score2 = ' <span class="small"></span>';
+            }
+            if ($_match->getTournamentId() == self::PERU_1953 && $_match->getHomeTeamName() == 'PERU'
+                && $_match->getAwayTeamName() == 'PARAGUAY') {
+                $special_score = 'Match awarded to Peru because of unsportsmanlike behaviour of Paraguay. Score retained.';
+                $special_score2 = ' <span class="small"></span>';
+            }
+            if ($_match->getTournamentId() == self::PERU_1953 && $_match->getHomeTeamName() == 'CHILE'
+                && $_match->getAwayTeamName() == 'BOLIVIA') {
+                $special_score = 'Match awarded to Chile because of unsportsmanlike behaviour of Bolivia. Score retained.';
+                $special_score2 = ' <span class="small"></span>';
+            }
+            if ($_match->getTournamentId() == self::COPA_1975 && $_match->getHomeTeamName() == 'PERU'
+                && $_match->getAwayTeamName() == 'BRAZIL') {
+                $special_score = 'Peru advanced by drawing lot';
+                $special_score2 = '<br><span class="small">PER adv lot</span>';
+            }
+            if ($_match->getTournamentId() == self::COPA_1979 && $_match->getRound() == Soccer::FINAL_PLAYOFF) {
+                $special_score = 'Paraguay won on aggregate goals (3-1)';
+                $special_score2 = '<br><span class="small">PAR won agg (3-1)</span>';
+            }
+            if ($_match->getTournamentId() == self::GHANA_1978 && $_match->getRound() == Soccer::THIRD_PLACE) {
+                $special_score = 'Tied 1-1, Tunisia walked off to protest. Nigeria was awarded the 2-0 win.';
+                $special_score2 = '<br><span class="small">TUN walked off</span>';
+            }
+            if ($_match->getTournamentId() == self::SENEGAL_1992 && $_match->getRound() == Soccer::FINAL_) {
+                $special_score = 'This is the first in the final of a major international tournament that every player on the pitch took a penalty.';
+                $special_score2 = '<br><span class="small"></span>';
+            }
+            if ($_match->getTournamentId() == self::GOLD_CUP_1993 && $_match->getRound() == Soccer::THIRD_PLACE) {
+                $special_score = 'Costa Rica and Jamaica shared the third place.';
+                $special_score2 = ' <span class="small">shared third</span>';
+            }
+            if ($_match->getTournamentId() == self::GOLD_CUP_2017 && $_match->getHomeTeamName() == 'HONDURAS'
+                && $_match->getAwayTeamName() == 'FRENCH GUIANA') {
+                $special_score = 'Tied 0-0, Honduras was awarded a 3-0 win because of French Guiana\'s ineligible player.';
+                $special_score2 = ' <span class="small"></span>';
+            }
             if ($match_view == self::MATCH_VIEW_1) {
-                $output .= '<div class="col-sm-12 padding-tb-md border-bottom-gray5">
+                $output .= '<div class="col-sm-12 padding-tb-md">
                             <div class="row">
                                     <div class="col-sm-2">'.$match_time.' '.$time_zone.'<br>'.$group_text.'</div>
                                     <div class="col-sm-1 padding-lr-xs padding-top-xs text-right" style="padding-top:6px;">'.$home_flag.'</div>
@@ -1058,6 +1186,19 @@
                                     <div class="padding-lr-xs text-right" style="padding-top:6px;width:6%;max-width:6%;">'.$away_flag.'</div>
                             </div>
                             </div>';
+                if ($special_score != '') {
+                    $output .= '<div class="col-sm-12 padding-bottom-md border-bottom-gray5">
+                            <div class="row">
+                                        <div class="col-sm-4"></div>
+                                        <div class="col-sm-5 text-center">'.$special_score.'</div>
+                                        <div class="col-sm-3"></div>
+                            </div>
+                            </div>';
+                }
+                else {
+                    $output .= '<div class="col-sm-12 border-bottom-gray5">
+                                    </div>';
+                }
             }
             elseif ($match_view == self::MATCH_VIEW_2) {
                 $output .= '<div class="col-sm-12 h2-ff3 padding-tb-md border-bottom-gray5">
@@ -1125,7 +1266,7 @@
                             <div class="col-sm-12 box-sm bracket-box-height">
                             <div class="row no-margin-lr">
                                 <div class="col-sm-4 h4-ff3 margin-tb-sm text-center">'.$home_flag.$home_team_code.'</div>
-                                <div class="col-sm-4 h4-ff3 margin-tb-sm text-center">'.$score.$penalty_score.$replay_score.'</div>
+                                <div class="col-sm-4 h4-ff3 margin-tb-sm text-center">'.$score.$penalty_score.$replay_score.$special_score2.'</div>
                                 <div class="col-sm-4 h4-ff3 margin-tb-sm text-center">'.$away_flag.$away_team_code.'</div>
                             </div>
                             </div>';
@@ -1232,7 +1373,7 @@
             if ($all_time) {
                 if ($team->getParentName() == null) {
                     $count++;
-                    if (!self::isSameRanking($team, $previous_team) || !self::isSameBestFinish($team, $previous_team)) {
+                    if (!self::isSameRanking($team, $previous_team)) {
                         $ranking = $count;
                     }
                 }

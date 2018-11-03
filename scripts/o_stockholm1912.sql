@@ -22,30 +22,30 @@ INSERT INTO team (name, team_type_id, nation_id)
 VALUES ('Russia', 4, 157);
 
 INSERT INTO team_tournament (team_id, tournament_id)
-VALUES (889, 61), (919, 61), (937, 61), (844, 61),
+VALUES (1070, 61), (1067, 61), (1068, 61), (1069, 61),
 	   (885, 61), (842, 61), (944, 61), (871, 61),
-	   (904, 61), (836, 61), (912, 61);
+	   (1066, 61), (836, 61), (912, 61);
 
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
-VALUES (889, 2, 1, null, 919, 2, 0, null, 61, '1912-06-29', '120000', 1, 47, 40, 1),
-	   (937, 5, null, null, 844, 1, null, null, 61, '1912-06-29', '120000', 2, 47, 40, 2),
+VALUES (1070, 2, 1, null, 1067, 2, 0, null, 61, '1912-06-29', '120000', 1, 47, 40, 1),
+	   (1068, 5, null, null, 1069, 1, null, null, 61, '1912-06-29', '120000', 2, 47, 40, 2),
 	   (885, 3, 1, null, 842, 3, 0, null, 61, '1912-06-29', '120000', 3, 47, 40, 3),
-	   (919, 2, null, null, 944, 1, null, null, 61, '1912-06-30', '120000', 4, 43, 40, 5),
-	   (871, 7, null, null, 904, 0, null, null, 61, '1912-06-30', '120000', 5, 43, 40, 4),
+	   (1067, 2, null, null, 944, 1, null, null, 61, '1912-06-30', '120000', 4, 43, 40, 5),
+	   (871, 7, null, null, 1066, 0, null, null, 61, '1912-06-30', '120000', 5, 43, 40, 4),
 	   (836, 7, null, null, 912, 0, null, null, 61, '1912-06-30', '120000', 6, 43, 40, 6),
-	   (885, 3, null, null, 937, 1, null, null, 61, '1912-06-30', '120000', 7, 43, 40, 7),
-	   (871, 4, null, null, 919, 0, null, null, 61, '1912-07-02', '120000', 8, 44, 40, 8),
+	   (885, 3, null, null, 1068, 1, null, null, 61, '1912-06-30', '120000', 7, 43, 40, 7),
+	   (871, 4, null, null, 1067, 0, null, null, 61, '1912-07-02', '120000', 8, 44, 40, 8),
 	   (836, 4, null, null, 885, 1, null, null, 61, '1912-07-02', '120000', 9, 44, 40, 9),
-	   (885, 9, null, null, 919, 0, null, null, 61, '1912-07-04', '120000', 10, 132, 40, 11),
+	   (885, 9, null, null, 1067, 0, null, null, 61, '1912-07-04', '120000', 10, 132, 40, 11),
 	   (871, 4, null, null, 836, 2, null, null, 61, '1912-07-04', '120000', 11, 133, 40, 10),
-	   (919, 1, null, null, 912, 0, null, null, 61, '1912-07-01', '120000', 12, 134, 40, null),
-	   (844, 16, null, null, 944, 0, null, null, 61, '1912-07-01', '120000', 13, 134, 40, null),
-	   (889, 1, null, null, 842, 0, null, null, 61, '1912-07-01', '120000', 14, 134, 138, null),
-	   (904, 3, null, null, 844, 1, null, null, 61, '1912-07-03', '120000', 15, 139, 138, null),
-	   (919, 5, null, null, 889, 1, null, null, 61, '1912-07-03', '120000', 16, 139, 138, null),
-	   (904, 3, null, null, 919, 0, null, null, 61, '1912-07-05', '120000', 17, 140, 138, null);
+	   (1068, 1, null, null, 912, 0, null, null, 61, '1912-07-01', '120000', 12, 134, 40, null),
+	   (1069, 16, null, null, 944, 0, null, null, 61, '1912-07-01', '120000', 13, 134, 40, null),
+	   (1070, 1, null, null, 842, 0, null, null, 61, '1912-07-01', '120000', 14, 134, 138, null),
+	   (1066, 3, null, null, 1069, 1, null, null, 61, '1912-07-03', '120000', 15, 139, 138, null),
+	   (1068, 5, null, null, 1070, 1, null, null, 61, '1912-07-03', '120000', 16, 139, 138, null),
+	   (1066, 3, null, null, 1068, 0, null, null, 61, '1912-07-05', '120000', 17, 140, 138, null);
 
 CREATE TABLE IF NOT EXISTS tournament (
 	id INT AUTO_INCREMENT PRIMARY KEY,

@@ -4,7 +4,7 @@
 # 2003 Gold Cup United States-Mexico
 
 INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_filename, golden_goal_rule, points_for_win)
-VALUES ('2003 Gold Cup United States-Mexico', '2003-07-12', '2003-07-27', 13, 'gc_2003.png', null, null);
+VALUES ('2003 Gold Cup United States-Mexico', '2003-07-12', '2003-07-27', 13, 'gc_2003.png', 1, null);
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (135, 41, 1, 39, 1),

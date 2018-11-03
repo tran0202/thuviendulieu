@@ -21,7 +21,7 @@ INSERT INTO team (name, team_type_id, nation_id, parent_team_id)
 VALUES ('Congo-Brazzaville', 1, 46, 981);
 
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
-VALUES (987, 179, 1, 1),
+VALUES (1097, 179, 1, 1),
 	   (196, 179, 1, 2),
 	   (193, 179, 1, 3),
 	   (980, 179, 1, 4),
@@ -31,25 +31,25 @@ VALUES (987, 179, 1, 1),
 	   (1006, 179, 2, 4);
 
 INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id)
-VALUES (987, 2, 980, 1, 179, '1968-01-12', '190000', 1, 41, 39),
+VALUES (1097, 2, 980, 1, 179, '1968-01-12', '190000', 1, 41, 39),
 	   (196, 3, 193, 0, 179, '1968-01-12', '190000', 2, 41, 39),
 	   (195, 2, 11, 2, 179, '1968-01-12', '190000', 3, 41, 39),
 	   (1005, 3, 1006, 0, 179, '1968-01-12', '190000', 4, 41, 39),
-	   (987, 1, 196, 0, 179, '1968-01-14', '190000', 5, 41, 39),
+	   (1097, 1, 196, 0, 179, '1968-01-14', '190000', 5, 41, 39),
 	   (193, 4, 980, 0, 179, '1968-01-14', '190000', 6, 41, 39),
 	   (11, 2, 1006, 1, 179, '1968-01-14', '190000', 7, 41, 39),
 	   (195, 2, 1005, 1, 179, '1968-01-14', '190000', 8, 41, 39),
 	   (196, 2, 980, 1, 179, '1968-01-16', '190000', 9, 41, 39),
-	   (987, 3, 193, 1, 179, '1968-01-16', '190000', 10, 41, 39),
+	   (1097, 3, 193, 1, 179, '1968-01-16', '190000', 10, 41, 39),
 	   (1005, 2, 11, 1, 179, '1968-01-16', '190000', 11, 41, 39),
 	   (195, 3, 1006, 1, 179, '1968-01-16', '190000', 12, 41, 39);
 
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
-VALUES (987, 2, 0, null, 1005, 2, 1, null, 179, '1968-01-19', '190000', 13, 44, 40, 13),
+VALUES (1097, 2, 0, null, 1005, 2, 1, null, 179, '1968-01-19', '190000', 13, 44, 40, 13),
 	   (195, 3, 1, null, 196, 3, 0, null, 179, '1968-01-19', '190000', 14, 44, 40, 14),
-	   (196, 1, null, null, 987, 0, null, null, 179, '1968-01-21', '190000', 15, 45, 40, 16),
+	   (196, 1, null, null, 1097, 0, null, null, 179, '1968-01-21', '190000', 15, 45, 40, 16),
 	   (1005, 1, null, null, 195, 0, null, null, 179, '1968-01-21', '190000', 16, 46, 40, 15);
 
 # INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id, group_id)

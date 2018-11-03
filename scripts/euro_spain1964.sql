@@ -17,7 +17,7 @@ SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 # VALUES ('CIS', 1, 228, 23);
 
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
-VALUES (6, 81, 1, 1),
+VALUES (1054, 81, 1, 1),
 	   (233, 81, 1, 2),
 	   (19, 81, 1, 3),
 	   (228, 81, 1, 4);
@@ -25,10 +25,10 @@ VALUES (6, 81, 1, 1),
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
-VALUES (6, 1, 1, null, 233, 1, 0, null, 81, '1964-06-17', '200000', 1, 44, 40, 1),
+VALUES (1054, 1, 1, null, 233, 1, 0, null, 81, '1964-06-17', '200000', 1, 44, 40, 1),
 	   (19, 0, null, null, 228, 3, null, null, 81, '1964-06-17', '223000', 2, 44, 40, 2),
 	   (233, 1, 2, null, 19, 1, 0, null, 81, '1964-06-20', '200000', 3, 45, 40, 4),
-	   (6, 2, null, null, 228, 1, null, null, 81, '1964-06-21', '183000', 4, 46, 40, 3);
+	   (1054, 2, null, null, 228, 1, null, null, 81, '1964-06-21', '183000', 4, 46, 40, 3);
 
 CREATE TABLE IF NOT EXISTS tournament (
 	id INT AUTO_INCREMENT PRIMARY KEY,

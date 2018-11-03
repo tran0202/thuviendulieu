@@ -965,6 +965,7 @@
             if ($match->getRound() == self::BRONZE_MEDAL_MATCH) {
                 $team->setBestFinish(self::Semifinal);
                 if ($team->getName() == 'SWEDEN' && $match->getTournamentId() == SoccerHtml::LONDON_1908) $team->setBestFinish(self::Quarterfinal);
+                if ($team->getName() == 'EAST GERMANY' && $match->getTournamentId() == SoccerHtml::MUNICH_1972) $team->setBestFinish(self::BronzeMedal);
             }
             if ($match->getRound() == self::REPLAY_BRONZE_MEDAL_MATCH) {
                 $team->setBestFinish(self::Semifinal);

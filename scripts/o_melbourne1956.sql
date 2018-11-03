@@ -19,24 +19,24 @@ INSERT INTO team (name, team_type_id, nation_id)
 VALUES ('Indonesia', 4, 92);
 
 INSERT INTO team_tournament (team_id, tournament_id)
-VALUES (910, 54), (844, 54), (871, 54), (929, 54),
+VALUES (910, 54), (1081, 54), (871, 54), (929, 54),
 	   (883, 54), (841, 54), (911, 54), (886, 54),
-	   (935, 54), (928, 54), (934, 54);
+	   (935, 54), (1080, 54), (934, 54);
 
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
-VALUES (910, 2, null, null, 844, 1, null, null, 54, '1956-11-24', '120000', 1, 47, 40, 6),
+VALUES (910, 2, null, null, 1081, 1, null, null, 54, '1956-11-24', '120000', 1, 47, 40, 6),
 	   (871, 9, null, null, 929, 0, null, null, 54, '1956-11-26', '120000', 2, 47, 40, 8),
 	   (883, 2, null, null, 841, 0, null, null, 54, '1956-11-27', '120000', 3, 47, 40, 3),
 	   (911, 9, null, null, 886, 1, null, null, 54, '1956-11-28', '120000', 4, 43, 40, 9),
-	   (910, 0, null, null, 935, 0, null, null, 54, '1956-11-29', '140000', 5, 43, 40, 11),
-	   (928, 6, null, null, 871, 1, null, null, 54, '1956-11-30', '120000', 6, 43, 40, 12),
+	   (910, 0, 0, null, 935, 0, 0, null, 54, '1956-11-29', '140000', 5, 43, 40, 11),
+	   (1080, 6, null, null, 871, 1, null, null, 54, '1956-11-30', '120000', 6, 43, 40, 12),
 	   (883, 2, null, null, 934, 4, null, null, 54, '1956-12-01', '120000', 7, 43, 40, 10),
 	   (910, 4, null, null, 935, 0, null, null, 54, '1956-12-01', '120000', 8, 62, 40, null),
 	   (911, 4, null, null, 934, 1, null, null, 54, '1956-12-04', '120000', 9, 44, 40, 13),
-	   (910, 0, 2, null, 928, 0, 1, null, 54, '1956-12-05', '120000', 10, 44, 40, 14),
-	   (928, 3, null, null, 934, 0, null, null, 54, '1956-12-07', '141500', 11, 132, 40, 16),
+	   (910, 0, 2, null, 1080, 0, 1, null, 54, '1956-12-05', '120000', 10, 44, 40, 14),
+	   (1080, 3, null, null, 934, 0, null, null, 54, '1956-12-07', '141500', 11, 132, 40, 16),
 	   (910, 1, null, null, 911, 0, null, null, 54, '1956-12-08', '141500', 12, 133, 40, 15);
 
 CREATE TABLE IF NOT EXISTS tournament (

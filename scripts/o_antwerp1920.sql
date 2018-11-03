@@ -21,30 +21,30 @@ INSERT INTO team (name, team_type_id, nation_id)
 VALUES ('Lithuania', 4, 114), ('Estonia', 4, 66), ('Latvia', 4, 108);
 
 INSERT INTO team_tournament (team_id, tournament_id)
-VALUES (902, 60), (887, 60), (916, 60), (911, 60), (881, 60), (836, 60),
-	   (889, 60), (877, 60), (912, 60), (871, 60),
+VALUES (902, 60), (887, 60), (916, 60), (1071, 60), (1072, 60), (836, 60),
+	   (1070, 60), (1073, 60), (912, 60), (871, 60),
 	   (885, 60), (936, 60), (842, 60), (892, 60);
 
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
-VALUES (916, 7, null, null, 911, 0, null, null, 60, '1920-08-28', '100000', 1, 47, 40, 1),
-	   (881, 1, null, null, 836, 0, null, null, 60, '1920-08-28', '153000', 2, 47, 40, 4),
-	   (889, 2, null, null, 877, 1, null, null, 60, '1920-08-28', '100000', 3, 47, 40, 3),
+VALUES (916, 7, null, null, 1071, 0, null, null, 60, '1920-08-28', '100000', 1, 47, 40, 1),
+	   (1072, 1, null, null, 836, 0, null, null, 60, '1920-08-28', '153000', 2, 47, 40, 4),
+	   (1070, 2, null, null, 1073, 1, null, null, 60, '1920-08-28', '100000', 3, 47, 40, 3),
 	   (912, 3, null, null, 871, 1, null, null, 60, '1920-08-28', '153000', 4, 47, 40, 2),
 	   (885, 3, null, null, 936, 0, null, null, 60, '1920-08-28', '173000', 5, 47, 40, 5),
 	   (842, 9, null, null, 892, 0, null, null, 60, '1920-08-28', '173000', 6, 47, 40, 6),
 	   (885, 4, 1, null, 842, 4, 0, null, 60, '1920-08-29', '100000', 7, 43, 40, 10),
 	   (916, 4, null, null, 912, 0, null, null, 60, '1920-08-29', '163000', 8, 43, 40, 7),
-	   (902, 3, null, null, 889, 1, null, null, 60, '1920-08-29', '150000', 9, 43, 40, 8),
-	   (887, 3, null, null, 881, 1, null, null, 60, '1920-08-29', '170000', 10, 43, 40, 9),
+	   (902, 3, null, null, 1070, 1, null, null, 60, '1920-08-29', '150000', 9, 43, 40, 8),
+	   (887, 3, null, null, 1072, 1, null, null, 60, '1920-08-29', '170000', 10, 43, 40, 9),
 	   (916, 4, null, null, 902, 1, null, null, 60, '1920-08-31', '153500', 11, 44, 40, 11),
 	   (887, 3, null, null, 885, 0, null, null, 60, '1920-08-31', '172500', 12, 44, 40, 12),
 	   (887, 2, null, null, 916, 0, null, null, 60, '1920-09-02', '173000', 13, 133, 40, 13),
-	   (889, 1, 1, null, 912, 1, 0, null, 60, '1920-08-31', '100000', 14, 134, 138, null),
-	   (881, 2, null, null, 842, 1, null, null, 60, '1920-09-01', '120000', 15, 134, 138, null),
-	   (881, 2, null, null, 889, 0, null, null, 60, '1920-09-02', '120000', 16, 139, 138, null),
-	   (881, 3, null, null, 885, 1, null, null, 60, '1920-09-05', '150000', 17, 140, 138, null);
+	   (1070, 1, 1, null, 912, 1, 0, null, 60, '1920-08-31', '100000', 14, 134, 138, null),
+	   (1072, 2, null, null, 842, 1, null, null, 60, '1920-09-01', '120000', 15, 134, 138, null),
+	   (1072, 2, null, null, 1070, 0, null, null, 60, '1920-09-02', '120000', 16, 139, 138, null),
+	   (1072, 3, null, null, 885, 1, null, null, 60, '1920-09-05', '150000', 17, 140, 138, null);
 
 CREATE TABLE IF NOT EXISTS tournament (
 	id INT AUTO_INCREMENT PRIMARY KEY,

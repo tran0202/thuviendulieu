@@ -20,26 +20,26 @@ INSERT INTO team (name, team_type_id, nation_id, parent_team_id)
 VALUES ('Congo-Léopoldville', 1, 47, 241);
 
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
-VALUES (195, 181, 1, 1),
-	   (987, 181, 1, 2),
+VALUES (1100, 181, 1, 1),
+	   (1097, 181, 1, 2),
 	   (12, 181, 1, 3),
-	   (989, 181, 2, 1),
+	   (1098, 181, 2, 1),
 	   (1004, 181, 2, 2),
 	   (10, 181, 2, 3);
 
 INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id)
-VALUES (195, 1, 12, 1, 181, '1963-11-24', '190000', 1, 41, 39),
+VALUES (1100, 1, 12, 1, 181, '1963-11-24', '190000', 1, 41, 39),
 	   (1004, 6, 10, 3, 181, '1963-11-24', '190000', 2, 41, 39),
-	   (195, 2, 987, 0, 181, '1963-11-26', '190000', 3, 41, 39),
-	   (1004, 2, 989, 2, 181, '1963-11-26', '190000', 4, 41, 39),
-	   (987, 4, 12, 2, 181, '1963-11-28', '190000', 5, 41, 39),
-	   (989, 4, 10, 0, 181, '1963-11-28', '190000', 6, 41, 39);
+	   (1100, 2, 1097, 0, 181, '1963-11-26', '190000', 3, 41, 39),
+	   (1004, 2, 1098, 2, 181, '1963-11-26', '190000', 4, 41, 39),
+	   (1097, 4, 12, 2, 181, '1963-11-28', '190000', 5, 41, 39),
+	   (1098, 4, 10, 0, 181, '1963-11-28', '190000', 6, 41, 39);
 
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
-VALUES (1004, 3, null, null, 987, 0, null, null, 181, '1963-11-30', '190000', 7, 45, 40, 8),
-	   (195, 3, null, null, 989, 0, null, null, 181, '1963-12-01', '190000', 8, 46, 40, 7);
+VALUES (1004, 3, null, null, 1097, 0, null, null, 181, '1963-11-30', '190000', 7, 45, 40, 8),
+	   (1100, 3, null, null, 1098, 0, null, null, 181, '1963-12-01', '190000', 8, 46, 40, 7);
 
 # INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id, group_id)
 # VALUES (985, 1, 10, 1, 181, '1963-11-09', '190000', 13, 58, 39, 58),

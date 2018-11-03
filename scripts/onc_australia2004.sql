@@ -44,7 +44,7 @@ INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, 
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
 VALUES (1041, 1, null, null, 13, 5, null, null, 204, '2004-10-09', '190000', 16, 154, 40, 16),
-	   (13, 6, null, null, 1041, 01, null, null, 204, '2004-10-12', '190000', 17, 154, 40, 17);
+	   (13, 6, null, null, 1041, 0, null, null, 204, '2004-10-12', '190000', 17, 154, 40, 17);
 
 CREATE TABLE IF NOT EXISTS tournament (
 	id INT AUTO_INCREMENT PRIMARY KEY,

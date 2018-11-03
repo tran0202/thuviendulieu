@@ -25,33 +25,33 @@ INSERT INTO team (name, team_type_id, nation_id, parent_team_id)
 VALUES ('Khmer Republic', 1, 34, 1029);
 
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)
-VALUES (14, 196, 1, 1),
+VALUES (1062, 196, 1, 1),
 	   (1022, 196, 1, 2),
-	   (235, 196, 1, 3),
+	   (1065, 196, 1, 3),
 	   (16, 196, 2, 1),
 	   (1030, 196, 2, 2),
 	   (237, 196, 2, 3);
 
 INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id)
-VALUES (16, 0, 235, 0, 196, '1972-05-07', '190000', 1, 60, 39),
-	   (14, 2, 1030, 0, 196, '1972-05-07', '190000', 2, 60, 39),
+VALUES (16, 0, 1065, 0, 196, '1972-05-07', '190000', 1, 60, 39),
+	   (1062, 2, 1030, 0, 196, '1972-05-07', '190000', 2, 60, 39),
 	   (1022, 0, 237, 2, 196, '1972-05-08', '190000', 3, 60, 39);
 
 INSERT INTO `match` (home_team_id, home_team_score, away_team_id, away_team_score, tournament_id, match_date, match_time, match_order, round_id, stage_id)
-VALUES (14, 3, 235, 0, 196, '1972-05-09', '190000', 4, 41, 39),
+VALUES (1062, 3, 1065, 0, 196, '1972-05-09', '190000', 4, 41, 39),
 	   (16, 4, 1030, 1, 196, '1972-05-10', '190000', 5, 41, 39),
-	   (1022, 1, 235, 1, 196, '1972-05-11', '190000', 6, 41, 39),
+	   (1022, 1, 1065, 1, 196, '1972-05-11', '190000', 6, 41, 39),
 	   (16, 1, 237, 2, 196, '1972-05-12', '190000', 7, 41, 39),
-	   (1022, 2, 14, 3, 196, '1972-05-13', '190000', 8, 41, 39),
+	   (1022, 2, 1062, 3, 196, '1972-05-13', '190000', 8, 41, 39),
 	   (1030, 4, 237, 0, 196, '1972-05-14', '190000', 9, 41, 39);
 
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
-VALUES (14, 2, null, null, 1030, 1, null, null, 196, '1972-05-16', '190000', 10, 44, 40, 7),
+VALUES (1062, 2, null, null, 1030, 1, null, null, 196, '1972-05-16', '190000', 10, 44, 40, 7),
 	   (16, 0, 1, 2, 1022, 0, 1, 1, 196, '1972-05-17', '190000', 11, 44, 40, 8),
 	   (1030, 2, 0, 3, 1022, 2, 0, 5, 196, '1972-05-19', '190000', 12, 45, 40, 10),
-	   (14, 1, 1, null, 16, 1, 0, null, 196, '1972-05-19', '190000', 13, 46, 40, 9);
+	   (1062, 1, 1, null, 16, 1, 0, null, 196, '1972-05-19', '190000', 13, 46, 40, 9);
 
 CREATE TABLE IF NOT EXISTS tournament (
 	id INT AUTO_INCREMENT PRIMARY KEY,

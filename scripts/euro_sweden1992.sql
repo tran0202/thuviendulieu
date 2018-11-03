@@ -3,8 +3,8 @@
 
 # Euro 1992 Sweden
 
-INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_filename, golden_goal_rule)
-VALUES ('UEFA Euro 1992 Sweden', '1992-06-10', '1992-06-26', 11, 'Euro_1992.png', null);
+INSERT INTO tournament (name, start_date, end_date, tournament_type_id, logo_filename, golden_goal_rule, points_for_win)
+VALUES ('UEFA Euro 1992 Sweden', '1992-06-10', '1992-06-26', 11, 'Euro_1992.png', null, 2);
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (74, 41, 1, 39, 1),
