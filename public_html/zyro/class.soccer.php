@@ -78,7 +78,7 @@
         }
 
         public static function getStanding($tournament) {
-            $matches = Match::getFinalGroupMatches($tournament->getMatches());
+            $matches = Match::getCompletedGroupMatches($tournament->getMatches());
             $team_array = Team::getTeamArrayByName($tournament->getTeams());
             $tmp_array = array();
             $result = array();
@@ -348,14 +348,14 @@
             Soccer::getReplayFirstRoundMatchesRanking($tournament);
             Soccer::getRound16MatchesRanking($tournament);
             Soccer::getReplayQuarterfinalMatchesRanking($tournament);
-            if ($tournament->getTournamentId() == 61) {
+            if ($tournament->getTournamentId() == SoccerHtml::STOCKHOLM_1912) {
                 Soccer::getConsolationFinalMatchRanking($tournament);
             };
             Soccer::getQuarterfinalMatchesRanking($tournament);
             Soccer::getSemifinalMatchesRanking($tournament);
             Soccer::getConsolationMatchesRanking($tournament);
             Soccer::getConsolationSemifinalMatchesRanking($tournament);
-            if ($tournament->getTournamentId() != 61) {
+            if ($tournament->getTournamentId() != SoccerHtml::STOCKHOLM_1912) {
                 Soccer::getConsolationFinalMatchRanking($tournament);
             };
             Soccer::getFifthPlaceMatchRanking($tournament);
@@ -868,7 +868,7 @@
             }
             if (array_key_exists(self::Semifinal, $teams_tmp)) {
                 foreach ($teams_tmp[self::Semifinal] as $name => $_team) {
-                    if ($name == 'USA' && $tournament->getTournamentId() == 24) {
+                    if ($name == 'USA' && $tournament->getTournamentId() == SoccerHtml::URUGUAY_1930) {
                         $_team->setBestFinish(self::ThirdPlace);
                     }
                     if ($name == 'GERMANY DR') {
@@ -1145,7 +1145,7 @@
         }
 
         public static function fairPlayRule(&$t1, &$t2) {
-            if ($t2->getName() == 'JAPAN' && $t2->getTournamentId() == 1) {
+            if ($t2->getName() == 'JAPAN' && $t2->getTournamentId() == SoccerHtml::RUSSIA_2018) {
                self::swapTeam($t1, $t2);
                return false;
             }
@@ -1154,11 +1154,11 @@
 
         public static function drawingLots(&$t1, &$t2) {
             $still_tie = true;
-            if ($t2->getName() == 'REPUBLIC OF IRELAND' && $t2->getTournamentId() == 11) {
+            if ($t2->getName() == 'REPUBLIC OF IRELAND' && $t2->getTournamentId() == SoccerHtml::ITALY_1990) {
                 self::swapTeam($t1, $t2);
                 $still_tie = false;
             }
-            elseif ($t2->getName() == 'NETHERLANDS' && $t2->getTournamentId() == 11) {
+            elseif ($t2->getName() == 'NETHERLANDS' && $t2->getTournamentId() == SoccerHtml::ITALY_1990) {
                 $still_tie = false;
             }
             return $still_tie;

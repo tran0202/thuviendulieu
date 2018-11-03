@@ -40,3 +40,8 @@ SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 SELECT * FROM `team_tournament` WHERE tournament_id = 1;
 
 SELECT * FROM `match` WHERE tournament_id = 1;
+
+SELECT * FROM `team`
+WHERE nation_id IS NOT null
+AND (team_type_id = 1 OR team_type_id = 3 OR team_type_id = 4 OR team_type_id = 5)
+ORDER BY nation_id;

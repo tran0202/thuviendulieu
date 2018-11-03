@@ -121,7 +121,8 @@
                 $flag_filename, $logo_filename, $tournament_id, $tournament_name, $tournament_count, $confederation_name, $confederation_logo_filename) {
             return self::CreateTeam($id, $name, $l_name, $code, $group_name, $group_order,
                 $parent_id, $parent_name, $parent_group_name, $parent_group_long_name, $parent_group_order, $flag_filename, $logo_filename,
-                $tournament_id, $tournament_name, $tournament_count, $confederation_name, $confederation_logo_filename, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                $tournament_id, $tournament_name, $tournament_count, $confederation_name, $confederation_logo_filename,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, array(), array(), array(),
                 0, 0, 0, 0, null, null);
         }
@@ -130,7 +131,8 @@
                                              $match_play, $win, $draw, $loss, $goal_for, $goal_against, $goal_diff, $point) {
             return self::CreateTeam($id, $name, '', $code, $group_name, $group_order,
                 0, '', '', '', 0, '', '',
-                0, '', 0, '', '', $match_play, $win, $draw, $loss, 0, 0, 0, 0, 0, 0,
+                0, '', 0, '', '',
+                $match_play, $win, $draw, $loss, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, array(), array(), array(),
                 $goal_for, $goal_against, $goal_diff, $point, null, null);
         }
@@ -141,7 +143,8 @@
         {
             return self::CreateTeam($id, $name, '', '', $group_name, $group_order,
                 0, '', $parent_group_name, $parent_group_long_name, $parent_group_order, '', $logo_filename,
-                0, '', 0, '', '',0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, '', 0, '', '',
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, array(), array(), array(),
                 0, 0, 0, 0, null, null);
         }
@@ -710,7 +713,7 @@
         }
 
         /**
-         * @return string
+         * @return mixed
          */
         public function getLogoFilename()
         {
@@ -718,11 +721,59 @@
         }
 
         /**
-         * @param string $logo_filename
+         * @param mixed $logo_filename
          */
         public function setLogoFilename($logo_filename)
         {
             $this->logo_filename = $logo_filename;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getTournamentId()
+        {
+            return $this->tournament_id;
+        }
+
+        /**
+         * @param mixed $tournament_id
+         */
+        public function setTournamentId($tournament_id)
+        {
+            $this->tournament_id = $tournament_id;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getTournamentName()
+        {
+            return $this->tournament_name;
+        }
+
+        /**
+         * @param mixed $tournament_name
+         */
+        public function setTournamentName($tournament_name)
+        {
+            $this->tournament_name = $tournament_name;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getTournamentCount()
+        {
+            return $this->tournament_count;
+        }
+
+        /**
+         * @param mixed $tournament_count
+         */
+        public function setTournamentCount($tournament_count)
+        {
+            $this->tournament_count = $tournament_count;
         }
 
         /**
@@ -755,22 +806,6 @@
         public function setConfederationLogoFilename($confederation_logo_filename)
         {
             $this->confederation_logo_filename = $confederation_logo_filename;
-        }
-
-        /**
-         * @return mixed
-         */
-        public function getBestFinish()
-        {
-            return $this->best_finish;
-        }
-
-        /**
-         * @param mixed $best_finish
-         */
-        public function setBestFinish($best_finish)
-        {
-            $this->best_finish = $best_finish;
         }
 
         /**
@@ -1192,49 +1227,17 @@
         /**
          * @return mixed
          */
-        public function getTournamentId()
+        public function getBestFinish()
         {
-            return $this->tournament_id;
+            return $this->best_finish;
         }
 
         /**
-         * @param mixed $tournament_id
+         * @param mixed $best_finish
          */
-        public function setTournamentId($tournament_id)
+        public function setBestFinish($best_finish)
         {
-            $this->tournament_id = $tournament_id;
-        }
-
-        /**
-         * @return mixed
-         */
-        public function getTournamentName()
-        {
-            return $this->tournament_name;
-        }
-
-        /**
-         * @param mixed $tournament_name
-         */
-        public function setTournamentName($tournament_name)
-        {
-            $this->tournament_name = $tournament_name;
-        }
-
-        /**
-         * @return mixed
-         */
-        public function getTournamentCount()
-        {
-            return $this->tournament_count;
-        }
-
-        /**
-         * @param mixed $tournament_count
-         */
-        public function setTournamentCount($tournament_count)
-        {
-            $this->tournament_count = $tournament_count;
+            $this->best_finish = $best_finish;
         }
 
         /**

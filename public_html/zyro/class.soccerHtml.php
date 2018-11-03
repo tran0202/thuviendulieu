@@ -16,6 +16,7 @@
         const CHILE_1962 = 18;
         const SWEDEN_1958 = 19;
         const SWITZERLAND_1954 = 20;
+        const ITALY_1934 = 23;
         const URUGUAY_1930 = 24;
         const CANADA_2015 = 31;
         const MENS_RIO_2016 = 32;
@@ -23,9 +24,12 @@
         const SWEDEN_1995 = 38;
         const CHINA_1991 = 39;
         const MUNICH_1972 = 50;
+        const MEXICO_CITY_1968 = 51;
         const ROMA_1960 = 53;
         const BERLIN_1936 = 57;
+        const PARIS_1924 = 59;
         const ANTWERP_1920 = 60;
+        const STOCKHOLM_1912 = 61;
         const LONDON_1908 = 62;
         const LONDON_2012 = 63;
         const BEIJING_2008 = 64;
@@ -156,7 +160,7 @@
             $output2 .= self::getCollapseHtml('summary', 'Summary', self::getTournamentSummaryHtml($tournament));
             $matches = Match::getMatchArrayByRound($matches);
             foreach ($matches as $rounds => $_round) {
-                if ($rounds == $bracket_spot && $tournament->getTournamentId() != 50) $output2 .= $output;
+                if ($rounds == $bracket_spot && $tournament->getTournamentId() != self::MUNICH_1972) $output2 .= $output;
                 $output2 .= '<div class="col-sm-12 h2-ff1 margin-top-md">'.$rounds.'</div>';
                 $output2 .= self::getMatchesHtml($_round, self::TEAM,
                     $tournament->getSimulationMode() == Tournament::SIMULATION_MODE_1, false);
@@ -417,9 +421,12 @@
             }
             $top3_bg = '';
             if (!$all_time) {
-                if ($_team->getBestFinish() == Soccer::Champion || $_team->getBestFinish() == Soccer::GoldMedal || ($count == 1 && $_team->getBestFinish() == Soccer::FinalRound)) $top3_bg = 'gold';
-                elseif ($_team->getBestFinish() == Soccer::RunnerUp || $_team->getBestFinish() == Soccer::SilverMedal || ($count == 2 && $_team->getBestFinish() == Soccer::FinalRound)) $top3_bg = 'silver';
-                elseif ($_team->getBestFinish() == Soccer::ThirdPlace || $_team->getBestFinish() == Soccer::BronzeMedal || ($count == 3 && $_team->getBestFinish() == Soccer::FinalRound)) $top3_bg = 'bronze';
+                if ($_team->getBestFinish() == Soccer::Champion || $_team->getBestFinish() == Soccer::GoldMedal
+                    || ($count == 1 && $_team->getBestFinish() == Soccer::FinalRound)) $top3_bg = 'gold';
+                elseif ($_team->getBestFinish() == Soccer::RunnerUp || $_team->getBestFinish() == Soccer::SilverMedal
+                    || ($count == 2 && $_team->getBestFinish() == Soccer::FinalRound)) $top3_bg = 'silver';
+                elseif ($_team->getBestFinish() == Soccer::ThirdPlace || $_team->getBestFinish() == Soccer::BronzeMedal
+                    || ($count == 3 && $_team->getBestFinish() == Soccer::FinalRound)) $top3_bg = 'bronze';
             }
             $note = '';
             if ($stage == Soccer::First) {
@@ -999,8 +1006,8 @@
                 $score = $_match->getHomeTeamScore().'-'.$_match->getAwayTeamScore();
                 if ($_match->getHomeTeamScore() == $_match->getAwayTeamScore() &&
                     (($_match->getStage() != Soccer::FIRST_STAGE && $_match->getStage() != Soccer::GROUP_STAGE
-                        && $_match->getStage() != Soccer::QUALIFYING_STAGE && $_match->getTournamentId() != 50
-                        && $_match->getTournamentId() != 51)
+                        && $_match->getStage() != Soccer::QUALIFYING_STAGE && $_match->getTournamentId() != self::MUNICH_1972
+                        && $_match->getTournamentId() != self::MEXICO_CITY_1968)
                         || $_match->getRound() == Soccer::PLAY_OFF
                         || $_match->getTournamentId() == self::SWITZERLAND_1954)) {
                     if ($_match->getHomeTeamExtraTimeScore() == null) $aet = '&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -1110,7 +1117,7 @@
             }
             $home_team_code = $_match->getHomeTeamCode();
             $away_team_code = $_match->getAwayTeamCode();
-            if ($_match->getTournamentId() == 62 && $_match->getAwayTeamCode() == 'FRA'
+            if ($_match->getTournamentId() == self::LONDON_1908 && $_match->getAwayTeamCode() == 'FRA'
                 && $_match->getRound() == Soccer::QUARTERFINALS)
                 $away_team_code = $_match->getAwayTeamCode().' B';
             if ($_match->getHomeTeamCode() == '') {

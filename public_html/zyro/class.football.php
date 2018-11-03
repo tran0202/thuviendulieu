@@ -1287,6 +1287,73 @@
             self::getFootballMatchDb($tournament, $sql);
         }
 
+        /*
+            SELECT t.id AS home_team_id, t2.id AS away_team_id, UCASE(t.name) AS home_team_name, UCASE(t2.name) AS away_team_name,
+                        tl.logo_filename AS home_logo, tl2.logo_filename AS away_logo,
+                        home_team_score, away_team_score,
+                        match_date, DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt,
+                        match_time, TIME_FORMAT(match_time, "%H:%i") as match_time_fmt,
+                        match_order, bracket_order,
+                        g.name AS round, g2.name AS stage,
+                        g3.name AS group_name, g4.name AS parent_group_name,
+                        m.tournament_id, tou.name AS tournament_name,
+                        home_team_extra_time_score, away_team_extra_time_score,
+                        pt.id AS home_parent_team_id, pt2.id AS away_parent_team_id,
+                        UCASE(pt.name) AS home_parent_team_name, UCASE(pt2.name) AS away_parent_team_name,
+                        waiting_home_team, waiting_away_team
+                    FROM `match` m
+                    LEFT JOIN tournament tou ON tou.id = m.tournament_id
+                    LEFT JOIN team t ON t.id = m.home_team_id
+                    LEFT JOIN team t2 ON t2.id = m.away_team_id
+                    LEFT JOIN `group` g ON g.id = m.round_id
+                    LEFT JOIN `group` g2 ON g2.id = m.stage_id
+                    LEFT JOIN team_tournament tt ON (tt.team_id = m.home_team_id AND tt.tournament_id = m.tournament_id)
+                    LEFT JOIN `group` g3 ON g3.id = tt.group_id
+                    LEFT JOIN `group` g4 ON g4.id = tt.parent_group_id
+                    LEFT JOIN team_logo tl ON tl.team_id = t.id
+                    LEFT JOIN team_logo tl2 ON tl2.team_id = t2.id
+                    LEFT JOIN team pt ON pt.id = t.parent_team_id
+                    LEFT JOIN team pt2 ON pt2.id = t2.parent_team_id
+                    WHERE tou.tournament_type_id = 2
+                    AND m.tournament_id = 2
+                    ORDER BY stage_id, match_order, match_date, match_time
+         */
+
+        public static function getFootballMatchSql($tournament_id) {
+            $tournament_id_str = 'm.tournament_id = '.$tournament_id;
+            if ($tournament_id == null) $tournament_id_str = '1';
+            $sql = 'SELECT t.id AS home_team_id, t2.id AS away_team_id, UCASE(t.name) AS home_team_name, UCASE(t2.name) AS away_team_name, 
+                        tl.logo_filename AS home_logo, tl2.logo_filename AS away_logo, 
+                        home_team_score, away_team_score,
+                        match_date, DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, 
+                        match_time, TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, 
+                        match_order, bracket_order,
+                        g.name AS round, g2.name AS stage,
+                        g3.name AS group_name, g4.name AS parent_group_name,
+                        m.tournament_id, tou.name AS tournament_name,
+                        home_team_extra_time_score, away_team_extra_time_score,
+                        pt.id AS home_parent_team_id, pt2.id AS away_parent_team_id, 
+                        UCASE(pt.name) AS home_parent_team_name, UCASE(pt2.name) AS away_parent_team_name,
+                        waiting_home_team, waiting_away_team
+                    FROM `match` m  
+                    LEFT JOIN tournament tou ON tou.id = m.tournament_id 
+                    LEFT JOIN team t ON t.id = m.home_team_id
+                    LEFT JOIN team t2 ON t2.id = m.away_team_id
+                    LEFT JOIN `group` g ON g.id = m.round_id
+                    LEFT JOIN `group` g2 ON g2.id = m.stage_id
+                    LEFT JOIN team_tournament tt ON (tt.team_id = m.home_team_id AND tt.tournament_id = m.tournament_id)
+                    LEFT JOIN `group` g3 ON g3.id = tt.group_id 
+                    LEFT JOIN `group` g4 ON g4.id = tt.parent_group_id 
+                    LEFT JOIN team_logo tl ON tl.team_id = t.id
+                    LEFT JOIN team_logo tl2 ON tl2.team_id = t2.id 
+                    LEFT JOIN team pt ON pt.id = t.parent_team_id 
+                    LEFT JOIN team pt2 ON pt2.id = t2.parent_team_id
+                    WHERE tou.tournament_type_id = '.Tournament::FOOTBALL.'
+                    AND '.$tournament_id_str.'
+                    ORDER BY stage_id, match_order, match_date, match_time;';
+            return $sql;
+        }
+
         public static function getFootballMatchDb($tournament, $sql) {
 
             $query = $GLOBALS['connection']->prepare($sql);
@@ -1319,55 +1386,22 @@
                         }
                         $i = $i + 1;
                     }
-                    $match = Match::CreateSoccerMatch(
-                        $row['home_team_id'], $row['home_team_name'], '', $row['away_team_id'], $row['away_team_name'], '',
-                        $row['home_parent_team_id'], $row['home_parent_team_name'], $row['away_parent_team_id'], $row['away_parent_team_name'],
-                        $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_time_fmt'],
-                        $row['match_order'], $row['bracket_order'], $row['round'], $row['stage'], $row['group_name'], $row['parent_group_name'], $row['second_round_group_name'],
-                        $row['tournament_id'], $row['tournament_name'],
-                        $row['points_for_win'], $row['golden_goal_rule'], $row['waiting_home_team'], $row['waiting_away_team'],
-                        $home_team_score, $away_team_score, 0, 0,
+                    $match = Match::CreateFootballMatch(
+                        $row['home_team_id'], $row['away_team_id'], $row['home_team_name'], $row['away_team_name'], '', '',
+                        $row['home_logo'], $row['away_logo'],
+                        $home_team_score, $away_team_score,
                         $row['home_team_extra_time_score'], $row['away_team_extra_time_score'],
-                        $row['home_team_penalty_score'], $row['away_team_penalty_score'],
-                        '', '', $row['home_logo'], $row['away_logo']);
+                        $row['home_parent_team_id'], $row['away_parent_team_id'], $row['home_parent_team_name'], $row['away_parent_team_name'],
+                        $row['waiting_home_team'], $row['waiting_away_team'],
+                        $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_time_fmt'],
+                        $row['match_order'], $row['bracket_order'], $row['round'], $row['stage'],
+                        $row['group_name'], $row['parent_group_name'],
+                        $row['tournament_id'], $row['tournament_name']);
                     array_push($matches, $match);
                 }
                 $tournament->setMatches($matches);
                 $tournament->concatBodyHtml($output);
             }
-        }
-
-        public static function getFootballMatchSql($tournament_id) {
-            $tournament_id_str = 'm.tournament_id = '.$tournament_id;
-            if ($tournament_id == null) $tournament_id_str = '1 = 1';
-            $sql = 'SELECT t.id AS home_team_id, UCASE(t.name) AS home_team_name, home_team_score, tl.logo_filename AS home_logo,
-                        t2.id AS away_team_id, UCASE(t2.name) AS away_team_name, away_team_score, tl2.logo_filename AS away_logo,
-                        pt.id AS home_parent_team_id, UCASE(pt.name) AS home_parent_team_name, pt2.id AS away_parent_team_id, UCASE(pt2.name) AS away_parent_team_name, 
-                        home_team_extra_time_score, away_team_extra_time_score, home_team_penalty_score, away_team_penalty_score, 
-                        DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, match_date, 
-                        TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, match_time, match_order, bracket_order,
-                        waiting_home_team, waiting_away_team,
-                        g.name AS round, g2.name AS stage,
-                        g3.name AS group_name, g4.name AS parent_group_name, g5.name AS second_round_group_name, 
-                        m.tournament_id, tou.name AS tournament_name, tou.points_for_win, tou.golden_goal_rule
-                    FROM `match` m  
-                    LEFT JOIN tournament tou ON tou.id = m.tournament_id 
-                    LEFT JOIN team t ON t.id = m.home_team_id
-                    LEFT JOIN team t2 ON t2.id = m.away_team_id
-                    LEFT JOIN `group` g ON g.id = m.round_id
-                    LEFT JOIN `group` g2 ON g2.id = m.stage_id
-                    LEFT JOIN team_tournament tt ON (tt.team_id = m.home_team_id AND tt.tournament_id = m.tournament_id)
-                    LEFT JOIN `group` g3 ON g3.id = tt.group_id 
-                    LEFT JOIN `group` g4 ON g4.id = tt.parent_group_id 
-                    LEFT JOIN `group` g5 ON g5.id = m.group_id
-                    LEFT JOIN team_logo tl ON tl.team_id = t.id
-                    LEFT JOIN team_logo tl2 ON tl2.team_id = t2.id 
-                    LEFT JOIN team pt ON pt.id = t.parent_team_id 
-                    LEFT JOIN team pt2 ON pt2.id = t2.parent_team_id
-                    WHERE tou.tournament_type_id = 2
-                    AND '.$tournament_id_str.'
-                    ORDER BY stage_id, match_order, match_date, match_time;';
-            return $sql;
         }
 
         public static function getFootballTeams($tournament) {
