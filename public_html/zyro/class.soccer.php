@@ -21,6 +21,12 @@
         const QUALIFYING_ROUND3_SECOND_LEG = 'Qualifying Round 3 - 2nd Leg';
         const PLAYOFF_ROUND_FIRST_LEG = 'Playoff Round - 1st Leg';
         const PLAYOFF_ROUND_SECOND_LEG = 'Playoff Round - 2nd Leg';
+        const MATCH_DAY_1 = 'MatchDay 1';
+        const MATCH_DAY_2 = 'MatchDay 2';
+        const MATCH_DAY_3 = 'MatchDay 3';
+        const MATCH_DAY_4 = 'MatchDay 4';
+        const MATCH_DAY_5 = 'MatchDay 5';
+        const MATCH_DAY_6 = 'MatchDay 6';
         const ROUND16 = 'Round of 16';
         const QUARTERFINALS = 'Quarterfinals';
         const REPLAY_QUARTERFINALS = 'Replay Quarterfinals';
@@ -79,7 +85,7 @@
 
         public static function getStanding($tournament) {
             $matches = Match::getCompletedGroupMatches($tournament->getMatches());
-            $team_array = Team::getTeamArrayByName($tournament->getTeams());
+            $team_array = Team::getTeamArrayById($tournament->getTeams());
             $tmp_array = array();
             $result = array();
             for ($i = 0; $i < sizeof($matches); $i++ ) {
@@ -1006,6 +1012,24 @@
                     break;
                 case self::PLAY_OFF:
                     $best_finish = self::Playoff;
+                    break;
+                case self::MATCH_DAY_1:
+                    $best_finish = self::Group;
+                    break;
+                case self::MATCH_DAY_2:
+                    $best_finish = self::Group;
+                    break;
+                case self::MATCH_DAY_3:
+                    $best_finish = self::Group;
+                    break;
+                case self::MATCH_DAY_4:
+                    $best_finish = self::Group;
+                    break;
+                case self::MATCH_DAY_5:
+                    $best_finish = self::Group;
+                    break;
+                case self::MATCH_DAY_6:
+                    $best_finish = self::Group;
                     break;
                 case self::SECOND_ROUND:
                     $best_finish = self::SecondRound;
