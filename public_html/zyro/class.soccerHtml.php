@@ -144,7 +144,7 @@
             $teams = Team::getTeamArrayByGroup($tournament->getTeams());
             $output = self::getCollapseHtml('summary', 'Summary', self::getTournamentSummaryHtml($tournament));
             $output .= self::getStandingsHtml($tournament, $teams, null,
-                self::TEAM, self::MATCHES_LINK_MODAL);
+                self::MATCHES_LINK_MODAL);
             $tournament->concatBodyHtml($output);
         }
 
@@ -162,8 +162,7 @@
             foreach ($matches as $rounds => $_round) {
                 if ($rounds == $bracket_spot && $tournament->getTournamentId() != self::MUNICH_1972) $output2 .= $output;
                 $output2 .= '<div class="col-sm-12 h2-ff1 margin-top-md">'.$rounds.'</div>';
-                $output2 .= self::getMatchesHtml($_round, self::TEAM,
-                    $tournament->getSimulationMode() == Tournament::SIMULATION_MODE_1, false);
+                $output2 .= self::getMatchesHtml($tournament, $_round, false);
                 if ($rounds == $third_place_table_spot) $output2 .= self::getThirdPlaceRankingHtml($tournament);
             }
             $tournament->concatBodyHtml($output2);
@@ -214,7 +213,7 @@
                                 <span class="h2-ff1">'.$bracket_round.'</span>
                             </div>';
                 foreach ($_bracket_matches as $bracket_match_order => $_bracket_match) {
-                    $output .= self::getMatchHtml($_bracket_match, self::TEAM, $bracket_match_order, false, self::MATCH_VIEW_4, $i, $j);
+                    $output .= self::getMatchHtml($tournament, $_bracket_match, self::MATCH_VIEW_4, $i, $j);
                     $j = $j + 1;
                 }
                 $output .= '</div>';
@@ -262,25 +261,26 @@
         }
 
         public static function getSoccerGroupModalHtml($tournament) {
-            self::getGroupModalHtml($tournament, $tournament->getTeams(), self::TEAM, Soccer::First);
+            self::getGroupModalHtml($tournament, $tournament->getTeams(), Soccer::First);
             if (self::isThirdPlaceRankingTournament($tournament)) {
                 $teams = self::getThirdPlaceTeams($tournament, 3);
                 if (self::isSecondPlaceRankingTournament($tournament)) $teams = self::getThirdPlaceTeams($tournament, 2);
-                self::getGroupModalHtml($tournament, $teams, self::TEAM, Soccer::First);
+                self::getGroupModalHtml($tournament, $teams, Soccer::First);
             }
-            self::getGroupModalHtml($tournament, $tournament->getSecondRoundTeams(), self::TEAM, Soccer::Second);
+            self::getGroupModalHtml($tournament, $tournament->getSecondRoundTeams(), Soccer::Second);
         }
 
         public static function getSoccerMatchesModalHtml($tournament) {
-            self::getGroupModalHtml($tournament, $tournament->getTeams(),self::CLUB, Soccer::First);
+            self::getGroupModalHtml($tournament, $tournament->getTeams(),Soccer::First);
         }
 
         public static function getSoccerMatchesMultiLeagueModalHtml($tournament) {
-            self::getGroupModalHtml($tournament, $tournament->getTeams(),self::MULTI_LEAGUE_TEAM, Soccer::First);
+            self::getGroupModalHtml($tournament, $tournament->getTeams(),Soccer::First);
         }
 
-        public static function getGroupModalHtml($tournament, $teams, $team_type, $stage) {
+        public static function getGroupModalHtml($tournament, $teams, $stage) {
             $league_teams = Team::getTeamArrayByParentGroup($teams);
+            $_team_type = $tournament->getTeamType();
             $output = '';
             foreach ($league_teams as $league_name => $group_teams) {
                 foreach ($group_teams as $group_name => $_teams) {
@@ -289,7 +289,7 @@
                         $league_name_short = str_replace('League ', '', $league_name);
                         $group_id = $league_name_short.$group_name;
                         $table_name = 'Group '.$group_name;
-                        if ($team_type == self::MULTI_LEAGUE_TEAM)
+                        if ($_team_type == self::MULTI_LEAGUE_TEAM)
                             $table_name = '<span class="unl-league-'.$league_name_short.'">'.$league_name.'</span> - Group '.$group_name;
                         if ($group_name == Soccer::FINAL_ROUND) {
                             $group_id = 'FinalRound';
@@ -301,8 +301,8 @@
                         elseif ($group_name == 'SecondPlace') {
                             $table_name = 'Ranking of second-placed teams';
                         }
-                        $modal_body .= self::getTeamRankingTableHtml($tournament, $_teams, $team_type, $stage,
-                            false, false, $current_best_finish, $striped_row);
+                        $modal_body .= self::getTeamRankingTableHtml($tournament, $_teams, $stage,
+                            false, $current_best_finish, $striped_row);
                         $output .= self::getModalHtml($group_id.'Standing', $table_name, $modal_body);
                     }
                 }
@@ -317,7 +317,7 @@
                 $modal_body = '';
                 if ($group_name != '') {
                     foreach ($_matches as $match_order => $_match) {
-                        $modal_body .= self::getMatchHtml($_match, self::TEAM, $match_order,false, self::MATCH_VIEW_2);
+                        $modal_body .= self::getMatchHtml($tournament, $_match, self::MATCH_VIEW_2);
                     }
                     $output .= self::getModalHtml($group_name.'Matches', 'Group '.$group_name, $modal_body);
                 }
@@ -354,10 +354,10 @@
             return $output;
         }
 
-        public static function getTeamTableHeaderHtml($tournament, $stage, $all_time) {
+        public static function getTeamTableHeaderHtml($tournament, $stage) {
             $output = '';
             $tournament_count_header = '<div class="col-sm-4"></div>';
-            if ($all_time) $tournament_count_header = '<div class="box-col-lg"></div><div class="box-col-sm">T</div>';
+            if ($tournament->getAllTime()) $tournament_count_header = '<div class="box-col-lg"></div><div class="box-col-sm">T</div>';
             $gd_header = '+/-';
             if (self::getGoalAverageStat($tournament, $stage))
                 $gd_header = 'GAv';
@@ -384,9 +384,11 @@
                         || $tournament->getTournamentId() == self::ENGLAND_1966);
         }
 
-        public static function getTeamHtml($tournament, $_team, $team_type, $stage, $from_ranking, $all_time, &$current_best_finish, &$striped, $ranking, $count) {
+        public static function getTeamHtml($tournament, $_team, $stage, $from_ranking, &$current_best_finish, &$striped) {
             $output = '';
+            $_all_time = $tournament->getAllTime();
             $goal_diff = $_team->getGoalDiff();
+            $_count = $_team->getCount();
             if ($_team->getGoalDiff() > 0) $goal_diff = '+'.$goal_diff;
             if (self::getGoalAverageStat($tournament, $stage))
                 if ($_team->getGoalAgainst() != 0)
@@ -397,14 +399,14 @@
                 $striped = '';
                 if (self::isTeamAdvancedSecondRound($tournament, $_team, $stage)) {
                     $striped = 'advanced-second-round-striped';
-                    if ($count == 2 && $_team->getBestFinish() == Soccer::SecondRound
+                    if ($_count == 2 && $_team->getBestFinish() == Soccer::SecondRound
                         && ($_team->getTournamentId() == self::ARGENTINA_1978 || $_team->getTournamentId() == self::GERMANY_1974))
                         $striped = 'advanced-third-place-striped';
-                    if ($count == 2 && ($_team->getTournamentId() == self::SAUDI_ARABIA_1995 || $_team->getTournamentId() == self::GHANA_1963
+                    if ($_count == 2 && ($_team->getTournamentId() == self::SAUDI_ARABIA_1995 || $_team->getTournamentId() == self::GHANA_1963
                             || $_team->getTournamentId() == self::TUNISIA_1965 || $_team->getTournamentId() == self::NEW_CALEDONIA_1980
                             || $_team->getTournamentId() == self::ITALY_1980 || $_team->getTournamentId() == self::MUNICH_1972))
                         $striped = 'advanced-third-place-striped';
-                    if (($count == 3 || $count == 4) && ($_team->getTournamentId() == self::NEW_ZEALAND_1973))
+                    if (($_count == 3 || $_count == 4) && ($_team->getTournamentId() == self::NEW_ZEALAND_1973))
                         $striped = 'advanced-third-place-striped';
                 }
             }
@@ -417,32 +419,32 @@
                     }
                     $current_best_finish = $_team->getBestFinish();
                 }
-                if ($all_time) $striped = '';
+                if ($_all_time) $striped = '';
             }
             $top3_bg = '';
-            if (!$all_time) {
+            if (!$_all_time) {
                 if ($_team->getBestFinish() == Soccer::Champion || $_team->getBestFinish() == Soccer::GoldMedal
-                    || ($count == 1 && $_team->getBestFinish() == Soccer::FinalRound)) $top3_bg = 'gold';
+                    || ($_count == 1 && $_team->getBestFinish() == Soccer::FinalRound)) $top3_bg = 'gold';
                 elseif ($_team->getBestFinish() == Soccer::RunnerUp || $_team->getBestFinish() == Soccer::SilverMedal
-                    || ($count == 2 && $_team->getBestFinish() == Soccer::FinalRound)) $top3_bg = 'silver';
+                    || ($_count == 2 && $_team->getBestFinish() == Soccer::FinalRound)) $top3_bg = 'silver';
                 elseif ($_team->getBestFinish() == Soccer::ThirdPlace || $_team->getBestFinish() == Soccer::BronzeMedal
-                    || ($count == 3 && $_team->getBestFinish() == Soccer::FinalRound)) $top3_bg = 'bronze';
+                    || ($_count == 3 && $_team->getBestFinish() == Soccer::FinalRound)) $top3_bg = 'bronze';
             }
             $note = '';
             if ($stage == Soccer::First) {
                 $note = self::getNote($_team);
             }
             $tc_col = '<div class="col-sm-4">'.$_team->getName().$note.'</div>';
-            if ($all_time) $tc_col = '<div class="box-col-lg">'.$_team->getName().'</div>
+            if ($_all_time) $tc_col = '<div class="box-col-lg">'.$_team->getName().'</div>
                                                 <div class="box-col-sm"><a id="popover_'.$_team->getCode().'" data-toggle="popover"
                                                     data-container="body" data-placement="right" data-html="true"
                                                     data-trigger="focus" tabindex="0" style="cursor:pointer;">'.$_team->getTournamentCount().'</a></div>';
-            if (!$all_time || ($all_time && $_team->getMatchPlay() != 0)) {
+            if (!$_all_time || ($_all_time && $_team->getMatchPlay() != 0)) {
                 $output .=     '<div class="col-sm-12 padding-tb-md team-row '.$striped.' '.$top3_bg.'">
                                 <div class="row">
                                         <div class="box-col-md" style="padding-left:15px;">';
-                $output .= '<span class="ranking-count"><small>'.$ranking.'&nbsp;&nbsp;</small></span>';
-                if ($team_type == self::CLUB) {
+                $output .= '<span class="ranking-count"><small>'.$_team->getRanking().'&nbsp;&nbsp;</small></span>';
+                if ($tournament->getTeamType() == self::CLUB) {
                     $output .= '<img height=32 style="margin-top:-6px;" src="/images/club_logos/'.$_team->getLogoFilename().'">';
                     $output .= '<img class="flag-sm" style="margin-top:-6px;" src="/images/flags/'.$_team->getFlagFilename().'">';
                 }
@@ -563,15 +565,15 @@
             return $note;
         }
 
-        public static function getTeamRankingTableHtml($tournament, $_teams, $team_type, $stage, $from_ranking, $all_time, &$current_best_finish, &$striped) {
+        public static function getTeamRankingTableHtml($tournament, $_teams, $stage, $from_ranking, &$current_best_finish, &$striped) {
             $ranking = 0;
             $count = 0;
             $previous_team = null;
-            $output = self::getTeamTableHeaderHtml($tournament, $stage, $all_time);
+            $output = self::getTeamTableHeaderHtml($tournament, $stage);
             foreach ($_teams as $name => $_team) {
-                self::getNextRanking($_team, $previous_team, $ranking, $count, $all_time);
-                $output .= self::getTeamHtml($tournament, $_team, $team_type, $stage, $from_ranking,
-                    $all_time, $current_best_finish, $striped, $ranking, $count);
+                self::getNextRanking($_team, $previous_team, $ranking, $count, $tournament->getAllTime());
+                $output .= self::getTeamHtml($tournament, $_team, $stage, $from_ranking,
+                    $current_best_finish, $striped);
                 $previous_team = $_team;
             }
             return $output;
@@ -732,8 +734,8 @@
             $current_best_finish = $teams[0]->getBestFinish();
             $striped_row = 'ranking-striped';
             $_teams = Team::getTeamArrayById($teams);
-            $output .= self::getTeamRankingTableHtml($tournament, $_teams, self::TEAM, null,
-                true, $ranking_table != self::TOURNAMENT, $current_best_finish, $striped_row);
+            $output .= self::getTeamRankingTableHtml($tournament, $_teams, null,
+                true, $current_best_finish, $striped_row);
             $output .= '</div>';
             return $output;
         }
@@ -741,7 +743,7 @@
         public static function getSoccerStandingsHtml($tournament) {
             $teams = Team::getTeamArrayByGroup($tournament->getTeams());
             $output = self::getStandingsHtml($tournament, $teams, null,
-                self::CLUB, self::MATCHES_LINK_COLLAPSE);
+                self::MATCHES_LINK_COLLAPSE);
             $tournament->concatBodyHtml($output);
         }
 
@@ -763,7 +765,7 @@
                 $league_name = self::getValidHtmlId($parent_group_name);
                 $output .= '<div class="tab-pane fade" id="'.$league_name.self::CONTENT.'" role="tabpanel" aria-labelledby="'.$league_name.'-tab">';
                 $output .= self::getStandingsHtml($tournament, $league_teams, $parent_group_name,
-                    self::MULTI_LEAGUE_TEAM, self::MATCHES_LINK_COLLAPSE);
+                    self::MATCHES_LINK_COLLAPSE);
                 $output .= '</div>';
             }
             $output .= '</div>';
@@ -776,7 +778,7 @@
             $tournament->concatBodyHtml($output);
         }
 
-        public static function getStandingsHtml($tournament, $teams, $parent_group_name, $team_type, $matches_link_type) {
+        public static function getStandingsHtml($tournament, $teams, $parent_group_name, $matches_link_type) {
             $output = '';
             $output .= '<div class="margin-top-sm">';
             foreach ($teams as $group_name => $_teams) {
@@ -789,20 +791,21 @@
                 }
                 $output .= '</div>
                     <div class="col-sm-12 h2-ff3 box-xl">';
-                $output .= self::getTeamRankingTableHtml($tournament, $_teams, $team_type, Soccer::First,
-                    false, false, $current_best_finish, $striped_row);
+                $output .= self::getTeamRankingTableHtml($tournament, $_teams, Soccer::First,
+                    false, $current_best_finish, $striped_row);
                 $output .= '</div>';
                 if ($matches_link_type == self::MATCHES_LINK_COLLAPSE) {
                     $output .= self::getCollapseHtml(self::getValidHtmlId($parent_group_name).$group_name.'matches', 'Matches',
-                        self::getGroupMatchesCollapseHtml($tournament, $team_type, $parent_group_name, $group_name));
+                        self::getGroupMatchesCollapseHtml($tournament, $parent_group_name, $group_name));
                 }
             }
             $output .= '</div>';
             return $output;
         }
 
-        public static function getGroupMatchesCollapseHtml($tournament, $team_type, $parent_group_name, $group_name) {
-            if ($team_type == self::MULTI_LEAGUE_TEAM) {
+        public static function getGroupMatchesCollapseHtml($tournament, $parent_group_name, $group_name) {
+            $_team_type = $tournament->getTeamType();
+            if ($_team_type == self::MULTI_LEAGUE_TEAM) {
                 $group_matches = Match::getFirstStageMatchArrayByParentGroupRound($tournament->getMatches());
                 $group_matches = $group_matches[$parent_group_name][$group_name];
             }
@@ -814,11 +817,11 @@
             foreach ($group_matches as $round_name => $rounds) {
                 $output .= '<div class="col-sm-12 h3-ff3 border-bottom-gray2 margin-top-md">'.$round_name.'</div>';
                 foreach ($rounds as $match_order => $_match) {
-                    if ($team_type == self::MULTI_LEAGUE_TEAM) {
-                        $output .= self::getMatchHtml($_match, $team_type, $match_order, false, self::MATCH_VIEW_3);
+                    if ($_team_type == self::MULTI_LEAGUE_TEAM) {
+                        $output .= self::getMatchHtml($tournament, $_match, self::MATCH_VIEW_3);
                     }
                     else {
-                        $output .= self::getMatchHtml($_match, $team_type, $match_order, false, self::MATCH_VIEW_6);
+                        $output .= self::getMatchHtml($tournament, $_match, self::MATCH_VIEW_6);
                     }
                 }
             }
@@ -826,23 +829,24 @@
         }
 
         public static function getSoccerMatchesOneLeagueHtml($tournament) {
-            self::getSoccerMatchesHtml($tournament, self::CLUB, false);
+            self::getSoccerMatchesHtml($tournament);
         }
 
         public static function getSoccerMatchesMultiLeagueHtml($tournament) {
-            self::getSoccerMatchesHtml($tournament, self::MULTI_LEAGUE_TEAM, false);
+            self::getSoccerMatchesHtml($tournament);
         }
 
-        public static function getSoccerMatchesHtml($tournament, $team_type, $look_ahead) {
+        public static function getSoccerMatchesHtml($tournament) {
             $teams = Team::getTeamArrayByName($tournament->getTeams());
             $image_type = Team::FLAG;
-            if ($team_type == self::CLUB) $image_type = Team::LOGO;
+            $_team_type = $tournament->getTeamType();
+            if ($_team_type == self::CLUB) $image_type = Team::LOGO;
             $output = '';
             $output .= '<div class="margin-top-sm">';
             $output .= self::getCollapseFilteringTeamsHtml($tournament, $image_type);
             $output .= '<div class="tab-content" id="filter-tabContent">';
             $output .= '<div class="tab-pane fade" id="All'.self::CONTENT.'" role="tabpanel" aria-labelledby="All-tab">';
-            $output .= self::getAllMatchesHtml($tournament, $team_type, $look_ahead);
+            $output .= self::getAllMatchesHtml($tournament);
             $output .= '</div>';
             foreach ($teams as $name => $_team) {
                 $team_tab = self::getValidHtmlId($name);
@@ -851,13 +855,13 @@
                 $team_logo = '<img height="32" src="/images/club_logos/'.$_team->getLogoFilename().'">';
                 $team_small_flag = '<img class="flag-sm-2" src="/images/flags/'.$_team->getFlagFilename().'">';
                 $output .= '<div class="tab-pane fade" id="'.$team_tab.self::CONTENT.'" role="tabpanel" aria-labelledby="'.$team_tab.'-tab">';
-                if ($team_type == self::MULTI_LEAGUE_TEAM || $team_type == self::TEAM) {
+                if ($_team_type == self::MULTI_LEAGUE_TEAM || $_team_type == self::TEAM) {
                     $output .= '<span class="h2-ff3" style="margin-left:30px;">'.$team_flag.'&nbsp;&nbsp;'.$team_name.'</span>';
                 }
                 else {
                     $output .= '<span class="h2-ff3" style="margin-left:30px;">'.$team_logo.$team_small_flag.'&nbsp;&nbsp;'.$team_name.'</span>';
                 }
-                $output .= self::getTeamMatchesHtml($tournament, $name, $team_type, $look_ahead);
+                $output .= self::getTeamMatchesHtml($tournament, $name);
                 $output .= '</div>';
             }
             $output .= '</div>';
@@ -865,7 +869,7 @@
             $tournament->concatBodyHtml($output);
         }
 
-        public static function getAllMatchesHtml($tournament, $team_type, $look_ahead) {
+        public static function getAllMatchesHtml($tournament) {
             $matchDay_start = array();
             $tab_array = array();
             $matches = $tournament->getMatches();
@@ -894,7 +898,7 @@
                     }
                 }
                 $output .= '<div class="tab-pane fade" id="'.$round_name.self::CONTENT.'" role="tabpanel" aria-labelledby="'.$round_name.'-tab">';
-                $output .= self::getMatchesHtml($_round, $team_type, $look_ahead, false);
+                $output .= self::getMatchesHtml($tournament, $_round, false);
                 $output .= '</div>';
             }
             $output .= '</div>';
@@ -903,35 +907,36 @@
             return $output;
         }
 
-        public static function getTeamMatchesHtml($tournament, $name, $team_type, $look_ahead) {
+        public static function getTeamMatchesHtml($tournament, $name) {
             $matches = $tournament->getMatches();
             $matches = Match::getMatchArrayByTeam($matches, $name);
             $output = '';
             $output .= '<div class="col-sm-12 margin-top-sm">';
-            $output .= self::getMatchesHtml($matches, $team_type, $look_ahead, true);
+            $output .= self::getMatchesHtml($tournament, $matches, true);
             $output .= '</div>';
             return $output;
         }
 
-        public static function getMatchesHtml($matches, $team_type, $look_ahead, $show_round) {
+        public static function getMatchesHtml($tournament, $matches, $show_round) {
             $output = '';
+            $_team_type = $tournament->getTeamType();
             foreach ($matches as $match_dates => $_matches) {
                 $output .= '<div class="col-sm-12 h3-ff3 border-bottom-gray2 margin-top-md">';
                 if ($show_round) $output .= $_matches[array_keys($_matches)[0]]->getRound().': ';
                 $output .= $_matches[array_keys($_matches)[0]]->getMatchDateFmt().'</div>';
                 foreach ($_matches as $match_order => $_match) {
-                    if ($team_type == self::MULTI_LEAGUE_TEAM || $team_type == self::TEAM) {
-                        $output .= self::getMatchHtml($_match, $team_type, $match_order, $look_ahead, self::MATCH_VIEW_1);
+                    if ($_team_type == self::MULTI_LEAGUE_TEAM || $_team_type == self::TEAM) {
+                        $output .= self::getMatchHtml($tournament, $_match, self::MATCH_VIEW_1);
                     }
                     else {
-                        $output .= self::getMatchHtml($_match, $team_type, $match_order, $look_ahead, self::MATCH_VIEW_5);
+                        $output .= self::getMatchHtml($tournament, $_match, self::MATCH_VIEW_5);
                     }
                 }
             }
             return $output;
         }
 
-        public static function getMatchHtml($_match, $team_type, $match_order, $look_ahead, $match_view, $i = 0, $j = 0) {
+        public static function getMatchHtml($tournament, $_match, $match_view, $i = 0, $j = 0) {
             $output = '';
             $match_date = $_match->getMatchDate();
             $match_time = $_match->getMatchTimeFmt();
@@ -940,7 +945,7 @@
             $group_text = '';
             $league_name = $_match->getParentGroupName();
             $league_name_short = str_replace('League ', '', $league_name);
-            if ($team_type == self::MULTI_LEAGUE_TEAM) $group_text .= '<span class="unl-league-'.$league_name_short.'">'.$league_name.'</span> - ';
+            if ($tournament->getTeamType() == self::MULTI_LEAGUE_TEAM) $group_text .= '<span class="unl-league-'.$league_name_short.'">'.$league_name.'</span> - ';
             if ($_match->getStage() == Soccer::FIRST_STAGE || $_match->getStage() == Soccer::GROUP_STAGE) {
                 $group_name = $_match->getGroupName();
                 if ($_match->getRound() == Soccer::SECOND_ROUND || $_match->getRound() == Soccer::FINAL_ROUND)
@@ -979,7 +984,9 @@
             $away_small_flag = '<img class="flag-sm-2" src="/images/flags/'.$_match->getAwayFlag().'">';
             $advance_popover = '';
             $advance_popover2 = '';
-            if ($look_ahead && $match_order > 32 && $match_order <= 48) {
+            $_look_ahead = $tournament->getSimulationMode() == Tournament::SIMULATION_MODE_1;
+            $_match_order = $_match->getMatchOrder();
+            if ($_look_ahead && $_match_order > 32 && $_match_order <= 48) {
                 $advance_popover = ' <a id="popover_'.$_match->getHomeTeamCode().'" data-toggle="popover" 
                                 data-container="body" data-placement="right" type="button" 
                                 data-html="true" tabindex="0" data-trigger="focus"><span class="fa fa-futbol-o" 
@@ -1391,6 +1398,8 @@
                     $ranking = $count;
                 }
             }
+            $team->setRanking($ranking);
+            $team->setCount($count);
         }
 
         public static function isSameRanking($team, $previous_team) {
@@ -1447,7 +1456,7 @@
             $group_name = 'ThirdPlace';
             if (self::isSecondPlaceRankingTournament($tournament)) $group_name = 'SecondPlace';
             for ($i = 0; $i < sizeof($teams); $i++) {
-                $team = Team::CloneSoccerTeam($teams[$i]->getId(), $teams[$i]->getName(), $teams[$i]->getCode(), $group_name,
+                $team = Team::CloneSoccerTeam($teams[$i]->getId(), $teams[$i]->getName(), $teams[$i]->getCode(), $teams[$i]->getTeamType(), $group_name,
                     $teams[$i]->getGroupOrder(), $teams[$i]->getMatchPlay(), $teams[$i]->getWin(), $teams[$i]->getDraw(), $teams[$i]->getLoss(),
                     $teams[$i]->getGoalFor(), $teams[$i]->getGoalAgainst(), $teams[$i]->getGoalDiff(), $teams[$i]->getPoint());
                 $team->setFlagFilename($teams[$i]->getFlagFilename());

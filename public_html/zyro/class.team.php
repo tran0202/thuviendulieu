@@ -12,6 +12,7 @@
         private $name;
         private $l_name;
         private $code;
+        private $team_type;
         private $group_name;
         private $group_order;
         private $parent_id;
@@ -53,12 +54,14 @@
         private $goal_diff;
         private $point;
         private $best_finish;
+        private $ranking;
+        private $count;
         private $advanced_second_round;
         private $scenarios;
 
         protected function __construct() { }
 
-        public static function CreateTeam($id, $name, $l_name, $code, $group_name, $group_order,
+        public static function CreateTeam($id, $name, $l_name, $code, $team_type, $group_name, $group_order,
             $parent_id, $parent_name, $parent_group_name, $parent_group_long_name, $parent_group_order,
             $flag_filename, $logo_filename, $tournament_id, $tournament_name, $tournament_count,
                                           $confederation_name, $confederation_logo_filename,
@@ -71,6 +74,7 @@
             $t->name = $name;
             $t->l_name = $l_name;
             $t->code = $code;
+            $t->team_type = $team_type;
             $t->group_name = $group_name;
             $t->group_order = $group_order;
             $t->parent_id = $parent_id;
@@ -116,10 +120,10 @@
             return $t;
         }
 
-        public static function CreateSoccerTeam($id, $name, $l_name, $code, $parent_id, $parent_name,
+        public static function CreateSoccerTeam($id, $name, $l_name, $code, $team_type, $parent_id, $parent_name,
                 $group_name, $group_order, $parent_group_name, $parent_group_long_name, $parent_group_order,
                 $flag_filename, $logo_filename, $tournament_id, $tournament_name, $tournament_count, $confederation_name, $confederation_logo_filename) {
-            return self::CreateTeam($id, $name, $l_name, $code, $group_name, $group_order,
+            return self::CreateTeam($id, $name, $l_name, $code, $team_type, $group_name, $group_order,
                 $parent_id, $parent_name, $parent_group_name, $parent_group_long_name, $parent_group_order, $flag_filename, $logo_filename,
                 $tournament_id, $tournament_name, $tournament_count, $confederation_name, $confederation_logo_filename,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -127,9 +131,9 @@
                 0, 0, 0, 0, null, null);
         }
 
-        public static function CloneSoccerTeam($id, $name, $code, $group_name, $group_order,
+        public static function CloneSoccerTeam($id, $name, $code, $team_type, $group_name, $group_order,
                                              $match_play, $win, $draw, $loss, $goal_for, $goal_against, $goal_diff, $point) {
-            return self::CreateTeam($id, $name, '', $code, $group_name, $group_order,
+            return self::CreateTeam($id, $name, '', $code, $team_type, $group_name, $group_order,
                 0, '', '', '', 0, '', '',
                 0, '', 0, '', '',
                 $match_play, $win, $draw, $loss, 0, 0, 0, 0, 0, 0,
@@ -138,10 +142,10 @@
         }
 
         public static function CreateFootballTeam(
-            $id, $name, $group_name, $group_order,
+            $id, $name, $team_type, $group_name, $group_order,
             $parent_group_name, $parent_group_long_name, $parent_group_order, $logo_filename)
         {
-            return self::CreateTeam($id, $name, '', '', $group_name, $group_order,
+            return self::CreateTeam($id, $name, '', '', $team_type, $group_name, $group_order,
                 0, '', $parent_group_name, $parent_group_long_name, $parent_group_order, '', $logo_filename,
                 0, '', 0, '', '',
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -156,11 +160,11 @@
         }
 
         /*
-            SELECT UCASE(t.name) AS name, t.name AS l_name, tt.team_id,
-                UCASE(t2.name) AS parent_team_name, t2.name AS l_parent_team_name, t.parent_team_id,
+            SELECT tt.team_id, UCASE(t.name) AS name, t.name AS l_name, n.code, t.team_type_id AS team_type,
+                t.parent_team_id, UCASE(t2.name) AS parent_team_name, t2.name AS l_parent_team_name,
                 group_id, UCASE(g.name) AS group_name, group_order,
                 parent_group_id, pg.name AS parent_group_name, pg.long_name AS parent_group_long_name, parent_group_order,
-                tl.logo_filename, n.flag_filename, n.code, tt.tournament_id
+                n.flag_filename, tl.logo_filename, tt.tournament_id
             FROM team_tournament tt
             LEFT JOIN team t ON t.id = tt.team_id
             LEFT JOIN team t2 ON t2.id = t.parent_team_id
@@ -174,11 +178,11 @@
 
         public static function getSoccerTeamSql($tournament_id) {
 
-            $sql = 'SELECT UCASE(t.name) AS name, t.name AS l_name, tt.team_id, 
-                        UCASE(t2.name) AS parent_team_name, t2.name AS l_parent_team_name, t.parent_team_id,
+            $sql = 'SELECT tt.team_id, UCASE(t.name) AS name, t.name AS l_name, n.code, t.team_type_id AS team_type,
+                        t.parent_team_id, UCASE(t2.name) AS parent_team_name, t2.name AS l_parent_team_name, 
                         group_id, UCASE(g.name) AS group_name, group_order, 
                         parent_group_id, pg.name AS parent_group_name, pg.long_name AS parent_group_long_name, parent_group_order, 
-                        tl.logo_filename, n.flag_filename, n.code, tt.tournament_id 
+                        n.flag_filename, tl.logo_filename, tt.tournament_id 
                     FROM team_tournament tt 
                     LEFT JOIN team t ON t.id = tt.team_id  
                     LEFT JOIN team t2 ON t2.id = t.parent_team_id 
@@ -207,7 +211,7 @@
             else {
                 while ($row = $query->fetch(\PDO::FETCH_ASSOC)) {
                     $team = Team::CreateSoccerTeam(
-                        $row['team_id'], $row['name'], $row['l_name'], $row['code'],
+                        $row['team_id'], $row['name'], $row['l_name'], $row['code'], $row['team_type'],
                         $row['parent_team_id'], $row['parent_team_name'],
                         $row['group_name'], $row['group_order'],
                         $row['parent_group_name'], $row['parent_group_long_name'], $row['parent_group_order'],
@@ -216,7 +220,7 @@
                     array_push($teams, $team);
 
                     $second_round_team = Team::CreateSoccerTeam(
-                        $row['team_id'], $row['name'], $row['l_name'], $row['code'],
+                        $row['team_id'], $row['name'], $row['l_name'], $row['code'], $row['team_type'],
                         $row['parent_team_id'], $row['parent_team_name'],
                         '', $row['group_order'],
                         $row['parent_group_name'], $row['parent_group_long_name'], $row['parent_group_order'],
@@ -237,8 +241,9 @@
         }
 
         /*
-            SELECT DISTINCT t.id, UCASE(t.name) AS name, t.parent_team_id, UCASE(t2.name) AS parent_team_name,
-                        n.flag_filename, n.code, tc.tournament_count
+            SELECT DISTINCT t.id, UCASE(t.name) AS name, n.code, t.team_type_id AS team_type,
+                        t.parent_team_id, UCASE(t2.name) AS parent_team_name,
+                        n.flag_filename, tc.tournament_count
             FROM team t
             LEFT JOIN team_tournament tt ON tt.team_id = t.id
             LEFT JOIN tournament tou ON tou.id = tt.tournament_id
@@ -253,8 +258,8 @@
                         GROUP BY team_id) tc ON tc.team_id = t.id
             WHERE tou.tournament_type_id = 1
             UNION
-            SELECT DISTINCT t.id, UCASE(t.name) AS name, null, null,
-                n.flag_filename, n.code, tc.tournament_count
+            SELECT DISTINCT t.id, UCASE(t.name) AS name, n.code, t.team_type_id AS team_type, null, null,
+                n.flag_filename, tc.tournament_count
             FROM team t
             LEFT OUTER JOIN team t2 ON t2.parent_team_id = t.id
             LEFT JOIN team_tournament tt ON tt.team_id = t2.id
@@ -272,8 +277,9 @@
 
         public static function getAllTimeSoccerTeamSql($tournament_type_id) {
 
-            $sql = 'SELECT DISTINCT t.id, UCASE(t.name) AS name, t.parent_team_id, UCASE(t2.name) AS parent_team_name,
-                        n.flag_filename, n.code, tc.tournament_count
+            $sql = 'SELECT DISTINCT t.id, UCASE(t.name) AS name, n.code, t.team_type_id AS team_type, 
+                        t.parent_team_id, UCASE(t2.name) AS parent_team_name,
+                        n.flag_filename, tc.tournament_count
                     FROM team t
                     LEFT JOIN team_tournament tt ON tt.team_id = t.id
                     LEFT JOIN tournament tou ON tou.id = tt.tournament_id  
@@ -288,8 +294,8 @@
                                 GROUP BY team_id) tc ON tc.team_id = t.id
                     WHERE tou.tournament_type_id = '.$tournament_type_id.'  -- AND tt.tournament_id <> 1
                     UNION
-                    SELECT DISTINCT t.id, UCASE(t.name) AS name, null, null,
-                        n.flag_filename, n.code, tc.tournament_count
+                    SELECT DISTINCT t.id, UCASE(t.name) AS name, n.code, t.team_type_id AS team_type, null, null,
+                        n.flag_filename, tc.tournament_count
                     FROM team t  
                     LEFT OUTER JOIN team t2 ON t2.parent_team_id = t.id
                     LEFT JOIN team_tournament tt ON tt.team_id = t2.id
@@ -321,7 +327,8 @@
             else {
                 while ($row = $query->fetch(\PDO::FETCH_ASSOC)) {
                     $team = Team::CreateSoccerTeam(
-                        $row['id'], $row['name'], '', $row['code'], $row['parent_team_id'], $row['parent_team_name'],
+                        $row['id'], $row['name'], '', $row['code'], $row['team_type'],
+                        $row['parent_team_id'], $row['parent_team_name'],
                         '', '',
                         '', '', 0,
                         $row['flag_filename'], '', 0,'', $row['tournament_count'],
@@ -340,9 +347,9 @@
         }
 
         /*
-            SELECT t.id, UCASE(t.name) AS name,
+            SELECT t.id, UCASE(t.name) AS name, n.code, t.team_type_id AS team_type,
                 t.parent_team_id, UCASE(t2.name) AS parent_team_name, UCASE(g.name) AS group_name,
-                n.flag_filename, n2.flag_filename AS parent_flag_filename, n.code, tt.tournament_id, tou.name AS tournament_name,
+                n.flag_filename, n2.flag_filename AS parent_flag_filename, tt.tournament_id, tou.name AS tournament_name,
                 g2.name AS confederation_name, g2.group_logo AS confederation_logo_filename
             FROM team t
             LEFT JOIN team_tournament tt ON tt.team_id = t.id
@@ -356,9 +363,9 @@
          */
 
         public static function getAllTimeSoccerTeamTournamentSql($tournament_type_id) {
-            $sql = 'SELECT t.id, UCASE(t.name) AS name, 
+            $sql = 'SELECT t.id, UCASE(t.name) AS name, n.code, t.team_type_id AS team_type, 
                         t.parent_team_id, UCASE(t2.name) AS parent_team_name, UCASE(g.name) AS group_name,
-                        n.flag_filename, n2.flag_filename AS parent_flag_filename, n.code, tt.tournament_id, tou.name AS tournament_name,
+                        n.flag_filename, n2.flag_filename AS parent_flag_filename, tt.tournament_id, tou.name AS tournament_name,
                         g2.name AS confederation_name, g2.group_logo AS confederation_logo_filename
                     FROM team t
                     LEFT JOIN team_tournament tt ON tt.team_id = t.id
@@ -388,7 +395,8 @@
             else {
                 while ($row = $query->fetch(\PDO::FETCH_ASSOC)) {
                     $team = Team::CreateSoccerTeam(
-                        $row['id'], $row['name'], '', $row['code'], $row['parent_team_id'], $row['parent_team_name'],
+                        $row['id'], $row['name'], '', $row['code'], $row['team_type'],
+                        $row['parent_team_id'], $row['parent_team_name'],
                         $row['group_name'], '',
                         '', '', 0,
                         $row['flag_filename'], '', $row['tournament_id'], $row['tournament_name'], 0,
@@ -396,7 +404,8 @@
                     array_push($teams, $team);
 
                     $second_round_team = Team::CreateSoccerTeam(
-                        $row['id'], $row['name'], '', $row['code'], $row['parent_team_id'], $row['parent_team_name'],
+                        $row['id'], $row['name'], '', $row['code'], $row['team_type'],
+                        $row['parent_team_id'], $row['parent_team_name'],
                         $row['group_name'], '',
                         '', '', 0,
                         $row['flag_filename'], '', $row['tournament_id'], $row['tournament_name'], 0,
@@ -582,6 +591,22 @@
         public function setCode($code)
         {
             $this->code = $code;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getTeamType()
+        {
+            return $this->team_type;
+        }
+
+        /**
+         * @param mixed $team_type
+         */
+        public function setTeamType($team_type)
+        {
+            $this->team_type = $team_type;
         }
 
         /**
@@ -1254,6 +1279,38 @@
         public function setAdvancedSecondRound($advanced_second_round)
         {
             $this->advanced_second_round = $advanced_second_round;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getRanking()
+        {
+            return $this->ranking;
+        }
+
+        /**
+         * @param mixed $ranking
+         */
+        public function setRanking($ranking)
+        {
+            $this->ranking = $ranking;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getCount()
+        {
+            return $this->count;
+        }
+
+        /**
+         * @param mixed $count
+         */
+        public function setCount($count)
+        {
+            $this->count = $count;
         }
 
         /**

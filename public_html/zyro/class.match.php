@@ -474,6 +474,10 @@
             return self::getRoundMatches($matches, Soccer::ROUND16);
         }
 
+        public static function getReplayRound16Matches($matches) {
+            return self::getRoundMatches($matches, Soccer::REPLAY_ROUND16);
+        }
+
         public static function getQuarterfinalMatches($matches) {
             return self::getRoundMatches($matches, Soccer::QUARTERFINALS);
         }
@@ -593,7 +597,7 @@
                 if (($matches[$i]->getTournamentId() != SoccerHtml::PARIS_1924
                     && $matches[$i]->getStage() == Soccer::SECOND_STAGE && $matches[$i]->getRound() != Soccer::CONSOLATION_ROUND
                     && $matches[$i]->getRound() != Soccer::FIFTH_PLACE_MATCH && $matches[$i]->getRound() != Soccer::PRELIMINARY_ROUND)
-                    || ($matches[$i]->getTournamentId() == SoccerHtml::PARIS_1924 && $matches[$i]->getRound() != Soccer::FIRST_ROUND)
+                    || ($matches[$i]->getTournamentId() == SoccerHtml::PARIS_1924 && $matches[$i]->getRound() != Soccer::PRELIMINARY_ROUND)
                     || $matches[$i]->getTournamentId() == SoccerHtml::ITALY_1934) {
                     for ($j = 0; $j < sizeof($replay_matches); $j++) {
                         if ($matches[$i]->getHomeTeamName() == $replay_matches[$j]->getHomeTeamName()

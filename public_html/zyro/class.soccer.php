@@ -28,6 +28,7 @@
         const MATCH_DAY_5 = 'MatchDay 5';
         const MATCH_DAY_6 = 'MatchDay 6';
         const ROUND16 = 'Round of 16';
+        const REPLAY_ROUND16 = 'Replay Round of 16';
         const QUARTERFINALS = 'Quarterfinals';
         const REPLAY_QUARTERFINALS = 'Replay Quarterfinals';
         const SEMIFINALS = 'Semifinals';
@@ -47,6 +48,7 @@
         const FIRST_STAGE = 'First Stage';
         const GROUP_STAGE = 'Group Stage';
         const SECOND_STAGE = 'Second Stage';
+        const CONSOLATION_STAGE = 'Consolation Stage';
         const QUALIFYING_STAGE = 'Qualifying Stage';
 
         const First = 1;
@@ -64,14 +66,17 @@
         const Round16 = 8;
         const Quarterfinal = 9;
         const ReplayQuarterfinal = 10;
-        const FifthPlace = 11;
-        const Semifinal = 12;
-        const ThirdPlace = 13;
-        const RunnerUp = 14;
-        const Champion = 15;
-        const BronzeMedal = 16;
-        const SilverMedal = 17;
-        const GoldMedal = 18;
+        const Consolation = 11;
+        const ConsolationSemifinal = 12;
+        const ConsolationFinal = 13;
+        const FifthPlace = 14;
+        const Semifinal = 15;
+        const ThirdPlace = 16;
+        const RunnerUp = 17;
+        const Champion = 18;
+        const BronzeMedal = 19;
+        const SilverMedal = 20;
+        const GoldMedal = 21;
 
         private $id;
 
@@ -255,10 +260,27 @@
         }
 
         public static function getFirstStageMatchesRanking($tournament) {
-            Soccer::getGroupMatchesRanking($tournament);
-            Soccer::getSecondRoundMatchesRanking($tournament);
-            Soccer::getReplaySecondRoundMatchesRanking($tournament);
-            Soccer::getFinalRoundMatchesRanking($tournament);
+            $rounds = Round::getRoundArray($tournament, Soccer::FIRST_STAGE);
+            foreach ($rounds as $round_id => $round) {
+                switch ($round->getRoundName()) {
+                    case Soccer::GROUP_MATCHES:
+                        Soccer::getGroupMatchesRanking($tournament);
+                        break;
+                    case Soccer::SECOND_ROUND:
+                        Soccer::getSecondRoundMatchesRanking($tournament);
+                        break;
+                    case Soccer::REPLAY_SECOND_ROUND:
+                        Soccer::getReplaySecondRoundMatchesRanking($tournament);
+                        break;
+                    case Soccer::FINAL_ROUND:
+                        Soccer::getFinalRoundMatchesRanking($tournament);
+                        break;
+                }
+            }
+//            Soccer::getGroupMatchesRanking($tournament);
+//            Soccer::getSecondRoundMatchesRanking($tournament);
+//            Soccer::getReplaySecondRoundMatchesRanking($tournament);
+//            Soccer::getFinalRoundMatchesRanking($tournament);
         }
 
         public static function getGroupMatchesRanking($tournament) {
@@ -305,9 +327,20 @@
         }
 
         public static function updateFirstStageMatchesRanking($tournament) {
-            Soccer::updateSecondRoundMatchesRanking($tournament);
-            Soccer::updateFinalRoundMatchesRanking($tournament);
-            Soccer::updatePlayOffMatchesRanking($tournament);
+            $rounds = Round::getRoundArray($tournament, Soccer::FIRST_STAGE);
+            foreach ($rounds as $round_id => $round) {
+                switch ($round->getRoundName()) {
+                    case Soccer::SECOND_ROUND:
+                        Soccer::updateSecondRoundMatchesRanking($tournament);
+                        break;
+                    case Soccer::FINAL_ROUND:
+                        Soccer::updateFinalRoundMatchesRanking($tournament);
+                        break;
+                    case Soccer::PLAY_OFF:
+                        Soccer::updatePlayOffMatchesRanking($tournament);
+                        break;
+                }
+            }
         }
 
         public static function updateSecondRoundMatchesRanking($tournament) {
@@ -349,31 +382,99 @@
         }
 
         public static function getSecondStageMatchesRanking($tournament) {
-            Soccer::getPreliminaryRoundMatchesRanking($tournament);
-            Soccer::getFirstRoundMatchesRanking($tournament);
-            Soccer::getReplayFirstRoundMatchesRanking($tournament);
-            Soccer::getRound16MatchesRanking($tournament);
-            Soccer::getReplayQuarterfinalMatchesRanking($tournament);
-            if ($tournament->getTournamentId() == SoccerHtml::STOCKHOLM_1912) {
-                Soccer::getConsolationFinalMatchRanking($tournament);
-            };
-            Soccer::getQuarterfinalMatchesRanking($tournament);
-            Soccer::getSemifinalMatchesRanking($tournament);
-            Soccer::getConsolationMatchesRanking($tournament);
-            Soccer::getConsolationSemifinalMatchesRanking($tournament);
-            if ($tournament->getTournamentId() != SoccerHtml::STOCKHOLM_1912) {
-                Soccer::getConsolationFinalMatchRanking($tournament);
-            };
-            Soccer::getFifthPlaceMatchRanking($tournament);
-            Soccer::getBronzeMedalMatchRanking($tournament);
-            Soccer::getReplayBronzeMedalMatchRanking($tournament);
-            Soccer::getGoldMedalMatchRanking($tournament);
-            Soccer::getReplayGoldMedalMatchRanking($tournament);
-            Soccer::getThirdPlaceMatchRanking($tournament);
-            Soccer::getFinalMatchRanking($tournament);
-            Soccer::getReplayFinalMatchRanking($tournament);
-            Soccer::getFinalMatchesRanking($tournament);
-            Soccer::getFinalPlayoffMatchRanking($tournament);
+            $rounds = Round::getSecondStageRoundArray($tournament);
+            foreach ($rounds as $round_id => $round) {
+                switch ($round->getRoundName()) {
+                    case Soccer::PRELIMINARY_ROUND:
+                        Soccer::getPreliminaryRoundMatchesRanking($tournament);
+                        break;
+                    case Soccer::FIRST_ROUND:
+                        Soccer::getFirstRoundMatchesRanking($tournament);
+                        break;
+                    case Soccer::REPLAY_FIRST_ROUND:
+                        Soccer::getReplayFirstRoundMatchesRanking($tournament);
+                        break;
+                    case Soccer::ROUND16:
+                        Soccer::getRound16MatchesRanking($tournament);
+                        break;
+                    case Soccer::REPLAY_ROUND16:
+                        Soccer::getReplayRound16MatchesRanking($tournament);
+                        break;
+                    case Soccer::QUARTERFINALS:
+                        Soccer::getQuarterfinalMatchesRanking($tournament);
+                        break;
+                    case Soccer::REPLAY_QUARTERFINALS:
+                        Soccer::getReplayQuarterfinalMatchesRanking($tournament);
+                        break;
+                    case Soccer::SEMIFINALS:
+                        Soccer::getSemifinalMatchesRanking($tournament);
+                        break;
+                    case Soccer::CONSOLATION_ROUND:
+                        Soccer::getConsolationMatchesRanking($tournament);
+                        break;
+                    case Soccer::CONSOLATION_SEMIFINALS:
+                        Soccer::getConsolationSemifinalMatchesRanking($tournament);
+                        break;
+                    case Soccer::CONSOLATION_FINAL:
+                        Soccer::getConsolationFinalMatchRanking($tournament);
+                        break;
+                    case Soccer::FIFTH_PLACE_MATCH:
+                        Soccer::getFifthPlaceMatchRanking($tournament);
+                        break;
+                    case Soccer::BRONZE_MEDAL_MATCH:
+                        Soccer::getBronzeMedalMatchRanking($tournament);
+                        break;
+                    case Soccer::REPLAY_BRONZE_MEDAL_MATCH:
+                        Soccer::getReplayBronzeMedalMatchRanking($tournament);
+                        break;
+                    case Soccer::THIRD_PLACE:
+                        Soccer::getThirdPlaceMatchRanking($tournament);
+                        break;
+                    case Soccer::GOLD_MEDAL_MATCH:
+                        Soccer::getGoldMedalMatchRanking($tournament);
+                        break;
+                    case Soccer::REPLAY_GOLD_MEDAL_MATCH:
+                        Soccer::getReplayGoldMedalMatchRanking($tournament);
+                        break;
+                    case Soccer::FINAL_:
+                        Soccer::getFinalMatchRanking($tournament);
+                        break;
+                    case Soccer::REPLAY_FINAL:
+                        Soccer::getReplayFinalMatchRanking($tournament);
+                        break;
+                    case Soccer::FINALS:
+                        Soccer::getFinalMatchesRanking($tournament);
+                        break;
+                    case Soccer::FINAL_PLAYOFF:
+                        Soccer::getFinalPlayoffMatchRanking($tournament);
+                        break;
+                }
+            }
+//            Soccer::getPreliminaryRoundMatchesRanking($tournament);
+//            Soccer::getFirstRoundMatchesRanking($tournament);
+//            Soccer::getReplayFirstRoundMatchesRanking($tournament);
+//            Soccer::getRound16MatchesRanking($tournament);
+//            Soccer::getReplayQuarterfinalMatchesRanking($tournament);
+//            if ($tournament->getTournamentId() == SoccerHtml::STOCKHOLM_1912) {
+//                Soccer::getConsolationFinalMatchRanking($tournament);
+//            };
+//            Soccer::getQuarterfinalMatchesRanking($tournament);
+//            Soccer::getSemifinalMatchesRanking($tournament);
+//            Soccer::getConsolationMatchesRanking($tournament);
+//            Soccer::getConsolationSemifinalMatchesRanking($tournament);
+//            if ($tournament->getTournamentId() != SoccerHtml::STOCKHOLM_1912) {
+//                Soccer::getConsolationFinalMatchRanking($tournament);
+//            };
+//            Soccer::getFifthPlaceMatchRanking($tournament);
+//            Soccer::getBronzeMedalMatchRanking($tournament);
+//            Soccer::getReplayBronzeMedalMatchRanking($tournament);
+//            Soccer::getGoldMedalMatchRanking($tournament);
+//            Soccer::getReplayGoldMedalMatchRanking($tournament);
+//            Soccer::getThirdPlaceMatchRanking($tournament);
+//            Soccer::getFinalMatchRanking($tournament);
+//            Soccer::getReplayFinalMatchRanking($tournament);
+//            Soccer::getFinalMatchesRanking($tournament);
+//            Soccer::getFinalPlayoffMatchRanking($tournament);
             Soccer::sortTournamentStanding($tournament);
         }
 
@@ -398,6 +499,12 @@
         public static function getRound16MatchesRanking($tournament) {
             $round16_matches = Match::getRound16Matches($tournament->getMatches());
             $teams = self::getGroupRanking($tournament->getTeams(), $round16_matches, self::Second);
+            $tournament->setTeams($teams);
+        }
+
+        public static function getReplayRound16MatchesRanking($tournament) {
+            $replay_round16_matches = Match::getReplayRound16Matches($tournament->getMatches());
+            $teams = self::getGroupRanking($tournament->getTeams(), $replay_round16_matches, self::Second);
             $tournament->setTeams($teams);
         }
 
@@ -601,6 +708,7 @@
             foreach ($tt as $tournament_name => $_teams) {
                 if (array_key_exists($tournament_name, $tm)) {
                     $t = Tournament::CreateSoccerTournamentByTeams($tt[$tournament_name], $srtt[$tournament_name], $tm[$tournament_name]);
+                    Round::getRounds($t);
                     self::getFirstStageMatchesRanking($t);
                     Soccer::updateFirstStageMatchesRanking($t);
                     Soccer::getSecondStageMatchesRanking($t);
@@ -888,6 +996,21 @@
                     array_push($result, $_team);
                 }
             }
+            if (array_key_exists(self::ConsolationFinal, $teams_tmp)) {
+                foreach ($teams_tmp[self::ConsolationFinal] as $name => $_team) {
+                    array_push($result, $_team);
+                }
+            }
+            if (array_key_exists(self::ConsolationSemifinal, $teams_tmp)) {
+                foreach ($teams_tmp[self::ConsolationSemifinal] as $name => $_team) {
+                    array_push($result, $_team);
+                }
+            }
+            if (array_key_exists(self::Consolation, $teams_tmp)) {
+                foreach ($teams_tmp[self::Consolation] as $name => $_team) {
+                    array_push($result, $_team);
+                }
+            }
             if (array_key_exists(self::ReplayQuarterfinal, $teams_tmp)) {
                 foreach ($teams_tmp[self::ReplayQuarterfinal] as $name => $_team) {
                     array_push($result, $_team);
@@ -1000,7 +1123,7 @@
                 $team->setBestFinish(self::RunnerUp);
             }
             if ($match->getRound() == self::CONSOLATION_FINAL) {
-                $team->setBestFinish(self::Quarterfinal);
+                $team->setBestFinish(self::ConsolationFinal);
                 if ($match->getTournamentId() == SoccerHtml::ANTWERP_1920) $team->setBestFinish(self::BronzeMedal);
             }
         }
@@ -1049,6 +1172,9 @@
                 case self::ROUND16:
                     $best_finish = self::Round16;
                     break;
+                case self::REPLAY_ROUND16:
+                    $best_finish = self::Round16;
+                    break;
                 case self::QUARTERFINALS:
                     $best_finish = self::Quarterfinal;
                     break;
@@ -1056,10 +1182,10 @@
                     $best_finish = self::ReplayQuarterfinal;
                     break;
                 case self::CONSOLATION_ROUND:
-                    $best_finish = self::Quarterfinal;
+                    $best_finish = self::Consolation;
                     break;
                 case self::CONSOLATION_SEMIFINALS:
-                    $best_finish = self::Quarterfinal;
+                    $best_finish = self::ConsolationSemifinal;
                     break;
                 case self::FIFTH_PLACE_MATCH:
                     $best_finish = self::FifthPlace;
@@ -1083,7 +1209,7 @@
                     $best_finish = self::ThirdPlace;
                     break;
                 case self::CONSOLATION_FINAL:
-                    $best_finish = self::Quarterfinal;
+                    $best_finish = self::FifthPlace;
                     if ($match->getTournamentId() == SoccerHtml::ANTWERP_1920) $best_finish = self::SilverMedal;
                     break;
                 case self::REPLAY_FINAL:
@@ -1320,10 +1446,10 @@
             $matches[16]->setAwayTeamScore(0);
             $matches[18]->setHomeTeamScore(1);
             $matches[18]->setAwayTeamScore(0);
-//            $matches[32]->setHomeTeamScore(1);
-//            $matches[32]->setAwayTeamScore(0);
-//            $matches[33]->setHomeTeamScore(3);
-//            $matches[33]->setAwayTeamScore(3);
+            $matches[32]->setHomeTeamScore(1);
+            $matches[32]->setAwayTeamScore(0);
+            $matches[33]->setHomeTeamScore(3);
+            $matches[33]->setAwayTeamScore(3);
         }
 
         /**

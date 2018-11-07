@@ -9,10 +9,11 @@ VALUES ('Olympic Football Tournament Helsinki 1952', '1952-07-15', '1952-08-02',
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (55, 60, 1, 40, 1),
 	   (55, 47, 2, 40, 2),
-	   (55, 43, 1, 40, 1),
-	   (55, 44, 2, 40, 2),
-	   (55, 132, 3, 40, 3),
-	   (55, 133, 4, 40, 4);
+	   (55, 59, 3, 40, 3),
+	   (55, 43, 4, 40, 4),
+	   (55, 44, 5, 40, 5),
+	   (55, 132, 6, 40, 6),
+	   (55, 133, 7, 40, 7);
 
 SELECT * FROM `team` WHERE team_type_id = 4 ORDER BY name;
 

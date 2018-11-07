@@ -8,11 +8,13 @@ VALUES ('Olympic Football Tournament Amsterdam 1928', '1928-05-27', '1928-06-13'
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (58, 60, 1, 40, 1),
-	   (58, 47, 1, 40, 1),
-	   (58, 43, 2, 40, 2),
-	   (58, 44, 3, 40, 3),
-	   (58, 132, 4, 40, 4),
-	   (58, 133, 5, 40, 5);
+	   (58, 47, 2, 40, 2),
+	   (58, 43, 3, 40, 3),
+	   (58, 62, 4, 40, 4),
+	   (58, 44, 5, 40, 5),
+	   (58, 132, 6, 40, 6),
+	   (58, 133, 7, 40, 7),
+	   (58, 136, 8, 40, 8);
 
 SELECT * FROM `team` WHERE team_type_id = 4 ORDER BY name;
 

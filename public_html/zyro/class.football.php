@@ -1425,10 +1425,10 @@
             }
             else {
                 while ($row = $query->fetch(\PDO::FETCH_ASSOC)) {
-                    $team = Team::CreateFootballTeam($row['team_id'], $row['name'], $row['group_name'], $row['group_order'],
+                    $team = Team::CreateFootballTeam($row['team_id'], $row['name'], $row['team_type'], $row['group_name'], $row['group_order'],
                         $row['parent_group_name'], $row['parent_group_long_name'], $row['parent_group_order'], $row['logo_filename']);
                     array_push($teams, $team);
-                    $preseason_team = Team::CreateFootballTeam($row['team_id'], $row['name'], $row['group_name'], $row['group_order'],
+                    $preseason_team = Team::CreateFootballTeam($row['team_id'], $row['name'], $row['team_type'], $row['group_name'], $row['group_order'],
                         $row['parent_group_name'], $row['parent_group_long_name'], $row['parent_group_order'], $row['logo_filename']);
                     array_push($preseason_teams, $preseason_team);
                 }
@@ -1439,7 +1439,7 @@
         }
 
         public static function getFootballTeamSql($tournament_id) {
-            $sql = 'SELECT t.name AS name, tt.team_id, 
+            $sql = 'SELECT tt.team_id, t.name AS name, t.team_type_id AS team_type,
                         group_id, g.name AS group_name, group_order, 
                         parent_group_id, pg.name AS parent_group_name, pg.long_name AS parent_group_long_name, parent_group_order, 
                         tl.logo_filename, tt.tournament_id 

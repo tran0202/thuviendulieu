@@ -172,7 +172,7 @@
         public static function calculateGroupStanding($group_teams, $t1, $t1_gf, $t1_ga, $t2, $t3, $t3_gf, $t3_ga, $t4, $matches) {
             $tmp_group_teams = array();
             foreach ($group_teams as $team_name => $team) {
-                $tmp_group_teams[$team_name] = Team::CloneSoccerTeam($team->getId(), $team->getName(), $team->getCode(), $team->getGroupName(),
+                $tmp_group_teams[$team_name] = Team::CloneSoccerTeam($team->getId(), $team->getName(), $team->getCode(), $team->getTeamType(), $team->getGroupName(),
                     $team->getGroupOrder(), $team->getMatchPlay(), $team->getWin(), $team->getDraw(), $team->getLoss(),
                     $team->getGoalFor(), $team->getGoalAgainst(), $team->getGoalDiff(), $team->getPoint());
             }
@@ -253,13 +253,13 @@
         public static function calculateTeamScenarios($scenarios) {
             $team_array = array();
             for ($i = 0; $i < sizeof($scenarios); $i++) {
-                $team_array[$scenarios[$i]->getTeam1Result()] = Team::CloneSoccerTeam(0, $scenarios[$i]->getTeam1MatchResult(), $scenarios[$i]->getTeam1(), '', $scenarios[$i]->getTeam1Result(),
+                $team_array[$scenarios[$i]->getTeam1Result()] = Team::CloneSoccerTeam(0, $scenarios[$i]->getTeam1MatchResult(), $scenarios[$i]->getTeam1(), 1,'', $scenarios[$i]->getTeam1Result(),
                     3, 0, 0, 0, $scenarios[$i]->getTeam1GoalFor(), 0, $scenarios[$i]->getTeam1GoalDiff(), $scenarios[$i]->getTeam1Point());
-                $team_array[$scenarios[$i]->getTeam2Result()] = Team::CloneSoccerTeam(0, $scenarios[$i]->getTeam2MatchResult(), $scenarios[$i]->getTeam2(), '', $scenarios[$i]->getTeam2Result(),
+                $team_array[$scenarios[$i]->getTeam2Result()] = Team::CloneSoccerTeam(0, $scenarios[$i]->getTeam2MatchResult(), $scenarios[$i]->getTeam2(), 1,'', $scenarios[$i]->getTeam2Result(),
                     3, 0, 0, 0, $scenarios[$i]->getTeam2GoalFor(), 0, $scenarios[$i]->getTeam2GoalDiff(), $scenarios[$i]->getTeam2Point());
-                $team_array[$scenarios[$i]->getTeam3Result()] = Team::CloneSoccerTeam(0, $scenarios[$i]->getTeam3MatchResult(), $scenarios[$i]->getTeam3(), '', $scenarios[$i]->getTeam3Result(),
+                $team_array[$scenarios[$i]->getTeam3Result()] = Team::CloneSoccerTeam(0, $scenarios[$i]->getTeam3MatchResult(), $scenarios[$i]->getTeam3(), 1,'', $scenarios[$i]->getTeam3Result(),
                     3, 0, 0, 0, $scenarios[$i]->getTeam3GoalFor(), 0, $scenarios[$i]->getTeam3GoalDiff(), $scenarios[$i]->getTeam3Point());
-                $team_array[$scenarios[$i]->getTeam4Result()] = Team::CloneSoccerTeam(0, $scenarios[$i]->getTeam4MatchResult(), $scenarios[$i]->getTeam4(), '', $scenarios[$i]->getTeam4Result(),
+                $team_array[$scenarios[$i]->getTeam4Result()] = Team::CloneSoccerTeam(0, $scenarios[$i]->getTeam4MatchResult(), $scenarios[$i]->getTeam4(), 1,'', $scenarios[$i]->getTeam4Result(),
                     3, 0, 0, 0, $scenarios[$i]->getTeam4GoalFor(), 0, $scenarios[$i]->getTeam4GoalDiff(), $scenarios[$i]->getTeam4Point());
                 $qualify_status = self::Eliminated;
                 $note = '';
