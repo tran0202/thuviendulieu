@@ -8,7 +8,7 @@ VALUES ('1996 OFC Nations Cup', '1995-11-10', '1996-11-01', 16, 'OFCcup.png', nu
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (208, 44, 1, 40, 1),
-	   (208, 154, 2, 40, 2);
+	   (208, 154, 2, 40, 1);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

@@ -8,10 +8,10 @@ VALUES ('1993 Copa America Ecuador', '1993-06-15', '1993-07-04', 12, 'copa-1993.
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (92, 41, 1, 39, 1),
-	   (92, 43, 1, 40, 1),
+	   (92, 43, 1, 40, 2),
 	   (92, 44, 2, 40, 2),
-	   (92, 45, 3, 40, 3),
-	   (92, 46, 4, 40, 4);
+	   (92, 45, 3, 40, 2),
+	   (92, 46, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

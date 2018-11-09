@@ -269,18 +269,11 @@
                     case Soccer::SECOND_ROUND:
                         Soccer::getSecondRoundMatchesRanking($tournament);
                         break;
-                    case Soccer::REPLAY_SECOND_ROUND:
-                        Soccer::getReplaySecondRoundMatchesRanking($tournament);
-                        break;
                     case Soccer::FINAL_ROUND:
                         Soccer::getFinalRoundMatchesRanking($tournament);
                         break;
                 }
             }
-//            Soccer::getGroupMatchesRanking($tournament);
-//            Soccer::getSecondRoundMatchesRanking($tournament);
-//            Soccer::getReplaySecondRoundMatchesRanking($tournament);
-//            Soccer::getFinalRoundMatchesRanking($tournament);
         }
 
         public static function getGroupMatchesRanking($tournament) {
@@ -401,10 +394,7 @@
                         Soccer::getReplayRound16MatchesRanking($tournament);
                         break;
                     case Soccer::QUARTERFINALS:
-                        Soccer::getQuarterfinalMatchesRanking($tournament);
-                        break;
-                    case Soccer::REPLAY_QUARTERFINALS:
-                        Soccer::getReplayQuarterfinalMatchesRanking($tournament);
+                        Soccer::getAllQuarterfinalMatchesRanking($tournament);
                         break;
                     case Soccer::SEMIFINALS:
                         Soccer::getSemifinalMatchesRanking($tournament);
@@ -450,31 +440,6 @@
                         break;
                 }
             }
-//            Soccer::getPreliminaryRoundMatchesRanking($tournament);
-//            Soccer::getFirstRoundMatchesRanking($tournament);
-//            Soccer::getReplayFirstRoundMatchesRanking($tournament);
-//            Soccer::getRound16MatchesRanking($tournament);
-//            Soccer::getReplayQuarterfinalMatchesRanking($tournament);
-//            if ($tournament->getTournamentId() == SoccerHtml::STOCKHOLM_1912) {
-//                Soccer::getConsolationFinalMatchRanking($tournament);
-//            };
-//            Soccer::getQuarterfinalMatchesRanking($tournament);
-//            Soccer::getSemifinalMatchesRanking($tournament);
-//            Soccer::getConsolationMatchesRanking($tournament);
-//            Soccer::getConsolationSemifinalMatchesRanking($tournament);
-//            if ($tournament->getTournamentId() != SoccerHtml::STOCKHOLM_1912) {
-//                Soccer::getConsolationFinalMatchRanking($tournament);
-//            };
-//            Soccer::getFifthPlaceMatchRanking($tournament);
-//            Soccer::getBronzeMedalMatchRanking($tournament);
-//            Soccer::getReplayBronzeMedalMatchRanking($tournament);
-//            Soccer::getGoldMedalMatchRanking($tournament);
-//            Soccer::getReplayGoldMedalMatchRanking($tournament);
-//            Soccer::getThirdPlaceMatchRanking($tournament);
-//            Soccer::getFinalMatchRanking($tournament);
-//            Soccer::getReplayFinalMatchRanking($tournament);
-//            Soccer::getFinalMatchesRanking($tournament);
-//            Soccer::getFinalPlayoffMatchRanking($tournament);
             Soccer::sortTournamentStanding($tournament);
         }
 
@@ -517,6 +482,12 @@
         public static function getReplayQuarterfinalMatchesRanking($tournament) {
             $replay_quarterfinal_matches = Match::getReplayQuarterfinalMatches($tournament->getMatches());
             $teams = self::getGroupRanking($tournament->getTeams(), $replay_quarterfinal_matches, self::Second);
+            $tournament->setTeams($teams);
+        }
+
+        public static function getAllQuarterfinalMatchesRanking($tournament) {
+            $all_quarterfinal_matches = Match::getAllQuarterfinalMatches($tournament->getMatches());
+            $teams = self::getGroupRanking($tournament->getTeams(), $all_quarterfinal_matches, self::Second);
             $tournament->setTeams($teams);
         }
 
@@ -625,6 +596,7 @@
                 foreach ($teams as $name => $_team) {
                     array_push($teams_tmp, $_team);
                 }
+                $teams_tmp = self::sortGroupStanding($teams_tmp, $tournament->getMatches());
                 $tournament->setTeams($teams_tmp);
             }
         }
@@ -1090,6 +1062,7 @@
         public static function resetBestFinish($match, $team) {
             if ($match->getRound() == self::FIFTH_PLACE_MATCH) {
                 $team->setBestFinish(self::Quarterfinal);
+                if ($team->getName() == 'YUGOSLAVIA' && $match->getTournamentId() == SoccerHtml::TOKYO_1964) $team->setBestFinish(self::ConsolationFinal);
             }
             if ($match->getRound() == self::BRONZE_MEDAL_MATCH) {
                 $team->setBestFinish(self::Semifinal);
@@ -1179,7 +1152,7 @@
                     $best_finish = self::Quarterfinal;
                     break;
                 case self::REPLAY_QUARTERFINALS:
-                    $best_finish = self::ReplayQuarterfinal;
+                    $best_finish = self::Quarterfinal;
                     break;
                 case self::CONSOLATION_ROUND:
                     $best_finish = self::Consolation;

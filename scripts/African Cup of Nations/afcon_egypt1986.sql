@@ -8,9 +8,9 @@ VALUES ('1986 African Cup of Nations Egypt', '1986-03-07', '1986-03-21', 14, 'Af
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (170, 41, 1, 39, 1),
-	   (170, 44, 1, 40, 1),
+	   (170, 44, 1, 40, 2),
 	   (170, 45, 2, 40, 2),
-	   (170, 46, 3, 40, 3);
+	   (170, 46, 3, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

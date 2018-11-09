@@ -8,13 +8,13 @@ VALUES ('Olympic Football Tournament Paris 1924', '1924-05-25', '1924-06-09', 9,
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (59, 60, 1, 40, 1),
-	   (59, 47, 2, 40, 2),
-	   (59, 59, 3, 40, 3),
-	   (59, 43, 4, 40, 4),
-	   (59, 44, 5, 40, 5),
-	   (59, 132, 6, 40, 6),
-	   (59, 137, 7, 40, 7),
-	   (59, 133, 8, 40, 8);
+	   (59, 47, 2, 40, 1),
+	   (59, 59, 3, 40, 1),
+	   (59, 43, 4, 40, 1),
+	   (59, 44, 5, 40, 1),
+	   (59, 132, 6, 40, 1),
+	   (59, 137, 7, 40, 1),
+	   (59, 133, 8, 40, 1);
 
 SELECT * FROM `team` WHERE team_type_id = 4 ORDER BY name;
 

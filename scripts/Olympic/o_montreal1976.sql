@@ -8,10 +8,10 @@ VALUES ('Olympic Football Tournament Montreal 1976', '1976-07-18', '1976-07-31',
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (49, 41, 1, 39, 1),
-	   (49, 43, 1, 40, 1),
+	   (49, 43, 1, 40, 2),
 	   (49, 44, 2, 40, 2),
-	   (49, 132, 3, 40, 3),
-	   (49, 133, 4, 40, 4);
+	   (49, 132, 3, 40, 2),
+	   (49, 133, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 4 ORDER BY name;
 

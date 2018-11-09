@@ -8,9 +8,9 @@ VALUES ('2017 FIFA Confederations Cup Russia', '2017-06-17', '2017-07-02', 17, '
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (211, 41, 1, 39, 1),
-	   (211, 44, 1, 40, 1),
+	   (211, 44, 1, 40, 2),
 	   (211, 45, 2, 40, 2),
-	   (211, 46, 3, 40, 3);
+	   (211, 46, 3, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

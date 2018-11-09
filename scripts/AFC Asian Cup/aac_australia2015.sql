@@ -8,10 +8,10 @@ VALUES ('2015 AFC Asian Cup Australia', '2015-01-09', '2015-01-31', 15, 'aac_201
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (185, 41, 1, 39, 1),
-	   (185, 43, 1, 40, 1),
+	   (185, 43, 1, 40, 2),
 	   (185, 44, 2, 40, 2),
-	   (185, 45, 3, 40, 3),
-	   (185, 46, 4, 40, 4);
+	   (185, 45, 3, 40, 2),
+	   (185, 46, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

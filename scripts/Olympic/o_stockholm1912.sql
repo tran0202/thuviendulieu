@@ -8,13 +8,13 @@ VALUES ('Olympic Football Tournament Stockholm 1912', '1912-06-29', '1912-07-04'
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (61, 47, 1, 40, 1),
-	   (61, 43, 2, 40, 2),
-	   (61, 44, 3, 40, 3),
-	   (61, 132, 4, 40, 4),
-	   (61, 133, 5, 40, 5),
-	   (61, 134, 6, 138, 6),
-	   (61, 139, 7, 138, 7),
-	   (61, 140, 8, 138, 8);
+	   (61, 43, 2, 40, 1),
+	   (61, 44, 3, 40, 1),
+	   (61, 132, 4, 40, 1),
+	   (61, 133, 5, 40, 1),
+	   (61, 134, 1, 138, 2),
+	   (61, 139, 2, 138, 2),
+	   (61, 140, 3, 138, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 4 ORDER BY name;
 

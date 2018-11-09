@@ -8,10 +8,10 @@ VALUES ('Olympic Football Tournament Berlin 1936', '1936-08-03', '1936-08-15', 9
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (57, 47, 1, 40, 1),
-	   (57, 43, 2, 40, 2),
-	   (57, 44, 3, 40, 3),
-	   (57, 132, 4, 40, 4),
-	   (57, 133, 5, 40, 5);
+	   (57, 43, 2, 40, 1),
+	   (57, 44, 3, 40, 1),
+	   (57, 132, 4, 40, 1),
+	   (57, 133, 5, 40, 1);
 
 SELECT * FROM `team` WHERE team_type_id = 4 ORDER BY name;
 

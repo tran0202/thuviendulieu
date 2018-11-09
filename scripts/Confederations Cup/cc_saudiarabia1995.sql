@@ -8,7 +8,7 @@ VALUES ('1995 King Fahd Cup Saudi Arabia', '1995-01-06', '1995-01-13', 17, 'Conf
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (219, 41, 1, 39, 1),
-	   (219, 45, 1, 40, 1),
+	   (219, 45, 1, 40, 2),
 	   (219, 46, 2, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;

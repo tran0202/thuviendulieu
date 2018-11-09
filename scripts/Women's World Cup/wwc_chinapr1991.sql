@@ -8,10 +8,10 @@ VALUES ('1991 FIFA Women''s World Cup China PR', '1991-11-16', '1991-11-30', 8, 
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (39, 41, 1, 39, 1),
-	   (39, 43, 1, 40, 1),
+	   (39, 43, 1, 40, 2),
 	   (39, 44, 2, 40, 2),
-	   (39, 45, 3, 40, 3),
-	   (39, 46, 4, 40, 4);
+	   (39, 45, 3, 40, 2),
+	   (39, 46, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 3 ORDER BY name;
 

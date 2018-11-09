@@ -8,10 +8,10 @@ VALUES ('2015 Copa America Chile', '2015-06-11', '2015-07-04', 12, 'copa-2015.pn
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (84, 41, 1, 39, 1),
-	   (84, 43, 1, 40, 1),
+	   (84, 43, 1, 40, 2),
 	   (84, 44, 2, 40, 2),
-	   (84, 45, 3, 40, 3),
-	   (84, 46, 4, 40, 4);
+	   (84, 45, 3, 40, 2),
+	   (84, 46, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

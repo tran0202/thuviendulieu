@@ -8,7 +8,7 @@ VALUES ('1976 African Cup of Nations Ethiopia', '1976-02-29', '1976-03-14', 14, 
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (175, 41, 1, 39, 1),
-	   (175, 58, 2, 39, 2);
+	   (175, 58, 2, 39, 1);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

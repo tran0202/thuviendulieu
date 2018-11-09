@@ -8,9 +8,9 @@ VALUES ('1987 Copa America Argentina', '1987-06-27', '1987-07-12', 12, 'CONMEBOL
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (95, 41, 1, 39, 1),
-	   (95, 44, 1, 40, 1),
+	   (95, 44, 1, 40, 2),
 	   (95, 45, 2, 40, 2),
-	   (95, 46, 3, 40, 3);
+	   (95, 46, 3, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

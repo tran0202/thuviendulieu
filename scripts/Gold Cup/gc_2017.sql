@@ -8,9 +8,9 @@ VALUES ('2017 Gold Cup United States', '2017-07-07', '2017-07-26', 13, 'gc_2017.
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (128, 41, 1, 39, 1),
-	   (128, 43, 1, 40, 1),
+	   (128, 43, 1, 40, 2),
 	   (128, 44, 2, 40, 2),
-	   (128, 46, 3, 40, 3);
+	   (128, 46, 3, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

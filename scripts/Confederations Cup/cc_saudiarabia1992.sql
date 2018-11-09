@@ -8,8 +8,8 @@ VALUES ('1992 King Fahd Cup Saudi Arabia', '1992-10-15', '1992-10-20', 17, 'Conf
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (220, 44, 1, 40, 1),
-	   (220, 45, 2, 40, 2),
-	   (220, 46, 3, 40, 3);
+	   (220, 45, 2, 40, 1),
+	   (220, 46, 3, 40, 1);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

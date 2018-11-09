@@ -8,7 +8,7 @@ VALUES ('UEFA Euro 1992 Sweden', '1992-06-10', '1992-06-26', 11, 'Euro_1992.png'
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (74, 41, 1, 39, 1),
-	   (74, 44, 1, 40, 1),
+	   (74, 44, 1, 40, 2),
 	   (74, 46, 2, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;

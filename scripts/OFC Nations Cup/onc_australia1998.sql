@@ -8,9 +8,9 @@ VALUES ('1998 OFC Nations Cup Australia', '1998-09-25', '1998-10-04', 16, 'OFCcu
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (207, 41, 1, 39, 1),
-	   (207, 44, 1, 40, 1),
+	   (207, 44, 1, 40, 2),
 	   (207, 45, 2, 40, 2),
-	   (207, 46, 3, 40, 3);
+	   (207, 46, 3, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

@@ -8,9 +8,9 @@ VALUES ('UEFA Euro 1996 England', '1996-06-08', '1996-06-30', 11, 'Euro_1996.png
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (73, 41, 1, 39, 1),
-	   (73, 43, 1, 40, 1),
+	   (73, 43, 1, 40, 2),
 	   (73, 44, 2, 40, 2),
-	   (73, 46, 3, 40, 3);
+	   (73, 46, 3, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

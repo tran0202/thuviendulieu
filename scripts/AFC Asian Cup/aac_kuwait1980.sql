@@ -8,9 +8,9 @@ VALUES ('1980 AFC Asian Cup Kuwait', '1980-09-15', '1980-09-30', 15, 'AFC.png', 
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (194, 41, 1, 39, 1),
-	   (194, 44, 1, 40, 1),
+	   (194, 44, 1, 40, 2),
 	   (194, 45, 2, 40, 2),
-	   (194, 46, 3, 40, 3);
+	   (194, 46, 3, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

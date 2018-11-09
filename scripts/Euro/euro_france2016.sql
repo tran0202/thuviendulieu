@@ -8,10 +8,10 @@ VALUES ('UEFA Euro 2016 France', '2016-06-10', '2016-07-10', 11, 'Euro_2016.png'
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (68, 41, 1, 39, 1),
-	   (68, 42, 1, 40, 1),
+	   (68, 42, 1, 40, 2),
 	   (68, 43, 2, 40, 2),
-	   (68, 44, 3, 40, 3),
-	   (68, 46, 4, 40, 4);
+	   (68, 44, 3, 40, 2),
+	   (68, 46, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

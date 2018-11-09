@@ -8,10 +8,10 @@ VALUES ('Olympic Football Tournament Athens 2004', '2004-08-11', '2004-08-28', 9
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (42, 41, 1, 39, 1),
-	   (42, 43, 1, 40, 1),
+	   (42, 43, 1, 40, 2),
 	   (42, 44, 2, 40, 2),
-	   (42, 132, 3, 40, 3),
-	   (42, 133, 4, 40, 4);
+	   (42, 132, 3, 40, 2),
+	   (42, 133, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 4 ORDER BY name;
 

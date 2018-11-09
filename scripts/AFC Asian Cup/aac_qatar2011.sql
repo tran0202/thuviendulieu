@@ -8,10 +8,10 @@ VALUES ('2011 AFC Asian Cup Qatar', '2011-01-07', '2011-01-29', 15, 'aac_2011.pn
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (186, 41, 1, 39, 1),
-	   (186, 43, 1, 40, 1),
+	   (186, 43, 1, 40, 2),
 	   (186, 44, 2, 40, 2),
-	   (186, 45, 3, 40, 3),
-	   (186, 46, 4, 40, 4);
+	   (186, 45, 3, 40, 2),
+	   (186, 46, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

@@ -8,9 +8,9 @@ VALUES ('2003 FIFA Confederations Cup France', '2003-06-18', '2003-06-29', 17, '
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (215, 41, 1, 39, 1),
-	   (215, 44, 1, 40, 1),
+	   (215, 44, 1, 40, 2),
 	   (215, 45, 2, 40, 2),
-	   (215, 46, 3, 40, 3);
+	   (215, 46, 3, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

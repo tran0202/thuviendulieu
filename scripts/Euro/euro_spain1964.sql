@@ -8,8 +8,8 @@ VALUES ('UEFA Euro 1964 Spain', '1964-06-17', '1964-06-21', 11, 'Euro_1964.png',
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (81, 44, 1, 40, 1),
-	   (81, 45, 2, 40, 2),
-	   (81, 46, 3, 40, 3);
+	   (81, 45, 2, 40, 1),
+	   (81, 46, 3, 40, 1);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

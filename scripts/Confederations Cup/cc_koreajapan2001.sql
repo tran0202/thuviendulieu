@@ -8,9 +8,9 @@ VALUES ('2001 FIFA Confederations Cup Korea-Japan', '2001-05-30', '2001-06-10', 
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (216, 41, 1, 39, 1),
-	   (216, 44, 1, 40, 1),
+	   (216, 44, 1, 40, 2),
 	   (216, 45, 2, 40, 2),
-	   (216, 46, 3, 40, 3);
+	   (216, 46, 3, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

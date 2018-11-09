@@ -8,10 +8,10 @@ VALUES ('1995 FIFA Women''s World Cup Sweden', '1995-06-05', '1995-06-18', 8, '1
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (38, 41, 1, 39, 1),
-	   (38, 43, 1, 40, 1),
+	   (38, 43, 1, 40, 2),
 	   (38, 44, 2, 40, 2),
-	   (38, 45, 3, 40, 3),
-	   (38, 46, 4, 40, 4);
+	   (38, 45, 3, 40, 2),
+	   (38, 46, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 3 ORDER BY name;
 

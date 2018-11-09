@@ -8,10 +8,10 @@ VALUES ('2007 Copa America Venezuela', '2007-06-26', '2007-07-15', 12, 'copa-200
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (86, 41, 1, 39, 1),
-	   (86, 43, 1, 40, 1),
+	   (86, 43, 1, 40, 2),
 	   (86, 44, 2, 40, 2),
-	   (86, 45, 3, 40, 3),
-	   (86, 46, 4, 40, 4);
+	   (86, 45, 3, 40, 2),
+	   (86, 46, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

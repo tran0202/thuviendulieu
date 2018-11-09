@@ -8,12 +8,12 @@ VALUES ('Olympic Football Tournament Tokyo 1964', '1964-10-11', '1964-10-23', 9,
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (52, 41, 1, 39, 1),
-	   (52, 43, 1, 40, 1),
+	   (52, 43, 1, 40, 2),
 	   (52, 44, 2, 40, 2),
-	   (52, 134, 3, 40, 3),
-	   (52, 135, 4, 40, 4),
-	   (52, 132, 5, 40, 5),
-	   (52, 133, 6, 40, 6);
+	   (52, 134, 3, 40, 2),
+	   (52, 135, 4, 40, 2),
+	   (52, 132, 5, 40, 2),
+	   (52, 133, 6, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 4 ORDER BY name;
 

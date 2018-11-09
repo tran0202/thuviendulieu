@@ -8,9 +8,9 @@ VALUES ('Olympic Football Tournament Munich 1972', '1972-08-27', '1972-09-10', 9
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (50, 41, 1, 39, 1),
-	   (50, 48, 1, 39, 1),
-	   (50, 132, 3, 40, 3),
-	   (50, 133, 4, 40, 4);
+	   (50, 48, 2, 39, 1),
+	   (50, 132, 1, 40, 2),
+	   (50, 133, 2, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 4 ORDER BY name;
 

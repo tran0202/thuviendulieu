@@ -8,7 +8,7 @@ VALUES ('1983 Copa America', '1983-08-10', '1983-11-04', 12, 'CONMEBOL.png', nul
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (96, 41, 1, 39, 1),
-	   (96, 44, 1, 40, 1),
+	   (96, 44, 1, 40, 2),
 	   (96, 154, 2, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;

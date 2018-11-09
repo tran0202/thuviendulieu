@@ -8,7 +8,7 @@ VALUES ('1985 CONCACAF Championship', '1985-02-24', '1985-09-14', 13, 'CONCACAF.
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (143, 41, 1, 39, 1),
-	   (143, 58, 2, 39, 2);
+	   (143, 58, 2, 39, 1);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

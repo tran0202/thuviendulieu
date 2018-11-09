@@ -8,9 +8,9 @@ VALUES ('1976 AFC Asian Cup Iran', '1976-06-03', '1976-06-13', 15, 'AFC.png', nu
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (195, 41, 1, 39, 1),
-	   (195, 44, 1, 40, 1),
+	   (195, 44, 1, 40, 2),
 	   (195, 45, 2, 40, 2),
-	   (195, 46, 3, 40, 3);
+	   (195, 46, 3, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

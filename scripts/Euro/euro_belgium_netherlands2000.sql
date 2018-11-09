@@ -8,9 +8,9 @@ VALUES ('UEFA Euro 2000 Belgium-Netherlands', '2000-06-10', '2000-07-02', 11, 'E
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (72, 41, 1, 39, 1),
-	   (72, 43, 1, 40, 1),
+	   (72, 43, 1, 40, 2),
 	   (72, 44, 2, 40, 2),
-	   (72, 46, 3, 40, 3);
+	   (72, 46, 3, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

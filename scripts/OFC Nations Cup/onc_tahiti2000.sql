@@ -8,9 +8,9 @@ VALUES ('2000 OFC Nations Cup Tahiti', '2000-06-19', '2000-06-28', 16, 'OFCcup.p
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (206, 41, 1, 39, 1),
-	   (206, 44, 1, 40, 1),
+	   (206, 44, 1, 40, 2),
 	   (206, 45, 2, 40, 2),
-	   (206, 46, 3, 40, 3);
+	   (206, 46, 3, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

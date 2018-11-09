@@ -8,10 +8,10 @@ VALUES ('1996 AFC Asian Cup United Arab Emirates', '1996-12-04', '1996-12-21', 1
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (190, 41, 1, 39, 1),
-	   (190, 43, 1, 40, 1),
+	   (190, 43, 1, 40, 2),
 	   (190, 44, 2, 40, 2),
-	   (190, 45, 3, 40, 3),
-	   (190, 46, 4, 40, 4);
+	   (190, 45, 3, 40, 2),
+	   (190, 46, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

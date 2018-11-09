@@ -8,10 +8,10 @@ VALUES ('1992 African Cup of Nations Senegal', '1992-01-12', '1992-01-26', 14, '
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (167, 41, 1, 39, 1),
-	   (167, 43, 1, 40, 1),
+	   (167, 43, 1, 40, 2),
 	   (167, 44, 2, 40, 2),
-	   (167, 45, 3, 40, 3),
-	   (167, 46, 4, 40, 4);
+	   (167, 45, 3, 40, 2),
+	   (167, 46, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

@@ -8,10 +8,10 @@ VALUES ('2000 African Cup of Nations Ghana-Nigeria', '2000-01-22', '2000-02-13',
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (162, 41, 1, 39, 1),
-	   (162, 43, 1, 40, 1),
+	   (162, 43, 1, 40, 2),
 	   (162, 44, 2, 40, 2),
-	   (162, 45, 3, 40, 3),
-	   (162, 46, 4, 40, 4);
+	   (162, 45, 3, 40, 2),
+	   (162, 46, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

@@ -8,10 +8,10 @@ VALUES ('1972 AFC Asian Cup Thailand', '1972-05-07', '1972-05-19', 15, 'AFC.png'
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (196, 60, 1, 39, 1),
-	   (196, 41, 2, 39, 2),
-	   (196, 44, 1, 40, 1),
+	   (196, 41, 2, 39, 1),
+	   (196, 44, 1, 40, 2),
 	   (196, 45, 2, 40, 2),
-	   (196, 46, 3, 40, 3);
+	   (196, 46, 3, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

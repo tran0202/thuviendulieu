@@ -8,10 +8,10 @@ VALUES ('1999 Copa America Paraguay', '1999-06-29', '1999-07-18', 12, 'copa-1999
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (89, 41, 1, 39, 1),
-	   (89, 43, 1, 40, 1),
+	   (89, 43, 1, 40, 2),
 	   (89, 44, 2, 40, 2),
-	   (89, 45, 3, 40, 3),
-	   (89, 46, 4, 40, 4);
+	   (89, 45, 3, 40, 2),
+	   (89, 46, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

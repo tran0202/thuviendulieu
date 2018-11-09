@@ -8,9 +8,9 @@ VALUES ('UEFA Euro 2012 Poland-Ukraine', '2012-06-08', '2012-07-01', 11, 'Euro_2
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (69, 41, 1, 39, 1),
-	   (69, 43, 1, 40, 1),
+	   (69, 43, 1, 40, 2),
 	   (69, 44, 2, 40, 2),
-	   (69, 46, 3, 40, 3);
+	   (69, 46, 3, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

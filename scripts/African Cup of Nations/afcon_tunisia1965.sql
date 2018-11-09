@@ -8,7 +8,7 @@ VALUES ('1965 African Cup of Nations Tunisia', '1965-11-12', '1965-11-21', 14, '
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (180, 41, 1, 39, 1),
-	   (180, 45, 1, 40, 1),
+	   (180, 45, 1, 40, 2),
 	   (180, 46, 2, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;

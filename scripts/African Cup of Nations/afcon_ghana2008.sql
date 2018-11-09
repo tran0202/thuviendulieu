@@ -8,10 +8,10 @@ VALUES ('2008 Africa Cup of Nations Ghana', '2008-01-20', '2008-02-10', 14, 'afc
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (157, 41, 1, 39, 1),
-	   (157, 43, 1, 40, 1),
+	   (157, 43, 1, 40, 2),
 	   (157, 44, 2, 40, 2),
-	   (157, 45, 3, 40, 3),
-	   (157, 46, 4, 40, 4);
+	   (157, 45, 3, 40, 2),
+	   (157, 46, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

@@ -8,9 +8,9 @@ VALUES ('1999 FIFA Confederations Cup Mexico', '1999-07-24', '1999-08-04', 17, '
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (217, 41, 1, 39, 1),
-	   (217, 44, 1, 40, 1),
+	   (217, 44, 1, 40, 2),
 	   (217, 45, 2, 40, 2),
-	   (217, 46, 3, 40, 3);
+	   (217, 46, 3, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

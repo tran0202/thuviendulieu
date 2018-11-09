@@ -8,10 +8,10 @@ VALUES ('2015 Africa Cup of Nations Equatorial Guinea', '2015-01-17', '2015-02-0
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (153, 41, 1, 39, 1),
-	   (153, 43, 1, 40, 1),
+	   (153, 43, 1, 40, 2),
 	   (153, 44, 2, 40, 2),
-	   (153, 45, 3, 40, 3),
-	   (153, 46, 4, 40, 4);
+	   (153, 45, 3, 40, 2),
+	   (153, 46, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

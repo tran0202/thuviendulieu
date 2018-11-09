@@ -8,7 +8,7 @@ VALUES ('2016 OFC Nations Cup Papua New Guinea', '2016-05-28', '2016-06-11', 16,
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (201, 41, 1, 39, 1),
-	   (201, 44, 1, 40, 1),
+	   (201, 44, 1, 40, 2),
 	   (201, 46, 2, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;

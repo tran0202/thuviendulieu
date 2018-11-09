@@ -8,8 +8,8 @@ VALUES ('UEFA Euro 1976 Yugoslavia', '1976-06-16', '1976-06-20', 11, 'Euro_1976.
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (78, 44, 1, 40, 1),
-	   (78, 45, 2, 40, 2),
-	   (78, 46, 3, 40, 3);
+	   (78, 45, 2, 40, 1),
+	   (78, 46, 3, 40, 1);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

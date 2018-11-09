@@ -456,10 +456,6 @@
                     $teams[$i]->setBestFinish(Soccer::FirstRound);
                     $teams_tmp[Soccer::FirstRound][$teams[$i]->getName()] = $teams[$i];
                 }
-                elseif ($teams[$i]->getBestFinish() == Soccer::ReplayQuarterfinal) {
-                    $teams[$i]->setBestFinish(Soccer::Quarterfinal);
-                    $teams_tmp[Soccer::Quarterfinal][$teams[$i]->getName()] = $teams[$i];
-                }
                 else {
                     $teams_tmp[$teams[$i]->getBestFinish()][$teams[$i]->getName()] = $teams[$i];
                 }

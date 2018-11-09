@@ -8,10 +8,10 @@ VALUES ('Women''s Olympic Football Tournament London 2012', '2012-07-25', '2007-
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (63, 41, 1, 39, 1),
-	   (63, 43, 1, 40, 1),
+	   (63, 43, 1, 40, 2),
 	   (63, 44, 2, 40, 2),
-	   (63, 132, 3, 40, 3),
-	   (63, 133, 4, 40, 4);
+	   (63, 132, 3, 40, 2),
+	   (63, 133, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 5 ORDER BY name;
 

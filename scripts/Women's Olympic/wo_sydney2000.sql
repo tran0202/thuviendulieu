@@ -8,9 +8,9 @@ VALUES ('Women''s Olympic Football Tournament Sydney 2000', '2000-09-13', '2000-
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (66, 41, 1, 39, 1),
-	   (66, 44, 2, 40, 2),
-	   (66, 132, 3, 40, 3),
-	   (66, 133, 4, 40, 4);
+	   (66, 44, 1, 40, 2),
+	   (66, 132, 2, 40, 2),
+	   (66, 133, 3, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 5 ORDER BY name;
 

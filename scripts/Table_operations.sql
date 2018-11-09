@@ -45,3 +45,5 @@ SELECT * FROM `team`
 WHERE nation_id IS NOT null
 AND (team_type_id = 1 OR team_type_id = 3 OR team_type_id = 4 OR team_type_id = 5)
 ORDER BY nation_id;
+
+SELECT * FROM `group_tournament` WHERE tournament_id = 1;

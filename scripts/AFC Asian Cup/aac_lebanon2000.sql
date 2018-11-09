@@ -8,10 +8,10 @@ VALUES ('2000 AFC Asian Cup Lebanon', '2000-10-12', '2000-10-29', 15, 'aac_2000.
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (189, 41, 1, 39, 1),
-	   (189, 43, 1, 40, 1),
+	   (189, 43, 1, 40, 2),
 	   (189, 44, 2, 40, 2),
-	   (189, 45, 3, 40, 3),
-	   (189, 46, 4, 40, 4);
+	   (189, 45, 3, 40, 2),
+	   (189, 46, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

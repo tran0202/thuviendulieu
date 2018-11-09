@@ -8,12 +8,12 @@ VALUES ('Olympic Football Tournament Antwerp 1920', '1920-08-28', '1920-09-05', 
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (60, 47, 1, 40, 1),
-	   (60, 43, 2, 40, 2),
-	   (60, 44, 3, 40, 3),
-	   (60, 133, 4, 40, 4),
-	   (60, 134, 1, 138, 1),
+	   (60, 43, 2, 40, 1),
+	   (60, 44, 3, 40, 1),
+	   (60, 133, 4, 40, 1),
+	   (60, 134, 1, 138, 2),
 	   (60, 139, 2, 138, 2),
-	   (60, 140, 3, 138, 3);
+	   (60, 140, 3, 138, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 4 ORDER BY name;
 

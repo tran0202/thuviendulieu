@@ -8,10 +8,10 @@ VALUES ('2010 Africa Cup of Nations Angola', '2010-01-10', '2010-01-31', 14, 'af
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (156, 41, 1, 39, 1),
-	   (156, 43, 1, 40, 1),
+	   (156, 43, 1, 40, 2),
 	   (156, 44, 2, 40, 2),
-	   (156, 45, 3, 40, 3),
-	   (156, 46, 4, 40, 4);
+	   (156, 45, 3, 40, 2),
+	   (156, 46, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

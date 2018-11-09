@@ -8,7 +8,7 @@ VALUES ('1953 South American Championship Peru', '1953-02-22', '1953-04-01', 12,
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (106, 58, 1, 39, 1),
-	   (106, 57, 1, 39, 1);
+	   (106, 57, 2, 39, 1);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

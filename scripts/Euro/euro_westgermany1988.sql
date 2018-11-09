@@ -8,7 +8,7 @@ VALUES ('UEFA Euro 1988 West Germany', '1988-06-10', '1988-06-25', 11, 'Euro_198
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (75, 41, 1, 39, 1),
-	   (75, 44, 1, 40, 1),
+	   (75, 44, 1, 40, 2),
 	   (75, 46, 2, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;

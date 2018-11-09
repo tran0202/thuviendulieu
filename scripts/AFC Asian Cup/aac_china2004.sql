@@ -8,10 +8,10 @@ VALUES ('2004 AFC Asian Cup China', '2004-07-17', '2004-08-07', 15, 'aac_2004.pn
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (188, 41, 1, 39, 1),
-	   (188, 43, 1, 40, 1),
+	   (188, 43, 1, 40, 2),
 	   (188, 44, 2, 40, 2),
-	   (188, 45, 3, 40, 3),
-	   (188, 46, 4, 40, 4);
+	   (188, 45, 3, 40, 2),
+	   (188, 46, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

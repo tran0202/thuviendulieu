@@ -8,9 +8,9 @@ VALUES ('1992 AFC Asian Cup Japan', '1992-10-29', '1992-11-08', 15, 'AFC.png', n
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (191, 41, 1, 39, 1),
-	   (191, 44, 1, 40, 1),
+	   (191, 44, 1, 40, 2),
 	   (191, 45, 2, 40, 2),
-	   (191, 46, 3, 40, 3);
+	   (191, 46, 3, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

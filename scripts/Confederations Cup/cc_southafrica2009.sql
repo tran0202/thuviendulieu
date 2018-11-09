@@ -8,9 +8,9 @@ VALUES ('2009 FIFA Confederations Cup South Africa', '2009-06-14', '2009-06-28',
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (213, 41, 1, 39, 1),
-	   (213, 44, 1, 40, 1),
+	   (213, 44, 1, 40, 2),
 	   (213, 45, 2, 40, 2),
-	   (213, 46, 3, 40, 3);
+	   (213, 46, 3, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

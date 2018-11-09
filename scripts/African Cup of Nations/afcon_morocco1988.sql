@@ -8,9 +8,9 @@ VALUES ('1988 African Cup of Nations Morocco', '1988-03-13', '1988-03-27', 14, '
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (169, 41, 1, 39, 1),
-	   (169, 44, 1, 40, 1),
+	   (169, 44, 1, 40, 2),
 	   (169, 45, 2, 40, 2),
-	   (169, 46, 3, 40, 3);
+	   (169, 46, 3, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

@@ -8,7 +8,7 @@ VALUES ('1991 Copa America Chile', '1991-07-06', '1991-07-21', 12, 'copa-1991.pn
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (93, 41, 1, 39, 1),
-	   (93, 58, 1, 39, 1);
+	   (93, 58, 2, 39, 1);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

@@ -8,9 +8,9 @@ VALUES ('2012 OFC Nations Cup Solomon Islands', '2012-06-01', '2012-06-10', 16, 
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (202, 41, 1, 39, 1),
-	   (202, 44, 1, 40, 1),
+	   (202, 44, 1, 40, 2),
 	   (202, 45, 2, 40, 2),
-	   (202, 46, 3, 40, 3);
+	   (202, 46, 3, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

@@ -8,9 +8,9 @@ VALUES ('1980 African Cup of Nations Nigeria', '1980-03-08', '1980-03-22', 14, '
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (173, 41, 1, 39, 1),
-	   (173, 44, 1, 40, 1),
+	   (173, 44, 1, 40, 2),
 	   (173, 45, 2, 40, 2),
-	   (173, 46, 3, 40, 3);
+	   (173, 46, 3, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

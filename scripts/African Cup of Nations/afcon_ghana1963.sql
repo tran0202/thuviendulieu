@@ -8,7 +8,7 @@ VALUES ('1963 African Cup of Nations Ghana', '1963-11-24', '1963-12-01', 14, 'Af
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (181, 41, 1, 39, 1),
-	   (181, 45, 1, 40, 1),
+	   (181, 45, 1, 40, 2),
 	   (181, 46, 2, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;

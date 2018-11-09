@@ -8,9 +8,9 @@ VALUES ('1972 African Cup of Nations Cameroon', '1972-02-23', '1972-03-05', 14, 
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (177, 41, 1, 39, 1),
-	   (177, 44, 1, 40, 1),
+	   (177, 44, 1, 40, 2),
 	   (177, 45, 2, 40, 2),
-	   (177, 46, 3, 40, 3);
+	   (177, 46, 3, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

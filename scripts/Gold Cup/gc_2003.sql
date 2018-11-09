@@ -8,10 +8,10 @@ VALUES ('2003 Gold Cup United States-Mexico', '2003-07-12', '2003-07-27', 13, 'g
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (135, 41, 1, 39, 1),
-	   (135, 43, 1, 40, 1),
+	   (135, 43, 1, 40, 2),
 	   (135, 44, 2, 40, 2),
-	   (135, 45, 3, 40, 3),
-	   (135, 46, 4, 40, 4);
+	   (135, 45, 3, 40, 2),
+	   (135, 46, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

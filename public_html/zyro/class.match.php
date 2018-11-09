@@ -486,6 +486,13 @@
             return self::getRoundMatches($matches, Soccer::REPLAY_QUARTERFINALS);
         }
 
+        public static function getAllQuarterfinalMatches($matches) {
+            $rounds = array();
+            array_push($rounds, Soccer::REPLAY_QUARTERFINALS);
+            array_push($rounds, Soccer::QUARTERFINALS);
+            return self::getMultipleRoundMatches($matches, $rounds);
+        }
+
         public static function getSemifinalMatches($matches) {
             return self::getRoundMatches($matches, Soccer::SEMIFINALS);
         }
@@ -567,6 +574,18 @@
             for ($i = 0; $i < sizeof($matches); $i++) {
                 if ($matches[$i]->getRound() == $round) {
                     array_push($result, $matches[$i]);
+                }
+            }
+            return $result;
+        }
+
+        public static function getMultipleRoundMatches($matches, $rounds) {
+            $result = array();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                for ($j = 0; $j < sizeof($rounds); $j++) {
+                    if ($matches[$i]->getRound() == $rounds[$j]) {
+                        array_push($result, $matches[$i]);
+                    }
                 }
             }
             return $result;

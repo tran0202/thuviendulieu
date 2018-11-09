@@ -8,10 +8,10 @@ VALUES ('1999 FIFA Women''s World Cup USA', '1999-06-19', '1999-07-10', 8, '1999
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (37, 41, 1, 39, 1),
-	   (37, 43, 1, 40, 1),
+	   (37, 43, 1, 40, 2),
 	   (37, 44, 2, 40, 2),
-	   (37, 45, 3, 40, 3),
-	   (37, 46, 4, 40, 4);
+	   (37, 45, 3, 40, 2),
+	   (37, 46, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 3 ORDER BY name;
 

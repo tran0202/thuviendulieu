@@ -8,10 +8,10 @@ VALUES ('1994 African Cup of Nations Tunisia', '1994-03-26', '1994-04-10', 14, '
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (166, 41, 1, 39, 1),
-	   (166, 43, 1, 40, 1),
+	   (166, 43, 1, 40, 2),
 	   (166, 44, 2, 40, 2),
-	   (166, 45, 3, 40, 3),
-	   (166, 46, 4, 40, 4);
+	   (166, 45, 3, 40, 2),
+	   (166, 46, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

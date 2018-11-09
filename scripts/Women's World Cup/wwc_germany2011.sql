@@ -8,10 +8,10 @@ VALUES ('2011 FIFA Women''s World Cup Germany', '2011-06-26', '2010-07-17', 8, '
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (34, 41, 1, 39, 1),
-	   (34, 43, 1, 40, 1),
+	   (34, 43, 1, 40, 2),
 	   (34, 44, 2, 40, 2),
-	   (34, 45, 3, 40, 3),
-	   (34, 46, 4, 40, 4);
+	   (34, 45, 3, 40, 2),
+	   (34, 46, 4, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 3 ORDER BY name;
 

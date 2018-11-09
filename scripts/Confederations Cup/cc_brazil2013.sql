@@ -8,9 +8,9 @@ VALUES ('2013 FIFA Confederations Cup Brazil', '2013-06-15', '2013-06-30', 17, '
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (212, 41, 1, 39, 1),
-	   (212, 44, 1, 40, 1),
+	   (212, 44, 1, 40, 2),
 	   (212, 45, 2, 40, 2),
-	   (212, 46, 3, 40, 3);
+	   (212, 46, 3, 40, 2);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 

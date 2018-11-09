@@ -25,6 +25,7 @@
         const CHINA_1991 = 39;
         const MUNICH_1972 = 50;
         const MEXICO_CITY_1968 = 51;
+        const TOKYO_1964 = 52;
         const ROMA_1960 = 53;
         const BERLIN_1936 = 57;
         const PARIS_1924 = 59;
@@ -1152,6 +1153,10 @@
                 && $_match->getAwayTeamName() == 'SOVIET UNION') {
                 $special_score = 'Bronze medals shared';
                 $special_score2 = ' <span class="small"></span>';
+            }
+            if ($_match->getTournamentId() == self::ANTWERP_1920 && $_match->getRound() == Soccer::GOLD_MEDAL_MATCH) {
+                $special_score = 'Czechoslovakia was disqualified without any medal because of protest.';
+                $special_score2 = '<br><span class="small">TCH disqualified</span>';
             }
             if ($_match->getTournamentId() == self::PERU_1953 && $_match->getHomeTeamName() == 'PERU'
                 && $_match->getAwayTeamName() == 'PARAGUAY') {
