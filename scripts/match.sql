@@ -22,6 +22,8 @@ CREATE TABLE IF NOT EXISTS `match` (
 	stage_id INT,
 	stage_order TINYINT UNSIGNED,
 	group_id INT,
+	short_note VARCHAR(255),
+	long_note VARCHAR(1023),
 	home_retired TINYINT UNSIGNED,
 	away_retired TINYINT UNSIGNED,
 	home_set1_score TINYINT UNSIGNED,
@@ -53,8 +55,8 @@ CREATE TABLE IF NOT EXISTS `match` (
 );
 
 ALTER TABLE `match`
-	ADD COLUMN away_retired TINYINT UNSIGNED AFTER group_id,
-	ADD COLUMN home_retired TINYINT UNSIGNED AFTER group_id;
+	ADD COLUMN long_note VARCHAR(1023) AFTER group_id,
+	ADD COLUMN short_note VARCHAR(255) AFTER group_id;
 
 ALTER TABLE `match`
 	ADD CONSTRAINT match_ibfk_6

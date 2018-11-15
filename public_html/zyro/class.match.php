@@ -66,6 +66,8 @@
         private $tournament_name;
         private $points_for_win;
         private $golden_goal_rule;
+        private $short_note;
+        private $long_note;
 
         private $home_team_seed;
         private $away_team_seed;
@@ -105,7 +107,7 @@
             $match_date, $match_date_fmt, $match_time, $match_time_fmt,
             $match_order, $bracket_order, $round, $stage,
             $group_name, $parent_group_name, $second_round_group_name,
-            $tournament_id, $tournament_name, $points_for_win, $golden_goal_rule)
+            $tournament_id, $tournament_name, $points_for_win, $golden_goal_rule, $short_note, $long_note)
         {
             $m = new Match();
             $m->home_team_id = $home_team_id;
@@ -147,6 +149,8 @@
             $m->away_flag = $away_flag;
             $m->home_logo = $home_logo;
             $m->away_logo = $away_logo;
+            $m->short_note = $short_note;
+            $m->long_note = $long_note;
             return $m;
         }
 
@@ -165,7 +169,7 @@
                 '', '', '', '',
                 0, 0, '', '',
                 '', '', '',
-                0, '', 0,'');
+                0, '', 0,'', '', '');
         }
 
         public static function CreateFootballMatch(
@@ -286,6 +290,7 @@
                         match_time, TIME_FORMAT(match_time, "%H:%i") as match_time_fmt,
                         match_order, bracket_order, g.name AS round, g2.name AS stage,
                         g3.name AS group_name, g4.name AS parent_group_name, g5.name AS second_round_group_name,
+                        short_note, long_note,
                         m.tournament_id, tou.name AS tournament_name, tou.points_for_win, tou.golden_goal_rule,
                         home_team_first_leg_score, away_team_first_leg_score,
                         pt.id AS home_parent_team_id, pt2.id AS away_parent_team_id,
@@ -328,6 +333,7 @@
                         match_time, TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, 
                         match_order, bracket_order, g.name AS round, g2.name AS stage,
                         g3.name AS group_name, g4.name AS parent_group_name, g5.name AS second_round_group_name, 
+                        short_note, long_note,
                         m.tournament_id, tou.name AS tournament_name, tou.points_for_win, tou.golden_goal_rule, 
                         home_team_first_leg_score, away_team_first_leg_score, 
                         pt.id AS home_parent_team_id, pt2.id AS away_parent_team_id, 
@@ -404,7 +410,8 @@
                         $row['match_order'], $row['bracket_order'], $row['round'], $row['stage'],
                         $row['group_name'], $row['parent_group_name'], $row['second_round_group_name'],
                         $row['tournament_id'], $row['tournament_name'],
-                        $row['points_for_win'], $row['golden_goal_rule']);
+                        $row['points_for_win'], $row['golden_goal_rule'],
+                        $row['short_note'], $row['long_note']);
                     array_push($matches, $match);
                 }
                 $tournament->setMatches($matches);
@@ -446,97 +453,24 @@
             return self::getRoundMatches($matches, Soccer::SECOND_ROUND);
         }
 
-        public static function getReplaySecondRoundMatches($matches) {
-            return self::getRoundMatches($matches, Soccer::REPLAY_SECOND_ROUND);
-        }
-
         public static function getFinalRoundMatches($matches) {
             return self::getRoundMatches($matches, Soccer::FINAL_ROUND);
-        }
-
-        public static function getPlayOffMatches($matches) {
-            return self::getRoundMatches($matches, Soccer::PLAY_OFF);
-        }
-
-        public static function getPreliminaryRoundMatches($matches) {
-            return self::getRoundMatches($matches, Soccer::PRELIMINARY_ROUND);
-        }
-
-        public static function getFirstRoundMatches($matches) {
-            return self::getRoundMatches($matches, Soccer::FIRST_ROUND);
-        }
-
-        public static function getReplayFirstRoundMatches($matches) {
-            return self::getRoundMatches($matches, Soccer::REPLAY_FIRST_ROUND);
         }
 
         public static function getRound16Matches($matches) {
             return self::getRoundMatches($matches, Soccer::ROUND16);
         }
 
-        public static function getReplayRound16Matches($matches) {
-            return self::getRoundMatches($matches, Soccer::REPLAY_ROUND16);
-        }
-
         public static function getQuarterfinalMatches($matches) {
             return self::getRoundMatches($matches, Soccer::QUARTERFINALS);
-        }
-
-        public static function getReplayQuarterfinalMatches($matches) {
-            return self::getRoundMatches($matches, Soccer::REPLAY_QUARTERFINALS);
-        }
-
-        public static function getAllQuarterfinalMatches($matches) {
-            $rounds = array();
-            array_push($rounds, Soccer::REPLAY_QUARTERFINALS);
-            array_push($rounds, Soccer::QUARTERFINALS);
-            return self::getMultipleRoundMatches($matches, $rounds);
         }
 
         public static function getSemifinalMatches($matches) {
             return self::getRoundMatches($matches, Soccer::SEMIFINALS);
         }
 
-        public static function getConsolationMatches($matches) {
-            return self::getRoundMatches($matches, Soccer::CONSOLATION_ROUND);
-        }
-
-        public static function getConsolationSemifinalMatches($matches) {
-            return self::getRoundMatches($matches, Soccer::CONSOLATION_SEMIFINALS);
-        }
-
-        public static function getConsolationFinalMatch($matches) {
-            $matches_tmp = self::getRoundMatches($matches, Soccer::CONSOLATION_FINAL);
-            if (sizeof($matches_tmp) == 0) return null;
-            return $matches_tmp[0];
-        }
-
-        public static function getFifthPlaceMatch($matches) {
-            $matches_tmp = self::getRoundMatches($matches, Soccer::FIFTH_PLACE_MATCH);
-            if (sizeof($matches_tmp) == 0) return null;
-            return $matches_tmp[0];
-        }
-
         public static function getBronzeMedalMatch($matches) {
             $matches_tmp = self::getRoundMatches($matches, Soccer::BRONZE_MEDAL_MATCH);
-            if (sizeof($matches_tmp) == 0) return null;
-            return $matches_tmp[0];
-        }
-
-        public static function getReplayBronzeMedalMatch($matches) {
-            $matches_tmp = self::getRoundMatches($matches, Soccer::REPLAY_BRONZE_MEDAL_MATCH);
-            if (sizeof($matches_tmp) == 0) return null;
-            return $matches_tmp[0];
-        }
-
-        public static function getGoldMedalMatch($matches) {
-            $matches_tmp = self::getRoundMatches($matches, Soccer::GOLD_MEDAL_MATCH);
-            if (sizeof($matches_tmp) == 0) return null;
-            return $matches_tmp[0];
-        }
-
-        public static function getReplayGoldMedalMatch($matches) {
-            $matches_tmp = self::getRoundMatches($matches, Soccer::REPLAY_GOLD_MEDAL_MATCH);
             if (sizeof($matches_tmp) == 0) return null;
             return $matches_tmp[0];
         }
@@ -547,26 +481,20 @@
             return $matches_tmp[0];
         }
 
+        public static function getGoldMedalMatch($matches) {
+            $matches_tmp = self::getRoundMatches($matches, Soccer::GOLD_MEDAL_MATCH);
+            if (sizeof($matches_tmp) == 0) return null;
+            return $matches_tmp[0];
+        }
+
         public static function getFinalMatch($matches) {
             $matches_tmp = self::getRoundMatches($matches, Soccer::FINAL_);
             if (sizeof($matches_tmp) == 0) return null;
             return $matches_tmp[0];
         }
 
-        public static function getReplayFinalMatch($matches) {
-            $matches_tmp = self::getRoundMatches($matches, Soccer::REPLAY_FINAL);
-            if (sizeof($matches_tmp) == 0) return null;
-            return $matches_tmp[0];
-        }
-
         public static function getFinalMatches($matches) {
             return self::getRoundMatches($matches, Soccer::FINALS);
-        }
-
-        public static function getFinalPlayoffMatch($matches) {
-            $matches_tmp = self::getRoundMatches($matches, Soccer::FINAL_PLAYOFF);
-            if (sizeof($matches_tmp) == 0) return null;
-            return $matches_tmp[0];
         }
 
         public static function getRoundMatches($matches, $round) {
@@ -1464,6 +1392,38 @@
         public function setGoldenGoalRule($golden_goal_rule)
         {
             $this->golden_goal_rule = $golden_goal_rule;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getShortNote()
+        {
+            return $this->short_note;
+        }
+
+        /**
+         * @param mixed $short_note
+         */
+        public function setShortNote($short_note)
+        {
+            $this->short_note = $short_note;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getLongNote()
+        {
+            return $this->long_note;
+        }
+
+        /**
+         * @param mixed $long_note
+         */
+        public function setLongNote($long_note)
+        {
+            $this->long_note = $long_note;
         }
 
         /**

@@ -11,11 +11,14 @@
         private $parent_tournament_id;
         private $points_for_win;
         private $golden_goal_rule;
+        private $head_to_head_tiebreaker;
+        private $third_place_ranking;
 
         protected function __construct() { }
 
         public static function CreateTournamentProfile($id, $name, $logo_filename, $start_date, $end_date,
-            $tournament_type_id, $parent_tournament_id, $points_for_win, $golden_goal_rule)
+            $tournament_type_id, $parent_tournament_id, $points_for_win, $golden_goal_rule, $head_to_head_tiebreaker,
+                                                       $third_place_ranking)
         {
             $tp = new TournamentProfile();
             $tp->id = $id;
@@ -27,6 +30,8 @@
             $tp->parent_tournament_id = $parent_tournament_id;
             $tp->points_for_win = $points_for_win;
             $tp->golden_goal_rule = $golden_goal_rule;
+            $tp->head_to_head_tiebreaker = $head_to_head_tiebreaker;
+            $tp->third_place_ranking = $third_place_ranking;
             return $tp;
         }
 
@@ -129,7 +134,7 @@
             SELECT name, id, logo_filename,
                     start_date, end_date,
                     tournament_type_id, parent_tournament_id,
-                    points_for_win, golden_goal_rule
+                    points_for_win, golden_goal_rule, head_to_head_tiebreaker, third_place_ranking
             FROM tournament t
             WHERE t.id = 1
          */
@@ -138,7 +143,7 @@
             $sql = 'SELECT name, id, logo_filename,
                         start_date, end_date, 
                         tournament_type_id, parent_tournament_id,
-                        points_for_win, golden_goal_rule 
+                        points_for_win, golden_goal_rule, head_to_head_tiebreaker, third_place_ranking
                     FROM tournament t 
                     WHERE t.id = '.$tournament_id;
             return $sql;
@@ -159,7 +164,9 @@
                 $row = $query->fetch(\PDO::FETCH_ASSOC);
                 $tournament_profile = TournamentProfile::CreateTournamentProfile(
                     $row['id'], $row['name'], $row['logo_filename'], $row['start_date'], $row['end_date'],
-                    $row['tournament_type_id'], $row['parent_tournament_id'], $row['points_for_win'], $row['golden_goal_rule']);
+                    $row['tournament_type_id'], $row['parent_tournament_id'],
+                    $row['points_for_win'], $row['golden_goal_rule'],
+                    $row['head_to_head_tiebreaker'], $row['third_place_ranking']);
                 $tournament->setProfile($tournament_profile);
                 $tournament->concatBodyHtml($output);
             }
@@ -307,5 +314,37 @@
         public function setGoldenGoalRule($golden_goal_rule)
         {
             $this->golden_goal_rule = $golden_goal_rule;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getHeadToHeadTiebreaker()
+        {
+            return $this->head_to_head_tiebreaker;
+        }
+
+        /**
+         * @param mixed $head_to_head_tiebreaker
+         */
+        public function setHeadToHeadTiebreaker($head_to_head_tiebreaker)
+        {
+            $this->head_to_head_tiebreaker = $head_to_head_tiebreaker;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getThirdPlaceRanking()
+        {
+            return $this->third_place_ranking;
+        }
+
+        /**
+         * @param mixed $third_place_ranking
+         */
+        public function setThirdPlaceRanking($third_place_ranking)
+        {
+            $this->third_place_ranking = $third_place_ranking;
         }
     }

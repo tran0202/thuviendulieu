@@ -167,6 +167,12 @@ body {
     height: 32px;
     border: 1px solid #c7c6c6;
 }
+.flag-md-olympic {
+    height: 25px;
+}
+.margin-top-flag {
+    margin-top: -6px;
+}
 .logo-md {
     height: 32px;
 }

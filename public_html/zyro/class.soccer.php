@@ -37,6 +37,7 @@
         const REPLAY_FINAL = 'Replay Final';
         const FINALS = 'Finals';
         const FINAL_PLAYOFF = 'Final Play-off';
+        const FINAL_ROUND_PLAY_OFF = 'Final Round Play-off';
         const BRONZE_MEDAL_MATCH = 'Bronze Medal Match';
         const GOLD_MEDAL_MATCH = 'Gold Medal Match';
         const REPLAY_GOLD_MEDAL_MATCH = 'Replay Gold Medal Match';
@@ -57,26 +58,23 @@
 
         const Disqualified = 0;
         const Group = 1;
-        const Playoff = 2;
-        const SecondRound = 3;
-        const FinalRound = 4;
-        const PreliminaryRound = 5;
-        const FirstRound = 6;
-        const ReplayFirstRound = 7;
-        const Round16 = 8;
-        const Quarterfinal = 9;
-        const ReplayQuarterfinal = 10;
-        const Consolation = 11;
-        const ConsolationSemifinal = 12;
-        const ConsolationFinal = 13;
-        const FifthPlace = 14;
-        const Semifinal = 15;
+        const SecondRound = 2;
+        const FinalRound = 3;
+        const PreliminaryRound = 4;
+        const FirstRound = 5;
+        const Round16 = 6;
+        const Quarterfinal = 7;
+        const Consolation = 8;
+        const ConsolationSemifinal = 9;
+        const ConsolationFinal = 10;
+        const FifthPlace = 11;
+        const Semifinal = 12;
+        const BronzeMedal = 13;
+        const SilverMedal = 14;
+        const GoldMedal = 15;
         const ThirdPlace = 16;
         const RunnerUp = 17;
         const Champion = 18;
-        const BronzeMedal = 19;
-        const SilverMedal = 20;
-        const GoldMedal = 21;
 
         private $id;
 
@@ -94,7 +92,7 @@
             $tmp_array = array();
             $result = array();
             for ($i = 0; $i < sizeof($matches); $i++ ) {
-                self::calculatePoint($team_array, $matches[$i], self::First);
+                self::calculatePoint($team_array, $matches[$i], false);
             }
             foreach ($team_array as $name => $_team) {
                 $tmp_array[$_team->getParentGroupName().$_team->getGroupName()][$_team->getName()] = $_team;
@@ -104,7 +102,7 @@
                 foreach ($_teams as $_name => $_team) {
                     array_push($tmp_array2, $_team);
                 }
-                $tmp_array[$group_name] = self::sortGroupStanding($tmp_array2, $matches);
+                $tmp_array[$group_name] = self::sortGroupStanding($tournament, $tmp_array2, $matches);
             }
             foreach ($tmp_array as $group_name => $_teams) {
                 foreach ($_teams as $_name => $_team) {
@@ -262,15 +260,16 @@
         public static function getFirstStageMatchesRanking($tournament) {
             $rounds = Round::getRoundArray($tournament, Soccer::FIRST_STAGE);
             foreach ($rounds as $round_id => $round) {
-                switch ($round->getRoundName()) {
+                $round_name = $round->getRoundName();
+                switch ($round_name) {
                     case Soccer::GROUP_MATCHES:
                         Soccer::getGroupMatchesRanking($tournament);
                         break;
                     case Soccer::SECOND_ROUND:
-                        Soccer::getSecondRoundMatchesRanking($tournament);
+                        Soccer::getSecondRoundMatchesRanking($tournament, $round_name);
                         break;
                     case Soccer::FINAL_ROUND:
-                        Soccer::getFinalRoundMatchesRanking($tournament);
+                        Soccer::getSecondRoundMatchesRanking($tournament, $round_name);
                         break;
                 }
             }
@@ -285,7 +284,7 @@
                 foreach ($_teams as $team_name => $_team) {
                     array_push($teams_tmp2, $_team);
                 }
-                $teams = self::getGroupRanking($teams_tmp2, $group_matches, self::First);
+                $teams = self::getGroupRanking($tournament, $teams_tmp2, $group_matches, false);
                 for ($i = 0; $i < sizeof($teams); $i++) {
                     array_push($result, $teams[$i]);
                 }
@@ -293,70 +292,58 @@
             $tournament->setTeams($result);
         }
 
-        public static function getSecondRoundMatchesRanking($tournament) {
-            $second_round_matches = Match::getSecondRoundMatches($tournament->getMatches());
+        public static function getSecondRoundMatchesRanking($tournament, $round) {
+            $second_round_matches = Match::getRoundMatches($tournament->getMatches(), $round);
             if (sizeof($second_round_matches) > 0) {
-                self::updateSecondRoundTeams($tournament);
-                $teams = self::getGroupRanking($tournament->getSecondRoundTeams(), $second_round_matches, self::First);
+                self::updateSecondRoundTeams($tournament, $round);
+                $teams = self::getGroupRanking($tournament, $tournament->getSecondRoundTeams(), $second_round_matches, false);
                 $tournament->setSecondRoundTeams($teams);
             }
         }
 
-        public static function getReplaySecondRoundMatchesRanking($tournament) {
-            $replay_second_round_matches = Match::getReplaySecondRoundMatches($tournament->getMatches());
-            if (sizeof($replay_second_round_matches) > 0) {
-                $teams = self::getGroupRanking($tournament->getTeams(), $replay_second_round_matches, self::Second);
-                $tournament->setTeams($teams);
-            }
-        }
-
-        public static function getFinalRoundMatchesRanking($tournament) {
-            $final_round_matches = Match::getFinalRoundMatches($tournament->getMatches());
-            if (sizeof($final_round_matches) > 0) {
-                self::updateFinalRoundTeams($tournament);
-                $teams = self::getGroupRanking($tournament->getSecondRoundTeams(), $final_round_matches, self::First);
-                $tournament->setSecondRoundTeams($teams);
+        public static function updateSecondRoundTeams($tournament, $round) {
+            $teams = Team::getTeamArrayByName($tournament->getSecondRoundTeams());
+            $matches = Match::getRoundMatches($tournament->getMatches(), $round);
+            for ($i = 0; $i < sizeof($matches); $i++ ) {
+                $teams[$matches[$i]->getHomeTeamName()]->setGroupName($matches[$i]->getSecondRoundGroupName());
+                $teams[$matches[$i]->getAwayTeamName()]->setGroupName($matches[$i]->getSecondRoundGroupName());
             }
         }
 
         public static function updateFirstStageMatchesRanking($tournament) {
             $rounds = Round::getRoundArray($tournament, Soccer::FIRST_STAGE);
             foreach ($rounds as $round_id => $round) {
-                switch ($round->getRoundName()) {
+                $round_name = $round->getRoundName();
+                switch ($round_name) {
                     case Soccer::SECOND_ROUND:
-                        Soccer::updateSecondRoundMatchesRanking($tournament);
+                        Soccer::getRoundMatchesRanking($tournament, $round_name);
                         break;
                     case Soccer::FINAL_ROUND:
                         Soccer::updateFinalRoundMatchesRanking($tournament);
                         break;
                     case Soccer::PLAY_OFF:
-                        Soccer::updatePlayOffMatchesRanking($tournament);
+                        Soccer::getRoundMatchesRanking($tournament, $round_name);
+                        break;
+                    case Soccer::FINAL_ROUND_PLAY_OFF:
+                        Soccer::getRoundMatchesRanking($tournament, $round_name);
                         break;
                 }
-            }
-        }
-
-        public static function updateSecondRoundMatchesRanking($tournament) {
-            $second_round_matches = Match::getSecondRoundMatches($tournament->getMatches());
-            if (sizeof($second_round_matches) > 0) {
-                $teams = self::getGroupRanking($tournament->getTeams(), $second_round_matches, self::First);
-                $tournament->setTeams($teams);
             }
         }
 
         public static function updateFinalRoundMatchesRanking($tournament) {
             $final_round_matches = Match::getFinalRoundMatches($tournament->getMatches());
             if (sizeof($final_round_matches) > 0) {
-                $teams = self::getGroupRanking($tournament->getTeams(), $final_round_matches, self::First);
+                $teams = self::getGroupRanking($tournament, $tournament->getTeams(), $final_round_matches, false);
                 $teams = Team::getTeamArrayByName($teams);
                 $final_round_teams = $tournament->getSecondRoundTeams();
                 $teams[$final_round_teams[0]->getName()]->setBestFinish(self::Champion);
                 $teams[$final_round_teams[1]->getName()]->setBestFinish(self::RunnerUp);
                 $teams[$final_round_teams[2]->getName()]->setBestFinish(self::ThirdPlace);
-                if (sizeof($final_round_teams) > 3) {
-                    $teams[$final_round_teams[3]->getName()]->setBestFinish(self::Semifinal);
-                    if ($teams[$final_round_teams[3]->getName()]->getTournamentId() == SoccerHtml::CONCACAF_CHAMPIONSHIP_1985)
-                        $teams[$final_round_teams[3]->getName()]->setBestFinish(self::Group);
+                if (sizeof($final_round_teams) > 3 && self::getRoundCountExcludeFinalRoundPlayoff($tournament) > 1) {
+                    if (!self::isThreeTeamFinalRound($tournament)) {
+                        $teams[$final_round_teams[3]->getName()]->setBestFinish(self::Semifinal);
+                    }
                 }
                 $result = array();
                 foreach ($teams as $name => $_team) {
@@ -366,288 +353,101 @@
             }
         }
 
-        public static function updatePlayOffMatchesRanking($tournament) {
-            $play_off_matches = Match::getPlayOffMatches($tournament->getMatches());
-            if (sizeof($play_off_matches) > 0) {
-                $teams = self::getGroupRanking($tournament->getTeams(), $play_off_matches, self::First);
-                $tournament->setTeams($teams);
+        public static function isThreeTeamFinalRound($tournament) {
+            return $tournament->getTournamentId() == SoccerHtml::CONCACAF_CHAMPIONSHIP_1985;
+        }
+
+        public static function getRoundCountExcludeFinalRoundPlayoff($tournament) {
+            $rounds = Round::getRoundArray($tournament, Soccer::FIRST_STAGE);
+            $count = 0;
+            foreach ($rounds as $round_id => $round) {
+                if ($round->getRoundName() != self::FINAL_ROUND_PLAY_OFF) $count++;
             }
+            return $count;
         }
 
         public static function getSecondStageMatchesRanking($tournament) {
             $rounds = Round::getSecondStageRoundArray($tournament);
             foreach ($rounds as $round_id => $round) {
-                switch ($round->getRoundName()) {
-                    case Soccer::PRELIMINARY_ROUND:
-                        Soccer::getPreliminaryRoundMatchesRanking($tournament);
-                        break;
-                    case Soccer::FIRST_ROUND:
-                        Soccer::getFirstRoundMatchesRanking($tournament);
-                        break;
-                    case Soccer::REPLAY_FIRST_ROUND:
-                        Soccer::getReplayFirstRoundMatchesRanking($tournament);
-                        break;
-                    case Soccer::ROUND16:
-                        Soccer::getRound16MatchesRanking($tournament);
-                        break;
-                    case Soccer::REPLAY_ROUND16:
-                        Soccer::getReplayRound16MatchesRanking($tournament);
-                        break;
-                    case Soccer::QUARTERFINALS:
-                        Soccer::getAllQuarterfinalMatchesRanking($tournament);
-                        break;
-                    case Soccer::SEMIFINALS:
-                        Soccer::getSemifinalMatchesRanking($tournament);
-                        break;
-                    case Soccer::CONSOLATION_ROUND:
-                        Soccer::getConsolationMatchesRanking($tournament);
-                        break;
-                    case Soccer::CONSOLATION_SEMIFINALS:
-                        Soccer::getConsolationSemifinalMatchesRanking($tournament);
-                        break;
-                    case Soccer::CONSOLATION_FINAL:
-                        Soccer::getConsolationFinalMatchRanking($tournament);
-                        break;
-                    case Soccer::FIFTH_PLACE_MATCH:
-                        Soccer::getFifthPlaceMatchRanking($tournament);
-                        break;
-                    case Soccer::BRONZE_MEDAL_MATCH:
-                        Soccer::getBronzeMedalMatchRanking($tournament);
-                        break;
-                    case Soccer::REPLAY_BRONZE_MEDAL_MATCH:
-                        Soccer::getReplayBronzeMedalMatchRanking($tournament);
-                        break;
-                    case Soccer::THIRD_PLACE:
-                        Soccer::getThirdPlaceMatchRanking($tournament);
-                        break;
-                    case Soccer::GOLD_MEDAL_MATCH:
-                        Soccer::getGoldMedalMatchRanking($tournament);
-                        break;
-                    case Soccer::REPLAY_GOLD_MEDAL_MATCH:
-                        Soccer::getReplayGoldMedalMatchRanking($tournament);
-                        break;
-                    case Soccer::FINAL_:
-                        Soccer::getFinalMatchRanking($tournament);
-                        break;
-                    case Soccer::REPLAY_FINAL:
-                        Soccer::getReplayFinalMatchRanking($tournament);
-                        break;
-                    case Soccer::FINALS:
-                        Soccer::getFinalMatchesRanking($tournament);
-                        break;
-                    case Soccer::FINAL_PLAYOFF:
-                        Soccer::getFinalPlayoffMatchRanking($tournament);
-                        break;
-                }
+                Soccer::getRoundMatchesRanking($tournament, $round->getRoundName());
             }
             Soccer::sortTournamentStanding($tournament);
         }
 
-        public static function getPreliminaryRoundMatchesRanking($tournament) {
-            $preliminary_round_matches = Match::getPreliminaryRoundMatches($tournament->getMatches());
-            $teams = self::getGroupRanking($tournament->getTeams(), $preliminary_round_matches, self::Second);
+        public static function getRoundMatchesRanking($tournament, $round) {
+            $rounds = self::getAllRelatedRounds($round);
+            $round_matches = Match::getMultipleRoundMatches($tournament->getMatches(), $rounds);
+            $teams = self::getGroupRanking($tournament, $tournament->getTeams(), $round_matches, false);
             $tournament->setTeams($teams);
         }
 
-        public static function getFirstRoundMatchesRanking($tournament) {
-            $first_round_matches = Match::getFirstRoundMatches($tournament->getMatches());
-            $teams = self::getGroupRanking($tournament->getTeams(), $first_round_matches, self::Second);
-            $tournament->setTeams($teams);
-        }
-
-        public static function getReplayFirstRoundMatchesRanking($tournament) {
-            $replay_first_round_matches = Match::getReplayFirstRoundMatches($tournament->getMatches());
-            $teams = self::getGroupRanking($tournament->getTeams(), $replay_first_round_matches, self::Second);
-            $tournament->setTeams($teams);
-        }
-
-        public static function getRound16MatchesRanking($tournament) {
-            $round16_matches = Match::getRound16Matches($tournament->getMatches());
-            $teams = self::getGroupRanking($tournament->getTeams(), $round16_matches, self::Second);
-            $tournament->setTeams($teams);
-        }
-
-        public static function getReplayRound16MatchesRanking($tournament) {
-            $replay_round16_matches = Match::getReplayRound16Matches($tournament->getMatches());
-            $teams = self::getGroupRanking($tournament->getTeams(), $replay_round16_matches, self::Second);
-            $tournament->setTeams($teams);
-        }
-
-        public static function getQuarterfinalMatchesRanking($tournament) {
-            $quarterfinal_matches = Match::getQuarterfinalMatches($tournament->getMatches());
-            $teams = self::getGroupRanking($tournament->getTeams(), $quarterfinal_matches, self::Second);
-            $tournament->setTeams($teams);
-        }
-
-        public static function getReplayQuarterfinalMatchesRanking($tournament) {
-            $replay_quarterfinal_matches = Match::getReplayQuarterfinalMatches($tournament->getMatches());
-            $teams = self::getGroupRanking($tournament->getTeams(), $replay_quarterfinal_matches, self::Second);
-            $tournament->setTeams($teams);
-        }
-
-        public static function getAllQuarterfinalMatchesRanking($tournament) {
-            $all_quarterfinal_matches = Match::getAllQuarterfinalMatches($tournament->getMatches());
-            $teams = self::getGroupRanking($tournament->getTeams(), $all_quarterfinal_matches, self::Second);
-            $tournament->setTeams($teams);
-        }
-
-        public static function getSemifinalMatchesRanking($tournament) {
-            $semifinal_matches = Match::getSemifinalMatches($tournament->getMatches());
-            $teams = self::getGroupRanking($tournament->getTeams(), $semifinal_matches, self::Second);
-            $tournament->setTeams($teams);
-        }
-
-        public static function getConsolationMatchesRanking($tournament) {
-            $consolation_matches = Match::getConsolationMatches($tournament->getMatches());
-            $teams = self::getGroupRanking($tournament->getTeams(), $consolation_matches, self::Second);
-            $tournament->setTeams($teams);
-        }
-
-        public static function getConsolationSemifinalMatchesRanking($tournament) {
-            $consolation_semifinal_matches = Match::getConsolationSemifinalMatches($tournament->getMatches());
-            $teams = self::getGroupRanking($tournament->getTeams(), $consolation_semifinal_matches, self::Second);
-            $tournament->setTeams($teams);
-        }
-
-        public static function getConsolationFinalMatchRanking($tournament) {
-            $teams = Team::getTeamArrayById($tournament->getTeams());
-            $consolation_final_match = Match::getConsolationFinalMatch($tournament->getMatches());
-            if ($consolation_final_match != null) {
-                self::calculatePoint($teams, $consolation_final_match, self::Second);
-                $teams_tmp = array();
-                foreach ($teams as $name => $_team) {
-                    array_push($teams_tmp, $_team);
-                }
-                $tournament->setTeams($teams_tmp);
+        public static function getAllRelatedRounds($round) {
+            $rounds = array();
+            switch ($round) {
+                case Soccer::SECOND_ROUND:
+                    array_push($rounds, $round);
+                    break;
+                case Soccer::PLAY_OFF:
+                    array_push($rounds, $round);
+                    break;
+                case Soccer::FINAL_ROUND_PLAY_OFF:
+                    array_push($rounds, $round);
+                    break;
+                case Soccer::PRELIMINARY_ROUND:
+                    array_push($rounds, $round);
+                    break;
+                case Soccer::FIRST_ROUND:
+                    array_push($rounds, $round);
+                    array_push($rounds, Soccer::REPLAY_FIRST_ROUND);
+                    break;
+                case Soccer::ROUND16:
+                    array_push($rounds, $round);
+                    array_push($rounds, Soccer::REPLAY_ROUND16);
+                    break;
+                case Soccer::QUARTERFINALS:
+                    array_push($rounds, $round);
+                    array_push($rounds, Soccer::REPLAY_QUARTERFINALS);
+                    break;
+                case Soccer::SEMIFINALS:
+                    array_push($rounds, $round);
+                    break;
+                case Soccer::CONSOLATION_ROUND:
+                    array_push($rounds, $round);
+                    break;
+                case Soccer::CONSOLATION_SEMIFINALS:
+                    array_push($rounds, $round);
+                    break;
+                case Soccer::CONSOLATION_FINAL:
+                    array_push($rounds, $round);
+                    break;
+                case Soccer::FIFTH_PLACE_MATCH:
+                    array_push($rounds, $round);
+                    break;
+                case Soccer::BRONZE_MEDAL_MATCH:
+                    array_push($rounds, $round);
+                    array_push($rounds, Soccer::REPLAY_BRONZE_MEDAL_MATCH);
+                    break;
+                case Soccer::THIRD_PLACE:
+                    array_push($rounds, $round);
+                    break;
+                case Soccer::GOLD_MEDAL_MATCH:
+                    array_push($rounds, $round);
+                    array_push($rounds, Soccer::REPLAY_GOLD_MEDAL_MATCH);
+                    break;
+                case Soccer::FINAL_:
+                    array_push($rounds, $round);
+                    array_push($rounds, Soccer::REPLAY_FINAL);
+                    break;
+                case Soccer::FINALS:
+                    array_push($rounds, $round);
+                    array_push($rounds, Soccer::FINAL_PLAYOFF);
+                    break;
             }
-        }
-
-        public static function getFifthPlaceMatchRanking($tournament) {
-            $teams = Team::getTeamArrayById($tournament->getTeams());
-            $fifth_place_match = Match::getFifthPlaceMatch($tournament->getMatches());
-            if ($fifth_place_match != null) {
-                self::calculatePoint($teams, $fifth_place_match, self::Second);
-                $teams_tmp = array();
-                foreach ($teams as $name => $_team) {
-                    array_push($teams_tmp, $_team);
-                }
-                $tournament->setTeams($teams_tmp);
-            }
-        }
-
-        public static function getBronzeMedalMatchRanking($tournament) {
-            $teams = Team::getTeamArrayById($tournament->getTeams());
-            $bronze_medal_match = Match::getBronzeMedalMatch($tournament->getMatches());
-            if ($bronze_medal_match != null) {
-                self::calculatePoint($teams, $bronze_medal_match, self::Second);
-                $teams_tmp = array();
-                foreach ($teams as $name => $_team) {
-                    array_push($teams_tmp, $_team);
-                }
-                $tournament->setTeams($teams_tmp);
-            }
-        }
-
-        public static function getReplayBronzeMedalMatchRanking($tournament) {
-            $teams = Team::getTeamArrayById($tournament->getTeams());
-            $replay_bronze_medal_match = Match::getReplayBronzeMedalMatch($tournament->getMatches());
-            if ($replay_bronze_medal_match != null) {
-                self::calculatePoint($teams, $replay_bronze_medal_match, self::Second);
-                $teams_tmp = array();
-                foreach ($teams as $name => $_team) {
-                    array_push($teams_tmp, $_team);
-                }
-                $tournament->setTeams($teams_tmp);
-            }
-        }
-
-        public static function getGoldMedalMatchRanking($tournament) {
-            $teams = Team::getTeamArrayById($tournament->getTeams());
-            $gold_medal_match = Match::getGoldMedalMatch($tournament->getMatches());
-            if ($gold_medal_match != null) {
-                self::calculatePoint($teams, $gold_medal_match, self::Second);
-                $teams_tmp = array();
-                foreach ($teams as $name => $_team) {
-                    array_push($teams_tmp, $_team);
-                }
-                $tournament->setTeams($teams_tmp);
-            }
-        }
-
-        public static function getReplayGoldMedalMatchRanking($tournament) {
-            $teams = Team::getTeamArrayById($tournament->getTeams());
-            $replay_gold_medal_match = Match::getReplayGoldMedalMatch($tournament->getMatches());
-            if ($replay_gold_medal_match != null) {
-                self::calculatePoint($teams, $replay_gold_medal_match, self::Second);
-                $teams_tmp = array();
-                foreach ($teams as $name => $_team) {
-                    array_push($teams_tmp, $_team);
-                }
-                $tournament->setTeams($teams_tmp);
-            }
-        }
-
-        public static function getThirdPlaceMatchRanking($tournament) {
-            $teams = Team::getTeamArrayById($tournament->getTeams());
-            $third_place_match = Match::getThirdPlaceMatch($tournament->getMatches());
-            if ($third_place_match != null) {
-                self::calculatePoint($teams, $third_place_match, self::Second);
-                $teams_tmp = array();
-                foreach ($teams as $name => $_team) {
-                    array_push($teams_tmp, $_team);
-                }
-                $teams_tmp = self::sortGroupStanding($teams_tmp, $tournament->getMatches());
-                $tournament->setTeams($teams_tmp);
-            }
-        }
-
-        public static function getFinalMatchRanking($tournament) {
-            $teams = Team::getTeamArrayById($tournament->getTeams());
-            $champion_match = Match::getFinalMatch($tournament->getMatches());
-            if ($champion_match != null) {
-                self::calculatePoint($teams, $champion_match, self::Second);
-                $teams_tmp = array();
-                foreach ($teams as $name => $_team) {
-                    array_push($teams_tmp, $_team);
-                }
-                $tournament->setTeams($teams_tmp);
-            }
-        }
-
-        public static function getReplayFinalMatchRanking($tournament) {
-            $teams = Team::getTeamArrayById($tournament->getTeams());
-            $replay_final_match = Match::getReplayFinalMatch($tournament->getMatches());
-            if ($replay_final_match != null) {
-                self::calculatePoint($teams, $replay_final_match, self::Second);
-                $teams_tmp = array();
-                foreach ($teams as $name => $_team) {
-                    array_push($teams_tmp, $_team);
-                }
-                $tournament->setTeams($teams_tmp);
-            }
-        }
-
-        public static function getFinalMatchesRanking($tournament) {
-            $final_matches = Match::getFinalMatches($tournament->getMatches());
-            $teams = self::getGroupRanking($tournament->getTeams(), $final_matches, self::Second);
-            $tournament->setTeams($teams);
-        }
-
-        public static function getFinalPlayoffMatchRanking($tournament) {
-            $teams = Team::getTeamArrayById($tournament->getTeams());
-            $final_playoff_match = Match::getFinalPlayoffMatch($tournament->getMatches());
-            if ($final_playoff_match != null) {
-                self::calculatePoint($teams, $final_playoff_match, self::Second);
-                $teams_tmp = array();
-                foreach ($teams as $name => $_team) {
-                    array_push($teams_tmp, $_team);
-                }
-                $tournament->setTeams($teams_tmp);
-            }
+            return $rounds;
         }
 
         public static function getAllTimeRanking($tournament) {
-            $teams = self::getGroupRanking($tournament->getTeams(), $tournament->getMatches(), self::AllStages);
+            $teams = self::getGroupRanking($tournament, $tournament->getTeams(), $tournament->getMatches(), true);
             $tournament->setTeams($teams);
         }
 
@@ -695,32 +495,40 @@
             $tournament->setTournamentTeams($result);
         }
 
-        public static function getGroupRanking($teams, $matches, $stage) {
+        public static function getGroupRanking($tournament, $teams, $matches, $all_time) {
             $teams_tmp = Team::getTeamArrayById($teams);
             $result = array();
             for ($i = 0; $i < sizeof($matches); $i++ ) {
-                self::calculatePoint($teams_tmp, $matches[$i], $stage);
+                self::calculatePoint($teams_tmp, $matches[$i], $all_time);
             }
             foreach ($teams_tmp as $name => $_team) {
                 array_push($result, $_team);
             }
-            $result2 = self::sortGroupStanding($result, $matches);
+            $result2 = self::sortGroupStanding($tournament, $result, $matches);
             return $result2;
         }
 
-        public static function calculatePoint(&$teams, $match, $stage) {
+        public static function isMatchExtraTime($match) {
+            $result = $match->getStage() != self::FIRST_STAGE
+                || $match->getRound() == self::PLAY_OFF
+                || $match->getRound() == self::FINAL_ROUND_PLAY_OFF
+                || ($match->getRound() == self::GROUP_MATCHES && $match->getTournamentId() == SoccerHtml::SWITZERLAND_1954
+                    && $match->getHomeTeamExtraTimeScore() != null);
+            return $result;
+        }
+
+        public static function calculatePoint(&$teams, $match, $all_time) {
             if ($match->getSecondRoundGroupName() == self::WITHDREW) return;
             if ($match->getHomeTeamScore() == -1) return;
-            $all_time_ranking = $stage == self::AllStages;
             $points_for_win = 3;
-            if ($match->getPointsForWin() == 2 && !$all_time_ranking) $points_for_win = 2;
-            $no_extra_time = $stage == self::First && $match->getRound() != self::PLAY_OFF && $match->getTournamentId() != SoccerHtml::SWITZERLAND_1954;
+            if ($match->getPointsForWin() == 2 && !$all_time) $points_for_win = 2;
+            $no_extra_time = !self::isMatchExtraTime($match);
             $home_id = $match->getHomeTeamId();
             $away_id = $match->getAwayTeamId();
-            if ($all_time_ranking && $match->getHomeParentTeamId() != null) {
+            if ($all_time && $match->getHomeParentTeamId() != null) {
                 $home_id = $match->getHomeParentTeamId();
             }
-            if ($all_time_ranking && $match->getAwayParentTeamId() != null) {
+            if ($all_time && $match->getAwayParentTeamId() != null) {
                 $away_id = $match->getAwayParentTeamId();
             }
             if (!array_key_exists($home_id, $teams) || !array_key_exists($away_id, $teams)) return;
@@ -779,10 +587,6 @@
                         else {
                             self::resetBestFinish($match, $home_team);
                         }
-                        if ($match->getTournamentId() == SoccerHtml::COPA_1979 && $match->getHomeTeamName() == 'PARAGUAY') {
-                            $home_team->setBestFinish(self::Champion);
-                            $away_team->setBestFinish(self::RunnerUp);
-                        }
                     }
                 }
             }
@@ -800,85 +604,58 @@
                 $away_team->setGoalAgainst($away_team->getGoalAgainst() + $home_extra_time_score);
                 $away_team->setGoalDiff($away_team->getGoalDiff() + $away_extra_time_score - $home_extra_time_score);
             }
-            if ($match->getTournamentId() == SoccerHtml::PERU_1953) {
-                if ($match->getHomeTeamName() == 'PERU' && $match->getAwayTeamName() == 'PARAGUAY') {
-                    $home_team->setWin($home_team->getWin() + 1);
-                    $home_team->setDraw($home_team->getDraw() - 1);
-                    $home_team->setPoint($home_team->getPoint() + 1);
-                    $away_team->setDraw($away_team->getDraw() - 1);
-                    $away_team->setLoss($away_team->getLoss() + 1);
-                    $away_team->setPoint($away_team->getPoint() - 1);
-                }
-                if ($match->getHomeTeamName() == 'CHILE' && $match->getAwayTeamName() == 'BOLIVIA') {
-                    $home_team->setWin($home_team->getWin() + 1);
-                    $home_team->setDraw($home_team->getDraw() - 1);
-                    $home_team->setPoint($home_team->getPoint() + 1);
-                    $away_team->setDraw($away_team->getDraw() - 1);
-                    $away_team->setLoss($away_team->getLoss() + 1);
-                    $away_team->setPoint($away_team->getPoint() - 1);
-                }
-                if ($match->getRound() == self::PLAY_OFF) {
-                    $home_team->setBestFinish(self::Champion);
-                    $away_team->setBestFinish(self::RunnerUp);
-                }
-            }
-            if ($match->getTournamentId() == SoccerHtml::BRAZIL_1949) {
-                if ($match->getRound() == self::PLAY_OFF) {
-                    $home_team->setBestFinish(self::Champion);
-                    $away_team->setBestFinish(self::RunnerUp);
-                }
-            }
-            if ($match->getTournamentId() == SoccerHtml::URUGUAY_1942) {
-                if ($match->getHomeTeamName() == 'ARGENTINA' && $match->getAwayTeamName() == 'CHILE') {
-                    $home_team->setWin($home_team->getWin() + 1);
-                    $home_team->setDraw($home_team->getDraw() - 1);
-                    $home_team->setPoint($home_team->getPoint() + 1);
-                    $away_team->setDraw($away_team->getDraw() - 1);
-                    $away_team->setLoss($away_team->getLoss() + 1);
-                    $away_team->setPoint($away_team->getPoint() - 1);
-                }
-            }
-            if ($match->getTournamentId() == SoccerHtml::ARGENTINA_1937) {
-                if ($match->getRound() == self::PLAY_OFF) {
-                    $home_team->setBestFinish(self::Champion);
-                    $away_team->setBestFinish(self::RunnerUp);
-                }
-            }
-            if ($match->getTournamentId() == SoccerHtml::BRAZIL_1922) {
-                if ($match->getRound() == self::PLAY_OFF) {
-                    $home_team->setBestFinish(self::Champion);
-                    $away_team->setBestFinish(self::RunnerUp);
-                }
-            }
-            if ($match->getTournamentId() == SoccerHtml::BRAZIL_1919) {
-                if ($match->getRound() == self::PLAY_OFF) {
-                    $home_team->setBestFinish(self::Champion);
-                    $away_team->setBestFinish(self::RunnerUp);
-                }
-            }
+            self::getMatchException($match, $home_team, $away_team);
+        }
+
+        public static function getMatchException($match, $home_team, $away_team) {
             if ($match->getTournamentId() == SoccerHtml::URUGUAY_1930) {
                 if ($match->getRound() == self::SEMIFINALS && $match->getAwayTeamName() == 'UNITED STATES') {
                     $away_team->setBestFinish(self::ThirdPlace);
                 }
             }
+            elseif ($match->getTournamentId() == SoccerHtml::URUGUAY_1942) {
+                if ($match->getHomeTeamName() == 'ARGENTINA' && $match->getAwayTeamName() == 'CHILE') {
+                    self::getAbandonedMatchException($home_team, $away_team);
+                }
+            }
+            elseif ($match->getTournamentId() == SoccerHtml::PERU_1953) {
+                if ($match->getHomeTeamName() == 'PERU' && $match->getAwayTeamName() == 'PARAGUAY') {
+                    self::getAbandonedMatchException($home_team, $away_team);
+                }
+                if ($match->getHomeTeamName() == 'CHILE' && $match->getAwayTeamName() == 'BOLIVIA') {
+                    self::getAbandonedMatchException($home_team, $away_team);
+                }
+            }
+            elseif ($match->getTournamentId() == SoccerHtml::COPA_1979 && $match->getRound() == self::FINAL_PLAYOFF) {
+                $home_team->setBestFinish(self::Champion);
+                $away_team->setBestFinish(self::RunnerUp);
+            }
         }
 
-        public static function sortGroupStanding($teams, $matches) {
+        public static function getAbandonedMatchException($home_team, $away_team) {
+            $home_team->setWin($home_team->getWin() + 1);
+            $home_team->setDraw($home_team->getDraw() - 1);
+            $home_team->setPoint($home_team->getPoint() + 1);
+            $away_team->setDraw($away_team->getDraw() - 1);
+            $away_team->setLoss($away_team->getLoss() + 1);
+            $away_team->setPoint($away_team->getPoint() - 1);
+        }
+
+        public static function sortGroupStanding($tournament, $teams, $matches) {
             $teams_copy = $teams;
             for ($i = 0; $i < sizeof($teams) - 1; $i++) {
                 for ($j = $i + 1; $j < sizeof($teams); $j++) {
-                    self::compareTeams($teams_copy[$i], $teams_copy[$j], $matches);
+                    self::compareTeams($tournament, $teams_copy[$i], $teams_copy[$j], $matches);
                 }
             }
             return $teams_copy;
         }
 
-        public static function compareTeams(&$team1, &$team2, $matches) {
-            if (self::isEqualStanding($team1, $team2)) {
-                if ($team1->getTournamentId() == SoccerHtml::GOLD_CUP_2002 &&  $team1->getName() == 'CANADA') return;
-                if ($team1->getTournamentId() == SoccerHtml::ANGOLA_2010 &&  $team1->getGroupName() == 'D' &&  $team2->getGroupName() == 'D') return;
+        public static function compareTeams($tournament, &$team1, &$team2, $matches) {
+            if (self::isEqualStanding($tournament, $team1, $team2)) {
+                if (self::escapeCompareTeams($team1, $team2)) return;
                 $still_tie = self::applyTiebreaker($team1, $team2, $matches);
-                if (self::isTieBreakerHead2HeadFirst($team1->getTournamentId())) {
+                if (self::isTieBreakerHead2HeadFirst($tournament)) {
                     if ($still_tie && self::isHigherStanding($team2, $team1)) {
                         self::swapTeam($team1, $team2);
                     }
@@ -889,28 +666,37 @@
                     if ($still_tie) $still_tie = self::drawingLots($team1, $team2);
                     if ($still_tie) self::alphabetOrder($team1, $team2);
                 }
-                if ($team1->getTournamentId() == SoccerHtml::SWEDEN_1958 &&  $team1->getName() == 'ENGLAND' &&  $team2->getName() == 'SOVIET UNION')
-                    self::swapTeam($team1, $team2);
+                self::forceSwappingTeams($team1, $team2);
             }
             elseif (self::isHigherStanding($team2, $team1)) {
-                if ($team1->getTournamentId() == SoccerHtml::SWITZERLAND_1954 &&  $team1->getName() == 'WEST GERMANY' &&  $team2->getName() == 'TURKEY') return;
-                if ($team1->getTournamentId() == SoccerHtml::SWITZERLAND_1954 &&  $team1->getName() == 'SWITZERLAND' &&  $team2->getName() == 'ITALY') return;
-                if ($team1->getTournamentId() == SoccerHtml::SWEDEN_1958 &&  $team1->getName() == 'NORTHERN IRELAND' &&  $team2->getName() == 'CZECHOSLOVAKIA') return;
-                if ($team1->getTournamentId() == SoccerHtml::TUNISIA_1965 &&  $team1->getName() == 'TUNISIA') return;
-                    self::swapTeam($team1, $team2);
+                if (self::escapeCompareTeams($team1, $team2)) return;
+                self::swapTeam($team1, $team2);
             }
             else {
-                if ($team1->getTournamentId() == SoccerHtml::SWEDEN_1958 &&  $team1->getName() == 'HUNGARY' &&  $team2->getName() == 'WALES')
-                    self::swapTeam($team1, $team2);
-                if ($team1->getTournamentId() == SoccerHtml::SWITZERLAND_1954 &&  $team1->getName() == 'TURKEY' &&  $team2->getName() == 'WEST GERMANY')
-                    self::swapTeam($team1, $team2);
+                self::forceSwappingTeams($team1, $team2);
             }
         }
 
-        public static function isTieBreakerHead2HeadFirst($tournament_id) {
-            return ($tournament_id >= SoccerHtml::FRANCE_2016 && $tournament_id <= SoccerHtml::ENGLAND_1996)
-                || $tournament_id == SoccerHtml::GOLD_CUP_2009 || $tournament_id == SoccerHtml::GOLD_CUP_2007
-                || $tournament_id == SoccerHtml::EQUATORIAL_GUINEA_2015 || $tournament_id == SoccerHtml::ANGOLA_2010;
+        public static function escapeCompareTeams($team1, $team2) {
+            return ($team1->getTournamentId() == SoccerHtml::GOLD_CUP_2002 &&  $team1->getName() == 'CANADA' &&  $team2->getName() == 'ECUADOR')
+                || ($team1->getTournamentId() == SoccerHtml::TUNISIA_1965 &&  $team1->getName() == 'TUNISIA' &&  $team2->getName() == 'SENEGAL')
+                || ($team1->getTournamentId() == SoccerHtml::ANGOLA_2010 &&  $team1->getGroupName() == 'D')
+                || ($team1->getTournamentId() == SoccerHtml::SWITZERLAND_1954 &&  $team1->getName() == 'WEST GERMANY' &&  $team2->getName() == 'TURKEY')
+                || ($team1->getTournamentId() == SoccerHtml::SWITZERLAND_1954 &&  $team1->getName() == 'SWITZERLAND' &&  $team2->getName() == 'ITALY')
+                || ($team1->getTournamentId() == SoccerHtml::SWEDEN_1958 &&  $team1->getName() == 'NORTHERN IRELAND' &&  $team2->getName() == 'CZECHOSLOVAKIA');
+        }
+
+        public static function isTieBreakerHead2HeadFirst($tournament) {
+            $head_tiebreaker = false;
+            if ($tournament->getProfile() != null && $tournament->getProfile()->getHeadToHeadTiebreaker() == 1) $head_tiebreaker = true;
+            return $head_tiebreaker;
+        }
+
+        public static function forceSwappingTeams(&$team1, &$team2) {
+            if (($team1->getTournamentId() == SoccerHtml::SWITZERLAND_1954 &&  $team1->getName() == 'TURKEY' &&  $team2->getName() == 'WEST GERMANY')
+                || ($team1->getTournamentId() == SoccerHtml::SWEDEN_1958 &&  $team1->getName() == 'ENGLAND' &&  $team2->getName() == 'SOVIET UNION')
+                || ($team1->getTournamentId() == SoccerHtml::SWEDEN_1958 &&  $team1->getName() == 'HUNGARY' &&  $team2->getName() == 'WALES'))
+                self::swapTeam($team1, $team2);
         }
 
         public static function sortTournamentStanding($tournament) {
@@ -922,183 +708,18 @@
             for ($i = 0; $i < sizeof($teams); $i++) {
                 $teams_tmp[$teams[$i]->getBestFinish()][$teams[$i]->getName()] = $teams[$i];
             }
-            if (array_key_exists(self::Champion, $teams_tmp)) {
-                foreach ($teams_tmp[self::Champion] as $name => $_team) {
-                    array_push($result, $_team);
-                }
-            }
-            if (array_key_exists(self::RunnerUp, $teams_tmp)) {
-                foreach ($teams_tmp[self::RunnerUp] as $name => $_team) {
-                    array_push($result, $_team);
-                }
-            }
-            if (array_key_exists(self::ThirdPlace, $teams_tmp)) {
-                foreach ($teams_tmp[self::ThirdPlace] as $name => $_team) {
-                    array_push($result, $_team);
-                }
-            }
-            if (array_key_exists(self::GoldMedal, $teams_tmp)) {
-                foreach ($teams_tmp[self::GoldMedal] as $name => $_team) {
-                    array_push($result, $_team);
-                }
-            }
-            if (array_key_exists(self::SilverMedal, $teams_tmp)) {
-                foreach ($teams_tmp[self::SilverMedal] as $name => $_team) {
-                    array_push($result, $_team);
-                }
-            }
-            if (array_key_exists(self::BronzeMedal, $teams_tmp)) {
-                foreach ($teams_tmp[self::BronzeMedal] as $name => $_team) {
-                    array_push($result, $_team);
-                }
-            }
-            if (array_key_exists(self::Semifinal, $teams_tmp)) {
-                foreach ($teams_tmp[self::Semifinal] as $name => $_team) {
-                    if ($name == 'USA' && $tournament->getTournamentId() == SoccerHtml::URUGUAY_1930) {
-                        $_team->setBestFinish(self::ThirdPlace);
+            $best_finishes = [self::Champion, self::RunnerUp, self::ThirdPlace, self::GoldMedal, self::SilverMedal, self::BronzeMedal,
+                            self::Semifinal, self::FifthPlace, self::ConsolationFinal, self::ConsolationSemifinal, self::Consolation,
+                            self::Quarterfinal, self::Round16, self::FirstRound, self::PreliminaryRound, self::FinalRound, self::SecondRound,
+                            self::Group, self::Disqualified];
+            for ($i = 0; $i < sizeof($best_finishes); $i++) {
+                if (array_key_exists($best_finishes[$i], $teams_tmp)) {
+                    foreach ($teams_tmp[$best_finishes[$i]] as $name => $_team) {
+                        array_push($result, $_team);
                     }
-                    if ($name == 'GERMANY DR') {
-                        $_team->setBestFinish(self::BronzeMedal);
-                    }
-                    array_push($result, $_team);
-                }
-            }
-            if (array_key_exists(self::FifthPlace, $teams_tmp)) {
-                foreach ($teams_tmp[self::FifthPlace] as $name => $_team) {
-                    array_push($result, $_team);
-                }
-            }
-            if (array_key_exists(self::ConsolationFinal, $teams_tmp)) {
-                foreach ($teams_tmp[self::ConsolationFinal] as $name => $_team) {
-                    array_push($result, $_team);
-                }
-            }
-            if (array_key_exists(self::ConsolationSemifinal, $teams_tmp)) {
-                foreach ($teams_tmp[self::ConsolationSemifinal] as $name => $_team) {
-                    array_push($result, $_team);
-                }
-            }
-            if (array_key_exists(self::Consolation, $teams_tmp)) {
-                foreach ($teams_tmp[self::Consolation] as $name => $_team) {
-                    array_push($result, $_team);
-                }
-            }
-            if (array_key_exists(self::ReplayQuarterfinal, $teams_tmp)) {
-                foreach ($teams_tmp[self::ReplayQuarterfinal] as $name => $_team) {
-                    array_push($result, $_team);
-                }
-            }
-            if (array_key_exists(self::Quarterfinal, $teams_tmp)) {
-                foreach ($teams_tmp[self::Quarterfinal] as $name => $_team) {
-                    array_push($result, $_team);
-                }
-            }
-            if (array_key_exists(self::Round16, $teams_tmp)) {
-                foreach ($teams_tmp[self::Round16] as $name => $_team) {
-                    array_push($result, $_team);
-                }
-            }
-            if (array_key_exists(self::ReplayFirstRound, $teams_tmp)) {
-                foreach ($teams_tmp[self::ReplayFirstRound] as $name => $_team) {
-                    array_push($result, $_team);
-                }
-            }
-            if (array_key_exists(self::FirstRound, $teams_tmp)) {
-                foreach ($teams_tmp[self::FirstRound] as $name => $_team) {
-                    array_push($result, $_team);
-                }
-            }
-            if (array_key_exists(self::PreliminaryRound, $teams_tmp)) {
-                foreach ($teams_tmp[self::PreliminaryRound] as $name => $_team) {
-                    array_push($result, $_team);
-                }
-            }
-            if (array_key_exists(self::FinalRound, $teams_tmp)) {
-                foreach ($teams_tmp[self::FinalRound] as $name => $_team) {
-                    array_push($result, $_team);
-                }
-            }
-            if (array_key_exists(self::SecondRound, $teams_tmp)) {
-                foreach ($teams_tmp[self::SecondRound] as $name => $_team) {
-                    array_push($result, $_team);
-                }
-            }
-            if (array_key_exists(self::Playoff, $teams_tmp)) {
-                foreach ($teams_tmp[self::Playoff] as $name => $_team) {
-                    array_push($result, $_team);
-                }
-            }
-            if (array_key_exists(self::Group, $teams_tmp)) {
-                foreach ($teams_tmp[self::Group] as $name => $_team) {
-                    array_push($result, $_team);
-                }
-            }
-            if (array_key_exists(self::Disqualified, $teams_tmp)) {
-                foreach ($teams_tmp[self::Disqualified] as $name => $_team) {
-                    array_push($result, $_team);
                 }
             }
             $tournament->setTeams($result);
-        }
-
-        public static function updateSecondRoundTeams($tournament) {
-            $teams = Team::getTeamArrayByName($tournament->getSecondRoundTeams());
-            $matches = Match::getSecondRoundMatches($tournament->getMatches());
-            for ($i = 0; $i < sizeof($matches); $i++ ) {
-                $teams[$matches[$i]->getHomeTeamName()]->setGroupName($matches[$i]->getSecondRoundGroupName());
-                $teams[$matches[$i]->getAwayTeamName()]->setGroupName($matches[$i]->getSecondRoundGroupName());
-            }
-        }
-
-        public static function updateFinalRoundTeams($tournament) {
-            $teams = Team::getTeamArrayByName($tournament->getSecondRoundTeams());
-            $matches = Match::getFinalRoundMatches($tournament->getMatches());
-            for ($i = 0; $i < sizeof($matches); $i++ ) {
-                $teams[$matches[$i]->getHomeTeamName()]->setGroupName($matches[$i]->getSecondRoundGroupName());
-                $teams[$matches[$i]->getAwayTeamName()]->setGroupName($matches[$i]->getSecondRoundGroupName());
-            }
-        }
-
-        public static function resetBestFinish($match, $team) {
-            if ($match->getRound() == self::FIFTH_PLACE_MATCH) {
-                $team->setBestFinish(self::Quarterfinal);
-                if ($team->getName() == 'YUGOSLAVIA' && $match->getTournamentId() == SoccerHtml::TOKYO_1964) $team->setBestFinish(self::ConsolationFinal);
-            }
-            if ($match->getRound() == self::BRONZE_MEDAL_MATCH) {
-                $team->setBestFinish(self::Semifinal);
-                if ($team->getName() == 'SWEDEN' && $match->getTournamentId() == SoccerHtml::LONDON_1908) $team->setBestFinish(self::Quarterfinal);
-                if ($team->getName() == 'EAST GERMANY' && $match->getTournamentId() == SoccerHtml::MUNICH_1972) $team->setBestFinish(self::BronzeMedal);
-            }
-            if ($match->getRound() == self::REPLAY_BRONZE_MEDAL_MATCH) {
-                $team->setBestFinish(self::Semifinal);
-            }
-            if ($match->getRound() == self::GOLD_MEDAL_MATCH) {
-                $team->setBestFinish(self::SilverMedal);
-                if ($team->getName() == 'CZECHOSLOVAKIA' && $match->getTournamentId() == SoccerHtml::ANTWERP_1920) $team->setBestFinish(self::Disqualified);
-            }
-            if ($match->getRound() == self::REPLAY_GOLD_MEDAL_MATCH) {
-                $team->setBestFinish(self::SilverMedal);
-            }
-            if ($match->getRound() == self::THIRD_PLACE) {
-                $team->setBestFinish(self::Semifinal);
-                if ($match->getTournamentId() == SoccerHtml::GOLD_CUP_1993) $team->setBestFinish(self::ThirdPlace);
-            }
-            if ($match->getRound() == self::FINAL_) {
-                $team->setBestFinish(self::RunnerUp);
-            }
-            if ($match->getRound() == self::REPLAY_FINAL) {
-                $team->setBestFinish(self::RunnerUp);
-            }
-            if ($match->getRound() == self::FINALS) {
-                $team->setBestFinish(self::RunnerUp);
-            }
-            if ($match->getRound() == self::FINAL_PLAYOFF) {
-                $team->setBestFinish(self::RunnerUp);
-            }
-            if ($match->getRound() == self::CONSOLATION_FINAL) {
-                $team->setBestFinish(self::ConsolationFinal);
-                if ($match->getTournamentId() == SoccerHtml::ANTWERP_1920) $team->setBestFinish(self::BronzeMedal);
-            }
         }
 
         public static function getFinish($match) {
@@ -1107,7 +728,7 @@
                     $best_finish = self::Group;
                     break;
                 case self::PLAY_OFF:
-                    $best_finish = self::Playoff;
+                    $best_finish = self::Group;
                     break;
                 case self::MATCH_DAY_1:
                     $best_finish = self::Group;
@@ -1140,7 +761,7 @@
                     $best_finish = self::FirstRound;
                     break;
                 case self::REPLAY_FIRST_ROUND:
-                    $best_finish = self::ReplayFirstRound;
+                    $best_finish = self::FirstRound;
                     break;
                 case self::ROUND16:
                     $best_finish = self::Round16;
@@ -1183,7 +804,8 @@
                     break;
                 case self::CONSOLATION_FINAL:
                     $best_finish = self::FifthPlace;
-                    if ($match->getTournamentId() == SoccerHtml::ANTWERP_1920) $best_finish = self::SilverMedal;
+                    if ($match->getTournamentId() == SoccerHtml::ANTWERP_1920)
+                        $best_finish = self::SilverMedal;
                     break;
                 case self::REPLAY_FINAL:
                     $best_finish = self::Champion;
@@ -1194,11 +816,74 @@
                 case self::FINAL_PLAYOFF:
                     $best_finish = self::Champion;
                     break;
+                case self::FINAL_ROUND_PLAY_OFF:
+                    $best_finish = self::Champion;
+                    break;
                 default:
                     $best_finish = self::Champion;
                     break;
             }
             return $best_finish;
+        }
+
+        public static function resetBestFinish($match, $team) {
+            switch ($match->getRound()) {
+                case self::CONSOLATION_FINAL:
+                    $team->setBestFinish(self::ConsolationFinal);
+                    self::resetBestFinishException($match, $team);
+                    break;
+                case self::FIFTH_PLACE_MATCH:
+                    $team->setBestFinish(self::ConsolationFinal);
+                    break;
+                case self::BRONZE_MEDAL_MATCH:
+                    $team->setBestFinish(self::Semifinal);
+                    self::resetBestFinishException($match, $team);
+                    break;
+                case self::REPLAY_BRONZE_MEDAL_MATCH:
+                    $team->setBestFinish(self::Semifinal);
+                    break;
+                case self::GOLD_MEDAL_MATCH:
+                    $team->setBestFinish(self::SilverMedal);
+                    self::resetBestFinishException($match, $team);
+                    break;
+                case self::REPLAY_GOLD_MEDAL_MATCH:
+                    $team->setBestFinish(self::SilverMedal);
+                    break;
+                case self::THIRD_PLACE:
+                    $team->setBestFinish(self::Semifinal);
+                    self::resetBestFinishException($match, $team);
+                    break;
+                case self::FINAL_:
+                    $team->setBestFinish(self::RunnerUp);
+                    break;
+                case self::REPLAY_FINAL:
+                    $team->setBestFinish(self::RunnerUp);
+                    break;
+                case self::FINALS:
+                    $team->setBestFinish(self::RunnerUp);
+                    break;
+                case self::FINAL_PLAYOFF:
+                    $team->setBestFinish(self::RunnerUp);
+                    break;
+                case self::FINAL_ROUND_PLAY_OFF:
+                    $team->setBestFinish(self::RunnerUp);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public static function resetBestFinishException($match, $team) {
+            if ($match->getTournamentId() == SoccerHtml::LONDON_1908 && $team->getName() == 'SWEDEN')
+                $team->setBestFinish(self::Quarterfinal);
+            elseif ($match->getTournamentId() == SoccerHtml::ANTWERP_1920 && $team->getName() == 'CZECHOSLOVAKIA')
+                $team->setBestFinish(self::Disqualified);
+            elseif ($match->getTournamentId() == SoccerHtml::ANTWERP_1920 && $team->getName() == 'NETHERLANDS')
+                $team->setBestFinish(self::BronzeMedal);
+            elseif ($match->getTournamentId() == SoccerHtml::MUNICH_1972 && $team->getName() == 'EAST GERMANY')
+                $team->setBestFinish(self::BronzeMedal);
+            elseif ($match->getTournamentId() == SoccerHtml::GOLD_CUP_1993 && $team->getName() == 'COSTA RICA')
+                $team->setBestFinish(self::ThirdPlace);
         }
 
         public static function isHigherStanding($t1, $t2) {
@@ -1228,8 +913,8 @@
             }
         }
 
-        public static function isEqualStanding($t1, $t2) {
-            if (self::isTieBreakerHead2HeadFirst($t1->getTournamentId()))
+        public static function isEqualStanding($tournament, $t1, $t2) {
+            if (self::isTieBreakerHead2HeadFirst($tournament))
                 return $t1->getPoint() == $t2->getPoint();
             else
                 return self::isAlwaysEqualStanding($t1, $t2);
@@ -1268,7 +953,7 @@
         }
 
         public static function fairPlayRule(&$t1, &$t2) {
-            if ($t2->getName() == 'JAPAN' && $t2->getTournamentId() == SoccerHtml::RUSSIA_2018) {
+            if ($t2->getTournamentId() == SoccerHtml::RUSSIA_2018 && $t2->getName() == 'JAPAN') {
                self::swapTeam($t1, $t2);
                return false;
             }
@@ -1277,11 +962,11 @@
 
         public static function drawingLots(&$t1, &$t2) {
             $still_tie = true;
-            if ($t2->getName() == 'REPUBLIC OF IRELAND' && $t2->getTournamentId() == SoccerHtml::ITALY_1990) {
+            if ($t2->getTournamentId() == SoccerHtml::ITALY_1990 && $t2->getName() == 'REPUBLIC OF IRELAND') {
                 self::swapTeam($t1, $t2);
                 $still_tie = false;
             }
-            elseif ($t2->getName() == 'NETHERLANDS' && $t2->getTournamentId() == SoccerHtml::ITALY_1990) {
+            elseif ($t2->getTournamentId() == SoccerHtml::ITALY_1990 && $t2->getName() == 'NETHERLANDS') {
                 $still_tie = false;
             }
             return $still_tie;

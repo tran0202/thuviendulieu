@@ -448,17 +448,7 @@
             $teams_tmp = array();
             $result = array();
             for ($i = 0; $i < sizeof($teams); $i++) {
-                if ($teams[$i]->getBestFinish() == Soccer::Playoff) {
-                    $teams[$i]->setBestFinish(Soccer::Group);
-                    $teams_tmp[Soccer::Group][$teams[$i]->getName()] = $teams[$i];
-                }
-                elseif ($teams[$i]->getBestFinish() == Soccer::ReplayFirstRound) {
-                    $teams[$i]->setBestFinish(Soccer::FirstRound);
-                    $teams_tmp[Soccer::FirstRound][$teams[$i]->getName()] = $teams[$i];
-                }
-                else {
-                    $teams_tmp[$teams[$i]->getBestFinish()][$teams[$i]->getName()] = $teams[$i];
-                }
+                $teams_tmp[$teams[$i]->getBestFinish()][$teams[$i]->getName()] = $teams[$i];
             }
             foreach ($teams_tmp as $best_finish => $_teams) {
                 foreach ($_teams as $name => $_team) {

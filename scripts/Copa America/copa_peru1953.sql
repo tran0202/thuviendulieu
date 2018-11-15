@@ -8,7 +8,7 @@ VALUES ('1953 South American Championship Peru', '1953-02-22', '1953-04-01', 12,
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (106, 58, 1, 39, 1),
-	   (106, 57, 2, 39, 1);
+	   (106, 157, 2, 39, 1);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 
@@ -46,7 +46,7 @@ VALUES (227, 1, 31, 0, 106, '1953-02-22', '190000', 1, 58, 39),
 	   (207, 2, 1, 1, 106, '1953-03-27', '190000', 19, 58, 39),
 	   (199, 2, 227, 2, 106, '1953-03-28', '190000', 20, 58, 39), # Chile gets 2 points because Bolivia's unsportsmanlike behaviour
 	   (32, 3, 31, 0, 106, '1953-03-28', '190000', 21, 58, 39),
-	   (207, 3, 1, 2, 106, '1953-04-01', '190000', 22, 57, 39);
+	   (207, 3, 1, 2, 106, '1953-04-01', '190000', 22, 157, 39);
 
 CREATE TABLE IF NOT EXISTS tournament (
 	id INT AUTO_INCREMENT PRIMARY KEY,

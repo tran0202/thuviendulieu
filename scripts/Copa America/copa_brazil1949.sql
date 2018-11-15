@@ -8,7 +8,7 @@ VALUES ('1949 South American Championship Brazil', '1949-04-03', '1949-05-11', 1
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (107, 58, 1, 39, 1),
-	   (107, 57, 2, 39, 1);
+	   (107, 157, 2, 39, 1);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 
@@ -54,7 +54,7 @@ VALUES (1, 9, 200, 1, 107, '1949-04-03', '190000', 1, 58, 39),
 	   (227, 4, 30, 0, 107, '1949-05-06', '190000', 26, 58, 39),
 	   (199, 3, 32, 1, 107, '1949-05-08', '190000', 27, 58, 39),
 	   (207, 2, 1, 1, 107, '1949-05-08', '190000', 28, 58, 39),
-	   (1, 7, 207, 0, 107, '1949-05-11', '190000', 29, 57, 39);
+	   (1, 7, 207, 0, 107, '1949-05-11', '190000', 29, 157, 39);
 
 CREATE TABLE IF NOT EXISTS tournament (
 	id INT AUTO_INCREMENT PRIMARY KEY,

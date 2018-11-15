@@ -102,34 +102,34 @@
                     }
                 }
                 if (sizeof($group_teams) > 0) {
-                    self::calculateGroupScenarios($group_team_names, $group_teams, $tournament->getMatches());
+                    self::calculateGroupScenarios($tournament, $group_team_names, $group_teams, $tournament->getMatches());
                 }
             }
         }
 
-        public static function calculateGroupScenarios($group_team_names, $group_teams, $matches) {
+        public static function calculateGroupScenarios($tournament, $group_team_names, $group_teams, $matches) {
             $scenario_array = array();
             $tmp_scenarios1 = array();
             $tmp_scenarios2 = array();
             $tmp_scenarios3 = array();
             $tmp_scenarios4 = array();
-            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 1, 0, $group_team_names[1],
+            array_push($scenario_array, self::calculateGroupStanding($tournament, $group_teams, $group_team_names[0], 1, 0, $group_team_names[1],
                 $group_team_names[2], 1, 0, $group_team_names[3], $matches));
-            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 1, 0, $group_team_names[1],
+            array_push($scenario_array, self::calculateGroupStanding($tournament, $group_teams, $group_team_names[0], 1, 0, $group_team_names[1],
                 $group_team_names[2], 0, 0, $group_team_names[3], $matches));
-            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 1, 0, $group_team_names[1],
+            array_push($scenario_array, self::calculateGroupStanding($tournament, $group_teams, $group_team_names[0], 1, 0, $group_team_names[1],
                 $group_team_names[2], 0, 1, $group_team_names[3], $matches));
-            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 0, $group_team_names[1],
+            array_push($scenario_array, self::calculateGroupStanding($tournament, $group_teams, $group_team_names[0], 0, 0, $group_team_names[1],
                 $group_team_names[2], 1, 0, $group_team_names[3], $matches));
-            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 0, $group_team_names[1],
+            array_push($scenario_array, self::calculateGroupStanding($tournament, $group_teams, $group_team_names[0], 0, 0, $group_team_names[1],
                 $group_team_names[2], 0, 0, $group_team_names[3], $matches));
-            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 0, $group_team_names[1],
+            array_push($scenario_array, self::calculateGroupStanding($tournament, $group_teams, $group_team_names[0], 0, 0, $group_team_names[1],
                 $group_team_names[2], 0, 1, $group_team_names[3], $matches));
-            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 1, $group_team_names[1],
+            array_push($scenario_array, self::calculateGroupStanding($tournament, $group_teams, $group_team_names[0], 0, 1, $group_team_names[1],
                 $group_team_names[2], 1, 0, $group_team_names[3], $matches));
-            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 1, $group_team_names[1],
+            array_push($scenario_array, self::calculateGroupStanding($tournament, $group_teams, $group_team_names[0], 0, 1, $group_team_names[1],
                 $group_team_names[2], 0, 0, $group_team_names[3], $matches));
-            array_push($scenario_array, self::calculateGroupStanding($group_teams, $group_team_names[0], 0, 1, $group_team_names[1],
+            array_push($scenario_array, self::calculateGroupStanding($tournament, $group_teams, $group_team_names[0], 0, 1, $group_team_names[1],
                 $group_team_names[2], 0, 1, $group_team_names[3], $matches));
             for ($i = 0; $i < 9; $i++) {
                 array_push($tmp_scenarios1, $scenario_array[$i]);
@@ -169,7 +169,7 @@
             $group_teams[$group_team_names[3]]->setScenarios($tmp_scenarios4);
         }
 
-        public static function calculateGroupStanding($group_teams, $t1, $t1_gf, $t1_ga, $t2, $t3, $t3_gf, $t3_ga, $t4, $matches) {
+        public static function calculateGroupStanding($tournament, $group_teams, $t1, $t1_gf, $t1_ga, $t2, $t3, $t3_gf, $t3_ga, $t4, $matches) {
             $tmp_group_teams = array();
             foreach ($group_teams as $team_name => $team) {
                 $tmp_group_teams[$team_name] = Team::CloneSoccerTeam($team->getId(), $team->getName(), $team->getCode(), $team->getTeamType(), $team->getGroupName(),
@@ -203,13 +203,13 @@
             }
             $tmp_m1 = Match::CloneSoccerMatch(0, $t1, 'T1', 0, $t2, 'T2', $t1_gf, $t1_ga);
             $tmp_m3 = Match::CloneSoccerMatch(0, $t3, 'T3', 0, $t4, 'T4', $t3_gf, $t3_ga);
-            Soccer::calculatePoint($tmp_group_teams, $tmp_m1, Soccer::First);
-            Soccer::calculatePoint($tmp_group_teams, $tmp_m3, Soccer::First);
+            Soccer::calculatePoint($tmp_group_teams, $tmp_m1, false);
+            Soccer::calculatePoint($tmp_group_teams, $tmp_m3, false);
             $team_array = array();
             foreach ($tmp_group_teams as $team_name => $team) {
                 array_push($team_array, $team);
             }
-            $team_array = Soccer::sortGroupStanding($team_array, $tmp_matches);
+            $team_array = Soccer::sortGroupStanding($tournament, $team_array, $tmp_matches);
             $team_array2 = array();
             for ($i = 0; $i < sizeof($team_array); $i++) {
                 $team_array[$i]->setGroupOrder($i + 1);

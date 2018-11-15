@@ -8,7 +8,7 @@ VALUES ('1922 South American Championship Brazil', '1922-09-17', '1922-10-22', 1
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (122, 58, 1, 39, 1),
-	   (122, 57, 2, 39, 1);
+	   (122, 157, 2, 39, 1);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 
@@ -33,7 +33,7 @@ VALUES (1, 1, 199, 1, 122, '1922-09-17', '190000', 1, 58, 39),
 	   (32, 0, 207, 1, 122, '1922-10-12', '190000', 8, 58, 39),
 	   (1, 2, 3, 0, 122, '1922-10-15', '190000', 9, 58, 39),
 	   (207, 0, 3, 2, 122, '1922-10-18', '190000', 10, 58, 39),
-	   (1, 3, 207, 0, 122, '1922-10-22', '190000', 11, 57, 39);
+	   (1, 3, 207, 0, 122, '1922-10-22', '190000', 11, 157, 39);
 
 # INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 # 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,

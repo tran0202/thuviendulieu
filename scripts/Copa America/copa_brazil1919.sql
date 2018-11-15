@@ -8,7 +8,7 @@ VALUES ('1919 South American Championship Brazil', '1919-05-11', '1919-05-29', 1
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (125, 58, 1, 39, 1),
-	   (125, 57, 2, 39, 1);
+	   (125, 157, 2, 39, 1);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 
@@ -32,7 +32,7 @@ VALUES (1, 6, 199, 0, 125, '1919-05-11', '190000', 1, 58, 39),
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
-VALUES 	(1, 0, 1, null, 32, 0, 0, null, 125, '1919-05-29', '190000', 7, 57, 39, 7);
+VALUES 	(1, 0, 1, null, 32, 0, 0, null, 125, '1919-05-29', '190000', 7, 157, 39, 7);
 
 CREATE TABLE IF NOT EXISTS tournament (
 	id INT AUTO_INCREMENT PRIMARY KEY,

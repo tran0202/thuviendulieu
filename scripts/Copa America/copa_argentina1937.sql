@@ -8,7 +8,7 @@ VALUES ('1937 South American Championship Argentina', '1936-12-27', '1937-02-01'
 
 INSERT INTO group_tournament (tournament_id, group_id, group_order, parent_group_id, parent_group_order)
 VALUES (114, 58, 1, 39, 1),
-	   (114, 57, 2, 39, 1);
+	   (114, 157, 2, 39, 1);
 
 SELECT * FROM `team` WHERE team_type_id = 1 ORDER BY name;
 
@@ -43,7 +43,7 @@ VALUES (1, 3, 31, 2, 114, '1936-12-27', '190000', 1, 58, 39),
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
 					 tournament_id, match_date, match_time, match_order, round_id, stage_id, bracket_order)
-VALUES 	(3, 0, 2, null, 1, 0, 0, null, 114, '1937-02-01', '190000', 16, 57, 39, 16);
+VALUES 	(3, 0, 2, null, 1, 0, 0, null, 114, '1937-02-01', '190000', 16, 157, 39, 16);
 
 CREATE TABLE IF NOT EXISTS tournament (
 	id INT AUTO_INCREMENT PRIMARY KEY,

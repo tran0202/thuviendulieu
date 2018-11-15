@@ -8,6 +8,8 @@ CREATE TABLE IF NOT EXISTS tournament (
 	parent_tournament_id INT,
 	points_for_win TINYINT UNSIGNED,
 	golden_goal_rule TINYINT UNSIGNED,
+	head_to_head_tiebreaker TINYINT UNSIGNED,
+	third_place_ranking TINYINT UNSIGNED,
 	FOREIGN KEY (tournament_type_id) REFERENCES tournament_type(id),
 	FOREIGN KEY (parent_tournament_id) REFERENCES tournament(id)
 );
@@ -72,8 +74,7 @@ INSERT INTO tournament (name, start_date, end_date, tournament_type_id, parent_t
 VALUES ('2018 US Open Women''s Singles', '2018-08-27', '2018-09-09', 5, 26);
 
 ALTER TABLE tournament
-ADD COLUMN pointsForWin TINYINT UNSIGNED,
-ADD COLUMN goldenGoalRule TINYINT UNSIGNED
+ADD COLUMN third_place_ranking TINYINT UNSIGNED
 AFTER end_date;
 
 ALTER TABLE tournament

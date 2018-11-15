@@ -142,10 +142,11 @@ VALUES ('First Stage', 4),
 	   ('Consolation Final', 5),
 	   ('Replay Final', 5),
 	   ('Finals', 5),
-	   ('Final Play-off', 5);
+	   ('Final Play-off', 5),
+	   ('Replay Round of 16', 5);
 
 INSERT INTO `group` (name, group_type_id)
-VALUES ('Replay Round of 16', 5);
+VALUES ('Final Round Play-off', 5);
 
 INSERT INTO `group` (name, long_name, group_type_id)
 VALUES ('Preseason', null, 4),
