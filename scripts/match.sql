@@ -1777,3 +1777,76 @@ FROM `match` m
 WHERE tou.tournament_type_id = 6
   AND m.tournament_id = 29
 ORDER BY match_order, match_date, match_time
+
+# 	public static function getSpecialScore($_match, &$special_score, &$special_score2) {
+# 	if ($_match->getTournamentId() == self::ITALY_1968 && $_match->getHomeTeamName() == 'ITALY'
+# 	&& $_match->getAwayTeamName() == 'SOVIET UNION') {
+# 	$special_score = 'Italy won on coin toss';
+# $special_score2 = ' <span class="small">ITA won coin toss</span>';
+# }
+# elseif ($_match->getTournamentId() == self::BERLIN_1936 && $_match->getHomeTeamName() == 'PERU'
+# && $_match->getAwayTeamName() == 'AUSTRIA') {
+# $special_score = 'Peru withdrew';
+# $special_score2 = ' <span class="small">PER withdrew</span>';
+# }
+# elseif ($_match->getTournamentId() == self::ROMA_1960 && $_match->getHomeTeamName() == 'ITALY'
+# && $_match->getAwayTeamName() == 'YUGOSLAVIA') {
+# $special_score = 'Italy won by drawing lot';
+# $special_score2 = ' <span class="small">ITA won lot</span>';
+# }
+# elseif ($_match->getTournamentId() == self::MEXICO_CITY_1968 && $_match->getHomeTeamName() == 'BULGARIA'
+# && $_match->getAwayTeamName() == 'ISRAEL') {
+# $special_score = 'Bulgaria won by drawing lot';
+# $special_score2 = '<br><span class="small">BUL won lot</span>';
+# }
+# elseif ($_match->getTournamentId() == self::MUNICH_1972 && $_match->getHomeTeamName() == 'EAST GERMANY'
+# && $_match->getAwayTeamName() == 'SOVIET UNION') {
+# $special_score = 'Bronze medals shared';
+# $special_score2 = ' <span class="small"></span>';
+# }
+# elseif ($_match->getTournamentId() == self::ANTWERP_1920 && $_match->getRound() == Soccer::GOLD_MEDAL_MATCH) {
+# $special_score = 'Czechoslovakia was disqualified without any medal because of protest.';
+# $special_score2 = '<br><span class="small">TCH disqualified</span>';
+# }
+# elseif ($_match->getTournamentId() == self::PERU_1953 && $_match->getHomeTeamName() == 'PERU'
+# && $_match->getAwayTeamName() == 'PARAGUAY') {
+# $special_score = 'Match awarded to Peru because of unsportsmanlike behaviour of Paraguay. Score retained.';
+# $special_score2 = ' <span class="small"></span>';
+# }
+# elseif ($_match->getTournamentId() == self::PERU_1953 && $_match->getHomeTeamName() == 'CHILE'
+# && $_match->getAwayTeamName() == 'BOLIVIA') {
+# $special_score = 'Match awarded to Chile because of unsportsmanlike behaviour of Bolivia. Score retained.';
+# $special_score2 = ' <span class="small"></span>';
+# }
+# elseif ($_match->getTournamentId() == self::URUGUAY_1942 && $_match->getHomeTeamName() == 'ARGENTINA'
+# && $_match->getAwayTeamName() == 'CHILE') {
+# $special_score = 'Match awarded to Argentina with no goals because of protest of Chile.';
+# $special_score2 = ' <span class="small"></span>';
+# }
+# elseif ($_match->getTournamentId() == self::COPA_1975 && $_match->getHomeTeamName() == 'PERU'
+# && $_match->getAwayTeamName() == 'BRAZIL') {
+# $special_score = 'Peru advanced by drawing lot';
+# $special_score2 = '<br><span class="small">PER adv lot</span>';
+# }
+# elseif ($_match->getTournamentId() == self::COPA_1979 && $_match->getRound() == Soccer::FINAL_PLAYOFF) {
+# $special_score = 'Paraguay won on aggregate goals (3-1)';
+# $special_score2 = '<br><span class="small">PAR won agg (3-1)</span>';
+# }
+# elseif ($_match->getTournamentId() == self::GHANA_1978 && $_match->getRound() == Soccer::THIRD_PLACE) {
+# $special_score = 'Tied 1-1, Tunisia walked off to protest. Nigeria was awarded the 2-0 win.';
+# $special_score2 = '<br><span class="small">TUN walked off</span>';
+# }
+# elseif ($_match->getTournamentId() == self::SENEGAL_1992 && $_match->getRound() == Soccer::FINAL_) {
+# $special_score = 'This is the first in the final of a major international tournament that every player on the pitch took a penalty.';
+# $special_score2 = '<br><span class="small"></span>';
+# }
+# elseif ($_match->getTournamentId() == self::GOLD_CUP_1993 && $_match->getRound() == Soccer::THIRD_PLACE) {
+# $special_score = 'Costa Rica and Jamaica shared the third place.';
+# $special_score2 = ' <span class="small">shared third</span>';
+# }
+# elseif ($_match->getTournamentId() == self::GOLD_CUP_2017 && $_match->getHomeTeamName() == 'HONDURAS'
+# && $_match->getAwayTeamName() == 'FRENCH GUIANA') {
+# $special_score = 'Tied 0-0, Honduras was awarded a 3-0 win because of French Guiana\'s ineligible player.';
+# $special_score2 = ' <span class="small"></span>';
+# }
+# }

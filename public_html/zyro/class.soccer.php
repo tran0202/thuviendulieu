@@ -276,7 +276,7 @@
         }
 
         public static function getGroupMatchesRanking($tournament) {
-            $group_matches = Match::getGroupMatches($tournament->getMatches());
+            $group_matches = Match::getRoundMatches($tournament->getMatches(), Soccer::GROUP_MATCHES);
             $result = array();
             $teams_tmp = Team::getTeamArrayByGroup($tournament->getTeams());
             foreach ($teams_tmp as $group_name => $_teams) {
@@ -332,7 +332,7 @@
         }
 
         public static function updateFinalRoundMatchesRanking($tournament) {
-            $final_round_matches = Match::getFinalRoundMatches($tournament->getMatches());
+            $final_round_matches = Match::getRoundMatches($tournament->getMatches(), Soccer::FINAL_ROUND);
             if (sizeof($final_round_matches) > 0) {
                 $teams = self::getGroupRanking($tournament, $tournament->getTeams(), $final_round_matches, false);
                 $teams = Team::getTeamArrayByName($teams);

@@ -445,56 +445,10 @@
             return $count;
         }
 
-        public static function getGroupMatches($matches) {
-            return self::getRoundMatches($matches, Soccer::GROUP_MATCHES);
-        }
-
-        public static function getSecondRoundMatches($matches) {
-            return self::getRoundMatches($matches, Soccer::SECOND_ROUND);
-        }
-
-        public static function getFinalRoundMatches($matches) {
-            return self::getRoundMatches($matches, Soccer::FINAL_ROUND);
-        }
-
-        public static function getRound16Matches($matches) {
-            return self::getRoundMatches($matches, Soccer::ROUND16);
-        }
-
-        public static function getQuarterfinalMatches($matches) {
-            return self::getRoundMatches($matches, Soccer::QUARTERFINALS);
-        }
-
-        public static function getSemifinalMatches($matches) {
-            return self::getRoundMatches($matches, Soccer::SEMIFINALS);
-        }
-
-        public static function getBronzeMedalMatch($matches) {
-            $matches_tmp = self::getRoundMatches($matches, Soccer::BRONZE_MEDAL_MATCH);
-            if (sizeof($matches_tmp) == 0) return null;
-            return $matches_tmp[0];
-        }
-
-        public static function getThirdPlaceMatch($matches) {
-            $matches_tmp = self::getRoundMatches($matches, Soccer::THIRD_PLACE);
-            if (sizeof($matches_tmp) == 0) return null;
-            return $matches_tmp[0];
-        }
-
-        public static function getGoldMedalMatch($matches) {
-            $matches_tmp = self::getRoundMatches($matches, Soccer::GOLD_MEDAL_MATCH);
-            if (sizeof($matches_tmp) == 0) return null;
-            return $matches_tmp[0];
-        }
-
-        public static function getFinalMatch($matches) {
-            $matches_tmp = self::getRoundMatches($matches, Soccer::FINAL_);
-            if (sizeof($matches_tmp) == 0) return null;
-            return $matches_tmp[0];
-        }
-
-        public static function getFinalMatches($matches) {
-            return self::getRoundMatches($matches, Soccer::FINALS);
+        public static function getRoundMatch($matches, $round) {
+            $matches = self::getRoundMatches($matches, $round);
+            if (sizeof($matches) == 0) return null;
+            return $matches[0];
         }
 
         public static function getRoundMatches($matches, $round) {
@@ -541,14 +495,11 @@
                 }
             }
             for ($i = 0; $i < $match_count; $i++) {
-                if (($matches[$i]->getTournamentId() != SoccerHtml::PARIS_1924
-                    && $matches[$i]->getStage() == Soccer::SECOND_STAGE && $matches[$i]->getRound() != Soccer::CONSOLATION_ROUND
-                    && $matches[$i]->getRound() != Soccer::FIFTH_PLACE_MATCH && $matches[$i]->getRound() != Soccer::PRELIMINARY_ROUND)
-                    || ($matches[$i]->getTournamentId() == SoccerHtml::PARIS_1924 && $matches[$i]->getRound() != Soccer::PRELIMINARY_ROUND)
-                    || $matches[$i]->getTournamentId() == SoccerHtml::ITALY_1934) {
+                if ($matches[$i]->getStage() == Soccer::SECOND_STAGE && $matches[$i]->getRound() != Soccer::CONSOLATION_ROUND
+                    && $matches[$i]->getRound() != Soccer::FIFTH_PLACE_MATCH && $matches[$i]->getRound() != Soccer::PRELIMINARY_ROUND) {
                     for ($j = 0; $j < sizeof($replay_matches); $j++) {
                         if ($matches[$i]->getHomeTeamName() == $replay_matches[$j]->getHomeTeamName()
-                            && $matches[$i]->getAwayTeamName() == $replay_matches[$j]->getAwayTeamName()) {
+                            && $matches[$i]->getAwayTeamName() == $replay_matches[$j]->getAwayTeamName()) {echo sizeof($replay_matches).'yes';
                             $matches[$i]->setHomeTeamReplayScore($replay_matches[$j]->getHomeTeamScore());
                             $matches[$i]->setAwayTeamReplayScore($replay_matches[$j]->getAwayTeamScore());
                             break;
