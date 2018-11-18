@@ -1791,8 +1791,8 @@ ORDER BY match_order, match_date, match_time
 # }
 # elseif ($_match->getTournamentId() == self::ROMA_1960 && $_match->getHomeTeamName() == 'ITALY'
 # && $_match->getAwayTeamName() == 'YUGOSLAVIA') {
-# $special_score = 'Italy won by drawing lot';
-# $special_score2 = ' <span class="small">ITA won lot</span>';
+# $special_score = 'Yugoslavia won by drawing lot';
+# $special_score2 = ' <span class="small">YUG won lot</span>';
 # }
 # elseif ($_match->getTournamentId() == self::MEXICO_CITY_1968 && $_match->getHomeTeamName() == 'BULGARIA'
 # && $_match->getAwayTeamName() == 'ISRAEL') {
@@ -1834,7 +1834,7 @@ ORDER BY match_order, match_date, match_time
 # }
 # elseif ($_match->getTournamentId() == self::GHANA_1978 && $_match->getRound() == Soccer::THIRD_PLACE) {
 # $special_score = 'Tied 1-1, Tunisia walked off to protest. Nigeria was awarded the 2-0 win.';
-# $special_score2 = '<br><span class="small">TUN walked off</span>';
+# $special_score2 = '<br><span class="small">1-1 TUN walked off</span>';
 # }
 # elseif ($_match->getTournamentId() == self::SENEGAL_1992 && $_match->getRound() == Soccer::FINAL_) {
 # $special_score = 'This is the first in the final of a major international tournament that every player on the pitch took a penalty.';

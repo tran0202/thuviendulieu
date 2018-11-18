@@ -22,7 +22,7 @@ INSERT INTO team_tournament (team_id, tournament_id)
 VALUES (1070, 57), (886, 57), (912, 57), (931, 57),
 	   (841, 57), (842, 57), (1076, 57), (936, 57),
 	   (905, 57), (1074, 57), (937, 57), (1075, 57),
-	   (933, 57), (919, 57), (871, 57), (932, 57);
+	   (933, 57), (919, 57), (871, 57), (1113, 57);
 
 INSERT INTO `match` (home_team_id, home_team_score, home_team_extra_time_score, home_team_penalty_score,
 					 away_team_id, away_team_score, away_team_extra_time_score, away_team_penalty_score,
@@ -34,7 +34,7 @@ VALUES (1070, 1, null, null, 886, 0, null, null, 57, '1936-08-03', '173000', 1, 
 	   (905, 3, null, null, 1074, 0, null, null, 57, '1936-08-05', '173000', 5, 47, 40, 7),
 	   (937, 3, null, null, 1075, 1, null, null, 57, '1936-08-05', '173000', 6, 47, 40, 5),
 	   (933, 7, null, null, 919, 3, null, null, 57, '1936-08-06', '173000', 7, 47, 40, 6),
-	   (871, 2, null, null, 932, 0, null, null, 57, '1936-08-06', '173000', 8, 47, 40, 8),
+	   (871, 2, null, null, 1113, 0, null, null, 57, '1936-08-06', '173000', 8, 47, 40, 8),
 	   (1070, 8, null, null, 841, 0, null, null, 57, '1936-08-07', '173000', 9, 43, 40, 9),
 	   (1076, 0, null, null, 912, 2, null, null, 57, '1936-08-07', '173000', 10, 43, 40, 10),
 	   (905, 5, null, null, 871, 4, null, null, 57, '1936-08-08', '173000', 11, 43, 40, 12),

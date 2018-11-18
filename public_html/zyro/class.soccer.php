@@ -315,6 +315,9 @@
             foreach ($rounds as $round_id => $round) {
                 $round_name = $round->getRoundName();
                 switch ($round_name) {
+                    case Soccer::PRELIMINARY_ROUND:
+                        Soccer::getRoundMatchesRanking($tournament, $round_name);
+                        break;
                     case Soccer::SECOND_ROUND:
                         Soccer::getRoundMatchesRanking($tournament, $round_name);
                         break;
@@ -512,8 +515,8 @@
             $result = $match->getStage() != self::FIRST_STAGE
                 || $match->getRound() == self::PLAY_OFF
                 || $match->getRound() == self::FINAL_ROUND_PLAY_OFF
-                || ($match->getRound() == self::GROUP_MATCHES && $match->getTournamentId() == SoccerHtml::SWITZERLAND_1954
-                    && $match->getHomeTeamExtraTimeScore() != null);
+                || ($match->getRound() == self::GROUP_MATCHES && $match->getTournamentId() == SoccerHtml::SWITZERLAND_1954)
+                || ($match->getRound() == self::PRELIMINARY_ROUND && $match->getTournamentId() == SoccerHtml::THAILAND_1972);
             return $result;
         }
 
@@ -604,10 +607,10 @@
                 $away_team->setGoalAgainst($away_team->getGoalAgainst() + $home_extra_time_score);
                 $away_team->setGoalDiff($away_team->getGoalDiff() + $away_extra_time_score - $home_extra_time_score);
             }
-            self::getMatchException($match, $home_team, $away_team);
+            self::getMatchException($match, $home_team, $away_team, $all_time);
         }
 
-        public static function getMatchException($match, $home_team, $away_team) {
+        public static function getMatchException($match, $home_team, $away_team, $all_time) {
             if ($match->getTournamentId() == SoccerHtml::URUGUAY_1930) {
                 if ($match->getRound() == self::SEMIFINALS && $match->getAwayTeamName() == 'UNITED STATES') {
                     $away_team->setBestFinish(self::ThirdPlace);
@@ -615,15 +618,15 @@
             }
             elseif ($match->getTournamentId() == SoccerHtml::URUGUAY_1942) {
                 if ($match->getHomeTeamName() == 'ARGENTINA' && $match->getAwayTeamName() == 'CHILE') {
-                    self::getAbandonedMatchException($home_team, $away_team);
+                    self::getAbandonedMatchException($home_team, $away_team, $all_time);
                 }
             }
             elseif ($match->getTournamentId() == SoccerHtml::PERU_1953) {
                 if ($match->getHomeTeamName() == 'PERU' && $match->getAwayTeamName() == 'PARAGUAY') {
-                    self::getAbandonedMatchException($home_team, $away_team);
+                    self::getAbandonedMatchException($home_team, $away_team, $all_time);
                 }
                 if ($match->getHomeTeamName() == 'CHILE' && $match->getAwayTeamName() == 'BOLIVIA') {
-                    self::getAbandonedMatchException($home_team, $away_team);
+                    self::getAbandonedMatchException($home_team, $away_team, $all_time);
                 }
             }
             elseif ($match->getTournamentId() == SoccerHtml::COPA_1979 && $match->getRound() == self::FINAL_PLAYOFF) {
@@ -632,10 +635,11 @@
             }
         }
 
-        public static function getAbandonedMatchException($home_team, $away_team) {
+        public static function getAbandonedMatchException($home_team, $away_team, $all_time) {
             $home_team->setWin($home_team->getWin() + 1);
             $home_team->setDraw($home_team->getDraw() - 1);
             $home_team->setPoint($home_team->getPoint() + 1);
+            if ($all_time) $home_team->setPoint($home_team->getPoint() + 1);
             $away_team->setDraw($away_team->getDraw() - 1);
             $away_team->setLoss($away_team->getLoss() + 1);
             $away_team->setPoint($away_team->getPoint() - 1);

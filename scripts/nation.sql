@@ -207,7 +207,10 @@ VALUES ('Yugoslavia', 'Kingdom of Serbs, Croats and Slovenes', '1918-01-01', '19
 	   ('Congo DR', 'Democratic Republic of the Congo', '2003-01-01', '2006-02-18', 'Congo_DR_2003_2006.png', 47, 6, 'COD'),
 	   ('Tahiti', 'French Polynesia', '1794-02-15', '1984-12-04', 'French_Polynesia_1794_1984.png', 186, 6, 'TAH'),
 	   ('New Caledonia', 'New Caledonia', '1973-01-01', '2008-01-01', 'France.png', 136, 6, 'NCL'),
-	   ('New Hebrides', 'New Hebrides', '1980-07-30', '1980-07-30', 'Vanuatu.png', 205, 6, 'HEB');
+	   ('New Hebrides', 'New Hebrides', '1980-07-30', '1980-07-30', 'Vanuatu.png', 205, 6, 'HEB'),
+	   ('Netherlands Antilles', 'Netherlands Antilles', '1959-01-01', '1986-01-01', 'Netherlands_Antilles_1959_1986.png', 226, 6, 'ANT'),
+	   ('Chinese Taipei', 'Chinese Taipei', null, '2006-01-01', 'Chinese_Taipei_2006.png', 43, 6, 'TPE'),
+	   ('Taiwan', 'Taiwan', '1949-01-01', '1960-01-01', 'Taiwan.png', 43, 6, 'TAI');
 
 INSERT INTO nation (name, official_name, start_date, end_date, flag_filename, parent_nation_id, nation_type_id, code)
-VALUES ('Netherlands Antilles', 'Netherlands Antilles', '1959-01-01', '1986-01-01', 'Netherlands_Antilles_1959_1986.png', 226, 6, 'ANT');
+VALUES ('China', 'China', '1924-01-01', '1949-01-01', 'Taiwan.png', 43, 6, 'CHN');

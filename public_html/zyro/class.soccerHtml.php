@@ -111,6 +111,7 @@
         const LEBANON_2000 = 189;
         const UAE_1996 = 190;
         const IRAN_1968 = 197;
+        const THAILAND_1972 = 196;
         const PAPUA_NEW_GUINEA_2016 = 201;
         const OFC_NATIONS_CUP_1996 = 208;
         const NEW_CALEDONIA_1980 = 209;
@@ -387,13 +388,14 @@
 
         public static function isTeamAdvancedThirdPlaceMatch($_count, $_team) {
             if ($_count == 2) {
-                if ($_team->getTournamentId() == self::ARGENTINA_1978 || $_team->getTournamentId() == self::GERMANY_1974) {
+                if ($_team->getTournamentId() == self::ARGENTINA_1978 || $_team->getTournamentId() == self::GERMANY_1974
+                        || $_team->getTournamentId() == self::MUNICH_1972) {
                     if ($_team->getBestFinish() == Soccer::SecondRound)
                         return true;
                 }
                 elseif ($_team->getTournamentId() == self::SAUDI_ARABIA_1995 || $_team->getTournamentId() == self::GHANA_1963
                         || $_team->getTournamentId() == self::TUNISIA_1965 || $_team->getTournamentId() == self::NEW_CALEDONIA_1980
-                        || $_team->getTournamentId() == self::ITALY_1980 || $_team->getTournamentId() == self::MUNICH_1972)
+                        || $_team->getTournamentId() == self::ITALY_1980)
                     return true;
             }
             elseif ($_count == 3 || $_count == 4)
@@ -544,6 +546,8 @@
             elseif ($_team->getTournamentId() == self::POLAND_UKRAINE_2012) {
                 if ($_team->getName() == 'GREECE')
                     $note = $tmp1.'on head-to-head match'.$tmp2;
+                elseif ($_team->getName() == 'UKRAINE')
+                    $note = $tmp1.'on head-to-head match'.$tmp2;
             }
             elseif ($_team->getTournamentId() == self::FRANCE_2016) {
                 if ($_team->getName() == 'ITALY')
@@ -561,7 +565,7 @@
                     $note = str_replace('ahead ', '', $note);
                 }
                 elseif ($_team->getName() == 'ZAMBIA')
-                    $note = $tmp1.'on head-to-head goals. Zambia 4-4, Cameroon 3-3, Gabon 2-2. Tied on head-to-head points 2 and goal difference 0'.$tmp2;
+                    $note = $tmp1.'on head-to-head goals. Zambia 4-4, Cameroon 3-3, Gabon 2-2. Tied on head-to-head points 3 and goal difference 0'.$tmp2;
             }
             elseif ($_team->getTournamentId() == self::EQUATORIAL_GUINEA_2015) {
                 if ($_team->getName() == 'GUINEA')
@@ -978,12 +982,14 @@
 
         public static function isGroupMatchOvertime($_match) {
             return $_match->getTournamentId() == self::SWITZERLAND_1954
+                || $_match->getTournamentId() == self::THAILAND_1972
                 || ($_match->getTournamentId() == self::SAUDI_ARABIA_1995
                     && $_match->getHomeTeamName() == 'DENMARK' && $_match->getAwayTeamName() == 'MEXICO');
         }
 
         public static function isPreliminaryRound($_match) {
-            return $_match->getRound() == Soccer::PRELIMINARY_ROUND1 || $_match->getRound() == Soccer::PRELIMINARY_ROUND2;
+            return $_match->getRound() == Soccer::PRELIMINARY_ROUND1 || $_match->getRound() == Soccer::PRELIMINARY_ROUND2
+                || $_match->getRound() == Soccer::PRELIMINARY_ROUND;
         }
 
         public static function isShowOvertimeScore($_match) {

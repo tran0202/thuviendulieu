@@ -499,7 +499,7 @@
                     && $matches[$i]->getRound() != Soccer::FIFTH_PLACE_MATCH && $matches[$i]->getRound() != Soccer::PRELIMINARY_ROUND) {
                     for ($j = 0; $j < sizeof($replay_matches); $j++) {
                         if ($matches[$i]->getHomeTeamName() == $replay_matches[$j]->getHomeTeamName()
-                            && $matches[$i]->getAwayTeamName() == $replay_matches[$j]->getAwayTeamName()) {echo sizeof($replay_matches).'yes';
+                            && $matches[$i]->getAwayTeamName() == $replay_matches[$j]->getAwayTeamName()) {
                             $matches[$i]->setHomeTeamReplayScore($replay_matches[$j]->getHomeTeamScore());
                             $matches[$i]->setAwayTeamReplayScore($replay_matches[$j]->getAwayTeamScore());
                             break;

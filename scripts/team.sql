@@ -77,10 +77,13 @@ VALUES ('Yugoslavia', 1, 241, 24),
 	   ('Congo DR', 1, 302, 241),
 	   ('Tahiti', 1, 303, 1039),
 	   ('New Caledonia', 1, 304, 1038),
-	   ('New Hebrides', 1, 305, 1043);
+	   ('New Hebrides', 1, 305, 1043),
+	   ('Netherlands Antilles', 1, 306, 967),
+	   ('Chinese Taipei', 3, 307, 870),
+	   ('Taiwan', 4, 308, 932);
 
 INSERT INTO team (name, team_type_id, nation_id, parent_team_id)
-VALUES ('Netherlands Antilles', 1, 306, 967);
+VALUES ('China', 4, 309, 932);
 
 INSERT INTO team (name, team_type_id, nation_id, parent_team_id)
 VALUES ('Hungary', 4, 277, 904),
