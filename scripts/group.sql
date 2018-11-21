@@ -143,10 +143,18 @@ VALUES ('First Stage', 4),
 	   ('Replay Final', 5),
 	   ('Finals', 5),
 	   ('Final Play-off', 5),
-	   ('Replay Round of 16', 5);
+	   ('Replay Round of 16', 5),
+	   ('Final Round Play-off', 5);
 
 INSERT INTO `group` (name, group_type_id)
-VALUES ('Final Round Play-off', 5);
+VALUES ('Men''s National', 10),
+	   ('Club', 10),
+	   ('Women''s National', 10),
+	   ('U-23 Men''s National', 10),
+	   ('U-23 Women''s National', 10),
+	   ('Football', 10),
+	   ('Tennis Men''s Single', 10),
+	   ('Tennis Women''s Single', 10);
 
 INSERT INTO `group` (name, long_name, group_type_id)
 VALUES ('Preseason', null, 4),

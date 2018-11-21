@@ -3,7 +3,7 @@
     $qs = '';
     if ($_SERVER['QUERY_STRING'] != '') $qs = '?'.$_SERVER['QUERY_STRING'];
     parse_str($_SERVER['QUERY_STRING'], $query_string);
-    $tournament_id = 1;
+    $tournament_id = SoccerHtml::RUSSIA_2018;
     if (isset($query_string['tid'])) $tournament_id = $query_string['tid'];
     $simulation_mode = Tournament::SIMULATION_MODE_0;
     if (isset($query_string['smid'])) $simulation_mode = $query_string['smid'];
@@ -37,8 +37,8 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <span class="wb-stl-heading1 dark-red"><?php echo $header; ?></span>
-                            <span class="wb-stl-heading3 margin-left-lg"><a href="WorldCupGroups<?php echo $qs; ?>" target="_self">Groups</a></span>
-                            <span class="wb-stl-heading3 margin-left-lg"><a href="WorldCupSchedule<?php echo $qs; ?>" target="_self">Schedule</a></span>
+                            <span class="wb-stl-heading3 margin-left-lg"><a href="SoccerGroups<?php echo $qs; ?>" target="_self">Groups</a></span>
+                            <span class="wb-stl-heading3 margin-left-lg"><a href="SoccerSchedule<?php echo $qs; ?>" target="_self">Schedule</a></span>
                         </div>
                     </div>
                     <div class="row">

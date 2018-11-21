@@ -253,10 +253,10 @@
             LEFT JOIN (SELECT team_id, COUNT(team_id) AS tournament_count
                         FROM team_tournament tt2
                         LEFT JOIN tournament tou2 ON tt2.tournament_id = tou2.id
-                        WHERE (group_id <> 63 OR group_id is null)
+                        WHERE (group_id <> 63 OR group_id is null) AND tournament_id <> 221
                             AND tou2.tournament_type_id = 1
                         GROUP BY team_id) tc ON tc.team_id = t.id
-            WHERE tou.tournament_type_id = 1
+            WHERE tou.tournament_type_id = 1 AND tournament_id <> 221
             UNION
             SELECT DISTINCT t.id, UCASE(t.name) AS name, n.code, t.team_type_id AS team_type, null, null,
                 n.flag_filename, tc.tournament_count
@@ -269,10 +269,10 @@
             LEFT JOIN (SELECT team_id, COUNT(team_id) AS tournament_count
                         FROM team_tournament tt2
                         LEFT JOIN tournament tou2 ON tt2.tournament_id = tou2.id
-                        WHERE (group_id <> 63 OR group_id is null)
+                        WHERE (group_id <> 63 OR group_id is null) AND tournament_id <> 221
                             AND tou2.tournament_type_id = 1
                         GROUP BY team_id) tc ON tc.team_id = t.id
-            WHERE tou.tournament_type_id = 1
+            WHERE tou.tournament_type_id = 1 AND tournament_id <> 221
          */
 
         public static function getAllTimeSoccerTeamSql($tournament_type_id) {
@@ -289,10 +289,10 @@
                     LEFT JOIN (SELECT team_id, COUNT(team_id) AS tournament_count
                                 FROM team_tournament tt2
                                 LEFT JOIN tournament tou2 ON tt2.tournament_id = tou2.id
-                                WHERE (group_id <> '.self::WITHDREW.' OR group_id is null) -- AND tournament_id <> 1
+                                WHERE (group_id <> '.self::WITHDREW.' OR group_id is null) AND tournament_id <> 221
                                     AND tou2.tournament_type_id = '.$tournament_type_id.'
                                 GROUP BY team_id) tc ON tc.team_id = t.id
-                    WHERE tou.tournament_type_id = '.$tournament_type_id.'  -- AND tt.tournament_id <> 1
+                    WHERE tou.tournament_type_id = '.$tournament_type_id.'  AND tt.tournament_id <> 221
                     UNION
                     SELECT DISTINCT t.id, UCASE(t.name) AS name, n.code, t.team_type_id AS team_type, null, null,
                         n.flag_filename, tc.tournament_count
@@ -305,10 +305,10 @@
                     LEFT JOIN (SELECT team_id, COUNT(team_id) AS tournament_count
                                 FROM team_tournament tt2
                                 LEFT JOIN tournament tou2 ON tt2.tournament_id = tou2.id
-                                WHERE (group_id <> '.self::WITHDREW.' OR group_id is null) -- AND tournament_id <> 1
+                                WHERE (group_id <> '.self::WITHDREW.' OR group_id is null) AND tournament_id <> 221
                                     AND tou2.tournament_type_id = '.$tournament_type_id.'
                                 GROUP BY team_id) tc ON tc.team_id = t.id
-                    WHERE tou.tournament_type_id = '.$tournament_type_id.'  -- AND tt.tournament_id <> 1';
+                    WHERE tou.tournament_type_id = '.$tournament_type_id.' AND tt.tournament_id <> 221';
             return $sql;
         }
 
@@ -359,7 +359,7 @@
             LEFT JOIN nation n ON n.id = t.nation_id
             LEFT JOIN nation n2 ON n2.id = t2.nation_id
             LEFT JOIN `group` g2 ON g2.id = tt.confederation_id
-            WHERE tou.tournament_type_id = 1
+            WHERE tou.tournament_type_id = 1 AND tt.tournament_id <> 221
          */
 
         public static function getAllTimeSoccerTeamTournamentSql($tournament_type_id) {
@@ -375,7 +375,7 @@
                     LEFT JOIN nation n ON n.id = t.nation_id
                     LEFT JOIN nation n2 ON n2.id = t2.nation_id
                     LEFT JOIN `group` g2 ON g2.id = tt.confederation_id
-                    WHERE tou.tournament_type_id = '.$tournament_type_id; // AND tt.tournament_id <> 1'
+                    WHERE tou.tournament_type_id = '.$tournament_type_id.' AND tt.tournament_id <> 221;';
             return $sql;
         }
 

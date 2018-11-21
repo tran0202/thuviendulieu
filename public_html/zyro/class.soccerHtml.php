@@ -607,7 +607,7 @@
         public static function getSoccerPopoverHtml($tournament) {
             $teams = $tournament->getTeams();
             $output = '';
-            for ($i = 0; $i < 32; $i++) {
+            for ($i = 0; $i < sizeof($teams); $i++) {
                 $scenarios = $teams[$i]->getScenarios();
                 $output .= '
                     <div id="popover-content-'.$teams[$i]->getCode().'" class="hide">

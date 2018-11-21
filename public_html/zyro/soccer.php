@@ -17,6 +17,22 @@
         <div class="vbox wb_container" id="wb_main">
             <div class="wb_cont_inner">
                 <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p class="text-center">
+                                <span class="wb-stl-highlight">AFC Asian Cup UAE 2019</span>
+                                <span class="wb-stl-heading3 margin-left-lg"><a href="SoccerGroups?tid=221" target="_self">Groups</a></span>
+                                <span class="wb-stl-heading3 margin-left-lg"><a href="SoccerSchedule?tid=221" target="_self">Schedule</a></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="col-sm-8 offset-sm-2 text-center">
+                                <div class="clock"></div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="card-group">
                         <div class="card">
                             <img class="card-img-top card-img-top-height-200 mx-auto margin-top-sm" src="images/club_logos/UCL.svg" alt="France 2019">
@@ -161,7 +177,7 @@
                         </div>
                         <div class="card">
                             <span class="mx-auto">
-                                <img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2019.png" alt="United Arab Emirates 2019">
+                                <a href="AsianCup?tid=221"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2019.png" alt="United Arab Emirates 2019"></a>
                                 <a href="AsianCup"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2015.png" alt="Australia 2015"></a>
                                 <a href="AsianCup?tid=186"><img class="card-img-top card-img-top-height-100 margin-top-sm" src="images/aac_logos/aac_2011.png" alt="Qatar 2011"></a>
                             </span>
@@ -242,18 +258,6 @@
                     <!--                        First 2 Matches: <a href="Russia2018Groups?fid=2">Groups</a> | <a href="Russia2018Schedule?fid=2">Schedule</a>-->
                     <!--                    </h5>-->
                     <!--                </div>-->
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <p class="wb-stl-highlight3 text-center">Women's World Cup <br>France 2019</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="col-sm-8 offset-sm-2 text-center">
-                                <div class="clock"></div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-sm-12 margin-tb-lg">
                             <p class="wb-stl-footer">© 2018 <a href="http://thuviendulieu.000webhostapp.com">thuviendulieu.000webhostapp.com</a></p>

@@ -34,10 +34,10 @@
                             <div class="card-group">
                                 <div class="card">
                                     <span class="mx-auto">
-                                        <img class="card-img-top card-img-top-height-100 padding-top-sm" src="images/aac_logos/aac_2019.png" alt="United Arab Emirates 2019">
+                                        <a href="AsianCup?tid=221"><img class="card-img-top card-img-top-height-100 padding-top-sm" src="images/aac_logos/aac_2019.png" alt="United Arab Emirates 2019"></a>
                                     </span>
                                     <div class="card-body">
-                                        <h5 class="card-title text-center">United Arab Emirates 2019</h5>
+                                        <h5 class="card-title text-center"><a href="AsianCup?tid=221">United Arab Emirates 2019</a></h5>
                                     </div>
                                 </div>
                                 <div class="card">
