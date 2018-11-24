@@ -6,6 +6,8 @@ CREATE TABLE IF NOT EXISTS team_tournament (
 	group_order TINYINT UNSIGNED,
 	parent_group_id INT,
 	parent_group_order TINYINT UNSIGNED,
+	qualification TINYINT UNSIGNED,
+	qualification_date DATE,
 	confederation_id INT,
 	seed TINYINT UNSIGNED,
 	FOREIGN KEY (team_id) REFERENCES team(id),
@@ -16,20 +18,17 @@ CREATE TABLE IF NOT EXISTS team_tournament (
 );
 
 ALTER TABLE team_tournament
-ADD COLUMN confederation_id INT;
+ADD COLUMN qualification_date DATE
+AFTER qualification;
 
 ALTER TABLE team_tournament
 ADD CONSTRAINT `team_tournament_ibfk_5`
 FOREIGN KEY (confederation_id) REFERENCES `group`(id);
 
-ALTER TABLE team_tournament
-ADD COLUMN seed TINYINT UNSIGNED;
-
 SELECT *, team_id FROM `team_tournament` WHERE tournament_id = 6;
 
 UPDATE `team_tournament`
-SET confederation_id = 150
-WHERE team_id = 865;
+SET qualification = 1;
 
 # Russia 2018
 INSERT INTO team_tournament (team_id, tournament_id, group_id, group_order)

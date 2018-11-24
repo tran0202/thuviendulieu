@@ -160,6 +160,8 @@
                 $output .= self::getCollapseHtml('bracket', 'Bracket', self::getBracketHtml($tournament, $bracket_spot));
             }
             $output2 .= self::getCollapseHtml('summary', 'Summary', self::getTournamentSummaryHtml($tournament));
+            if ($tournament->getTournamentId() == self::RUSSIA_2018)
+                $output2 .= self::getCollapseHtml('qualification', 'Qualification', self::getQualificationSummaryHtml($tournament));
             $matches = Match::getMatchArrayByRound($matches);
             foreach ($matches as $rounds => $_round) {
                 if ($rounds == $bracket_spot && $tournament->getTournamentId() != self::MUNICH_1972) $output2 .= $output;
@@ -258,6 +260,44 @@
                             <div class="col-sm-3 h3-ff3 font-bold text-right" style="padding-top:9px">Average goals per game:</div>
                             <div class="col-sm-9 wb-stl-heading1 green">'.$gpg.'</div>
                         </div>
+                        </div>';
+            return $output;
+        }
+
+        public static function getQualificationSummaryHtml($tournament) {
+            $teams = Team::getTeamArrayByQualificationDate($tournament->getTeams());
+            $eliminated_teams = $tournament->getQualificationTeams();
+            $output = '';
+            $output .= '<div class="container">
+                            <div class="row h3-ff3 padding-tb-md">';
+            $output .= '        <div class="col-sm">';
+            $output .= '            <p class="wb-stl-heading5 orange">All FIFA</p>
+                                    <p>'.(sizeof($teams) + sizeof($eliminated_teams)).' teams entered</p>
+                                    <p>'.sizeof($teams).' teams qualified</p>';
+            for ($i = 0; $i < sizeof($teams); $i++ ) {
+                $output .= '        <p class="h3-ff4 gray2">
+                                        <img class="flag-sm-2 margin-top-flag" src="/images/flags/'.$teams[$i]->getFlagFilename().'">&nbsp;'
+                                        .$teams[$i]->getName().'<br><span class="h6-ff4 padding-left-lg">('.$teams[$i]->getQualificationDate().')</span></p>';
+            }
+            $output .= '        </div>';
+            $teams = Team::getQualificationTeamArrayByConfederation($tournament, Team::QUALIFIED);
+            $eliminated_teams = Team::getQualificationTeamArrayByConfederation($tournament, Team::ELIMINATED);
+            foreach ($teams as $confederation_name => $confederation_teams) {
+                $eliminated = 0;
+                if (array_key_exists($confederation_name, $eliminated_teams)) $eliminated = sizeof($eliminated_teams[$confederation_name]);
+                $total_entered = sizeof($confederation_teams) + $eliminated;
+                $output .= '    <div class="col-sm">';
+                $output .= '        <p class="wb-stl-heading5">'.$confederation_name.'</p>
+                                    <p>'.$total_entered.' teams entered</p>
+                                    <p>'.sizeof($confederation_teams).' teams qualified</p>';
+                foreach ($confederation_teams as $id => $team) {
+                    $output .= '    <p class="h3-ff4 gray3">
+                                        <img class="flag-sm-2 margin-top-flag" src="/images/flags/'.$team->getFlagFilename().'">&nbsp;'
+                                        .$team->getName().'<br><span class="h6-ff4 padding-left-lg">('.$team->getQualificationDate().')</span></p>';
+                }
+                $output .= '    </div>';
+            }
+            $output .= '    </div>
                         </div>';
             return $output;
         }
@@ -713,7 +753,7 @@
                 $output .= '<div class="tab-pane fade" id="All'.self::CONTENT.'" role="tabpanel" aria-labelledby="All-tab">';
                 $output .= self::getAllConfederationsRankingHtml($tournament);
                 $output .= '</div>';
-                $teams = Team::getTeamArrayByConfederation($tournament);
+                $teams = Team::getAllTimeTeamArrayByConfederation($tournament);
                 $confederations = Team::getConfederationArray($tournament->getTournamentTeams());
                 foreach ($confederations as $confederation_name => $_confederation) {
                     $confederation_tab = self::getValidHtmlId($confederation_name);

@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS tournament (
 	name VARCHAR(255) NOT NULL UNIQUE,
 	start_date DATE,
 	end_date DATE,
+	active TINYINT UNSIGNED,
 	logo_filename VARCHAR(255),
 	tournament_type_id INT,
 	parent_tournament_id INT,
@@ -74,7 +75,7 @@ INSERT INTO tournament (name, start_date, end_date, tournament_type_id, parent_t
 VALUES ('2018 US Open Women''s Singles', '2018-08-27', '2018-09-09', 5, 26);
 
 ALTER TABLE tournament
-ADD COLUMN third_place_ranking TINYINT UNSIGNED
+ADD COLUMN active TINYINT UNSIGNED
 AFTER end_date;
 
 ALTER TABLE tournament

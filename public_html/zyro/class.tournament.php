@@ -38,6 +38,7 @@
         private $second_round_teams;
         private $tournament_teams;
         private $second_round_tournament_teams;
+        private $qualification_teams;
         private $preseason_teams;
         private $rounds;
         private $matches;
@@ -392,6 +393,22 @@
         public function setSecondRoundTournamentTeams($second_round_tournament_teams)
         {
             $this->second_round_tournament_teams = $second_round_tournament_teams;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getQualificationTeams()
+        {
+            return $this->qualification_teams;
+        }
+
+        /**
+         * @param mixed $qualification_teams
+         */
+        public function setQualificationTeams($qualification_teams)
+        {
+            $this->qualification_teams = $qualification_teams;
         }
 
         /**
