@@ -26,8 +26,12 @@
         private $parent_group_order;
         private $second_round_group_name;
         private $second_round_group_order;
-        private $third_round_group_name;
-        private $third_round_group_order;
+        private $qualification_group_name;
+        private $qualification_group_order;
+        private $qualification_second_round_group_name;
+        private $qualification_second_round_group_order;
+        private $qualification_third_round_group_name;
+        private $qualification_third_round_group_order;
         private $flag_filename;
         private $logo_filename;
         private $tournament_id;
@@ -75,7 +79,8 @@
 
         public static function CreateTeam($id, $name, $l_name, $code, $team_type, $group_name, $group_order,
             $parent_id, $parent_name, $parent_group_name, $parent_group_long_name, $parent_group_order,
-            $second_round_group_name, $second_round_group_order, $third_round_group_name, $third_round_group_order,
+            $second_round_group_name, $second_round_group_order, $qualification_group_name, $qualification_group_order,
+            $qualification_second_round_group_name, $qualification_second_round_group_order, $qualification_third_round_group_name, $qualification_third_round_group_order,
             $flag_filename, $logo_filename, $tournament_id, $tournament_name, $tournament_count,
             $qualification, $qualification_date, $confederation_name, $confederation_logo_filename, $inter_confederation_playoff_name,
             $match_play, $win, $draw, $loss, $home_win, $home_tie, $home_loss, $road_win, $road_tie, $road_loss,
@@ -97,8 +102,12 @@
             $t->parent_group_order = $parent_group_order;
             $t->second_round_group_name = $second_round_group_name;
             $t->second_round_group_order = $second_round_group_order;
-            $t->third_round_group_name = $third_round_group_name;
-            $t->third_round_group_order = $third_round_group_order;
+            $t->qualification_group_name = $qualification_group_name;
+            $t->qualification_group_order = $qualification_group_order;
+            $t->qualification_second_round_group_name = $qualification_second_round_group_name;
+            $t->qualification_second_round_group_order = $qualification_second_round_group_order;
+            $t->qualification_third_round_group_name = $qualification_third_round_group_name;
+            $t->qualification_third_round_group_order = $qualification_third_round_group_order;
             $t->flag_filename = $flag_filename;
             $t->logo_filename = $logo_filename;
             $t->tournament_id = $tournament_id;
@@ -143,13 +152,15 @@
 
         public static function CreateSoccerTeam($id, $name, $l_name, $code, $team_type, $parent_id, $parent_name,
                 $group_name, $group_order, $parent_group_name, $parent_group_long_name, $parent_group_order,
-                $second_round_group_name, $second_round_group_order, $third_round_group_name, $third_round_group_order,
+                $second_round_group_name, $second_round_group_order, $qualification_group_name, $qualification_group_order,
+                $qualification_second_round_group_name, $qualification_second_round_group_order, $qualification_third_round_group_name, $qualification_third_round_group_order,
                 $flag_filename, $logo_filename, $tournament_id, $tournament_name, $tournament_count,
                 $qualification, $qualification_date,
                 $confederation_name, $confederation_logo_filename, $inter_confederation_playoff_name, $best_finish, $not_counted) {
             return self::CreateTeam($id, $name, $l_name, $code, $team_type, $group_name, $group_order,
                 $parent_id, $parent_name, $parent_group_name, $parent_group_long_name, $parent_group_order,
-                $second_round_group_name, $second_round_group_order, $third_round_group_name, $third_round_group_order,
+                $second_round_group_name, $second_round_group_order, $qualification_group_name, $qualification_group_order,
+                $qualification_second_round_group_name, $qualification_second_round_group_order, $qualification_third_round_group_name, $qualification_third_round_group_order,
                 $flag_filename, $logo_filename,
                 $tournament_id, $tournament_name, $tournament_count, $qualification, $qualification_date,
                 $confederation_name, $confederation_logo_filename, $inter_confederation_playoff_name,
@@ -162,7 +173,9 @@
                                              $match_play, $win, $draw, $loss, $goal_for, $goal_against, $goal_diff, $point) {
             return self::CreateTeam($id, $name, '', $code, $team_type, $group_name, $group_order,
                 0, '', '', '', 0,
-                '', 0, '', 0,'', '',
+                '', 0, '', 0,
+                '', 0,'', 0,
+                '', '',
                 0, '', 0, 0, '',
                 '', '', '',
                 $match_play, $win, $draw, $loss, 0, 0, 0, 0, 0, 0,
@@ -176,7 +189,9 @@
         {
             return self::CreateTeam($id, $name, '', '', $team_type, $group_name, $group_order,
                 0, '', $parent_group_name, $parent_group_long_name, $parent_group_order,
-                '', 0, '', 0,'', $logo_filename,
+                '', 0, '', 0,
+                '', 0,'', 0,
+                '', $logo_filename,
                 0, '', 0, 0, '',
                 '', '', '',
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -199,7 +214,9 @@
                 group_id, UCASE(g.name) AS group_name, group_order,
                 parent_group_id, pg.name AS parent_group_name, pg.long_name AS parent_group_long_name, parent_group_order,
                 second_round_group_id, UCASE(srg.name) AS second_round_group_name, second_round_group_order,
-                third_round_group_id, UCASE(trg.name) AS third_round_group_name, third_round_group_order,
+                qualification_group_id, UCASE(qg.name) AS qualification_group_name, qualification_group_order,
+                qualification_second_round_group_id, UCASE(qsrg.name) AS qualification_second_round_group_name, qualification_second_round_group_order,
+                qualification_third_round_group_id, UCASE(qtrg.name) AS qualification_third_round_group_name, qualification_third_round_group_order,
                 n.flag_filename, tl.logo_filename, tt.qualification, tt.qualification_date,
                 c.name AS confederation_name, c2.name AS inter_confederation_playoff_name, tt.tournament_id,
                 tt.not_counted
@@ -211,7 +228,9 @@
             LEFT JOIN `group` c ON c.id = tt.confederation_id
             LEFT JOIN `group` c2 ON c2.id = tt.inter_confederation_playoff_id
             LEFT JOIN `group` srg ON srg.id = tt.second_round_group_id
-            LEFT JOIN `group` trg ON trg.id = tt.third_round_group_id
+            LEFT JOIN `group` qg ON qg.id = tt.qualification_group_id
+            LEFT JOIN `group` qsrg ON qsrg.id = tt.qualification_second_round_group_id
+            LEFT JOIN `group` qtrg ON qtrg.id = tt.qualification_third_round_group_id
             LEFT JOIN nation n ON n.id = t.nation_id
             LEFT JOIN team_logo tl ON tl.team_id = t.id
             WHERE tt.tournament_id = 1
@@ -224,8 +243,10 @@
                         t.parent_team_id, UCASE(t2.name) AS parent_team_name, t2.name AS l_parent_team_name, 
                         group_id, UCASE(g.name) AS group_name, group_order, 
                         parent_group_id, pg.name AS parent_group_name, pg.long_name AS parent_group_long_name, parent_group_order, 
-                        second_round_group_id, UCASE(srg.name) AS second_round_group_name, second_round_group_order, 
-                        third_round_group_id, UCASE(trg.name) AS third_round_group_name, third_round_group_order, 
+                        second_round_group_id, UCASE(srg.name) AS second_round_group_name, second_round_group_order,  
+                        qualification_group_id, UCASE(qg.name) AS qualification_group_name, qualification_group_order,  
+                        qualification_second_round_group_id, UCASE(qsrg.name) AS qualification_second_round_group_name, qualification_second_round_group_order, 
+                        qualification_third_round_group_id, UCASE(qtrg.name) AS qualification_third_round_group_name, qualification_third_round_group_order, 
                         n.flag_filename, tl.logo_filename, tt.qualification, tt.qualification_date, 
                         c.name AS confederation_name, c2.name AS inter_confederation_playoff_name, tt.tournament_id,
                         tt.not_counted
@@ -237,7 +258,9 @@
                     LEFT JOIN `group` c ON c.id = tt.confederation_id    
                     LEFT JOIN `group` c2 ON c2.id = tt.inter_confederation_playoff_id
                     LEFT JOIN `group` srg ON srg.id = tt.second_round_group_id    
-                    LEFT JOIN `group` trg ON trg.id = tt.third_round_group_id
+                    LEFT JOIN `group` qg ON qg.id = tt.qualification_group_id    
+                    LEFT JOIN `group` qsrg ON qsrg.id = tt.qualification_second_round_group_id    
+                    LEFT JOIN `group` qtrg ON qtrg.id = tt.qualification_third_round_group_id
                     LEFT JOIN nation n ON n.id = t.nation_id  
                     LEFT JOIN team_logo tl ON tl.team_id = t.id 
                     WHERE tt.tournament_id = '.$tournament_id.' 
@@ -268,7 +291,9 @@
                         $row['group_name'], $row['group_order'],
                         $row['parent_group_name'], $row['parent_group_long_name'], $row['parent_group_order'],
                         $row['second_round_group_name'], $row['second_round_group_order'],
-                        $row['third_round_group_name'], $row['third_round_group_order'],
+                        $row['qualification_group_name'], $row['qualification_group_order'],
+                        $row['qualification_second_round_group_name'], $row['qualification_second_round_group_order'],
+                        $row['qualification_third_round_group_name'], $row['qualification_third_round_group_order'],
                         $row['flag_filename'], $row['logo_filename'], $row['tournament_id'], '', 1,
                         $row['qualification'], $row['qualification_date'],
                         $row['confederation_name'], '', $row['inter_confederation_playoff_name'], 1,
@@ -281,7 +306,9 @@
                         '', $row['group_order'],
                         $row['parent_group_name'], $row['parent_group_long_name'], $row['parent_group_order'],
                         $row['second_round_group_name'], $row['second_round_group_order'],
-                        $row['third_round_group_name'], $row['third_round_group_order'],
+                        $row['qualification_group_name'], $row['qualification_group_order'],
+                        $row['qualification_second_round_group_name'], $row['qualification_second_round_group_order'],
+                        $row['qualification_third_round_group_name'], $row['qualification_third_round_group_order'],
                         $row['flag_filename'], $row['logo_filename'], $row['tournament_id'], '', 1,
                         $row['qualification'], $row['qualification_date'],
                         $row['confederation_name'], '', $row['inter_confederation_playoff_name'], 1,
@@ -294,7 +321,9 @@
                         $row['group_name'], $row['group_order'],
                         $row['parent_group_name'], $row['parent_group_long_name'], $row['parent_group_order'],
                         $row['second_round_group_name'], $row['second_round_group_order'],
-                        $row['third_round_group_name'], $row['third_round_group_order'],
+                        $row['qualification_group_name'], $row['qualification_group_order'],
+                        $row['qualification_second_round_group_name'], $row['qualification_second_round_group_order'],
+                        $row['qualification_third_round_group_name'], $row['qualification_third_round_group_order'],
                         $row['flag_filename'], $row['logo_filename'], $row['tournament_id'], '', 1,
                         $row['qualification'], $row['qualification_date'],
                         $row['confederation_name'], '', $row['inter_confederation_playoff_name'], 1,
@@ -308,7 +337,9 @@
                             $row['group_name'], $row['group_order'],
                             $row['parent_group_name'], $row['parent_group_long_name'], $row['parent_group_order'],
                             $row['second_round_group_name'], $row['second_round_group_order'],
-                            $row['third_round_group_name'], $row['third_round_group_order'],
+                            $row['qualification_group_name'], $row['qualification_group_order'],
+                            $row['qualification_second_round_group_name'], $row['qualification_second_round_group_order'],
+                            $row['qualification_third_round_group_name'], $row['qualification_third_round_group_order'],
                             $row['flag_filename'], $row['logo_filename'], $row['tournament_id'], '', 1,
                             $row['qualification'], $row['qualification_date'],
                             $row['confederation_name'], '', $row['inter_confederation_playoff_name'], 1,
@@ -438,6 +469,7 @@
                         '', '',
                         '', '', 0,
                         '', 0, '', 0,
+                        '', 0,'', 0,
                         $row['flag_filename'], '', 0,'', $row['tournament_count'],
                         0, '','', '', '',
                         1, 0);
@@ -514,6 +546,7 @@
                         $row['group_name'], '',
                         '', '', 0,
                         '', 0, '', 0,
+                        '', 0,'', 0,
                         $row['flag_filename'], '', $row['tournament_id'], $row['tournament_name'], 0,
                         1, '', $row['confederation_name'], $row['confederation_logo_filename'], '',
                         1, 0);
@@ -525,6 +558,7 @@
                         $row['group_name'], '',
                         '', '', 0,
                         '', 0, '', 0,
+                        '', 0,'', 0,
                         $row['flag_filename'], '', $row['tournament_id'], $row['tournament_name'], 0,
                         1, '', $row['confederation_name'], $row['confederation_logo_filename'], '',
                         1, 0);
@@ -570,13 +604,13 @@
                     if ($teams[$i]->getConfederationName() == $tournament->getQualificationConfederation()) {
                         switch ($round) {
                             case Soccer::SECOND_ROUND_GROUP_MATCHES:
-                                if ($teams[$i]->getSecondRoundGroupName() != null) {
-                                    $result[$teams[$i]->getSecondRoundGroupName()][$teams[$i]->getName()] = $teams[$i];
+                                if ($teams[$i]->getQualificationSecondRoundGroupName() != null) {
+                                    $result[$teams[$i]->getQualificationSecondRoundGroupName()][$teams[$i]->getName()] = $teams[$i];
                                 }
                                 break;
                             case Soccer::THIRD_ROUND_GROUP_MATCHES:
-                                if ($teams[$i]->getThirdRoundGroupName() != null) {
-                                    $result[$teams[$i]->getThirdRoundGroupName()][$teams[$i]->getName()] = $teams[$i];
+                                if ($teams[$i]->getQualificationThirdRoundGroupName() != null) {
+                                    $result[$teams[$i]->getQualificationThirdRoundGroupName()][$teams[$i]->getName()] = $teams[$i];
                                 }
                                 break;
                         }
@@ -720,7 +754,9 @@
                     $teams[$i]->getGroupName(), $teams[$i]->getGroupOrder(),
                     $teams[$i]->getParentGroupName(), $teams[$i]->getParentGroupLongName(), $teams[$i]->getParentGroupOrder(),
                     $teams[$i]->getSecondRoundGroupName(), $teams[$i]->getSecondRoundGroupOrder(),
-                    $teams[$i]->getThirdRoundGroupName(), $teams[$i]->getThirdRoundGroupOrder(),
+                    $teams[$i]->getQualificationGroupName(), $teams[$i]->getQualificationGroupOrder(),
+                    $teams[$i]->getQualificationSecondRoundGroupName(), $teams[$i]->getQualificationSecondRoundGroupOrder(),
+                    $teams[$i]->getQualificationThirdRoundGroupName(), $teams[$i]->getQualificationThirdRoundGroupOrder(),
                     $teams[$i]->getFlagFilename(), $teams[$i]->getLogoFilename(), $teams[$i]->getTournamentId(), '', 1,
                     $teams[$i]->getQualification(), $teams[$i]->getQualificationDate(),
                     $teams[$i]->getConfederationName(), '', $teams[$i]->getInterConfederationPlayoffName(), $teams[$i]->getBestFinish(),
@@ -997,33 +1033,97 @@
         /**
          * @return mixed
          */
-        public function getThirdRoundGroupName()
+        public function getQualificationGroupName()
         {
-            return $this->third_round_group_name;
+            return $this->qualification_group_name;
         }
 
         /**
-         * @param mixed $third_round_group_name
+         * @param mixed $qualification_group_name
          */
-        public function setThirdRoundGroupName($third_round_group_name)
+        public function setQualificationGroupName($qualification_group_name)
         {
-            $this->third_round_group_name = $third_round_group_name;
+            $this->qualification_group_name = $qualification_group_name;
         }
 
         /**
          * @return mixed
          */
-        public function getThirdRoundGroupOrder()
+        public function getQualificationGroupOrder()
         {
-            return $this->third_round_group_order;
+            return $this->qualification_group_order;
         }
 
         /**
-         * @param mixed $third_round_group_order
+         * @param mixed $qualification_group_order
          */
-        public function setThirdRoundGroupOrder($third_round_group_order)
+        public function setQualificationGroupOrder($qualification_group_order)
         {
-            $this->third_round_group_order = $third_round_group_order;
+            $this->qualification_group_order = $qualification_group_order;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getQualificationSecondRoundGroupName()
+        {
+            return $this->qualification_second_round_group_name;
+        }
+
+        /**
+         * @param mixed $qualification_second_round_group_name
+         */
+        public function setQualificationSecondRoundGroupName($qualification_second_round_group_name)
+        {
+            $this->qualification_second_round_group_name = $qualification_second_round_group_name;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getQualificationSecondRoundGroupOrder()
+        {
+            return $this->qualification_second_round_group_order;
+        }
+
+        /**
+         * @param mixed $qualification_second_round_group_order
+         */
+        public function setQualificationSecondRoundGroupOrder($qualification_second_round_group_order)
+        {
+            $this->qualification_second_round_group_order = $qualification_second_round_group_order;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getQualificationThirdRoundGroupName()
+        {
+            return $this->qualification_third_round_group_name;
+        }
+
+        /**
+         * @param mixed $qualification_third_round_group_name
+         */
+        public function setQualificationThirdRoundGroupName($qualification_third_round_group_name)
+        {
+            $this->qualification_third_round_group_name = $qualification_third_round_group_name;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getQualificationThirdRoundGroupOrder()
+        {
+            return $this->qualification_third_round_group_order;
+        }
+
+        /**
+         * @param mixed $qualification_third_round_group_order
+         */
+        public function setQualificationThirdRoundGroupOrder($qualification_third_round_group_order)
+        {
+            $this->qualification_third_round_group_order = $qualification_third_round_group_order;
         }
 
         /**

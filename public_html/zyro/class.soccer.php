@@ -349,8 +349,8 @@
             $counted_teams = array();
             $teams = $tournament->getSecondRoundTeams();
             for ($i = 0; $i < sizeof($teams); $i++) {
-                if ($teams[$i]->getSecondRoundGroupName() != null) {
-                    $counted_teams[$teams[$i]->getSecondRoundGroupName()][$teams[$i]->getName()] = $teams[$i];
+                if ($teams[$i]->getQualificationSecondRoundGroupName() != null) {
+                    $counted_teams[$teams[$i]->getQualificationSecondRoundGroupName()][$teams[$i]->getName()] = $teams[$i];
                 }
             }
             ksort($counted_teams);
@@ -682,7 +682,7 @@
         }
 
         public static function calculatePoint(&$teams, $match, $all_time) {
-            if ($match->getSecondRoundGroupName() == self::WITHDREW) return;
+            if ($match->getQualificationSecondRoundGroupName() == self::WITHDREW) return;
             if ($match->getHomeTeamScore() == -1) return;
             $points_for_win = 3;
             if ($match->getPointsForWin() == 2 && !$all_time) $points_for_win = 2;

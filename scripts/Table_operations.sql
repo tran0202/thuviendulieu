@@ -13,8 +13,11 @@ VALUES ('Poland', '184d2659-257b-11e8-950c-feed01220059');
 UPDATE team
 SET team_type_uuid = '184d2659-257b-11e8-950c-feed01220059';
 
-ALTER TABLE team
-CHANGE team_uuid uuid CHAR(36) NOT NULL;
+ALTER TABLE team_tournament
+CHANGE third_round_group_id qualification_third_round_group_id INT;
+
+ALTER TABLE `team_tournament`
+	DROP FOREIGN KEY team_tournament_ibfk_7;
 
 ALTER TABLE `match`
 	ADD COLUMN home_seed TINYINT UNSIGNED,

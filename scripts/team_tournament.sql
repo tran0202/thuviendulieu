@@ -8,8 +8,12 @@ CREATE TABLE IF NOT EXISTS team_tournament (
 	parent_group_order TINYINT UNSIGNED,
 	second_round_group_id INT,
 	second_round_group_order TINYINT UNSIGNED,
-	third_round_group_id INT,
-	third_round_group_order TINYINT UNSIGNED,
+	qualification_group_id INT,
+	qualification_group_order TINYINT UNSIGNED,
+	qualification_second_round_group_id INT,
+	qualification_second_round_group_order TINYINT UNSIGNED,
+	qualification_third_round_group_id INT,
+	qualification_third_round_group_order TINYINT UNSIGNED,
 	qualification TINYINT UNSIGNED,
 	qualification_date DATE,
 	confederation_id INT,
@@ -20,19 +24,26 @@ CREATE TABLE IF NOT EXISTS team_tournament (
 	FOREIGN KEY (tournament_id) REFERENCES tournament(id),
 	FOREIGN KEY (group_id) REFERENCES `group`(id),
 	FOREIGN KEY (parent_group_id) REFERENCES `group`(id),
-	FOREIGN KEY (confederation_id) REFERENCES `group`(id),
 	FOREIGN KEY (second_round_group_id) REFERENCES `group`(id),
-	FOREIGN KEY (third_round_group_id) REFERENCES `group`(id),
+	FOREIGN KEY (confederation_id) REFERENCES `group`(id),
+	FOREIGN KEY (qualification_group_id) REFERENCES `group`(id),
+	FOREIGN KEY (qualification_second_round_group_id) REFERENCES `group`(id),
+	FOREIGN KEY (qualification_third_round_group_id) REFERENCES `group`(id),
 	FOREIGN KEY (inter_confederation_playoff_id) REFERENCES `group`(id)
 );
 
 ALTER TABLE team_tournament
-ADD COLUMN not_counted TINYINT UNSIGNED
-AFTER confederation_id;
+ADD COLUMN qualification_group_id INT,
+ADD COLUMN	qualification_group_order TINYINT UNSIGNED,
+ADD COLUMN	qualification_second_round_group_id INT,
+ADD COLUMN	qualification_second_round_group_order TINYINT UNSIGNED
+AFTER second_round_group_order;
 
 ALTER TABLE team_tournament
-ADD CONSTRAINT `team_tournament_ibfk_8`
-FOREIGN KEY (inter_confederation_playoff_id) REFERENCES `group`(id);
+ADD CONSTRAINT `team_tournament_ibfk_9`
+FOREIGN KEY (qualification_group_id) REFERENCES `group`(id),
+ADD CONSTRAINT `team_tournament_ibfk_10`
+FOREIGN KEY (qualification_second_round_group_id) REFERENCES `group`(id);
 
 SELECT *, team_id FROM `team_tournament` WHERE tournament_id = 6;
 
