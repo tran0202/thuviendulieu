@@ -144,17 +144,26 @@ VALUES ('First Stage', 4),
 	   ('Finals', 5),
 	   ('Final Play-off', 5),
 	   ('Replay Round of 16', 5),
-	   ('Final Round Play-off', 5);
-
-INSERT INTO `group` (name, group_type_id)
-VALUES ('Men''s National', 10),
+	   ('Final Round Play-off', 5),
+	   ('Men''s National', 10),
 	   ('Club', 10),
 	   ('Women''s National', 10),
 	   ('U-23 Men''s National', 10),
 	   ('U-23 Women''s National', 10),
 	   ('Football', 10),
 	   ('Tennis Men''s Single', 10),
-	   ('Tennis Women''s Single', 10);
+	   ('Tennis Women''s Single', 10),
+	   ('Qualifying Round 4 - 1st Leg', 5),
+	   ('Qualifying Round 4 - 2nd Leg', 5),
+	   ('Inter-confederation Play-off - 1st Leg', 5),
+	   ('Inter-confederation Play-off - 2nd Leg', 5),
+	   ('Second Round - Group Matches', 5),
+	   ('Third Round - Group Matches', 5),
+	   ('Inter-confederation Play-off', 5),
+	   ('Qualification', 1);
+
+INSERT INTO `group` (name, group_type_id)
+VALUES ('Disqualified', 1);
 
 INSERT INTO `group` (name, long_name, group_type_id)
 VALUES ('Preseason', null, 4),

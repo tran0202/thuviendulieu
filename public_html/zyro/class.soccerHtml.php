@@ -122,6 +122,7 @@
         const TEAM = 1;
         const CLUB = 2;
         const MULTI_LEAGUE_TEAM = 3;
+        const HOME_AWAY_TEAMS = 4;
 
         const MATCHES_LINK_MODAL = 1;
         const MATCHES_LINK_COLLAPSE = 2;
@@ -132,19 +133,31 @@
         const MATCH_VIEW_4 = 4; // Bracket
         const MATCH_VIEW_5 = 5; // UCL Match
         const MATCH_VIEW_6 = 6; // UCL Collapse on Standing
+        const MATCH_VIEW_7 = 7; // Home-and-away
 
         const TEAM_VIEW_1 = 1;
         const TEAM_VIEW_2 = 2;
 
         const CONTENT = '-content';
+        const WITHDREW = 'WITHDREW';
+        const WALKOVER = 'w/o';
+        const CANCELLED = 'Cancelled';
 
         const TOURNAMENT = 1;
         const CONFEDERATION = 2;
         const ALL_TIME = 3;
+        const QUALIFICATION = 4;
+
+        const AFC = 'AFC';
+        const CAF = 'CAF';
+        const CONCACAF = 'CONCACAF';
+        const CONMEBOL = 'CONMEBOL';
+        const UEFA = 'UEFA';
+        const OFC = 'OFC';
 
         public static function getSoccerGroupHtml($tournament) {
             $teams = Team::getTeamArrayByGroup($tournament->getTeams());
-            $output = self::getCollapseHtml('summary', 'Summary', self::getTournamentSummaryHtml($tournament));
+            $output = self::getCollapseHtml('statistics', 'Statistics', self::getTournamentSummaryHtml($tournament));
             $output .= self::getStandingsHtml($tournament, $teams, null,
                 self::MATCHES_LINK_MODAL);
             $tournament->concatBodyHtml($output);
@@ -159,10 +172,10 @@
             if ($bracket_spot != '') {
                 $output .= self::getCollapseHtml('bracket', 'Bracket', self::getBracketHtml($tournament, $bracket_spot));
             }
-            $output2 .= self::getCollapseHtml('summary', 'Summary', self::getTournamentSummaryHtml($tournament));
-            if ($tournament->getTournamentId() == self::RUSSIA_2018)
+            $output2 .= self::getCollapseHtml('statistics', 'Statistics', self::getTournamentSummaryHtml($tournament));
+            if ($tournament->getTournamentId() == self::RUSSIA_2018 && $tournament->getQualificationConfederation() == null)
                 $output2 .= self::getCollapseHtml('qualification', 'Qualification', self::getQualificationSummaryHtml($tournament));
-            $matches = Match::getMatchArrayByRound($matches);
+            $matches = Match::getMatchArrayByRoundDate($matches);
             foreach ($matches as $rounds => $_round) {
                 if ($rounds == $bracket_spot && $tournament->getTournamentId() != self::MUNICH_1972) $output2 .= $output;
                 $output2 .= '<div class="col-sm-12 h2-ff1 margin-top-md">'.$rounds.'</div>';
@@ -170,6 +183,128 @@
                 if ($rounds == $third_place_table_spot) $output2 .= self::getThirdPlaceRankingHtml($tournament);
             }
             $tournament->concatBodyHtml($output2);
+        }
+
+        public static function getSoccerQualificationHtml($tournament) {
+            $output = self::getCollapseHtml('statistics', 'Statistics', self::getTournamentSummaryHtml($tournament));
+            $tournament->concatBodyHtml($output);
+            if ($tournament->getQualificationConfederation() != null) {
+                $rounds = Round::getRoundArray($tournament, Soccer::QUALIFYING_STAGE);
+                Team::resetConfederationTeams($tournament);
+            }
+            else {
+                $rounds = Round::getRoundArray($tournament, Soccer::FIRST_STAGE);
+            }
+            foreach ($rounds as $round_id => $_round) {
+                $round = $_round->getRoundName();
+                Team::getOriginalTournamentTeamArray($tournament);
+                switch ($round) {
+                    case Soccer::FIRST_ROUND:
+                        Soccer::getQualificationMatchesRanking($tournament, $round);
+                        self::getHomeAwayHtml($tournament, $round);
+                        Soccer::getRoundMatchesRanking($tournament, $round);
+                        break;
+                    case Soccer::SECOND_ROUND_GROUP_MATCHES:
+                        Soccer::getQualificationMatchesRanking($tournament, $round);
+//                        self::getRoundRobinHtml($tournament, Soccer::QUALIFYING_STAGE, $round);
+                        $output = Soccer::getSpecialRoundRobinMatchesRanking($tournament, $round);
+                        Soccer::getRoundMatchesRanking($tournament, $round);
+                        break;
+                    case Soccer::THIRD_ROUND_GROUP_MATCHES:
+                        Soccer::getQualificationMatchesRanking($tournament, $round);
+                        self::getRoundRobinHtml($tournament, Soccer::QUALIFYING_STAGE, $round);
+                        Soccer::getRoundMatchesRanking($tournament, $round);
+                        break;
+                    case Soccer::FOURTH_ROUND:
+                        Soccer::getQualificationMatchesRanking($tournament, $round);
+                        self::getHomeAwayHtml($tournament, $round);
+                        Soccer::getRoundMatchesRanking($tournament, $round);
+                        break;
+                    case Soccer::INTER_CONFEDERATION_PLAY_OFF:
+                        Soccer::getQualificationMatchesRanking($tournament, $round);
+                        self::getHomeAwayHtml($tournament, $round);
+                        Soccer::getRoundMatchesRanking($tournament, $round);
+                        break;
+                }
+            }
+            Soccer::updateRankingTeams($tournament);
+            Soccer::sortTournamentStanding($tournament);
+        }
+
+        public static function getHomeAwayHtml($tournament, $round) {
+            $matches = Match::getRoundMatches($tournament->getMatches(), $round) ;
+            $matches = Match::getMatchArraySortedByOrder($matches);
+            $output = '';
+            $output .= '<div class="col-sm-12 h1-ff1 margin-top-md text-center">'.$round.'</div>';
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                $output .= self::getMatchHtml($tournament, $matches[$i], self::MATCH_VIEW_7);
+            }
+            $tournament->concatBodyHtml($output);
+        }
+
+        public static function getRoundRobinHtml($tournament, $stage, $round) {
+            $teams = Team::getRoundRobinTeamArray($tournament, $round);
+            $output = '';
+            $output .= '<div class="col-sm-12 h1-ff1 margin-top-md text-center">'.$round.'</div>';
+            $output .= self::getGroupStandingsHtml($tournament, $teams, null, $stage, $round,
+                self::MATCHES_LINK_COLLAPSE);
+            $tournament->concatBodyHtml($output);
+        }
+
+        public static function getGroupStandingsHtml($tournament, $teams, $parent_group_name, $stage, $round, $matches_link_type) {
+            $output = '';
+            $output .= '<div class="margin-top-sm">';
+            foreach ($teams as $group_name => $_teams) {
+                $output .= '<div class="col-sm-12 margin-top-md">
+                        <span class="col-sm-2 h2-ff2">Group '.$group_name.'</span>';
+                if ($matches_link_type == self::MATCHES_LINK_MODAL) {
+                    $output .= '<span class="col-sm-2 wb-stl-heading4 margin-left-md" style="margin-top:15px;">
+                                <a class="link-modal" data-toggle="modal" data-target="#group'.$group_name.'MatchesModal">Matches</a>
+                            </span>';
+                }
+                $output .= '</div>
+                    <div class="col-sm-12 h2-ff3 box-xl">';
+                $output .= self::getTeamRankingTableHtml($tournament, $_teams, Soccer::First,
+                    false, $current_best_finish, $striped_row);
+                $output .= '</div>';
+                if ($matches_link_type == self::MATCHES_LINK_COLLAPSE) {
+                    $output .= self::getCollapseHtml(self::getValidHtmlId($parent_group_name).$group_name.'matches', 'Group '.$group_name.' Matches',
+                        self::getRoundMatchesCollapseHtml($tournament, $parent_group_name, $group_name, $stage, $round));
+                }
+            }
+            $output .= '</div>';
+            return $output;
+        }
+
+        public static function getRoundMatchesCollapseHtml($tournament, $parent_group_name, $group_name, $stage, $round) {
+            $_team_type = $tournament->getTeamType();
+            $group_matches = Match::getMatchArrayByGroupRound($tournament->getMatches(), $_team_type, $stage, $round);
+            if ($_team_type == self::MULTI_LEAGUE_TEAM) {
+                $group_matches = $group_matches[$parent_group_name][$group_name];
+            }
+            else {
+                $group_matches = $group_matches[$group_name];
+            }
+            $output = '';
+            foreach ($group_matches as $round_name => $rounds) {
+                if ($tournament->getQualificationConfederation() == null) {
+                    $output .= '<div class="col-sm-12 h3-ff3 border-bottom-gray2 margin-top-md">'.$round_name.'</div>';
+                }
+                foreach ($rounds as $match_order => $_match) {
+                    if ($tournament->getQualificationConfederation() == null) {
+                        if ($_team_type == self::MULTI_LEAGUE_TEAM) {
+                            $output .= self::getMatchHtml($tournament, $_match, self::MATCH_VIEW_3);
+                        }
+                        else {
+                            $output .= self::getMatchHtml($tournament, $_match, self::MATCH_VIEW_6);
+                        }
+                    }
+                    else {
+                        $output .= self::getMatchHtml($tournament, $_match, self::MATCH_VIEW_7);
+                    }
+                }
+            }
+            return $output;
         }
 
         public static function getThirdPlaceRankingHtml($tournament) {
@@ -237,8 +372,13 @@
             for ($i = 0; $i < sizeof($matches); $i++ ) {
                 if ($matches[$i]->getHomeTeamScore() != -1) {
                     $count++;
-                    $total_goals += $matches[$i]->getHomeTeamScore() + $matches[$i]->getAwayTeamScore() +
-                        $matches[$i]->getHomeTeamExtraTimeScore() + $matches[$i]->getAwayTeamExtraTimeScore();
+                    if ($matches[$i]->getAwarded() == 1) {
+                        $total_goals += $matches[$i]->getHomeTeamForfeitedScore() + $matches[$i]->getAwayTeamForfeitedScore();
+                    }
+                    else {
+                        $total_goals += $matches[$i]->getHomeTeamScore() + $matches[$i]->getAwayTeamScore() +
+                            $matches[$i]->getHomeTeamExtraTimeScore() + $matches[$i]->getAwayTeamExtraTimeScore();
+                    }
                 }
             }
             $gpg = 'NA';
@@ -280,14 +420,19 @@
                                         .$teams[$i]->getName().'<br><span class="h6-ff4 padding-left-lg">('.$teams[$i]->getQualificationDate().')</span></p>';
             }
             $output .= '        </div>';
-            $teams = Team::getQualificationTeamArrayByConfederation($tournament, Team::QUALIFIED);
-            $eliminated_teams = Team::getQualificationTeamArrayByConfederation($tournament, Team::ELIMINATED);
+            $teams = Team::getTeamArrayByConfederation($teams);
+            ksort($teams);
+            $eliminated_teams = Team::getTeamArrayByConfederation($tournament->getQualificationTeams());
             foreach ($teams as $confederation_name => $confederation_teams) {
                 $eliminated = 0;
                 if (array_key_exists($confederation_name, $eliminated_teams)) $eliminated = sizeof($eliminated_teams[$confederation_name]);
                 $total_entered = sizeof($confederation_teams) + $eliminated;
+                $qualification_link = str_replace('WorldCup', 'WorldCupQualification', $_SERVER['REQUEST_URI']);
+                if (strpos($qualification_link, '?') !== false) $qualification_link = $qualification_link.'&cid=';
+                else $qualification_link = $qualification_link.'?cid=';
+                $qualification_link = $qualification_link.$confederation_name;
                 $output .= '    <div class="col-sm">';
-                $output .= '        <p class="wb-stl-heading5">'.$confederation_name.'</p>
+                $output .= '        <p class="wb-stl-heading5"><a href="'.$qualification_link.'">'.$confederation_name.'</a></p>
                                     <p>'.$total_entered.' teams entered</p>
                                     <p>'.sizeof($confederation_teams).' teams qualified</p>';
                 foreach ($confederation_teams as $id => $team) {
@@ -458,6 +603,7 @@
         }
 
         public static function getTeamHtml($tournament, $_team, $stage, $from_ranking, &$current_best_finish, &$striped) {
+            if ($_team->getGroupName() == self::WITHDREW) return '';
             $output = '';
             $_all_time = $tournament->getAllTime();
             $goal_diff = $_team->getGoalDiff();
@@ -486,6 +632,15 @@
                 }
                 if ($_all_time) $striped = '';
             }
+            if ($_team->getBestFinish() == Soccer::QualificationWinner) {
+                $striped = 'qualification-winner-striped';
+            }
+            elseif ($_team->getBestFinish() == Soccer::FourthRound) {
+                $striped = 'advanced-fourth-round-striped';
+            }
+            elseif ($_team->getBestFinish() == Soccer::ThirdRoundGroup) {
+                $striped = 'advanced-third-round-striped';
+            }
             $top3_bg = '';
             if (!$_all_time) {
                 if (self::getPodiumPosition($_count, $_team) == 1) $top3_bg = 'gold';
@@ -494,7 +649,7 @@
             }
             $note = '';
             if ($stage == Soccer::First) {
-                $note = self::getNote($_team);
+                $note = self::getNote($tournament, $_team);
             }
             $tc_col = '<div class="col-sm-4">'.$_team->getName().'<!--bestFinish:'.$_team->getBestFinish().'-->'.$note.'</div>';
             if ($_all_time) $tc_col = '<div class="box-col-lg">'.$_team->getName().'</div>
@@ -531,7 +686,7 @@
             return $output;
         }
 
-        public static function getNote($_team) {
+        public static function getNote($tournament, $_team) {
             $note = '';
             $tmp1 = '<br><span class="gray4"><small>(ahead ';
             $tmp2 = ')</small></span>';
@@ -564,8 +719,11 @@
                     $note = $tmp1.'on drawing lot'.$tmp2;
             }
             elseif ($_team->getTournamentId() == self::RUSSIA_2018) {
-                if ($_team->getName() == 'JAPAN')
+                if ($_team->getName() == 'JAPAN' && $tournament->getQualificationConfederation() == null)
                     $note = $tmp1.'on fair play points'.$tmp2;
+                elseif ($_team->getName() == 'INDONESIA' && $tournament->getQualificationConfederation() != null)
+                    $note = $tmp1.'disqualified due to FIFA suspension'.$tmp2;
+                    $note = str_replace('ahead ', '', $note);
             }
             elseif ($_team->getTournamentId() == self::ENGLAND_1996) {
                 if ($_team->getName() == 'CZECH REPUBLIC')
@@ -738,7 +896,12 @@
         }
 
         public static function getSoccerRankingHtml($tournament) {
-            $tournament->concatBodyHtml(self::getRankingHtml($tournament, $tournament->getTeams(), self::TOURNAMENT));
+            if ($tournament->getQualificationConfederation() != null) {
+                $tournament->concatBodyHtml(self::getRankingHtml($tournament, Team::getConfederationTeams($tournament), self::QUALIFICATION));
+            }
+            else {
+                $tournament->concatBodyHtml(self::getRankingHtml($tournament, Team::getFinalTournamentTeams($tournament), self::TOURNAMENT));
+            }
         }
 
         public static function getAllTimeSoccerRankingHtml($tournament) {
@@ -794,6 +957,9 @@
                 case self::CONFEDERATION:
                     $title = 'Confederation Rankings';
                     break;
+                case self::QUALIFICATION:
+                    $title = 'Qualification Rankings';
+                    break;
                 default:
                     $title = 'All Time Rankings';
                     break;
@@ -824,7 +990,7 @@
             foreach ($teams as $parent_group_name => $_teams) {
                 $league_name = self::getValidHtmlId($parent_group_name);
                 $output .= '<li class="nav-item">
-                                <a class="nav-link" id="'.$league_name.'-tab" data-toggle="tab" href="#'.$league_name.self::CONTENT.'" 
+                                <a class="nav-link" id="'.$league_name.'-tab" data-toggle="tab" href="#'.$league_name.self::CONTENT.'"
                                     role="tab" aria-controls="'.$league_name.self::CONTENT.'" aria-selected="true">'.$parent_group_name.'</a>
                             </li>';
             }
@@ -942,7 +1108,7 @@
             $matchDay_start = array();
             $tab_array = array();
             $matches = $tournament->getMatches();
-            $matches = Match::getMatchArrayByRound($matches);
+            $matches = Match::getMatchArrayByRoundDate($matches);
             $tournament_name = 'Tournament'.self::getValidHtmlId($tournament->getProfile()->getName());
             $output = '';
             $output .= '<div class="col-sm-12 margin-top-sm">
@@ -997,8 +1163,11 @@
                     if ($_team_type == self::MULTI_LEAGUE_TEAM || $_team_type == self::TEAM) {
                         $output .= self::getMatchHtml($tournament, $_match, self::MATCH_VIEW_1);
                     }
-                    else {
+                    elseif ($_team_type == self::CLUB) {
                         $output .= self::getMatchHtml($tournament, $_match, self::MATCH_VIEW_5);
+                    }
+                    else {
+                        $output .= self::getMatchHtml($tournament, $_match, self::MATCH_VIEW_7);
                     }
                 }
             }
@@ -1047,7 +1216,7 @@
             $match_date = $_match->getMatchDate();
             $match_time = $_match->getMatchTimeFmt();
             $time_zone = '';
-            if ($_match->getTournamentId() == 1) $time_zone = 'CST';
+            if ($_match->getTournamentId() == SoccerHtml::RUSSIA_2018 && $tournament->getQualificationConfederation() == null) $time_zone = 'CST';
             $group_text = '';
             $league_name = $_match->getParentGroupName();
             $league_name_short = str_replace('League ', '', $league_name);
@@ -1105,8 +1274,12 @@
             $extra_time_score = '';
             $aggregate_score = '';
             $replay_score = '';
+            $forfeited_score = '';
             $home_team_color = '';
             $away_team_color = '';
+            if ($_match->getAwarded() == 1) {
+                $forfeited_score = '<br><small>Awarded</small>';
+            }
             if ($_match->getHomeTeamScore() != -1) {
                 $aet = ' aet';
                 if (self::isGoldenGoalRule($_match->getGoldenGoalRule()) && !Match::isFirstStage($_match)
@@ -1210,7 +1383,6 @@
                     }
                 }
             }
-            if ($_match->getSecondRoundGroupName() == Soccer::WITHDREW) $score = 'w/o';
             $bracket_gap_height_class = 'bracket-gap-height-00';
             if ($j != 0) {
                 $bracket_gap_height_class = 'bracket-gap-height-'.$i.'1';
@@ -1225,6 +1397,10 @@
             }
             $short_note = '<br><span class="small">'.$_match->getShortNote().'</span>';
             $long_note = $_match->getLongNote();
+            if ($_match->getShortNote() == self::WALKOVER || $_match->getShortNote() == self::CANCELLED) {
+                $score = $_match->getShortNote();
+                $short_note = '';
+            }
 
             if ($match_view == self::MATCH_VIEW_1) {
                 $output .= '<div class="col-sm-12 padding-tb-md">
@@ -1312,6 +1488,55 @@
                                     </div>';
                 }
             }
+            elseif ($match_view == self::MATCH_VIEW_7) {
+                $output .= '<div class="col-sm-12 padding-tb-md">
+                            <div class="row">
+                                        <div class="col-sm-1 h6-ff3">'.$match_date.' '.$match_time.' '.$time_zone.'<br>'.$group_text.'</div>
+                                        <div class="col-sm-4 h2-ff3 padding-left-xs padding-right-xs text-right '.$home_team_color.'">'.
+                    $home_team_name.$advance_popover.'</div>
+                                        <div class="col-sm-1 padding-lr-xs padding-top-xs text-right">'.$home_flag.'</div>
+                                        <div class="col-sm-1 h2-ff3 padding-left-md padding-right-xs text-center">'.$score.$forfeited_score.'</div>
+                                        <div class="col-sm-1 padding-lr-xs padding-top-xs text-right">'.$away_flag.'</div>
+                                        <div class="col-sm-4 h2-ff3 padding-right-xs '.$away_team_color.'" style="padding-left:30px">'.
+                    $advance_popover2.$away_team_name.'</div>
+                            </div>
+                            </div>';
+                if ($extra_time_score != '') {
+                    $output .= '<div class="col-sm-12 padding-bottom-md">
+                            <div class="row">
+                                        <div class="col-sm-4"></div>
+                                        <div class="col-sm-5 text-center">'.$extra_time_score.'</div>
+                                        <div class="col-sm-3"></div>
+                            </div>
+                            </div>';
+                }
+                if ($aggregate_score != '') {
+                    $output .= '<div class="col-sm-12 padding-bottom-md">
+                            <div class="row">
+                                        <div class="col-sm-4"></div>
+                                        <div class="col-sm-5 text-center">'.$aggregate_score.'</div>
+                                        <div class="col-sm-3"></div>
+                            </div>
+                            </div>';
+                }
+                if ($long_note != '') {
+                    $output .= '<div class="col-sm-12 padding-bottom-md">
+                            <div class="row">
+                                        <div class="col-sm-4"></div>
+                                        <div class="col-sm-5 text-center">'.$long_note.'</div>
+                                        <div class="col-sm-3"></div>
+                            </div>
+                            </div>';
+                }
+                if ($extra_time_score == '' && $aggregate_score == '') {
+                    $output .= '<div class="col-sm-12 border-bottom-gray5">
+                                    </div>';
+                }
+                else {
+                    $output .= '<div class="col-sm-12 border-bottom-gray2">
+                                    </div>';
+                }
+            }
             else {
                 $output .= '<div class="col-sm-12 '.$bracket_gap_height_class.'"></div>
                             <div class="col-sm-12 box-sm bracket-box-height">
@@ -1366,7 +1591,7 @@
             $output .= '<li class="nav-item text-center">
                             <a class="nav-link" id="All-tab" data-toggle="tab" href="#All'.self::CONTENT.'"
                                 role="tab" aria-controls="All'.self::CONTENT.'" aria-selected="true">';
-            $output .=     TournamentProfile::getTournamentLogo($tournament->getProfile(), 32);
+            $output .=     TournamentProfile::getTournamentLogo($tournament, 32);
             $output .=     '<br>'.TournamentProfile::getAllFilteringText($tournament->getProfile(), $image_type).'</a>';
             $output .= '    </li>';
             foreach ($icons as $name => $_icon) {
@@ -1398,7 +1623,7 @@
             $output = '<div id="accordion-'.$id.'">
                             <div class="col-sm-12 padding-tb-md">
                                 <div class="card-header" id="heading-'.$id.'">';
-            $output .= '            <button class="btn btn-link collapsed h2-ff1 no-padding-left btn-collapse-'.$id.'" data-toggle="collapse"
+            $output .= '            <button class="btn btn-link collapsed h2-ff3 no-padding-left btn-collapse-'.$id.'" data-toggle="collapse"
                                         data-target="#collapse-'.$id.'" aria-expanded="false" aria-controls="collapse-'.$id.'">
                                             '.$name.' <i class="fa fa-angle-double-down font-custom1"></i>
                                     </button>

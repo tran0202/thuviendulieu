@@ -40,11 +40,18 @@
         private $home_team_replay_score;
         private $away_team_replay_score;
 
+        private $awarded;
+        private $home_team_forfeited_score;
+        private $away_team_forfeited_score;
+
         private $home_parent_team_id;
         private $away_parent_team_id;
 
         private $home_parent_team_name;
         private $away_parent_team_name;
+
+        private $home_confederation_name;
+        private $away_confederation_name;
 
         private $waiting_home_team;
         private $waiting_away_team;
@@ -61,6 +68,7 @@
         private $group_name;
         private $parent_group_name;
         private $second_round_group_name;
+        private $third_round_group_name;
 
         private $tournament_id;
         private $tournament_name;
@@ -102,11 +110,12 @@
             $home_team_score, $away_team_score, $home_team_first_leg_score, $away_team_first_leg_score,
             $home_team_extra_time_score, $away_team_extra_time_score,
             $home_team_penalty_score, $away_team_penalty_score,
+            $awarded, $home_team_forfeited_score, $away_team_forfeited_score,
             $home_parent_team_id, $away_parent_team_id, $home_parent_team_name, $away_parent_team_name,
-            $waiting_home_team, $waiting_away_team,
+            $home_confederation_name, $away_confederation_name, $waiting_home_team, $waiting_away_team,
             $match_date, $match_date_fmt, $match_time, $match_time_fmt,
             $match_order, $bracket_order, $round, $stage,
-            $group_name, $parent_group_name, $second_round_group_name,
+            $group_name, $parent_group_name, $second_round_group_name, $third_round_group_name,
             $tournament_id, $tournament_name, $points_for_win, $golden_goal_rule, $short_note, $long_note)
         {
             $m = new Match();
@@ -124,10 +133,15 @@
             $m->away_team_extra_time_score = $away_team_extra_time_score;
             $m->home_team_penalty_score = $home_team_penalty_score;
             $m->away_team_penalty_score = $away_team_penalty_score;
+            $m->awarded = $awarded;
+            $m->home_team_forfeited_score = $home_team_forfeited_score;
+            $m->away_team_forfeited_score = $away_team_forfeited_score;
             $m->home_parent_team_id = $home_parent_team_id;
             $m->home_parent_team_name = $home_parent_team_name;
             $m->away_parent_team_id = $away_parent_team_id;
             $m->away_parent_team_name = $away_parent_team_name;
+            $m->home_confederation_name = $home_confederation_name;
+            $m->away_confederation_name = $away_confederation_name;
             $m->match_date = $match_date;
             $m->match_date_fmt = $match_date_fmt;
             $m->match_time = $match_time;
@@ -139,6 +153,7 @@
             $m->group_name = $group_name;
             $m->parent_group_name = $parent_group_name;
             $m->second_round_group_name = $second_round_group_name;
+            $m->third_round_group_name = $third_round_group_name;
             $m->tournament_id = $tournament_id;
             $m->tournament_name = $tournament_name;
             $m->points_for_win = $points_for_win;
@@ -163,12 +178,12 @@
                 '', '', '', '',
                 $home_team_score, $away_team_score, 0, 0,
                 0, 0,
-                0, 0,
+                0, 0, 0, 0, 0,
                 0, 0, '', '',
-                '', '',
+                '', '','', '',
                 '', '', '', '',
                 0, 0, '', '',
-                '', '', '',
+                '', '', '', '',
                 0, '', 0,'', '', '');
         }
 
@@ -266,6 +281,28 @@
             return $m;
         }
 
+        public static function getTournamentMatches($tournament) {
+
+            self::getSoccerMatches($tournament);
+
+            $tournament->setMatches(Match::getStageMatchesExcludeQualification($tournament));
+        }
+
+        public static function getAllMatches($tournament) {
+
+            self::getSoccerMatches($tournament);
+        }
+
+        public static function getQualificationMatches($tournament) {
+
+            self::getSoccerMatches($tournament);
+            self::getConfederationMatches($tournament);
+            $stages = array();
+            array_push($stages, Soccer::QUALIFYING_STAGE);
+
+            $tournament->setMatches(self::getStageMatches($tournament->getMatches(), $stages));
+        }
+
         public static function getSoccerMatches($tournament) {
 
             $sql = self::getSoccerMatchSql($tournament->getTournamentId(), null);
@@ -289,10 +326,13 @@
                         match_date, DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt,
                         match_time, TIME_FORMAT(match_time, "%H:%i") as match_time_fmt,
                         match_order, bracket_order, g.name AS round, g2.name AS stage,
-                        g3.name AS group_name, g4.name AS parent_group_name, g5.name AS second_round_group_name,
+                        g3.name AS group_name, g4.name AS parent_group_name,
+                        g5.name AS second_round_group_name, g6.name AS third_round_group_name,
+                        g7.name AS home_confederation_name, g8.name AS away_confederation_name,
                         short_note, long_note,
                         m.tournament_id, tou.name AS tournament_name, tou.points_for_win, tou.golden_goal_rule,
                         home_team_first_leg_score, away_team_first_leg_score,
+                        awarded, home_team_forfeited_score, away_team_forfeited_score,
                         pt.id AS home_parent_team_id, pt2.id AS away_parent_team_id,
                         UCASE(pt.name) AS home_parent_team_name, UCASE(pt2.name) AS away_parent_team_name,
                         waiting_home_team, waiting_away_team
@@ -303,9 +343,13 @@
             LEFT JOIN `group` g ON g.id = m.round_id
             LEFT JOIN `group` g2 ON g2.id = m.stage_id
             LEFT JOIN team_tournament tt ON (tt.team_id = m.home_team_id AND tt.tournament_id = m.tournament_id)
+            LEFT JOIN team_tournament tt2 ON (tt2.team_id = m.away_team_id AND tt2.tournament_id = m.tournament_id)
             LEFT JOIN `group` g3 ON g3.id = tt.group_id
             LEFT JOIN `group` g4 ON g4.id = tt.parent_group_id
-            LEFT JOIN `group` g5 ON g5.id = m.group_id
+            LEFT JOIN `group` g5 ON g5.id = tt.second_round_group_id
+            LEFT JOIN `group` g6 ON g6.id = tt.third_round_group_id
+            LEFT JOIN `group` g7 ON g7.id = tt.confederation_id
+            LEFT JOIN `group` g8 ON g8.id = tt2.confederation_id
             LEFT JOIN nation n ON n.id = t.nation_id
             LEFT JOIN nation n2 ON n2.id = t2.nation_id
             LEFT JOIN team_logo tl ON tl.team_id = t.id
@@ -332,10 +376,13 @@
                         match_date, DATE_FORMAT(match_date, "%W %M %d") as match_date_fmt, 
                         match_time, TIME_FORMAT(match_time, "%H:%i") as match_time_fmt, 
                         match_order, bracket_order, g.name AS round, g2.name AS stage,
-                        g3.name AS group_name, g4.name AS parent_group_name, g5.name AS second_round_group_name, 
+                        g3.name AS group_name, g4.name AS parent_group_name, 
+                        g5.name AS second_round_group_name, g6.name AS third_round_group_name, 
+                        g7.name AS home_confederation_name, g8.name AS away_confederation_name,
                         short_note, long_note,
                         m.tournament_id, tou.name AS tournament_name, tou.points_for_win, tou.golden_goal_rule, 
                         home_team_first_leg_score, away_team_first_leg_score, 
+                        awarded, home_team_forfeited_score, away_team_forfeited_score, 
                         pt.id AS home_parent_team_id, pt2.id AS away_parent_team_id, 
                         UCASE(pt.name) AS home_parent_team_name, UCASE(pt2.name) AS away_parent_team_name, 
                         waiting_home_team, waiting_away_team
@@ -346,9 +393,13 @@
                     LEFT JOIN `group` g ON g.id = m.round_id
                     LEFT JOIN `group` g2 ON g2.id = m.stage_id
                     LEFT JOIN team_tournament tt ON (tt.team_id = m.home_team_id AND tt.tournament_id = m.tournament_id)
+                    LEFT JOIN team_tournament tt2 ON (tt2.team_id = m.away_team_id AND tt2.tournament_id = m.tournament_id)
                     LEFT JOIN `group` g3 ON g3.id = tt.group_id 
                     LEFT JOIN `group` g4 ON g4.id = tt.parent_group_id 
-                    LEFT JOIN `group` g5 ON g5.id = m.group_id
+                    LEFT JOIN `group` g5 ON g5.id = tt.second_round_group_id 
+                    LEFT JOIN `group` g6 ON g6.id = tt.third_round_group_id
+                    LEFT JOIN `group` g7 ON g7.id = tt.confederation_id
+                    LEFT JOIN `group` g8 ON g8.id = tt2.confederation_id
                     LEFT JOIN nation n ON n.id = t.nation_id  
                     LEFT JOIN nation n2 ON n2.id = t2.nation_id  
                     LEFT JOIN team_logo tl ON tl.team_id = t.id
@@ -403,12 +454,14 @@
                         $row['home_team_first_leg_score'], $row['away_team_first_leg_score'],
                         $row['home_team_extra_time_score'], $row['away_team_extra_time_score'],
                         $row['home_team_penalty_score'], $row['away_team_penalty_score'],
+                        $row['awarded'], $row['home_team_forfeited_score'], $row['away_team_forfeited_score'],
                         $row['home_parent_team_id'], $row['away_parent_team_id'],
                         $row['home_parent_team_name'], $row['away_parent_team_name'],
+                        $row['home_confederation_name'], $row['away_confederation_name'],
                         $row['waiting_home_team'], $row['waiting_away_team'],
                         $row['match_date'], $row['match_date_fmt'], $row['match_time'], $row['match_time_fmt'],
                         $row['match_order'], $row['bracket_order'], $row['round'], $row['stage'],
-                        $row['group_name'], $row['parent_group_name'], $row['second_round_group_name'],
+                        $row['group_name'], $row['parent_group_name'], $row['second_round_group_name'], $row['third_round_group_name'],
                         $row['tournament_id'], $row['tournament_name'],
                         $row['points_for_win'], $row['golden_goal_rule'],
                         $row['short_note'], $row['long_note']);
@@ -473,14 +526,37 @@
             return $result;
         }
 
-        public static function getStageMatches($matches, $stage) {
+        public static function getStageMatches($matches, $stages) {
             $result = array();
             for ($i = 0; $i < sizeof($matches); $i++) {
-                if ($matches[$i]->getStage() == $stage) {
-                    array_push($result, $matches[$i]);
+                for ($j = 0; $j < sizeof($stages); $j++) {
+                    if ($matches[$i]->getStage() == $stages[$j]) {
+                        array_push($result, $matches[$i]);
+                    }
                 }
             }
             return $result;
+        }
+
+        public static function getStageMatchesExcludeQualification($tournament) {
+            $stages = array();
+            array_push($stages, Soccer::FIRST_STAGE);
+            array_push($stages, Soccer::SECOND_STAGE);
+            array_push($stages, Soccer::CONSOLATION_STAGE);
+            array_push($stages, Soccer::GROUP_STAGE);
+            return self::getStageMatches($tournament->getMatches(), $stages);
+        }
+
+        public static function getConfederationMatches($tournament) {
+            $result = array();
+            $matches = $tournament->getMatches();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                if ($matches[$i]->getHomeConfederationName() == $tournament->getQualificationConfederation() ||
+                    $matches[$i]->getAwayConfederationName() == $tournament->getQualificationConfederation()) {
+                    array_push($result, $matches[$i]);
+                }
+            }
+            $tournament->setMatches($result);
         }
 
         public static function getBracketMatches($matches) {
@@ -536,10 +612,18 @@
             return strpos($match->getRound(), self::REPLAY) !== false;
         }
 
-        public static function getMatchArrayByRound($matches) {
+        public static function getMatchArrayByRoundDate($matches) {
             $result = array();
             for ($i = 0; $i < sizeof($matches); $i++) {
                 $result[$matches[$i]->getRound()][$matches[$i]->getMatchDate()][$matches[$i]->getMatchOrder()] = $matches[$i];
+            }
+            return $result;
+        }
+
+        public static function getMatchArrayByRound($matches) {
+            $result = array();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                $result[$matches[$i]->getRound()][$matches[$i]->getMatchOrder()] = $matches[$i];
             }
             return $result;
         }
@@ -572,6 +656,31 @@
             return $result;
         }
 
+        public static function getMatchArrayByGroupRound($matches, $_team_type, $stage, $round) {
+            $result = array();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                if ($stage == Soccer::QUALIFYING_STAGE && $round == Soccer::SECOND_ROUND_GROUP_MATCHES) {
+                    if ($matches[$i]->getStage() == $stage && $matches[$i]->getRound() == $round) {
+                        $result[$matches[$i]->getSecondRoundGroupName()][$matches[$i]->getRound()][$matches[$i]->getMatchOrder()] = $matches[$i];
+                    }
+                }
+                elseif ($stage == Soccer::QUALIFYING_STAGE && $round == Soccer::THIRD_ROUND_GROUP_MATCHES) {
+                        if ($matches[$i]->getStage() == $stage && $matches[$i]->getRound() == $round) {
+                            $result[$matches[$i]->getThirdRoundGroupName()][$matches[$i]->getRound()][$matches[$i]->getMatchOrder()] = $matches[$i];
+                        }
+                    }
+                elseif ($matches[$i]->getStage() == Soccer::FIRST_STAGE || $matches[$i]->getStage() == Soccer::GROUP_STAGE) {
+                    if ($_team_type == SoccerHtml::MULTI_LEAGUE_TEAM) {
+                        $result[$matches[$i]->getParentGroupName()][$matches[$i]->getGroupName()][$matches[$i]->getRound()][$matches[$i]->getMatchOrder()] = $matches[$i];
+                    }
+                    else {
+                        $result[$matches[$i]->getGroupName()][$matches[$i]->getRound()][$matches[$i]->getMatchOrder()] = $matches[$i];
+                    }
+                }
+            }
+            return $result;
+        }
+
         public static function getFirstStageMatchArrayByParentGroupRound($matches) {
             $result = array();
             for ($i = 0; $i < sizeof($matches); $i++) {
@@ -588,6 +697,19 @@
                 if ($matches[$i]->getHomeTeamName() == $name || $matches[$i]->getAwayTeamName() == $name) {
                     $result[$matches[$i]->getMatchDate()][$matches[$i]->getMatchOrder()] = $matches[$i];
                 }
+            }
+            return $result;
+        }
+
+        public static function getMatchArraySortedByOrder($matches) {
+            $tmp = array();
+            $result = array();
+            for ($i = 0; $i < sizeof($matches); $i++) {
+                $tmp[$matches[$i]->getMatchOrder()] = $matches[$i];
+            }
+            ksort($tmp);
+            foreach ($tmp as $order => $match) {
+                array_push($result, $match);
             }
             return $result;
         }
@@ -1012,6 +1134,54 @@
         /**
          * @return mixed
          */
+        public function getAwarded()
+        {
+            return $this->awarded;
+        }
+
+        /**
+         * @param mixed $awarded
+         */
+        public function setAwarded($awarded)
+        {
+            $this->awarded = $awarded;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getHomeTeamForfeitedScore()
+        {
+            return $this->home_team_forfeited_score;
+        }
+
+        /**
+         * @param mixed $home_team_forfeited_score
+         */
+        public function setHomeTeamForfeitedScore($home_team_forfeited_score)
+        {
+            $this->home_team_forfeited_score = $home_team_forfeited_score;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getAwayTeamForfeitedScore()
+        {
+            return $this->away_team_forfeited_score;
+        }
+
+        /**
+         * @param mixed $away_team_forfeited_score
+         */
+        public function setAwayTeamForfeitedScore($away_team_forfeited_score)
+        {
+            $this->away_team_forfeited_score = $away_team_forfeited_score;
+        }
+
+        /**
+         * @return mixed
+         */
         public function getHomeParentTeamId()
         {
             return $this->home_parent_team_id;
@@ -1071,6 +1241,38 @@
         public function setAwayParentTeamName($away_parent_team_name)
         {
             $this->away_parent_team_name = $away_parent_team_name;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getHomeConfederationName()
+        {
+            return $this->home_confederation_name;
+        }
+
+        /**
+         * @param mixed $home_confederation_name
+         */
+        public function setHomeConfederationName($home_confederation_name)
+        {
+            $this->home_confederation_name = $home_confederation_name;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getAwayConfederationName()
+        {
+            return $this->away_confederation_name;
+        }
+
+        /**
+         * @param mixed $away_confederation_name
+         */
+        public function setAwayConfederationName($away_confederation_name)
+        {
+            $this->away_confederation_name = $away_confederation_name;
         }
 
         /**
@@ -1279,6 +1481,22 @@
         public function setSecondRoundGroupName($second_round_group_name)
         {
             $this->second_round_group_name = $second_round_group_name;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getThirdRoundGroupName()
+        {
+            return $this->third_round_group_name;
+        }
+
+        /**
+         * @param mixed $third_round_group_name
+         */
+        public function setThirdRoundGroupName($third_round_group_name)
+        {
+            $this->third_round_group_name = $third_round_group_name;
         }
 
         /**

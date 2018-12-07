@@ -35,7 +35,8 @@
             return $tp;
         }
 
-        public static function getTournamentLogo($profile, $logo_height = 0) {
+        public static function getTournamentLogo($tournament, $logo_height = 0) {
+            $profile = $tournament->getProfile();
             if ($profile == null) return '<img class="logo-lg" src="/images/logos/FIFA.png">';
             $default_logo_height = 100;
             $logo_dir = 'logos/';
@@ -95,8 +96,61 @@
             return $output;
         }
 
-        public static function getTournamentHeader($profile) {
-            return self::getTournamentLogo($profile).'&nbsp;&nbsp;'.self::getTournamentTitle($profile);
+        public static function getTournamentLogoLink($tournament, $logo_height = 0) {
+            $profile = $tournament->getProfile();
+            if ($profile == null) return '<a href="/Soccer"><img class="logo-lg" src="/images/logos/FIFA.png"></a>';
+            $link = 'WorldCup';
+            switch ($profile->getTournamentTypeId()) {
+                case Tournament::WORLD_CUP:
+                    $link = 'WorldCup';
+                    break;
+                case Tournament::NATIONS_LEAGUE:
+                    $link = 'UEFANationsLeague';
+                    break;
+                case Tournament::CHAMPIONS_LEAGUE:
+                    $link = 'UEFAChampionsLeague';
+                    break;
+                case Tournament::EUROPA_LEAGUE:
+                    $link = 'UEFAEuropaLeague';
+                    break;
+                case Tournament::WOMENS_WORLD_CUP:
+                    $link = 'WomenWorldCup';
+                    break;
+                case Tournament::OLYMPIC:
+                    $link = 'OlympicFootballTournament';
+                    break;
+                case Tournament::WOMENS_OLYMPIC:
+                    $link = 'WomenOlympicFootballTournament';
+                    break;
+                case Tournament::EURO:
+                    $link = 'Euro';
+                    break;
+                case Tournament::COPA_AMERICA:
+                    $link = 'CopaAmerica';
+                    break;
+                case Tournament::GOLD_CUP:
+                    $link = 'GoldCup';
+                    break;
+                case Tournament::AFRICA_CUP_OF_NATIONS:
+                    $link = 'AfricaCup';
+                    break;
+                case Tournament::ASIAN_CUP:
+                    $link = 'AsianCup';
+                    break;
+                case Tournament::OFC_NATIONS_CUP:
+                    $link = 'OFCNationsCup';
+                    break;
+                default:
+                    break;
+            }
+            parse_str($_SERVER['QUERY_STRING'], $query_string);
+            if (isset($query_string['tid'])) $link .= '?tid='.$query_string['tid'];
+            $link = '<a href="/'.$link.'">'.self::getTournamentLogo($tournament, $logo_height).'</a>';
+            return $link;
+        }
+
+        public static function getTournamentHeader($tournament) {
+            return self::getTournamentLogo($tournament).'&nbsp;&nbsp;'.self::getTournamentTitle($tournament->getProfile());
         }
 
         public static function getTournamentTitle($profile) {
@@ -122,6 +176,34 @@
                     break;
             }
             return $text;
+        }
+
+        public static function getQualificationHeader($tournament) {
+            return self::getTournamentLogoLink($tournament).'&nbsp;&nbsp;'.self::getQualificationTitle($tournament);
+        }
+
+        public static function getQualificationTitleText($tournament) {
+            $output = 'FIFA World Cup Qualification';
+            $profile = $tournament->getProfile();
+            if ($profile == null) return $output;
+            switch ($profile->getTournamentTypeId()) {
+                case Tournament::WORLD_CUP:
+                    $output = substr($profile->getName(), 0, strpos($profile->getName(), 'World Cup') + 9);
+                    break;
+                default:
+                    break;
+            }
+            $output = $output.' Qualification - '.$tournament->getQualificationConfederation();
+            return $output;
+        }
+
+        public static function getQualificationTitle($tournament) {
+            $output = 'FIFA World Cup Qualification';
+            $profile = $tournament->getProfile();
+            if ($profile == null) return $output;
+            $output = '<span class="'.str_replace('T-', 'class_', SoccerHtml::getValidHtmlId($profile->getName()))
+                .'">'.self::getQualificationTitleText($tournament).'</span>';
+            return $output;
         }
 
         public static function getTournamentProfile($tournament) {

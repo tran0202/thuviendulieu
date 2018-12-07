@@ -5,7 +5,7 @@
     if (isset($query_string['tid'])) $tournament_id = $query_string['tid'];
     $tournament = Tournament::getTennisTournament($tournament_id);
     $profile = $tournament->getProfile();
-    $header = TournamentProfile::getTournamentHeader($profile);
+    $header = TournamentProfile::getTournamentHeader($tournament);
     $tournament_name = '';
     if ($profile != null) $tournament_name = $profile->getName();
     $body_html = $tournament->getBodyHtml();

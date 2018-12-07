@@ -17,6 +17,9 @@ CREATE TABLE IF NOT EXISTS `match` (
 	away_team_extra_time_score TINYINT UNSIGNED,
 	home_team_penalty_score TINYINT UNSIGNED,
 	away_team_penalty_score TINYINT UNSIGNED,
+	awarded TINYINT UNSIGNED,
+	home_team_forfeited_score TINYINT UNSIGNED,
+	away_team_forfeited_score TINYINT UNSIGNED,
 	round_id INT,
 	round_order TINYINT UNSIGNED,
 	stage_id INT,
@@ -55,8 +58,8 @@ CREATE TABLE IF NOT EXISTS `match` (
 );
 
 ALTER TABLE `match`
-	ADD COLUMN long_note VARCHAR(1023) AFTER group_id,
-	ADD COLUMN short_note VARCHAR(255) AFTER group_id;
+	ADD COLUMN awarded TINYINT UNSIGNED
+AFTER bracket_order;
 
 ALTER TABLE `match`
 	ADD CONSTRAINT match_ibfk_6

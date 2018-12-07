@@ -11,6 +11,10 @@
         const PRELIMINARY_ROUND = 'Preliminary Round';
         const FIRST_ROUND = 'First Round';
         const REPLAY_FIRST_ROUND = 'Replay First Round';
+        const SECOND_ROUND_GROUP_MATCHES = 'Second Round - Group Matches';
+        const THIRD_ROUND_GROUP_MATCHES = 'Third Round - Group Matches';
+        const FOURTH_ROUND = 'Fourth Round';
+        const INTER_CONFEDERATION_PLAY_OFF = 'Inter-confederation Play-off';
         const PRELIMINARY_ROUND1 = 'Preliminary Round 1';
         const PRELIMINARY_ROUND2 = 'Preliminary Round 2';
         const QUALIFYING_ROUND1_FIRST_LEG = 'Qualifying Round 1 - 1st Leg';
@@ -62,19 +66,24 @@
         const FinalRound = 3;
         const PreliminaryRound = 4;
         const FirstRound = 5;
-        const Round16 = 6;
-        const Quarterfinal = 7;
-        const Consolation = 8;
-        const ConsolationSemifinal = 9;
-        const ConsolationFinal = 10;
-        const FifthPlace = 11;
-        const Semifinal = 12;
-        const BronzeMedal = 13;
-        const SilverMedal = 14;
-        const GoldMedal = 15;
-        const ThirdPlace = 16;
-        const RunnerUp = 17;
-        const Champion = 18;
+        const SecondRoundGroup = 6;
+        const ThirdRoundGroup = 7;
+        const FourthRound = 8;
+        const InterConfederation = 9;
+        const QualificationWinner = 10;
+        const Round16 = 11;
+        const Quarterfinal = 12;
+        const Consolation = 13;
+        const ConsolationSemifinal = 14;
+        const ConsolationFinal = 15;
+        const FifthPlace = 16;
+        const Semifinal = 17;
+        const BronzeMedal = 18;
+        const SilverMedal = 19;
+        const GoldMedal = 20;
+        const ThirdPlace = 21;
+        const RunnerUp = 22;
+        const Champion = 23;
 
         private $id;
 
@@ -257,6 +266,145 @@
             }
         }
 
+        public static function getQualificationMatchesRanking($tournament, $round_name) {
+            switch ($round_name) {
+                case Soccer::FIRST_ROUND:
+                    Soccer::getIntermediateRoundMatchesRanking($tournament, $round_name);
+                    break;
+                case Soccer::SECOND_ROUND_GROUP_MATCHES:
+                    Soccer::getRoundRobinMatchesRanking($tournament, $round_name, 0);
+                    break;
+                case Soccer::THIRD_ROUND_GROUP_MATCHES:
+                    Soccer::getRoundRobinMatchesRanking($tournament, $round_name, 2);
+                    break;
+                case Soccer::FOURTH_ROUND:
+                    Soccer::getIntermediateRoundMatchesRanking($tournament, $round_name);
+                    break;
+                case Soccer::INTER_CONFEDERATION_PLAY_OFF:
+                    Soccer::getIntermediateRoundMatchesRanking($tournament, $round_name);
+                    break;
+            }
+        }
+
+        public static function getRoundRobinMatchesRanking($tournament, $round_name, $qualification_winners) {
+            $group_matches = Match::getRoundMatches($tournament->getMatches(), $round_name);
+            $result = array();
+            $teams_tmp = Team::getRoundRobinTeamArray($tournament, $round_name);
+            foreach ($teams_tmp as $group_name => $_teams) {
+                $teams_tmp2 = array();
+                foreach ($_teams as $team_name => $_team) {
+                    array_push($teams_tmp2, $_team);
+                }
+                $teams = self::getGroupRanking($tournament, $teams_tmp2, $group_matches, false);
+                for ($i = 0; $i < sizeof($teams); $i++) {
+                    if ($i < $qualification_winners) {
+                        $teams[$i]->setBestFinish(self::QualificationWinner);
+                    }
+                    elseif ($i == $qualification_winners && $qualification_winners != 0) {
+                        $teams[$i]->setBestFinish(self::FourthRound);
+                    }
+                    elseif ($i == 0 && $qualification_winners == 0) {
+                        $teams[$i]->setBestFinish(self::ThirdRoundGroup);
+                    }
+                    array_push($result, $teams[$i]);
+                }
+            }
+            $tournament->setTournamentTeams($result);
+        }
+
+        public static function getSpecialRoundRobinMatchesRanking($tournament, $round_name) {
+            $result = array();
+            $teams = $tournament->getTournamentTeams();
+            $not_counted_teams = array();
+            for ($i = 0; $i < sizeof($teams); $i++) {
+                if ($teams[$i]->getNotCounted() == 1) {
+                    array_push($not_counted_teams, $teams[$i]);
+                }
+            }
+            $group_matches = Match::getRoundMatches($tournament->getMatches(), $round_name);
+            $counted_matches = array();
+            for ($i = 0; $i < sizeof($group_matches); $i++) {
+                $counted = true;
+                $j = 0;
+                while ($counted && $j < sizeof($not_counted_teams)) {
+                    if ($group_matches[$i]->getHomeTeamName() == $not_counted_teams[$j]->getName() ||
+                        $group_matches[$i]->getAwayTeamName() == $not_counted_teams[$j]->getName()) {
+                        $counted = false;
+                    }
+                    $j++;
+                }
+                if ($counted) array_push($counted_matches, $group_matches[$i]);
+            }
+            $runner_up_teams = array();
+            $teams = Team::getRoundRobinTeamArray($tournament, $round_name);
+            foreach ($teams as $group_name => $_teams) {
+                $i = 0;
+                foreach ($_teams as $team_name => $_team) {
+                    if ($i == 1) {
+                        array_push($runner_up_teams, $_team);
+                    }
+                    $i++;
+                }
+            }
+            $counted_teams = array();
+            $teams = $tournament->getSecondRoundTeams();
+            for ($i = 0; $i < sizeof($teams); $i++) {
+                if ($teams[$i]->getSecondRoundGroupName() != null) {
+                    $counted_teams[$teams[$i]->getSecondRoundGroupName()][$teams[$i]->getName()] = $teams[$i];
+                }
+            }
+            ksort($counted_teams);
+            $teams_tmp3 = array();
+            foreach ($counted_teams as $group_name => $_teams) {
+                $teams_tmp2 = array();
+                foreach ($_teams as $team_name => $_team) {
+                    array_push($teams_tmp2, $_team);
+                }
+                $teams_tmp = self::getGroupRanking($tournament, $teams_tmp2, $counted_matches, false);
+                for ($i = 0; $i < sizeof($teams_tmp); $i++) {
+                    array_push($teams_tmp3, $teams_tmp[$i]);
+                }
+            }
+            $teams_tmp4 = array();
+            for ($i = 0; $i < sizeof($teams_tmp3); $i++) {
+                $teams_tmp4[$teams_tmp3[$i]->getId()] = $teams_tmp3[$i];
+            }
+            for ($i = 0; $i < sizeof($runner_up_teams); $i++) {
+                array_push($result, $teams_tmp4[$runner_up_teams[$i]->getId()]);
+            }
+            $result = self::sortGroupStanding($tournament, $result, $counted_matches);
+            if (sizeof($result) == 0) return;
+            for ($i = 0; $i < 4; $i++) {
+                $result[$i]->setBestFinish(self::ThirdRoundGroup);
+            }
+            $teams = $tournament->getTournamentTeams();
+            $teams = Team::getTeamArrayById($teams);
+            for ($i = 0; $i < 4; $i++) {
+                $teams[$result[$i]->getId()]->setBestFinish(self::ThirdRoundGroup);
+            }
+            SoccerHtml::getRoundRobinHtml($tournament, Soccer::QUALIFYING_STAGE, $round_name);
+            $output = '<div class="col-sm-12 margin-top-md">
+                        <span class="col-sm-2 h2-ff2">Ranking of runner-up teams</span>';
+            $output .= '</div>
+                    <div class="col-sm-12 h2-ff3 box-xl">';
+            $output .= SoccerHtml::getTeamRankingTableHtml($tournament, $result, Soccer::First,
+                false, $current_best_finish, $striped_row);
+            $output .= '</div>';
+            $output .= '<div class="col-sm-12 margin-top-md">
+                        As a result of Indonesia being disqualified due to FIFA suspension, Group F contained only four 
+                        teams compared to five teams in all other groups. Therefore, the results against the fifth-placed 
+                        team were not counted when determining the ranking of the runner-up teams.</div>';
+            $tournament->concatBodyHtml($output);
+        }
+
+        public static function getIntermediateRoundMatchesRanking($tournament, $round) {
+            $teams = $tournament->getTournamentTeams();
+            $rounds = self::getAllRelatedRounds($round);
+            $round_matches = Match::getMultipleRoundMatches($tournament->getMatches(), $rounds);
+            $teams = self::getGroupRanking($tournament, $teams, $round_matches, false);
+            $tournament->setTournamentTeams($teams);
+        }
+
         public static function getFirstStageMatchesRanking($tournament) {
             $rounds = Round::getRoundArray($tournament, Soccer::FIRST_STAGE);
             foreach ($rounds as $round_id => $round) {
@@ -378,9 +526,10 @@
         }
 
         public static function getRoundMatchesRanking($tournament, $round) {
+            $teams = $tournament->getTeams();
             $rounds = self::getAllRelatedRounds($round);
             $round_matches = Match::getMultipleRoundMatches($tournament->getMatches(), $rounds);
-            $teams = self::getGroupRanking($tournament, $tournament->getTeams(), $round_matches, false);
+            $teams = self::getGroupRanking($tournament, $teams, $round_matches, false);
             $tournament->setTeams($teams);
         }
 
@@ -388,6 +537,18 @@
             $rounds = array();
             switch ($round) {
                 case Soccer::SECOND_ROUND:
+                    array_push($rounds, $round);
+                    break;
+                case Soccer::SECOND_ROUND_GROUP_MATCHES:
+                    array_push($rounds, $round);
+                    break;
+                case Soccer::THIRD_ROUND_GROUP_MATCHES:
+                    array_push($rounds, $round);
+                    break;
+                case Soccer::FOURTH_ROUND:
+                    array_push($rounds, $round);
+                    break;
+                case Soccer::INTER_CONFEDERATION_PLAY_OFF:
                     array_push($rounds, $round);
                     break;
                 case Soccer::PLAY_OFF:
@@ -450,7 +611,7 @@
         }
 
         public static function getAllTimeRanking($tournament) {
-            $teams = self::getGroupRanking($tournament, $tournament->getTeams(), $tournament->getMatches(), true);
+            $teams = self::getGroupRanking($tournament, $tournament->getTeams(), Match::getStageMatchesExcludeQualification($tournament), true);
             $tournament->setTeams($teams);
         }
 
@@ -483,7 +644,7 @@
             foreach ($tt as $tournament_name => $_teams) {
                 if (array_key_exists($tournament_name, $tm)) {
                     $t = Tournament::CreateSoccerTournamentByTeams($tt[$tournament_name], $srtt[$tournament_name], $tm[$tournament_name]);
-                    Round::getRounds($t);
+                    Round::getTournamentRounds($t);
                     self::getFirstStageMatchesRanking($t);
                     Soccer::updateFirstStageMatchesRanking($t);
                     Soccer::getSecondStageMatchesRanking($t);
@@ -714,8 +875,9 @@
             }
             $best_finishes = [self::Champion, self::RunnerUp, self::ThirdPlace, self::GoldMedal, self::SilverMedal, self::BronzeMedal,
                             self::Semifinal, self::FifthPlace, self::ConsolationFinal, self::ConsolationSemifinal, self::Consolation,
-                            self::Quarterfinal, self::Round16, self::FirstRound, self::PreliminaryRound, self::FinalRound, self::SecondRound,
-                            self::Group, self::Disqualified];
+                            self::Quarterfinal, self::Round16, self::QualificationWinner, self::InterConfederation, self::FourthRound,
+                            self::ThirdRoundGroup, self::SecondRoundGroup, self::FirstRound, self::PreliminaryRound,
+                            self::FinalRound, self::SecondRound, self::Group, self::Disqualified];
             for ($i = 0; $i < sizeof($best_finishes); $i++) {
                 if (array_key_exists($best_finishes[$i], $teams_tmp)) {
                     foreach ($teams_tmp[$best_finishes[$i]] as $name => $_team) {
@@ -724,6 +886,16 @@
                 }
             }
             $tournament->setTeams($result);
+        }
+
+        public static function updateRankingTeams($tournament) {
+            $ranking_teams = Team::getTeamArrayById($tournament->getTeams());
+            $tournament_teams = $tournament->getTournamentTeams();
+            for ($i = 0; $i < sizeof($tournament_teams); $i++) {
+                if ($tournament_teams[$i]->getBestFinish() == self::QualificationWinner) {
+                    $ranking_teams[$tournament_teams[$i]->getId()]->setBestFinish(self::QualificationWinner);
+                }
+            }
         }
 
         public static function getFinish($match) {
@@ -754,6 +926,18 @@
                     break;
                 case self::SECOND_ROUND:
                     $best_finish = self::SecondRound;
+                    break;
+                case self::SECOND_ROUND_GROUP_MATCHES:
+                    $best_finish = self::SecondRoundGroup;
+                    break;
+                case self::THIRD_ROUND_GROUP_MATCHES:
+                    $best_finish = self::ThirdRoundGroup;
+                    break;
+                case self::FOURTH_ROUND:
+                    $best_finish = self::FourthRound;
+                    break;
+                case self::INTER_CONFEDERATION_PLAY_OFF:
+                    $best_finish = self::QualificationWinner;
                     break;
                 case self::FINAL_ROUND:
                     $best_finish = self::FinalRound;
@@ -832,6 +1016,9 @@
 
         public static function resetBestFinish($match, $team) {
             switch ($match->getRound()) {
+                case self::INTER_CONFEDERATION_PLAY_OFF:
+                    $team->setBestFinish(self::InterConfederation);
+                    break;
                 case self::CONSOLATION_FINAL:
                     $team->setBestFinish(self::ConsolationFinal);
                     self::resetBestFinishException($match, $team);

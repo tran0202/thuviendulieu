@@ -9,7 +9,7 @@
     if (isset($query_string['smid'])) $simulation_mode = $query_string['smid'];
     $tournament = Tournament::getSoccerTournamentScheduleView($tournament_id, $simulation_mode);
     $profile = $tournament->getProfile();
-    $header = TournamentProfile::getTournamentHeader($profile);
+    $header = TournamentProfile::getTournamentHeader($tournament);
     $tournament_name = $profile->getName();
     $body_html = $tournament->getBodyHtml();
     $modal_html = $tournament->getModalHtml();

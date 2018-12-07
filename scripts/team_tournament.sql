@@ -6,24 +6,33 @@ CREATE TABLE IF NOT EXISTS team_tournament (
 	group_order TINYINT UNSIGNED,
 	parent_group_id INT,
 	parent_group_order TINYINT UNSIGNED,
+	second_round_group_id INT,
+	second_round_group_order TINYINT UNSIGNED,
+	third_round_group_id INT,
+	third_round_group_order TINYINT UNSIGNED,
 	qualification TINYINT UNSIGNED,
 	qualification_date DATE,
 	confederation_id INT,
+	inter_confederation_playoff_id INT,
 	seed TINYINT UNSIGNED,
+	not_counted TINYINT UNSIGNED,
 	FOREIGN KEY (team_id) REFERENCES team(id),
 	FOREIGN KEY (tournament_id) REFERENCES tournament(id),
 	FOREIGN KEY (group_id) REFERENCES `group`(id),
 	FOREIGN KEY (parent_group_id) REFERENCES `group`(id),
-	FOREIGN KEY (confederation_id) REFERENCES `group`(id)
+	FOREIGN KEY (confederation_id) REFERENCES `group`(id),
+	FOREIGN KEY (second_round_group_id) REFERENCES `group`(id),
+	FOREIGN KEY (third_round_group_id) REFERENCES `group`(id),
+	FOREIGN KEY (inter_confederation_playoff_id) REFERENCES `group`(id)
 );
 
 ALTER TABLE team_tournament
-ADD COLUMN qualification_date DATE
-AFTER qualification;
+ADD COLUMN not_counted TINYINT UNSIGNED
+AFTER confederation_id;
 
 ALTER TABLE team_tournament
-ADD CONSTRAINT `team_tournament_ibfk_5`
-FOREIGN KEY (confederation_id) REFERENCES `group`(id);
+ADD CONSTRAINT `team_tournament_ibfk_8`
+FOREIGN KEY (inter_confederation_playoff_id) REFERENCES `group`(id);
 
 SELECT *, team_id FROM `team_tournament` WHERE tournament_id = 6;
 

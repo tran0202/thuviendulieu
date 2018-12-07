@@ -26,6 +26,20 @@
             return $r;
         }
 
+        public static function getTournamentRounds($tournament) {
+
+            self::getRounds($tournament);
+        }
+
+        public static function getQualificationRounds($tournament) {
+
+            self::getRounds($tournament);
+            $stages = array();
+            array_push($stages, Soccer::QUALIFYING_STAGE);
+
+            $tournament->setRounds(self::getMultipleRoundArray($tournament, $stages));
+        }
+
         public static function getRounds($tournament) {
 
             $sql = self::getRoundSql($tournament->getTournamentId());
@@ -114,6 +128,18 @@
             for ($i = 0; $i < sizeof($rounds); $i++) {
                 if ($rounds[$i]->getStageName() == $stage)
                     $result[$rounds[$i]->getRoundId()] = $rounds[$i];
+            }
+            return $result;
+        }
+
+        public static function getMultipleRoundArray($tournament, $stages) {
+            $rounds = $tournament->getRounds();
+            $result = array();
+            for ($i = 0; $i < sizeof($rounds); $i++) {
+                for ($j = 0; $j < sizeof($stages); $j++) {
+                    if ($rounds[$i]->getStageName() == $stages[$j])
+                        array_push($result, $rounds[$i]);
+                }
             }
             return $result;
         }
